@@ -35,7 +35,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.CHAT_ID }}
-          MIN_VOLUME_USDT: "10000000"
+          MIN_VOLUME_USDT: "9000000"
           UNIVERSE_LIMIT: "100"
           MAX_ACTIVE_POSITIONS: "5"
         run: python paper_scan_once.py
