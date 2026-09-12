@@ -2,7 +2,7 @@ name: SAM EDGE V15 - V8I Paper Scanner
 
 on:
   schedule:
-    - - cron: '2/5 * * * *'
+    - cron: '2-59/5 * * * *'
       timezone: 'Asia/Jakarta'
   workflow_dispatch:ty
   t
