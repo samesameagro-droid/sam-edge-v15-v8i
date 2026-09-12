@@ -2,9 +2,9 @@ name: SAM EDGE V15 - V8I Paper Scanner
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
-      timezone: 'Asia/Jakarta'
-  workflow_dispatch:
+    - cron: "*/5 * * * *"
+      timezone: "Asia/Jakarta"
+  workflow_dispatch: {}
 
 concurrency:
   group: sam-edge-v8i-paper
@@ -25,8 +25,8 @@ jobs:
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
 
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
@@ -35,9 +35,9 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.CHAT_ID }}
-          MIN_VOLUME_USDT: '10000000'
-          UNIVERSE_LIMIT: '100'
-          MAX_ACTIVE_POSITIONS: '5'
+          MIN_VOLUME_USDT: "10000000"
+          UNIVERSE_LIMIT: "100"
+          MAX_ACTIVE_POSITIONS: "5"
         run: python paper_scan_once.py
 
       - name: Persist paper state and journal
