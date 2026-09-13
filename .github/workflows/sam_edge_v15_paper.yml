@@ -1,6 +1,8 @@
 name: SAM EDGE V15 - Paper Forward
 
 on:
+  schedule:
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -9,7 +11,6 @@ concurrency:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   scan:
@@ -19,6 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v6
@@ -66,23 +69,5 @@ jobs:
             echo "NO STATE CHANGES"
           else
             git commit -m "paper: V15 forward state"
-            git push
+            git push origin HEAD:main
           fi
-
-      - name: Chain next V15 cycle
-        if: ${{ !cancelled() }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ELAPSED=${{ steps.scan.outputs.elapsed }}
-          TARGET=300
-          DELAY=$((TARGET-ELAPSED))
-          if [ "$DELAY" -lt 0 ]; then
-            DELAY=0
-          fi
-          echo "V15 CYCLE | elapsed=${ELAPSED}s | waiting=${DELAY}s | target=300s"
-          if [ "$DELAY" -gt 0 ]; then
-            sleep "$DELAY"
-          fi
-          echo "V15 CYCLE | dispatching next run"
-          gh workflow run sam_edge_v15_paper.yml --repo "$GITHUB_REPOSITORY" --ref main
