@@ -1,8 +1,6 @@
 name: SAM EDGE V15 - Paper Forward
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -11,6 +9,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   scan:
@@ -31,6 +30,7 @@ jobs:
         run: python -m pip install -r requirements.txt
 
       - name: Run V15 one-shot scan
+        id: scan
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -42,9 +42,19 @@ jobs:
           UNIVERSE_LIMIT: "100"
           MAX_ACTIVE_POSITIONS: "5"
         run: |
+          START_TS=$(date +%s)
+          set +e
           python -c "from main_paper_v15 import PaperEngine; PaperEngine().scan_once()"
+          RC=$?
+          END_TS=$(date +%s)
+          ELAPSED=$((END_TS-START_TS))
+          echo "rc=$RC" >> "$GITHUB_OUTPUT"
+          echo "elapsed=$ELAPSED" >> "$GITHUB_OUTPUT"
+          echo "V15 SCAN EXIT=$RC | elapsed=${ELAPSED}s"
+          exit 0
 
       - name: Persist V15 paper state
+        if: ${{ !cancelled() }}
         run: |
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
@@ -58,3 +68,21 @@ jobs:
             git commit -m "paper: V15 forward state"
             git push
           fi
+
+      - name: Chain next V15 cycle
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ELAPSED=${{ steps.scan.outputs.elapsed }}
+          TARGET=300
+          DELAY=$((TARGET-ELAPSED))
+          if [ "$DELAY" -lt 0 ]; then
+            DELAY=0
+          fi
+          echo "V15 CYCLE | elapsed=${ELAPSED}s | waiting=${DELAY}s | target=300s"
+          if [ "$DELAY" -gt 0 ]; then
+            sleep "$DELAY"
+          fi
+          echo "V15 CYCLE | dispatching next run"
+          gh workflow run sam_edge_v15_paper.yml --repo "$GITHUB_REPOSITORY" --ref main
