@@ -59,15 +59,40 @@ jobs:
       - name: Persist V15 paper state
         if: ${{ !cancelled() }}
         run: |
+          set -e
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
+
           git add -f paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json
           if [ -f paper_v15_trades.csv ]; then
             git add -f paper_v15_trades.csv
           fi
+
           if git diff --cached --quiet; then
             echo "NO STATE CHANGES"
-          else
-            git commit -m "paper: V15 forward state"
-            git push origin HEAD:main
+            exit 0
           fi
+
+          git commit -m "paper: V15 forward state"
+
+          for attempt in 1 2 3 4 5; do
+            echo "STATE PUSH ATTEMPT $attempt"
+            git fetch origin main
+
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                echo "STATE PUSH OK"
+                exit 0
+              fi
+            else
+              echo "REBASE CONFLICT - aborting"
+              git rebase --abort || true
+              exit 1
+            fi
+
+            echo "REMOTE MOVED - retrying"
+            sleep 2
+          done
+
+          echo "STATE PUSH FAILED AFTER 5 ATTEMPTS"
+          exit 1
