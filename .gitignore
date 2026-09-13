@@ -1,0 +1,8 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+paper_v15_state.json
+paper_v15_trades.csv
+paper_v15_signal_history.json
+paper_v15_universe.json
