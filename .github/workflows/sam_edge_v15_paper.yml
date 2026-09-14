@@ -47,7 +47,7 @@ jobs:
         run: |
           START_TS=$(date +%s)
           set +e
-          python -c "from main_paper_v15 import PaperEngine; PaperEngine().scan_once()"
+          python -c "import sitecustomize; from main_paper_v15 import PaperEngine; PaperEngine().scan_once()"
           RC=$?
           END_TS=$(date +%s)
           ELAPSED=$((END_TS-START_TS))
