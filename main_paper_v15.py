@@ -20,6 +20,7 @@ from core_engine_v15 import (
 
 load_dotenv()
 
+BUILD = 'V15-LIVE-DIAG-2'
 TIMEFRAME = '15m'
 TRACK_TIMEFRAME = '5m'
 START_EQUITY = float(os.getenv('START_EQUITY', '100'))
@@ -130,7 +131,8 @@ class PaperEngine:
         return True
 
     def discover_universe(self):
-        self.exchange.load_markets(reload=True)
+        # First call loads BingX market metadata; subsequent scans reuse CCXT's cache.
+        self.exchange.load_markets(reload=False)
         tickers = self.exchange.fetch_tickers()
         eligible = []
         rejected_noncrypto = 0
@@ -248,7 +250,7 @@ class PaperEngine:
         if df is None or len(df) < 3300:
             return None
         x = enrich(df)
-        i = len(x) - 2  # last CLOSED 15m candle
+        i = len(x) - 2
         lm, sm = signal_mask(x, CORE_NAME)
         diag = self.gate_snapshot(x, i)
         side = 'LONG' if bool(lm.iloc[i]) else ('SHORT' if bool(sm.iloc[i]) else None)
@@ -332,7 +334,7 @@ class PaperEngine:
     def scan_once(self):
         t0 = time.perf_counter()
         print('\n' + '='*100)
-        print('SAM EDGE V15 | UNIVERSAL PAPER FORWARD | V15 ADX4H + CANDLE2H')
+        print(f'SAM EDGE V15 | BUILD={BUILD} | UNIVERSAL PAPER FORWARD | V15 ADX4H + CANDLE2H')
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | 2H CANDLE=STRICT')
 
