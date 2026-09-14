@@ -81,7 +81,8 @@ def _adx_4h_features(df: pd.DataFrame) -> pd.DataFrame:
     h['adx_pct'] = h.adx.rolling(200, min_periods=100).rank(pct=True)
     h['adx_delta'] = h.adx-h.adx.shift(3)
     h['adx_accel'] = h.adx_delta-h.adx_delta.shift(3)
-    h['timestamp'] = (h.timestamp + pd.Timedelta('4h')).astype('datetime64[ms, UTC]')
+    # Preserve the actual timezone-aware datetime; do not reinterpret epoch units.
+    h['timestamp'] = pd.to_datetime(h.timestamp + pd.Timedelta('4h'), utc=True)
     return h[['timestamp','adx','adx_pct','adx_delta','adx_accel']]
 
 
@@ -164,11 +165,8 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
 
     for rule,pfx in [('1h','h1'),('4h','h4')]:
         h=base.resample(rule,label='right',closed='right').agg(
-            open=('open','first'),
-            high=('high','max'),
-            low=('low','min'),
-            close=('close','last'),
-            volume=('volume','sum')
+            open=('open','first'), high=('high','max'), low=('low','min'),
+            close=('close','last'), volume=('volume','sum')
         ).dropna()
 
         for p in [21,50,200]:
@@ -196,18 +194,9 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
             'bear':f'{pfx}_bear'
         })
 
-        # NORMALIZE ALL TIMESTAMPS TO MILLISECOND UTC
-        x['timestamp']=pd.to_datetime(
-            x['timestamp'].astype('int64')//1_000_000,
-            unit='ms',
-            utc=True
-        )
-
-        h['timestamp']=pd.to_datetime(
-            h['timestamp'].astype('int64')//1_000_000,
-            unit='ms',
-            utc=True
-        )
+        # Keep timestamps as real timezone-aware datetimes.
+        x['timestamp']=pd.to_datetime(x['timestamp'], utc=True)
+        h['timestamp']=pd.to_datetime(h['timestamp'], utc=True)
 
         x=pd.merge_asof(
             x.sort_values('timestamp'),
@@ -227,24 +216,10 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
 
     c2=_strict_candle_features(df,'2h','c2h')
 
-    # NORMALIZE ALL HTF TIMESTAMPS BEFORE MERGE
-    x['timestamp']=pd.to_datetime(
-        x['timestamp'].astype('int64')//1_000_000,
-        unit='ms',
-        utc=True
-    )
-
-    a4['timestamp']=pd.to_datetime(
-        a4['timestamp'].astype('int64')//1_000_000,
-        unit='ms',
-        utc=True
-    )
-
-    c2['timestamp']=pd.to_datetime(
-        c2['timestamp'].astype('int64')//1_000_000,
-        unit='ms',
-        utc=True
-    )
+    # Normalize by parsing existing datetimes only.
+    x['timestamp']=pd.to_datetime(x['timestamp'],utc=True)
+    a4['timestamp']=pd.to_datetime(a4['timestamp'],utc=True)
+    c2['timestamp']=pd.to_datetime(c2['timestamp'],utc=True)
 
     x=pd.merge_asof(
         x.sort_values('timestamp'),
@@ -275,7 +250,8 @@ def signal_mask(x: pd.DataFrame, core: str = CORE_NAME):
     emaS=(r.close<r.ema20)&(r.ema20<r.ema50)
     structureL=bull&emaL&(r.close>r.vwap)&(r.pdi>r.mdi)&r.rsi.between(46,64)
     structureS=bear&emaS&(r.close<r.vwap)&(r.mdi>r.pdi)&r.rsi.between(36,54)
-    roomL=r.dist_res_atr>=0.85; roomS=r.dist_sup_atr>=0.85
+    roomL=r.dist_res_atr>=0.85
+    roomS=r.dist_sup_atr>=0.85
     noex=(r.move5_atr<=3.50)&(r.dist_ema20_atr<=1.60)&(r.range_atr<=2.25)
     adxL=(r.h4_adx_pct>=ADX_LONG_PCT)&(r.h4_adx_delta>=ADX_LONG_DELTA)
     adxS=(r.h4_adx_pct>=ADX_SHORT_PCT)&(r.h4_adx_delta>=ADX_SHORT_DELTA)
