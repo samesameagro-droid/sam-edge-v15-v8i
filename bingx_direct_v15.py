@@ -9,12 +9,11 @@ from urllib3.util.retry import Retry
 
 BASE_URL = 'https://open-api.bingx.com'
 TIMEOUT = 15
-KLINE_PAGE_LIMIT = 500
+KLINE_PAGE_LIMIT = 1440
 
 # BingX .com has already been verified from the user's PC with HTTP 200.
 # Do not use the .pro host here because that host produced local certificate
-# verification failures. Instead, retry transient DNS/connect failures against
-# the known-good .com endpoint.
+# verification failures. Retry transient failures against the known-good .com endpoint.
 _SESSION = requests.Session()
 _RETRY = Retry(
     total=6,
@@ -35,8 +34,6 @@ _SESSION.headers.update({
 def _get(path: str, params: dict[str, Any] | None = None) -> Any:
     q = dict(params or {})
     last_error: Exception | None = None
-
-    # Regenerate timestamp for every request attempt at the adapter layer.
     q.setdefault('timestamp', int(time.time() * 1000))
 
     for attempt in range(1, 4):
@@ -52,8 +49,6 @@ def _get(path: str, params: dict[str, Any] | None = None) -> Any:
         except (requests.RequestException, ValueError, RuntimeError) as exc:
             last_error = exc
             if attempt < 3:
-                # New timestamp plus a short delay helps with transient network/DNS
-                # failures while keeping the V15 scan cadence unchanged.
                 q['timestamp'] = int(time.time() * 1000)
                 time.sleep(0.8 * attempt)
 
@@ -166,30 +161,59 @@ def fetch_tickers(self, symbols=None, params={}):
     return out
 
 
+_INTERVAL_MS = {
+    '1m': 60_000,
+    '3m': 180_000,
+    '5m': 300_000,
+    '15m': 900_000,
+    '30m': 1_800_000,
+    '1h': 3_600_000,
+    '2h': 7_200_000,
+    '4h': 14_400_000,
+    '6h': 21_600_000,
+    '8h': 28_800_000,
+    '12h': 43_200_000,
+    '1d': 86_400_000,
+    '3d': 259_200_000,
+    '1w': 604_800_000,
+}
+
+
 def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={}):
     requested = int(limit) if limit is not None else KLINE_PAGE_LIMIT
     requested = max(1, requested)
     market_symbol = symbol.split(':')[0].replace('/', '-').upper()
     base_params = dict(params or {})
-    cursor_end = base_params.get('endTime')
-    if cursor_end is not None:
-        cursor_end = int(cursor_end)
+    interval_ms = _INTERVAL_MS.get(str(timeframe), 60_000)
+
+    # Paginate FORWARD using startTime. BingX documents startTime/endTime and
+    # a maximum kline limit of 1440; forward pagination avoids ambiguous
+    # endTime cursor behaviour and guarantees accumulation toward `requested`.
+    cursor_start = base_params.get('startTime')
+    if cursor_start is not None:
+        cursor_start = int(cursor_start)
+    elif since is not None:
+        cursor_start = int(since)
+    else:
+        cursor_start = int(time.time() * 1000) - (requested * interval_ms)
+
+    end_time = base_params.get('endTime')
+    if end_time is not None:
+        end_time = int(end_time)
 
     out: list[list[Any]] = []
-    remaining = requested
     seen: set[int] = set()
 
-    while remaining > 0:
-        page_limit = min(KLINE_PAGE_LIMIT, remaining)
+    while len(out) < requested:
+        page_limit = min(KLINE_PAGE_LIMIT, requested - len(out))
         q: dict[str, Any] = {
             'symbol': market_symbol,
             'interval': timeframe,
+            'startTime': cursor_start,
             'limit': page_limit,
         }
-        if since is not None and cursor_end is None:
-            q['startTime'] = int(since)
-        if cursor_end is not None:
-            q['endTime'] = cursor_end
+        if end_time is not None:
+            q['endTime'] = end_time
 
         data = _get('/openApi/swap/v3/quote/klines', q)
         page: list[list[Any]] = []
@@ -212,17 +236,18 @@ def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={})
             break
 
         out.extend(page)
-        remaining = requested - len(out)
-        oldest = int(page[0][0])
-        next_end = oldest - 1
-        if cursor_end is not None and next_end >= cursor_end:
+        if len(out) >= requested:
             break
-        cursor_end = next_end
 
+        newest = int(page[-1][0])
+        next_start = newest + interval_ms
+        if next_start <= cursor_start:
+            break
+        cursor_start = next_start
+        if end_time is not None and cursor_start > end_time:
+            break
         if len(page) < page_limit:
             break
 
     out.sort(key=lambda r: r[0])
-    if len(out) > requested:
-        out = out[-requested:]
-    return out
+    return out[-requested:]
