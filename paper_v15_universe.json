@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T23:49:41.096290+00:00",
+  "updated_at": "2026-09-14T23:54:05.657120+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -96,13 +96,13 @@
     "SOON/USDT:USDT",
     "STABLE/USDT:USDT",
     "AWE/USDT:USDT",
-    "HOME/USDT:USDT",
     "ILV/USDT:USDT",
-    "FOLKS/USDT:USDT",
+    "HOME/USDT:USDT",
     "CLANKER/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "CATI/USDT:USDT",
     "ENSO/USDT:USDT",
     "CC/USDT:USDT",
-    "POPCAT/USDT:USDT"
+    "BERA/USDT:USDT"
   ]
 }
