@@ -4,6 +4,7 @@ Loads the pandas datetime compatibility layer and installs a direct BingX public
 REST adapter for market/ticker/OHLCV calls. The V15 strategy engine is untouched.
 """
 
+import os
 import sitecustomize  # noqa: F401
 
 import ccxt
@@ -20,7 +21,7 @@ ccxt.bingx.fetch_ohlcv = fetch_ohlcv
 
 
 # One-time transport check at process start. This does not alter V15 rules or
-# the 5-minute scan cadence; it simply proves how many 15m candles BingX returns.
+# the scan cadence; it simply proves how many 15m candles BingX returns.
 try:
     _probe = fetch_ohlcv(None, 'BTC/USDT:USDT', timeframe='15m', limit=3600)
     if _probe:
@@ -36,7 +37,7 @@ except Exception as _e:
 # The old launcher imported main_paper_v15, patched that module's PaperEngine,
 # and then re-executed the source with runpy as __main__, which created a second
 # PaperEngine class and discarded the patch. Import once, patch that exact class,
-# then call its run() method directly.
+# then call its scan loop directly.
 def _fetch_df_full_history(self, symbol, timeframe='15m', limit=3600):
     rows = self.exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit)
     if not rows:
@@ -57,4 +58,15 @@ def _fetch_df_full_history(self, symbol, timeframe='15m', limit=3600):
 
 import main_paper_v15
 main_paper_v15.PaperEngine.fetch_df = _fetch_df_full_history
-main_paper_v15.PaperEngine().run()
+
+_engine = main_paper_v15.PaperEngine()
+
+# cron-job.org triggers one GitHub Actions run every 5 minutes. In that mode the
+# process must perform exactly one scan and exit; otherwise the old internal
+# 300-second loop would keep each GitHub runner alive and make later triggers queue.
+RUN_ONCE = os.getenv('RUN_ONCE', '0').strip().lower() in {'1', 'true', 'yes', 'on'}
+if RUN_ONCE:
+    print('RUN MODE | ONE-SHOT SCAN | scheduler=cron-job.org')
+    _engine.scan_once()
+else:
+    _engine.run()
