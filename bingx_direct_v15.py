@@ -8,6 +8,7 @@ import requests
 BASE_URLS = ('https://open-api.bingx.com', 'https://open-api.bingx.pro')
 TIMEOUT = 15
 RETRIES_PER_HOST = 2
+KLINE_PAGE_LIMIT = 500
 
 
 def _get(path: str, params: dict[str, Any] | None = None) -> Any:
@@ -59,9 +60,39 @@ def market_from_contract(c: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _is_crypto_contract(c: dict[str, Any]) -> bool:
+    asset = str(c.get('asset') or c.get('symbol', '').split('-')[0]).upper()
+    sid = str(c.get('symbol') or '').upper()
+    info = c if isinstance(c, dict) else {}
+    text = ' '.join([
+        asset,
+        sid,
+        str(info.get('displayName') or ''),
+        str(info.get('category') or ''),
+        str(info.get('productType') or ''),
+        str(info.get('assetClass') or ''),
+    ]).upper()
+    # BingX can expose synthetic TradFi/commodity contracts in the same swap
+    # catalog. V15 is a crypto-only scanner, so reject explicit non-crypto tags
+    # and synthetic assets ending in common fiat/index naming patterns.
+    for token in (
+        'GOLD', 'XAU', 'SILVER', 'XAG', 'OIL', 'WTI', 'BRENT',
+        'FOREX', 'COMMODITY', 'INDEX', 'SPX', 'SP500', 'NAS100',
+        'NASDAQ', 'DOW30', 'US30', 'USTEC', 'GER40',
+    ):
+        if token in text:
+            return False
+    for suffix in ('2USD', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF'):
+        if asset.endswith(suffix):
+            return False
+    if any(x in str(info.get(k) or '').lower() for k in ('category', 'productType', 'assetClass') for _ in [0] for x in ('commodity', 'forex', 'index', 'metal')):
+        return False
+    return True
+
+
 def fetch_markets(self, params={}):
     data = _get('/openApi/swap/v2/quote/contracts', params)
-    return [market_from_contract(c) for c in (data or [])]
+    return [market_from_contract(c) for c in (data or []) if _is_crypto_contract(c)]
 
 
 def _unified_symbol(sid: str) -> str:
@@ -107,19 +138,62 @@ def fetch_tickers(self, symbols=None, params={}):
 
 
 def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={}):
+    requested = int(limit) if limit is not None else KLINE_PAGE_LIMIT
+    requested = max(1, requested)
     market_symbol = symbol.split(':')[0].replace('/', '-').upper()
-    q = dict(params or {})
-    q.update({'symbol': market_symbol, 'interval': timeframe})
-    if since is not None:
-        q['startTime'] = int(since)
-    if limit is not None:
-        q['limit'] = min(int(limit), 1440)
-    data = _get('/openApi/swap/v3/quote/klines', q)
-    out = []
-    for row in (data or []):
-        if isinstance(row, (list, tuple)) and len(row) >= 6:
-            out.append([int(row[0]), float(row[1]), float(row[2]), float(row[3]), float(row[4]), float(row[5])])
+    base_params = dict(params or {})
+    cursor_end = base_params.get('endTime')
+    if cursor_end is not None:
+        cursor_end = int(cursor_end)
+
+    out: list[list[Any]] = []
+    remaining = requested
+    seen: set[int] = set()
+
+    while remaining > 0:
+        page_limit = min(KLINE_PAGE_LIMIT, remaining)
+        q: dict[str, Any] = {
+            'symbol': market_symbol,
+            'interval': timeframe,
+            'limit': page_limit,
+        }
+        if since is not None and cursor_end is None:
+            q['startTime'] = int(since)
+        if cursor_end is not None:
+            q['endTime'] = cursor_end
+
+        data = _get('/openApi/swap/v3/quote/klines', q)
+        page: list[list[Any]] = []
+        for row in (data or []):
+            if isinstance(row, (list, tuple)) and len(row) >= 6:
+                ts = int(row[0])
+                if ts in seen:
+                    continue
+                seen.add(ts)
+                page.append([
+                    ts,
+                    float(row[1]),
+                    float(row[2]),
+                    float(row[3]),
+                    float(row[4]),
+                    float(row[5]),
+                ])
+        page.sort(key=lambda r: r[0])
+        if not page:
+            break
+
+        out.extend(page)
+        remaining = requested - len(out)
+        oldest = int(page[0][0])
+        next_end = oldest - 1
+        if cursor_end is not None and next_end >= cursor_end:
+            break
+        cursor_end = next_end
+
+        if len(page) < page_limit:
+            break
+
     out.sort(key=lambda r: r[0])
-    if limit is not None:
-        out = out[-int(limit):]
+    if len(out) > requested:
+        out = out[-requested:]
     return out
