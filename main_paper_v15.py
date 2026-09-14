@@ -190,6 +190,59 @@ class PaperEngine:
         df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms', utc=True)
         return df
 
+    @staticmethod
+    def gate_snapshot(x, i):
+        r = x
+        bull = r.h1_trend_bull & r.h4_trend_bull
+        bear = r.h1_trend_bear & r.h4_trend_bear
+        emaL = (r.close > r.ema20) & (r.ema20 > r.ema50)
+        emaS = (r.close < r.ema20) & (r.ema20 < r.ema50)
+        vwapL = r.close > r.vwap
+        vwapS = r.close < r.vwap
+        diL = r.pdi > r.mdi
+        diS = r.mdi > r.pdi
+        rsiL = r.rsi.between(46, 64)
+        rsiS = r.rsi.between(36, 54)
+        structureL = bull & emaL & vwapL & diL & rsiL
+        structureS = bear & emaS & vwapS & diS & rsiS
+        roomL = r.dist_res_atr >= 0.85
+        roomS = r.dist_sup_atr >= 0.85
+        noex = (r.move5_atr <= 3.50) & (r.dist_ema20_atr <= 1.60) & (r.range_atr <= 2.25)
+        adxL = (r.h4_adx_pct >= ADX_LONG_PCT) & (r.h4_adx_delta >= ADX_LONG_DELTA)
+        adxS = (r.h4_adx_pct >= ADX_SHORT_PCT) & (r.h4_adx_delta >= ADX_SHORT_DELTA)
+        candleL = r.c2h_bull_strict
+        candleS = r.c2h_bear_strict
+
+        long_steps = {
+            'trend': bool(bull.iloc[i]),
+            'ema': bool((bull & emaL).iloc[i]),
+            'vwap': bool((bull & emaL & vwapL).iloc[i]),
+            'di': bool((bull & emaL & vwapL & diL).iloc[i]),
+            'rsi': bool((structureL).iloc[i]),
+            'room': bool((structureL & roomL).iloc[i]),
+            'noex': bool((structureL & roomL & noex).iloc[i]),
+            'adx': bool((structureL & roomL & noex & adxL).iloc[i]),
+            'candle2h': bool((structureL & roomL & noex & adxL & candleL).iloc[i]),
+        }
+        short_steps = {
+            'trend': bool(bear.iloc[i]),
+            'ema': bool((bear & emaS).iloc[i]),
+            'vwap': bool((bear & emaS & vwapS).iloc[i]),
+            'di': bool((bear & emaS & vwapS & diS).iloc[i]),
+            'rsi': bool((structureS).iloc[i]),
+            'room': bool((structureS & roomS).iloc[i]),
+            'noex': bool((structureS & roomS & noex).iloc[i]),
+            'adx': bool((structureS & roomS & noex & adxS).iloc[i]),
+            'candle2h': bool((structureS & roomS & noex & adxS & candleS).iloc[i]),
+        }
+        return {
+            'timestamp': r.timestamp.iloc[i].isoformat(),
+            'long': long_steps,
+            'short': short_steps,
+            'final_long': bool((structureL & adxL & roomL & noex & candleL).iloc[i]),
+            'final_short': bool((structureS & adxS & roomS & noex & candleS).iloc[i]),
+        }
+
     def analyze_latest(self, symbol):
         df = self.fetch_df(symbol)
         if df is None or len(df) < 3300:
@@ -197,17 +250,18 @@ class PaperEngine:
         x = enrich(df)
         i = len(x) - 2  # last CLOSED 15m candle
         lm, sm = signal_mask(x, CORE_NAME)
+        diag = self.gate_snapshot(x, i)
         side = 'LONG' if bool(lm.iloc[i]) else ('SHORT' if bool(sm.iloc[i]) else None)
         ts = x.timestamp.iloc[i].isoformat()
         if side is None:
-            return {'signal': None, 'timestamp': ts}
+            return {'signal': None, 'timestamp': ts, 'diag': diag}
         key = f'{symbol}|{side}|{ts}|{CORE_NAME}'
         if key in self.signal_history:
-            return {'signal': None, 'timestamp': ts}
+            return {'signal': None, 'timestamp': ts, 'diag': diag}
 
         entry = float(x.close.iloc[i]); atr = float(x.atr.iloc[i])
         if not np.isfinite(atr) or atr <= 0:
-            return None
+            return {'signal': None, 'timestamp': ts, 'diag': diag}
         if side == 'LONG':
             sl = float(x.low.iloc[max(0, i-SWING_LOOKBACK):i].min()) - atr
             risk = entry - sl
@@ -225,7 +279,7 @@ class PaperEngine:
             room = float(x.dist_sup_atr.iloc[i])
             candle = float(x.c2h_body_atr.iloc[i])
         if not np.isfinite(risk) or risk <= 0:
-            return None
+            return {'signal': None, 'timestamp': ts, 'diag': diag}
 
         dist = float(x.dist_ema20_atr.iloc[i])
         room_margin = np.clip((room-0.85)/1.50, 0, 1)
@@ -238,6 +292,7 @@ class PaperEngine:
             'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
                        'timestamp': ts, 'entry': entry, 'sl': float(sl), 'tp': float(tp)},
             'timestamp': ts,
+            'diag': diag,
         }
 
     def track(self, p):
@@ -294,12 +349,36 @@ class PaperEngine:
         free_slots = max(0, MAX_ACTIVE-len(self.positions))
         candidates = []
         scanned = 0
+        diag_total = {
+            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','noex','adx','candle2h')},
+            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','noex','adx','candle2h')},
+            'final_long': 0,
+            'final_short': 0,
+        }
+        near_miss = []
+
         for n, sym in enumerate(syms, 1):
             scanned += 1
             if sym in self.positions:
                 continue
             try:
                 a = self.analyze_latest(sym)
+                if a and a.get('diag'):
+                    d = a['diag']
+                    for side_key, side_name in (('long','LONG'), ('short','SHORT')):
+                        for gate, ok in d[side_key].items():
+                            if ok:
+                                diag_total[side_name][gate] += 1
+                    if d['final_long']:
+                        diag_total['final_long'] += 1
+                    if d['final_short']:
+                        diag_total['final_short'] += 1
+                    score_diag_long = sum(d['long'].values())
+                    score_diag_short = sum(d['short'].values())
+                    if score_diag_long or score_diag_short:
+                        side = 'LONG' if score_diag_long >= score_diag_short else 'SHORT'
+                        score_diag = max(score_diag_long, score_diag_short)
+                        near_miss.append((score_diag, sym, side, d))
                 if a and a.get('signal'):
                     c = a['signal']; candidates.append(c)
                     print(f'CANDIDATE [{n}/{len(syms)}] | {sym} | {c["side"]} | score={c["score"]:.1f} | Entry={c["entry"]:.8g}')
@@ -307,6 +386,13 @@ class PaperEngine:
                     print(f'PROGRESS {n}/{len(syms)} | candidates={len(candidates)}')
             except Exception as e:
                 print(f'SCAN ERROR [{n}/{len(syms)}] | {sym} | {type(e).__name__}: {e}')
+
+        print('GATE DIAG | LONG | ' + ' | '.join(f'{k}={v}' for k,v in diag_total['LONG'].items()))
+        print('GATE DIAG | SHORT| ' + ' | '.join(f'{k}={v}' for k,v in diag_total['SHORT'].items()))
+        print(f'FINAL V15 | LONG={diag_total["final_long"]} | SHORT={diag_total["final_short"]} | TOTAL={diag_total["final_long"]+diag_total["final_short"]}')
+        near_miss.sort(key=lambda z: (z[0], z[1]), reverse=True)
+        for rank, (score_diag, sym, side, d) in enumerate(near_miss[:5], 1):
+            print(f'NEAR MISS #{rank} | {sym} | {side} | gates={score_diag}/9 | ts={d["timestamp"]}')
 
         candidates.sort(key=lambda z: (z['score'], z['timestamp']), reverse=True)
         selected = candidates[:free_slots]
