@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T17:40:22.711947+00:00",
+  "updated_at": "2026-09-14T17:51:35.033252+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -76,18 +76,18 @@
     "API3/USDT:USDT",
     "FF/USDT:USDT",
     "CC/USDT:USDT",
-    "SOLV/USDT:USDT",
     "W/USDT:USDT",
+    "SOLV/USDT:USDT",
     "KAITO/USDT:USDT",
-    "AIO/USDT:USDT",
     "ZK/USDT:USDT",
+    "AIO/USDT:USDT",
     "MERL/USDT:USDT",
     "SOPH/USDT:USDT",
     "DOOD/USDT:USDT",
     "BLESS/USDT:USDT",
-    "BTR/USDT:USDT",
     "EUL/USDT:USDT",
     "SKYAI/USDT:USDT",
+    "BTR/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "BABY/USDT:USDT",
     "RESOLV/USDT:USDT",
@@ -102,7 +102,7 @@
     "HOME/USDT:USDT",
     "PLUME/USDT:USDT",
     "FOLKS/USDT:USDT",
-    "CLANKER/USDT:USDT",
-    "AWE/USDT:USDT"
+    "AWE/USDT:USDT",
+    "CLANKER/USDT:USDT"
   ]
 }
