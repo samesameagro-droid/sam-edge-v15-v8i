@@ -1,7 +1,7 @@
 """SAM EDGE V15 pandas datetime compatibility.
 
 This module does not change any trading rule. It only makes datetime merge keys
-used by pandas.merge_asof() consistent and preserves their actual timestamps.
+used by pandas.merge_asof() consistent while preserving their actual timestamps.
 """
 
 import pandas as pd
@@ -13,7 +13,14 @@ def _normalize_datetime_key(frame, key):
     if key and key in frame.columns and pd.api.types.is_datetime64_any_dtype(frame[key]):
         out = frame.copy()
         ts = pd.to_datetime(out[key], utc=True)
-        out[key] = pd.Series(ts.astype("int64"), index=out.index).astype("datetime64[ns, UTC]")
+        # Explicitly convert the datetime representation to nanoseconds.
+        # Important: int64 of a datetime64[ms] series is still milliseconds;
+        # assigning those integers to a datetime64[ns] dtype would shift valid
+        # dates into 1970. Use pandas' unit-aware conversion instead.
+        try:
+            out[key] = pd.Series(ts, index=out.index).dt.as_unit("ns")
+        except AttributeError:
+            out[key] = pd.to_datetime(pd.Series(ts, index=out.index), utc=True).astype("datetime64[ns, UTC]")
         return out
     return frame
 
@@ -26,8 +33,8 @@ def _restore_datetime_key(frame, key):
     if pd.api.types.is_datetime64_any_dtype(s):
         out[key] = pd.to_datetime(s, utc=True)
     elif pd.api.types.is_integer_dtype(s) or pd.api.types.is_float_dtype(s):
-        # merge_asof can return the normalized integer representation on some
-        # pandas versions. We normalized to nanoseconds above, so restore ns.
+        # Defensive fallback for pandas versions that return the normalized
+        # integer key. These integers represent nanoseconds after normalization.
         out[key] = pd.to_datetime(s, unit="ns", utc=True)
     else:
         out[key] = pd.to_datetime(s, utc=True)
