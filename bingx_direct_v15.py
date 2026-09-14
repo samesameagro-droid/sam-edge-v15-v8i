@@ -4,37 +4,59 @@ import time
 from typing import Any
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-BASE_URLS = ('https://open-api.bingx.com', 'https://open-api.bingx.pro')
+BASE_URL = 'https://open-api.bingx.com'
 TIMEOUT = 15
-RETRIES_PER_HOST = 2
 KLINE_PAGE_LIMIT = 500
+
+# BingX .com has already been verified from the user's PC with HTTP 200.
+# Do not use the .pro host here because that host produced local certificate
+# verification failures. Instead, retry transient DNS/connect failures against
+# the known-good .com endpoint.
+_SESSION = requests.Session()
+_RETRY = Retry(
+    total=6,
+    connect=6,
+    read=3,
+    backoff_factor=0.6,
+    status_forcelist=(429, 500, 502, 503, 504),
+    allowed_methods=frozenset({'GET'}),
+    raise_on_status=False,
+)
+_SESSION.mount('https://', HTTPAdapter(max_retries=_RETRY, pool_connections=20, pool_maxsize=20))
+_SESSION.headers.update({
+    'X-SOURCE-KEY': 'BX-AI-SKILL',
+    'User-Agent': 'SAM-EDGE-V15/1.0',
+})
 
 
 def _get(path: str, params: dict[str, Any] | None = None) -> Any:
     q = dict(params or {})
-    q.setdefault('timestamp', int(time.time() * 1000))
     last_error: Exception | None = None
-    for base in BASE_URLS:
-        for attempt in range(1, RETRIES_PER_HOST + 1):
-            try:
-                r = requests.get(
-                    base + path,
-                    params=q,
-                    timeout=TIMEOUT,
-                    headers={'X-SOURCE-KEY': 'BX-AI-SKILL'},
+
+    # Regenerate timestamp for every request attempt at the adapter layer.
+    q.setdefault('timestamp', int(time.time() * 1000))
+
+    for attempt in range(1, 4):
+        try:
+            r = _SESSION.get(BASE_URL + path, params=q, timeout=TIMEOUT)
+            r.raise_for_status()
+            payload = r.json()
+            if payload.get('code') != 0:
+                raise RuntimeError(
+                    f'BingX API error {payload.get("code")}: {payload.get("msg")}'
                 )
-                r.raise_for_status()
-                payload = r.json()
-                if payload.get('code') != 0:
-                    raise RuntimeError(
-                        f'BingX API error {payload.get("code")}: {payload.get("msg")}'
-                    )
-                return payload.get('data')
-            except (requests.RequestException, ValueError, RuntimeError) as exc:
-                last_error = exc
-                if attempt < RETRIES_PER_HOST:
-                    time.sleep(0.7)
+            return payload.get('data')
+        except (requests.RequestException, ValueError, RuntimeError) as exc:
+            last_error = exc
+            if attempt < 3:
+                # New timestamp plus a short delay helps with transient network/DNS
+                # failures while keeping the V15 scan cadence unchanged.
+                q['timestamp'] = int(time.time() * 1000)
+                time.sleep(0.8 * attempt)
+
     raise last_error if last_error is not None else RuntimeError('BingX request failed')
 
 
@@ -48,15 +70,21 @@ def market_from_contract(c: dict[str, Any]) -> dict[str, Any]:
         'base': asset, 'quote': 'USDT', 'settle': 'USDT',
         'baseId': asset, 'quoteId': 'USDT', 'settleId': 'USDT',
         'type': 'swap', 'spot': False, 'margin': False, 'swap': True,
-        'future': False, 'option': False, 'index': False, 'active': bool(int(c.get('status', 0)) == 1),
+        'future': False, 'option': False, 'index': False,
+        'active': bool(int(c.get('status', 0)) == 1),
         'contract': True, 'linear': True, 'inverse': False, 'subType': 'linear',
         'taker': float(c.get('takerFeeRate') or c.get('feeRate') or 0),
         'maker': float(c.get('makerFeeRate') or c.get('feeRate') or 0),
         'contractSize': float(c.get('size') or 1), 'expiry': None, 'expiryDatetime': None,
         'strike': None, 'precision': {'amount': 10 ** (-qp), 'price': 10 ** (-pp)},
-        'limits': {'leverage': {'min': None, 'max': None}, 'amount': {'min': None, 'max': None}, 'price': {'min': None, 'max': None}, 'cost': {'min': None, 'max': None}},
-        'marginModes': {'cross': None, 'isolated': None}, 'created': c.get('launchTime'),
-        'info': c, 'feeSide': 'get',
+        'limits': {
+            'leverage': {'min': None, 'max': None},
+            'amount': {'min': None, 'max': None},
+            'price': {'min': None, 'max': None},
+            'cost': {'min': None, 'max': None},
+        },
+        'marginModes': {'cross': None, 'isolated': None},
+        'created': c.get('launchTime'), 'info': c, 'feeSide': 'get',
     }
 
 
@@ -72,9 +100,6 @@ def _is_crypto_contract(c: dict[str, Any]) -> bool:
         str(info.get('productType') or ''),
         str(info.get('assetClass') or ''),
     ]).upper()
-    # BingX can expose synthetic TradFi/commodity contracts in the same swap
-    # catalog. V15 is a crypto-only scanner, so reject explicit non-crypto tags
-    # and synthetic assets ending in common fiat/index naming patterns.
     for token in (
         'GOLD', 'XAU', 'SILVER', 'XAG', 'OIL', 'WTI', 'BRENT',
         'FOREX', 'COMMODITY', 'INDEX', 'SPX', 'SP500', 'NAS100',
@@ -85,7 +110,11 @@ def _is_crypto_contract(c: dict[str, Any]) -> bool:
     for suffix in ('2USD', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF'):
         if asset.endswith(suffix):
             return False
-    if any(x in str(info.get(k) or '').lower() for k in ('category', 'productType', 'assetClass') for _ in [0] for x in ('commodity', 'forex', 'index', 'metal')):
+    classes = ' '.join(
+        str(info.get(k) or '').lower()
+        for k in ('category', 'productType', 'assetClass')
+    )
+    if any(x in classes for x in ('commodity', 'forex', 'index', 'metal')):
         return False
     return True
 
