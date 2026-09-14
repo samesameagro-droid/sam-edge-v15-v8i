@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T23:29:50.236270+00:00",
+  "updated_at": "2026-09-14T23:33:35.083842+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -69,10 +69,10 @@
     "LA/USDT:USDT",
     "XPIN/USDT:USDT",
     "WLFI/USDT:USDT",
-    "RENDER/USDT:USDT",
     "ZORA/USDT:USDT",
     "API3/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
+    "RENDER/USDT:USDT",
     "MERL/USDT:USDT",
     "FF/USDT:USDT",
     "GRASS/USDT:USDT",
