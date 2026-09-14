@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T22:18:37.047518+00:00",
+  "updated_at": "2026-09-14T22:24:32.816403+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -74,6 +74,7 @@
     "ZORA/USDT:USDT",
     "API3/USDT:USDT",
     "FF/USDT:USDT",
+    "RENDER/USDT:USDT",
     "KAITO/USDT:USDT",
     "MERL/USDT:USDT",
     "SOPH/USDT:USDT",
@@ -97,12 +98,11 @@
     "STABLE/USDT:USDT",
     "HOME/USDT:USDT",
     "EUL/USDT:USDT",
-    "PLUME/USDT:USDT",
     "AWE/USDT:USDT",
     "CLANKER/USDT:USDT",
     "FOLKS/USDT:USDT",
+    "POPCAT/USDT:USDT",
     "CATI/USDT:USDT",
-    "ILV/USDT:USDT",
-    "POPCAT/USDT:USDT"
+    "ILV/USDT:USDT"
   ]
 }
