@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T20:48:57.529702+00:00",
+  "updated_at": "2026-09-14T20:54:06.714873+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -68,8 +68,8 @@
     "ALLO/USDT:USDT",
     "LA/USDT:USDT",
     "GRASS/USDT:USDT",
-    "GRIFFAIN/USDT:USDT",
     "WLFI/USDT:USDT",
+    "GRIFFAIN/USDT:USDT",
     "XPIN/USDT:USDT",
     "ZORA/USDT:USDT",
     "API3/USDT:USDT",
@@ -103,6 +103,6 @@
     "FOLKS/USDT:USDT",
     "BERA/USDT:USDT",
     "CLANKER/USDT:USDT",
-    "AWE/USDT:USDT"
+    "ILV/USDT:USDT"
   ]
 }
