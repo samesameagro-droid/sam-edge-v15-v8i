@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-14T23:43:33.620277+00:00",
+  "updated_at": "2026-09-14T23:49:41.096290+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -102,7 +102,7 @@
     "CLANKER/USDT:USDT",
     "CATI/USDT:USDT",
     "ENSO/USDT:USDT",
-    "POPCAT/USDT:USDT",
-    "CC/USDT:USDT"
+    "CC/USDT:USDT",
+    "POPCAT/USDT:USDT"
   ]
 }
