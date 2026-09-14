@@ -1,8 +1,6 @@
 name: SAM EDGE V15 - Paper Forward
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -15,7 +13,7 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -32,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Run V15 signal check (every 5 minutes)
+      - name: Run V15 one-shot signal check
         id: scan
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -44,6 +42,7 @@ jobs:
           MIN_VOLUME_USDT: "3000000"
           UNIVERSE_LIMIT: "100"
           MAX_ACTIVE_POSITIONS: "5"
+          RUN_ONCE: "1"
         run: |
           START_TS=$(date +%s)
           set +e
