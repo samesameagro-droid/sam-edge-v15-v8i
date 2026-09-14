@@ -54,10 +54,13 @@ jobs:
           echo "rc=$RC" >> "$GITHUB_OUTPUT"
           echo "elapsed=$ELAPSED" >> "$GITHUB_OUTPUT"
           echo "V15 SIGNAL CHECK EXIT=$RC | elapsed=${ELAPSED}s"
-          exit 0
+          if [ "$RC" -ne 0 ]; then
+            echo "V15 SIGNAL CHECK FAILED — scanner exited with code $RC"
+            exit "$RC"
+          fi
 
       - name: Persist V15 paper state
-        if: ${{ !cancelled() }}
+        if: ${{ success() }}
         run: |
           set -e
           git config user.name "SAM EDGE V15 BOT"
