@@ -15,7 +15,7 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -32,28 +32,29 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Run V15 one-shot scan
+      - name: Run V15 one-shot scan (5m)
         id: scan
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           START_EQUITY: "100"
           RISK_PCT: "0.005"
-          HISTORY_15M: "3600"
-          FETCH_CHUNK: "900"
+          TIMEFRAME: "5m"
+          HISTORY_5M: "10000"
+          FETCH_CHUNK: "1000"
           MIN_VOLUME_USDT: "3000000"
           UNIVERSE_LIMIT: "100"
           MAX_ACTIVE_POSITIONS: "5"
         run: |
           START_TS=$(date +%s)
           set +e
-          python -c "from main_paper_v15 import PaperEngine; PaperEngine().scan_once()"
+          python run_paper_v15_5m.py
           RC=$?
           END_TS=$(date +%s)
           ELAPSED=$((END_TS-START_TS))
           echo "rc=$RC" >> "$GITHUB_OUTPUT"
           echo "elapsed=$ELAPSED" >> "$GITHUB_OUTPUT"
-          echo "V15 SCAN EXIT=$RC | elapsed=${ELAPSED}s"
+          echo "V15 5M SCAN EXIT=$RC | elapsed=${ELAPSED}s"
           exit 0
 
       - name: Persist V15 paper state
@@ -73,7 +74,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "paper: V15 forward state"
+          git commit -m "paper: V15 5m forward state"
 
           for attempt in 1 2 3 4 5; do
             echo "STATE PUSH ATTEMPT $attempt"
