@@ -9,7 +9,7 @@ from urllib3.util.retry import Retry
 
 BASE_URL = 'https://open-api.bingx.com'
 TIMEOUT = 15
-KLINE_PAGE_LIMIT = 1440
+KLINE_PAGE_LIMIT = 1000
 
 _SESSION = requests.Session()
 _RETRY = Retry(
@@ -28,9 +28,9 @@ _SESSION.headers.update({'X-SOURCE-KEY': 'BX-AI-SKILL', 'User-Agent': 'SAM-EDGE-
 def _get(path: str, params: dict[str, Any] | None = None) -> Any:
     q = dict(params or {})
     last_error: Exception | None = None
-    q.setdefault('timestamp', int(time.time() * 1000))
     for attempt in range(1, 4):
         try:
+            q['timestamp'] = int(time.time() * 1000)
             r = _SESSION.get(BASE_URL + path, params=q, timeout=TIMEOUT)
             r.raise_for_status()
             payload = r.json()
@@ -40,7 +40,6 @@ def _get(path: str, params: dict[str, Any] | None = None) -> Any:
         except (requests.RequestException, ValueError, RuntimeError) as exc:
             last_error = exc
             if attempt < 3:
-                q['timestamp'] = int(time.time() * 1000)
                 time.sleep(0.8 * attempt)
     raise last_error if last_error is not None else RuntimeError('BingX request failed')
 
@@ -189,11 +188,6 @@ def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={})
         cursor = next_cursor
         if end_time is not None and cursor > end_time:
             break
-
-        # Do NOT stop when fewer rows than requested arrive. BingX can cap a
-        # single response at 1000 rows even when the requested limit is 1440.
-        # Continue until the requested history is accumulated or the next page
-        # is empty.
 
     out.sort(key=lambda r: r[0])
     return out[-requested:]
