@@ -158,28 +158,29 @@ def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={})
     end_time = int(base['endTime']) if base.get('endTime') is not None else None
     out = []
     seen = set()
-    path_used = None
 
     while len(out) < requested:
         page_limit = min(KLINE_PAGE_LIMIT, requested - len(out))
         q = {'symbol': market_symbol, 'interval': timeframe, 'startTime': cursor, 'limit': page_limit}
         if end_time is not None:
             q['endTime'] = end_time
+
         data = _get('/openApi/swap/v3/quote/klines', q)
         page = _normalize_rows(data)
-        path_used = 'v3'
         if not page:
             data = _get('/openApi/swap/v2/quote/klines', q)
             page = _normalize_rows(data)
-            path_used = 'v2'
         if not page:
             break
+
         fresh = []
         for row in page:
             if row[0] not in seen:
-                seen.add(row[0]); fresh.append(row)
+                seen.add(row[0])
+                fresh.append(row)
         if not fresh:
             break
+
         out.extend(fresh)
         newest = fresh[-1][0]
         next_cursor = newest + interval_ms
@@ -188,8 +189,11 @@ def fetch_ohlcv(self, symbol, timeframe='1m', since=None, limit=None, params={})
         cursor = next_cursor
         if end_time is not None and cursor > end_time:
             break
-        if len(fresh) < page_limit:
-            break
+
+        # Do NOT stop when fewer rows than requested arrive. BingX can cap a
+        # single response at 1000 rows even when the requested limit is 1440.
+        # Continue until the requested history is accumulated or the next page
+        # is empty.
 
     out.sort(key=lambda r: r[0])
     return out[-requested:]
