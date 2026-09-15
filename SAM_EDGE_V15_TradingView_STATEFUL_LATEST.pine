@@ -7,13 +7,6 @@ indicator("SAM EDGE V15 | ADX4H + CANDLE2H | STATEFUL", overlay=true, max_labels
 // Structure : completed 1H + completed 4H
 // Regime    : completed 4H ADX
 // Candle    : completed 2H STRICT
-//
-// STATE RULE:
-// 1) A valid V15 signal opens ONE active trade on this symbol.
-// 2) ENTRY / SL / TP remain on chart until TP or SL is actually hit.
-// 3) No new LONG/SHORT signal is accepted while a trade is ACTIVE.
-// 4) After TP/SL, the trade is CLOSED and V15 is UNLOCKED.
-// 5) The next valid signal can then open a new trade.
 // ============================================================================
 
 if barstate.isfirst and timeframe.period != "15"
@@ -47,7 +40,7 @@ showHTFLines = input.bool(false, "Show 1H / 4H EMA21", group=groupVisual)
 showBackground = input.bool(true, "Show HTF regime background", group=groupVisual)
 showSignals = input.bool(true, "Show LONG / SHORT markers", group=groupVisual)
 showLevels = input.bool(true, "Show active Entry / SL / TP", group=groupVisual)
-showDashboard = input.bool(true, "Show V15 dashboard", group=groupVisual)
+showDashboard = input.bool(true, "Show detailed V15 dashboard", group=groupVisual)
 confirmedOnly = input.bool(true, "Confirmed 15M bars only", group="SAM EDGE V15 | MIRROR")
 
 cEma20 = color.rgb(0,190,255)
@@ -284,7 +277,6 @@ if activeSide != "NONE" and levelStatus == "ACTIVE" and bar_index > signalBar
         if not na(tpLine)
             line.set_x2(tpLine, bar_index)
         resultLbl := label.new(bar_index, lastResult == "TP" ? activeTP : activeSL, lastResult == "TP" ? "TP HIT" : "SL HIT", xloc=xloc.bar_index, style=label.style_label_left, color=lastResult == "TP" ? cTP : cSL, textcolor=lastResult == "TP" ? color.black : color.white, size=size.small)
-        // Unlock only after the trade has been completed.
         activeSide := "NONE"
         activeEntry := na
         activeSL := na
@@ -302,8 +294,6 @@ plotshape(showSignals and newShortSignal, title="V15 SHORT", style=shape.labeldo
 
 // ============================================================================
 // ALERTS
-// Create one TradingView alert on this indicator using "Any alert() function call".
-// The dynamic message includes ENTRY / SL / TP. Exit alerts report TP/SL HIT.
 // ============================================================================
 alertcondition(newLongSignal, "SAM EDGE V15 LONG", "SAM EDGE V15 LONG | {{ticker}} | TF=15M | close={{close}}")
 alertcondition(newShortSignal, "SAM EDGE V15 SHORT", "SAM EDGE V15 SHORT | {{ticker}} | TF=15M | close={{close}}")
@@ -321,34 +311,93 @@ if barstate.isconfirmed and levelStatus == "SL HIT" and exitBar == bar_index
     alert("SAM EDGE V15 SL HIT | " + syminfo.ticker + " | TF=15M | RESULT=SL", alert.freq_once_per_bar_close)
 
 // ============================================================================
-// DASHBOARD
+// DETAILED V15 FILTER DASHBOARD
+// OK = filter passes. - = filter does not pass.
 // ============================================================================
-var table dash = table.new(position.top_right, 3, 8, border_width=1, frame_color=color.new(color.white, 88))
+var table dash = table.new(position.top_right, 4, 16, border_width=1, frame_color=color.new(color.white, 88))
 f_mark(_ok) => _ok ? "OK" : "-"
 f_mark_color(_ok) => _ok ? cPass : cFail
+f_val(_x) => na(_x) ? "-" : str.tostring(_x, "#.##")
+rsiLongOK = rsi >= 46 and rsi <= 64
+rsiShortOK = rsi >= 36 and rsi <= 54
 
 if showDashboard and barstate.islast
     table.cell(dash, 0, 0, "SAM EDGE V15", text_color=color.white, bgcolor=cPanel, text_size=size.small)
-    table.cell(dash, 1, 0, "ADX4H + C2H", text_color=cEntry, bgcolor=cPanel, text_size=size.small)
-    table.cell(dash, 2, 0, "STATEFUL", text_color=cLong, bgcolor=cPanel, text_size=size.small)
+    table.cell(dash, 1, 0, "LONG", text_color=cLong, bgcolor=cPanel, text_size=size.small)
+    table.cell(dash, 2, 0, "SHORT", text_color=cShort, bgcolor=cPanel, text_size=size.small)
+    table.cell(dash, 3, 0, "VALUE", text_color=cEntry, bgcolor=cPanel, text_size=size.small)
+
     table.cell(dash, 0, 1, "STATE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 1, activeSide == "NONE" ? "UNLOCKED" : activeSide + " ACTIVE", text_color=activeSide == "NONE" ? cPass : cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 1, activeSide == "NONE" ? lastResult : "LOCK", text_color=activeSide == "NONE" ? cMuted : cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 0, 2, "4H/1H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 2, f_mark(trendLong), text_color=f_mark_color(trendLong), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 2, f_mark(trendShort), text_color=f_mark_color(trendShort), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 0, 3, "EMA/VWAP", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 3, f_mark(emaLong and close > vwap), text_color=f_mark_color(emaLong and close > vwap), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 3, f_mark(emaShort and close < vwap), text_color=f_mark_color(emaShort and close < vwap), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 0, 4, "ADX4H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 4, f_mark(adxLongOK), text_color=f_mark_color(adxLongOK), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 4, f_mark(adxShortOK), text_color=f_mark_color(adxShortOK), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 0, 5, "C2H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 5, f_mark(c2hBull), text_color=f_mark_color(c2hBull), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 5, f_mark(c2hBear), text_color=f_mark_color(c2hBear), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 0, 6, "ENTRY", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 6, activeSide == "LONG" ? str.tostring(activeEntry, format.mintick) : "-", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 6, activeSide == "SHORT" ? str.tostring(activeEntry, format.mintick) : "-", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 0, 7, "SL / TP", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 7, activeSide == "LONG" ? str.tostring(activeSL, format.mintick) + " / " + str.tostring(activeTP, format.mintick) : "-", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 7, activeSide == "SHORT" ? str.tostring(activeSL, format.mintick) + " / " + str.tostring(activeTP, format.mintick) : "-", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 1, activeSide == "LONG" ? "ACTIVE" : activeSide == "NONE" ? "READY" : "LOCK", text_color=activeSide == "LONG" ? cLong : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 1, activeSide == "SHORT" ? "ACTIVE" : activeSide == "NONE" ? "READY" : "LOCK", text_color=activeSide == "SHORT" ? cShort : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 1, activeSide == "NONE" ? lastResult : "LOCK", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 2, "1H TREND", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 2, f_mark(h1Bull), text_color=f_mark_color(h1Bull), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 2, f_mark(h1Bear), text_color=f_mark_color(h1Bear), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 2, "EMA21/50/200", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 3, "4H TREND", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 3, f_mark(h4Bull), text_color=f_mark_color(h4Bull), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 3, f_mark(h4Bear), text_color=f_mark_color(h4Bear), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 3, "EMA21/50/200", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 4, "EMA20/50", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 4, f_mark(emaLong), text_color=f_mark_color(emaLong), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 4, f_mark(emaShort), text_color=f_mark_color(emaShort), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 4, "CLOSE vs EMA20", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 5, "VWAP", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 5, f_mark(close > vwap), text_color=f_mark_color(close > vwap), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 5, f_mark(close < vwap), text_color=f_mark_color(close < vwap), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 5, f_val(vwap), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 6, "DMI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 6, f_mark(pdi > mdi), text_color=f_mark_color(pdi > mdi), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 6, f_mark(mdi > pdi), text_color=f_mark_color(mdi > pdi), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 6, "+DI " + f_val(pdi) + " / -DI " + f_val(mdi), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 7, "RSI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 7, f_mark(rsiLongOK), text_color=f_mark_color(rsiLongOK), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 7, f_mark(rsiShortOK), text_color=f_mark_color(rsiShortOK), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 7, f_val(rsi), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 8, "4H ADX PCTL", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 8, f_mark(adxLongOK), text_color=f_mark_color(adxLongOK), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 8, f_mark(adxShortOK), text_color=f_mark_color(adxShortOK), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 8, f_val(h4AdxPct * 100) + "%", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 9, "4H ADX DELTA", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 9, f_mark(h4AdxDelta >= adxLongDelta), text_color=f_mark_color(h4AdxDelta >= adxLongDelta), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 9, f_mark(h4AdxDelta >= adxShortDelta), text_color=f_mark_color(h4AdxDelta >= adxShortDelta), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 9, f_val(h4AdxDelta), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 10, "ROOM", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 10, f_mark(roomLong), text_color=f_mark_color(roomLong), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 10, f_mark(roomShort), text_color=f_mark_color(roomShort), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 10, "R " + f_val(distResATR) + " / S " + f_val(distSupATR), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 11, "NO EXHAUSTION", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 11, f_mark(noExhaustion), text_color=f_mark_color(noExhaustion), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 11, f_mark(noExhaustion), text_color=f_mark_color(noExhaustion), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 11, "MOVE " + f_val(move5ATR) + "ATR", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 12, "2H CANDLE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 12, f_mark(c2hBull), text_color=f_mark_color(c2hBull), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 12, f_mark(c2hBear), text_color=f_mark_color(c2hBear), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 12, "STRICT", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 13, "STRUCTURE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 13, f_mark(structureLong), text_color=f_mark_color(structureLong), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 13, f_mark(structureShort), text_color=f_mark_color(structureShort), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 13, "HTF+EMA+DMI+RSI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 14, "FINAL SIGNAL", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 14, f_mark(longSignalRaw), text_color=f_mark_color(longSignalRaw), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 14, f_mark(shortSignalRaw), text_color=f_mark_color(shortSignalRaw), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 14, "WAIT / FIRE", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
+
+    table.cell(dash, 0, 15, "ADX / ATR", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 15, f_val(h4Adx), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 15, f_val(atr), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 15, "4H ADX / 15M ATR", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
