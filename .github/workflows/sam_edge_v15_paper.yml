@@ -92,11 +92,15 @@ jobs:
               fi
             done
 
+            # pending_telegram_signals.json is a durable retry queue. If this scan
+            # has no pending messages, remove the old queued copy from the branch.
             if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
               rm -f pending_telegram_signals.json
             fi
 
-            git add -A $STATE_FILES
+            # The runner contains only this scan's generated state after reset, so
+            # staging all changes is safe and also handles a deleted pending queue.
+            git add -A
             if git diff --cached --quiet; then
               echo "NO STATE CHANGES AFTER SYNC"
               exit 0
