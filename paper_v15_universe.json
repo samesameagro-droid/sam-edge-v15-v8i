@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T23:18:57.050068+00:00",
+  "updated_at": "2026-09-15T23:24:08.693209+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -61,8 +61,8 @@
     "BLESS/USDT:USDT",
     "ON/USDT:USDT",
     "BANK/USDT:USDT",
-    "STBL/USDT:USDT",
     "ZORA/USDT:USDT",
+    "STBL/USDT:USDT",
     "EVAA/USDT:USDT",
     "WLFI/USDT:USDT",
     "LA/USDT:USDT",
@@ -76,8 +76,8 @@
     "SAFE/USDT:USDT",
     "GRASS/USDT:USDT",
     "POPCAT/USDT:USDT",
-    "PI/USDT:USDT",
     "ORCA/USDT:USDT",
+    "PI/USDT:USDT",
     "XPIN/USDT:USDT",
     "EUL/USDT:USDT",
     "SOPH/USDT:USDT",
@@ -86,14 +86,14 @@
     "INIT/USDT:USDT",
     "W/USDT:USDT",
     "AVNT/USDT:USDT",
-    "FOLKS/USDT:USDT",
     "FHE/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "PNUT/USDT:USDT",
-    "CATI/USDT:USDT",
     "ALCH/USDT:USDT",
-    "0G/USDT:USDT",
+    "CATI/USDT:USDT",
     "REDSTONE/USDT:USDT",
+    "0G/USDT:USDT",
     "DOOD/USDT:USDT",
     "PLUME/USDT:USDT",
     "S/USDT:USDT",
@@ -103,6 +103,6 @@
     "INX/USDT:USDT",
     "BTR/USDT:USDT",
     "HOLO/USDT:USDT",
-    "SWARMS/USDT:USDT"
+    "BITLIGHT/USDT:USDT"
   ]
 }
