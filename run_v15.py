@@ -47,13 +47,15 @@ main_paper_v15.PaperEngine.fetch_df = _fetch_df_full_history
 _engine = main_paper_v15.PaperEngine()
 
 
-def _retry_unsent_active_signals():
-    """Retry entry alerts whose first Telegram delivery failed.
+def _retry_pending_telegram():
+    from notifiers import retry_pending_messages
+    n = retry_pending_messages()
+    if n:
+        print(f'📨 TELEGRAM PENDING QUEUE | delivered={n}')
 
-    A signal is recorded in signal_history only after Telegram confirms delivery.
-    The active paper position remains locked while the notification is retried on
-    the next scheduled run. Successful delivery is recorded so it is never resent.
-    """
+
+def _retry_unsent_active_signals():
+    """Retry entry alerts for active positions whose first Telegram delivery failed."""
     from notifiers import send_signal
 
     for coin, p in list(_engine.positions.items()):
@@ -75,12 +77,16 @@ def _retry_unsent_active_signals():
 RUN_ONCE = os.getenv('RUN_ONCE', '0').strip().lower() in {'1', 'true', 'yes', 'on'}
 if RUN_ONCE:
     print('RUN MODE | ONE-SHOT SCAN | scheduler=cron-job.org')
+    _retry_pending_telegram()
     _engine.scan_once()
+    _retry_pending_telegram()
     _retry_unsent_active_signals()
 else:
     while _engine.running:
         try:
+            _retry_pending_telegram()
             _engine.scan_once()
+            _retry_pending_telegram()
             _retry_unsent_active_signals()
         except Exception as e:
             print(f'FATAL SCAN ERROR | {type(e).__name__}: {e}')
