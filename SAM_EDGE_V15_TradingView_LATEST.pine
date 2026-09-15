@@ -1,0 +1,504 @@
+//@version=6
+
+indicator("SAM EDGE V15 | ADX4H + CANDLE2H", overlay=true, max_labels_count=500, max_lines_count=100)
+
+// ================================================================
+// V15 MIRROR BUILD — aligned to Python V15 operational core
+// Python source of truth: V15_ADX4H_CANDLE2H
+// Execution timeframe: 15M CLOSED BAR
+// HTF inputs: completed 1H + completed 4H + completed 2H strict candle
+// TP/SL tracking: Python engine uses 5M
+// ================================================================
+
+if barstate.isfirst and timeframe.period != "15"
+    runtime.error("SAM EDGE V15 must run on a 15-minute chart. Python V15 execution is 15M.")
+
+// SAM EDGE V15 MIRROR
+
+// Execution: 15M
+
+// Structure: completed 1H + completed 4H
+
+// ADX regime: completed 4H
+
+// Candle gate: completed 2H STRICT
+
+// Tracking: Python paper engine uses 5M for TP/SL tracking.
+
+// Python V15 remains the operational source of truth.
+
+groupCore = "SAM EDGE V15 | CORE"
+
+adxLen = input.int(14, "ADX Length", minval=2, group=groupCore)
+
+adxLookback = input.int(200, "4H ADX Percentile Lookback", minval=50, group=groupCore)
+
+rsiLen = input.int(14, "RSI Length", minval=2, group=groupCore)
+
+atrLen = input.int(14, "ATR Length", minval=2, group=groupCore)
+
+emaFastLen = input.int(20, "EMA Fast", minval=2, group=groupCore)
+
+emaSlowLen = input.int(50, "EMA Slow", minval=2, group=groupCore)
+
+rr = input.float(1.25, "TP / RR", step=0.05, group=groupCore)
+
+groupADX = "SAM EDGE V15 | 4H ADX GATE"
+
+adxLongPct = input.float(0.80, "LONG ADX percentile", minval=0, maxval=1, step=0.01, group=groupADX)
+
+adxLongDelta = input.float(0.75, "LONG ADX delta", step=0.05, group=groupADX)
+
+adxShortPct = input.float(0.85, "SHORT ADX percentile", minval=0, maxval=1, step=0.01, group=groupADX)
+
+adxShortDelta = input.float(0.90, "SHORT ADX delta", step=0.05, group=groupADX)
+
+groupCandle = "SAM EDGE V15 | 2H STRICT CANDLE"
+
+cBodyMin = input.float(0.55, "Body / ATR minimum", step=0.05, group=groupCandle)
+
+cCloseBull = input.float(0.78, "Bull close position minimum", step=0.01, group=groupCandle)
+
+cCloseBear = input.float(0.22, "Bear close position maximum", step=0.01, group=groupCandle)
+
+cWickMax = input.float(0.20, "Opposite wick maximum", step=0.01, group=groupCandle)
+
+cRangeMaxATR = input.float(2.00, "2H range / ATR maximum", step=0.05, group=groupCandle)
+
+groupVisual = "SAM EDGE V15 | VISUAL"
+
+showMainLines = input.bool(true, "Show EMA20 / EMA50 / VWAP", group=groupVisual)
+
+showHTFLines = input.bool(false, "Show 1H / 4H EMA21", group=groupVisual)
+
+showBackground = input.bool(true, "Show HTF regime background", group=groupVisual)
+
+showSignals = input.bool(true, "Show LONG / SHORT markers", group=groupVisual)
+
+showLevels = input.bool(true, "Show Entry / SL / TP", group=groupVisual)
+
+showDashboard = input.bool(true, "Show V15 dashboard", group=groupVisual)
+
+levelBars = input.int(18, "TP/SL line length", minval=5, maxval=100, group=groupVisual)
+
+confirmedOnly = input.bool(true, "Confirmed 15M bars only", group="SAM EDGE V15 | MIRROR")
+
+cEma20 = color.rgb(0,190,255)
+
+cEma50 = color.rgb(255,190,0)
+
+cVWAP = color.white
+
+cH1 = color.rgb(165,100,255)
+
+cH4 = color.rgb(255,90,90)
+
+cLong = color.rgb(0,210,120)
+
+cShort = color.rgb(255,70,80)
+
+cEntry = color.rgb(255,235,0)
+
+cSL = color.rgb(255,80,80)
+
+cTP = color.rgb(0,230,160)
+
+cPanel = color.rgb(22,27,35)
+
+cMuted = color.rgb(160,170,185)
+
+cPass = color.rgb(0,210,120)
+
+cFail = color.rgb(210,80,90)
+
+ema20 = ta.ema(close, emaFastLen)
+
+ema50 = ta.ema(close, emaSlowLen)
+
+atr = ta.atr(atrLen)
+
+rsi = ta.rsi(close, rsiLen)
+
+vwap = ta.vwap(hlc3)
+
+f_dmi_adx() =>
+    _up = ta.change(high)
+    _dn = -ta.change(low)
+    _tr = ta.rma(ta.tr, adxLen)
+    _plusDM = (_up > _dn and _up > 0) ? _up : 0.0
+    _minusDM = (_dn > _up and _dn > 0) ? _dn : 0.0
+    _pdi = 100.0 * ta.rma(_plusDM, adxLen) / math.max(_tr, syminfo.mintick)
+    _mdi = 100.0 * ta.rma(_minusDM, adxLen) / math.max(_tr, syminfo.mintick)
+    _dx = 100.0 * math.abs(_pdi - _mdi) / math.max(_pdi + _mdi, 1e-10)
+    [_pdi, _mdi, ta.rma(_dx, adxLen)]
+
+f_trend_bull() =>
+    _e21 = ta.ema(close, 21)
+    _e50 = ta.ema(close, 50)
+    _e200 = ta.ema(close, 200)
+    _e21 > _e50 and _e50 > _e200
+
+f_trend_bear() =>
+    _e21 = ta.ema(close, 21)
+    _e50 = ta.ema(close, 50)
+    _e200 = ta.ema(close, 200)
+    _e21 < _e50 and _e50 < _e200
+
+f_ema21() => ta.ema(close, 21)
+
+[pdi, mdi, _adx15] = f_dmi_adx()
+
+h1E21 = request.security(syminfo.tickerid, "60", f_ema21()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+h4E21 = request.security(syminfo.tickerid, "240", f_ema21()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+h1Bull = request.security(syminfo.tickerid, "60", f_trend_bull()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+h1Bear = request.security(syminfo.tickerid, "60", f_trend_bear()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+h4Bull = request.security(syminfo.tickerid, "240", f_trend_bull()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+h4Bear = request.security(syminfo.tickerid, "240", f_trend_bear()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+trendLong = h1Bull and h4Bull
+
+trendShort = h1Bear and h4Bear
+
+f_adx() =>
+    _up = ta.change(high)
+    _dn = -ta.change(low)
+    _tr = ta.rma(ta.tr, adxLen)
+    _plusDM = (_up > _dn and _up > 0) ? _up : 0.0
+    _minusDM = (_dn > _up and _dn > 0) ? _dn : 0.0
+    _pdi = 100.0 * ta.rma(_plusDM, adxLen) / math.max(_tr, syminfo.mintick)
+    _mdi = 100.0 * ta.rma(_minusDM, adxLen) / math.max(_tr, syminfo.mintick)
+    _dx = 100.0 * math.abs(_pdi - _mdi) / math.max(_pdi + _mdi, 1e-10)
+    ta.rma(_dx, adxLen)
+
+h4Adx = request.security(syminfo.tickerid, "240", f_adx()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+h4AdxPct = request.security(syminfo.tickerid, "240", ta.percentrank(f_adx(), adxLookback)[1] / 100.0, barmerge.gaps_off, barmerge.lookahead_off)
+
+h4AdxDelta = request.security(syminfo.tickerid, "240", (f_adx() - f_adx()[3])[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+adxLongOK = h4AdxPct >= adxLongPct and h4AdxDelta >= adxLongDelta
+
+adxShortOK = h4AdxPct >= adxShortPct and h4AdxDelta >= adxShortDelta
+
+swingH = ta.highest(high[1], 20)
+
+swingL = ta.lowest(low[1], 20)
+
+distEmaATR = math.abs(close - ema20) / math.max(atr, syminfo.mintick)
+
+distResATR = (swingH - close) / math.max(atr, syminfo.mintick)
+
+distSupATR = (close - swingL) / math.max(atr, syminfo.mintick)
+
+roomLong = distResATR >= 0.85
+
+roomShort = distSupATR >= 0.85
+
+move5ATR = math.abs(close - close[5]) / math.max(atr, syminfo.mintick)
+
+rangeATR = (high - low) / math.max(atr, syminfo.mintick)
+
+noExhaustion = move5ATR <= 3.50 and distEmaATR <= 1.60 and rangeATR <= 2.25
+
+emaLong = close > ema20 and ema20 > ema50
+
+emaShort = close < ema20 and ema20 < ema50
+
+structureLong = trendLong and emaLong and close > vwap and pdi > mdi and rsi >= 46 and rsi <= 64
+
+structureShort = trendShort and emaShort and close < vwap and mdi > pdi and rsi >= 36 and rsi <= 54
+
+f_strict_bull() =>
+    _atr = ta.atr(atrLen)
+    _rng = math.max(high-low, syminfo.mintick)
+    _bodyATR = math.abs(close-open) / math.max(_atr, syminfo.mintick)
+    _closePos = (close-low) / _rng
+    _rangeATR = (high-low) / math.max(_atr, syminfo.mintick)
+    _upperWick = (high-math.max(open,close)) / _rng
+    close > open and _bodyATR >= cBodyMin and _closePos >= cCloseBull and _upperWick <= cWickMax and _rangeATR <= cRangeMaxATR
+
+f_strict_bear() =>
+    _atr = ta.atr(atrLen)
+    _rng = math.max(high-low, syminfo.mintick)
+    _bodyATR = math.abs(close-open) / math.max(_atr, syminfo.mintick)
+    _closePos = (close-low) / _rng
+    _rangeATR = (high-low) / math.max(_atr, syminfo.mintick)
+    _lowerWick = (math.min(open,close)-low) / _rng
+    close < open and _bodyATR >= cBodyMin and _closePos <= cCloseBear and _lowerWick <= cWickMax and _rangeATR <= cRangeMaxATR
+
+c2hBull = request.security(syminfo.tickerid, "120", f_strict_bull()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+c2hBear = request.security(syminfo.tickerid, "120", f_strict_bear()[1], barmerge.gaps_off, barmerge.lookahead_off)
+
+longSignalRaw = structureLong and adxLongOK and roomLong and noExhaustion and c2hBull
+
+shortSignalRaw = structureShort and adxShortOK and roomShort and noExhaustion and c2hBear
+
+barOK = confirmedOnly ? barstate.isconfirmed : true
+
+longSignal = longSignalRaw and barOK
+
+shortSignal = shortSignalRaw and barOK
+
+longEntrySignal = longSignal and not longSignal[1]
+
+shortEntrySignal = shortSignal and not shortSignal[1]
+
+longSL = swingL - atr
+
+longRisk = close - longSL
+
+longTP = close + rr * longRisk
+
+shortSL = swingH + atr
+
+shortRisk = shortSL - close
+
+shortTP = close - rr * shortRisk
+
+plot(showMainLines ? ema20 : na, "EMA20", color=cEma20, linewidth=2)
+
+plot(showMainLines ? ema50 : na, "EMA50", color=cEma50, linewidth=2)
+
+plot(showMainLines ? vwap : na, "VWAP", color=cVWAP, linewidth=2)
+
+plot(showHTFLines ? h1E21 : na, "1H EMA21", color=cH1, linewidth=2, style=plot.style_stepline)
+
+plot(showHTFLines ? h4E21 : na, "4H EMA21", color=cH4, linewidth=2, style=plot.style_stepline)
+
+bgcolor(showBackground ? trendLong ? color.new(cLong,92) : trendShort ? color.new(cShort,92) : na : na)
+
+plotshape(showSignals and longEntrySignal, title="V15 LONG", style=shape.labelup, text="V15\nLONG", location=location.belowbar, size=size.small, color=cLong, textcolor=color.black)
+
+plotshape(showSignals and shortEntrySignal, title="V15 SHORT", style=shape.labeldown, text="V15\nSHORT", location=location.abovebar, size=size.small, color=cShort, textcolor=color.white)
+
+var line entryLine = na
+
+var line slLine = na
+
+var line tpLine = na
+
+var label entryLbl = na
+
+var label slLbl = na
+
+var label tpLbl = na
+
+var float activeEntry = na
+
+var float activeSL = na
+
+var float activeTP = na
+
+var string activeSide = "NONE"
+
+var int signalBar = na
+
+var string levelStatus = "NONE"
+
+f_clear_levels() =>
+    if not na(entryLine)
+        line.delete(entryLine)
+    if not na(slLine)
+        line.delete(slLine)
+    if not na(tpLine)
+        line.delete(tpLine)
+    if not na(entryLbl)
+        label.delete(entryLbl)
+    if not na(slLbl)
+        label.delete(slLbl)
+    if not na(tpLbl)
+        label.delete(tpLbl)
+
+if showLevels and longEntrySignal
+    f_clear_levels()
+    activeEntry := close
+    activeSL := longSL
+    activeTP := longTP
+    activeSide := "LONG"
+    signalBar := bar_index
+    levelStatus := "ACTIVE"
+    x2 = bar_index + levelBars
+    entryLine := line.new(bar_index, activeEntry, x2, activeEntry, xloc=xloc.bar_index, color=cEntry, width=2)
+    slLine := line.new(bar_index, activeSL, x2, activeSL, xloc=xloc.bar_index, color=cSL, width=2)
+    tpLine := line.new(bar_index, activeTP, x2, activeTP, xloc=xloc.bar_index, color=cTP, width=2)
+    entryLbl := label.new(x2, activeEntry, "ENTRY", xloc=xloc.bar_index, style=label.style_label_left, color=cEntry, textcolor=color.black, size=size.tiny)
+    slLbl := label.new(x2, activeSL, "SL", xloc=xloc.bar_index, style=label.style_label_left, color=cSL, textcolor=color.white, size=size.tiny)
+    tpLbl := label.new(x2, activeTP, "TP", xloc=xloc.bar_index, style=label.style_label_left, color=cTP, textcolor=color.black, size=size.tiny)
+
+if showLevels and shortEntrySignal
+    f_clear_levels()
+    activeEntry := close
+    activeSL := shortSL
+    activeTP := shortTP
+    activeSide := "SHORT"
+    signalBar := bar_index
+    levelStatus := "ACTIVE"
+    x2 = bar_index + levelBars
+    entryLine := line.new(bar_index, activeEntry, x2, activeEntry, xloc=xloc.bar_index, color=cEntry, width=2)
+    slLine := line.new(bar_index, activeSL, x2, activeSL, xloc=xloc.bar_index, color=cSL, width=2)
+    tpLine := line.new(bar_index, activeTP, x2, activeTP, xloc=xloc.bar_index, color=cTP, width=2)
+    entryLbl := label.new(x2, activeEntry, "ENTRY", xloc=xloc.bar_index, style=label.style_label_left, color=cEntry, textcolor=color.black, size=size.tiny)
+    slLbl := label.new(x2, activeSL, "SL", xloc=xloc.bar_index, style=label.style_label_left, color=cSL, textcolor=color.white, size=size.tiny)
+    tpLbl := label.new(x2, activeTP, "TP", xloc=xloc.bar_index, style=label.style_label_left, color=cTP, textcolor=color.black, size=size.tiny)
+
+if activeSide != "NONE" and levelStatus == "ACTIVE" and bar_index > signalBar
+    hitSL = activeSide == "LONG" ? low <= activeSL : high >= activeSL
+    hitTP = activeSide == "LONG" ? high >= activeTP : low <= activeTP
+    if hitSL and hitTP
+        levelStatus := "SL HIT"
+    else if hitSL
+        levelStatus := "SL HIT"
+    else if hitTP
+        levelStatus := "TP HIT"
+    else if bar_index - signalBar >= levelBars
+        levelStatus := "EXPIRED"
+    if levelStatus != "ACTIVE"
+        f_clear_levels()
+        activeSide := "NONE"
+        activeEntry := na
+        activeSL := na
+        activeTP := na
+        signalBar := na
+
+// ---------------------------------------------------------------
+// ALERTS — NEW V15 ENTRY ONLY
+// Use either the LONG/SHORT alertcondition in TradingView, or
+// choose "Any alert() function call" for the richer dynamic payload.
+// ---------------------------------------------------------------
+alertcondition(longEntrySignal, "SAM EDGE V15 LONG", "SAM EDGE V15 LONG | {{ticker}} | TF={{interval}} | close={{close}}")
+alertcondition(shortEntrySignal, "SAM EDGE V15 SHORT", "SAM EDGE V15 SHORT | {{ticker}} | TF={{interval}} | close={{close}}")
+
+if barstate.isconfirmed and longEntrySignal
+    alert(
+         "SAM EDGE V15 LONG"
+         + " | " + syminfo.ticker
+         + " | TF=15M"
+         + " | ENTRY=" + str.tostring(close, format.mintick)
+         + " | SL=" + str.tostring(longSL, format.mintick)
+         + " | TP=" + str.tostring(longTP, format.mintick)
+         + " | RR=" + str.tostring(rr, "#.##")
+         + " | CORE=V15_ADX4H_CANDLE2H",
+         alert.freq_once_per_bar_close)
+
+if barstate.isconfirmed and shortEntrySignal
+    alert(
+         "SAM EDGE V15 SHORT"
+         + " | " + syminfo.ticker
+         + " | TF=15M"
+         + " | ENTRY=" + str.tostring(close, format.mintick)
+         + " | SL=" + str.tostring(shortSL, format.mintick)
+         + " | TP=" + str.tostring(shortTP, format.mintick)
+         + " | RR=" + str.tostring(rr, "#.##")
+         + " | CORE=V15_ADX4H_CANDLE2H",
+         alert.freq_once_per_bar_close)
+
+f_mark(_ok) =>
+    _ok ? "✓" : "—"
+
+f_mark_color(_ok) =>
+    _ok ? cPass : cFail
+
+// Compact WHY NOT: maximum 5 items per line.
+
+f_failed_compact(_a,_b,_c,_d,_e,_f,_g,_h,_i,_j) =>
+    string s1 = ""
+    string s2 = ""
+    s1 += not _a ? "4H," : ""
+    s1 += not _b ? "1H," : ""
+    s1 += not _c ? "EMA," : ""
+    s1 += not _d ? "VWAP," : ""
+    s1 += not _e ? "DI" : ""
+    s2 += not _f ? "RSI," : ""
+    s2 += not _g ? "ADX4H," : ""
+    s2 += not _h ? "ROOM," : ""
+    s2 += not _i ? "EXH," : ""
+    s2 += not _j ? "C2H" : ""
+    s1 := str.length(s1) > 0 and str.substring(s1, str.length(s1)-1) == "," ? str.substring(s1, 0, str.length(s1)-1) : s1
+    s2 := str.length(s2) > 0 and str.substring(s2, str.length(s2)-1) == "," ? str.substring(s2, 0, str.length(s2)-1) : s2
+    s1 == "" and s2 == "" ? "READY" : s1 + (s1 != "" and s2 != "" ? "\n" : "") + s2
+
+var table dash = table.new(position.top_right, 3, 16, border_width=1, frame_color=color.new(color.white, 88))
+
+if showDashboard and barstate.islast
+    long4h    = trendLong
+    long1h    = h1Bull
+    longEMA   = emaLong
+    longVWAP  = close > vwap
+    longDI    = pdi > mdi
+    longRSI   = rsi >= 46 and rsi <= 64
+    longADX   = adxLongOK
+    longROOM  = roomLong
+    longEXH   = noExhaustion
+    longCAND  = c2hBull
+    short4h   = trendShort
+    short1h   = h1Bear
+    shortEMA  = emaShort
+    shortVWAP = close < vwap
+    shortDI   = mdi > pdi
+    shortRSI  = rsi >= 36 and rsi <= 54
+    shortADX  = adxShortOK
+    shortROOM = roomShort
+    shortEXH  = noExhaustion
+    shortCAND = c2hBear
+    longReady  = longSignalRaw
+    shortReady = shortSignalRaw
+    longWhy = f_failed_compact(long4h,long1h,longEMA,longVWAP,longDI,longRSI,longADX,longROOM,longEXH,longCAND)
+    shortWhy = f_failed_compact(short4h,short1h,shortEMA,shortVWAP,shortDI,shortRSI,shortADX,shortROOM,shortEXH,shortCAND)
+    table.cell(dash, 0, 0, "V15", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 0, "LONG", text_color=cLong, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 0, "SHORT", text_color=cShort, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 1, "SIG", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 1, longReady ? "READY" : "WAIT", text_color=longReady ? cLong : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 1, shortReady ? "READY" : "WAIT", text_color=shortReady ? cShort : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 2, "4H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 2, f_mark(long4h), text_color=f_mark_color(long4h), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 2, f_mark(short4h), text_color=f_mark_color(short4h), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 3, "1H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 3, f_mark(long1h), text_color=f_mark_color(long1h), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 3, f_mark(short1h), text_color=f_mark_color(short1h), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 4, "EMA", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 4, f_mark(longEMA), text_color=f_mark_color(longEMA), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 4, f_mark(shortEMA), text_color=f_mark_color(shortEMA), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 5, "VWAP", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 5, f_mark(longVWAP), text_color=f_mark_color(longVWAP), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 5, f_mark(shortVWAP), text_color=f_mark_color(shortVWAP), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 6, "DI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 6, f_mark(longDI), text_color=f_mark_color(longDI), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 6, f_mark(shortDI), text_color=f_mark_color(shortDI), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 7, "RSI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 7, f_mark(longRSI)+" "+str.tostring(rsi,"#.0"), text_color=f_mark_color(longRSI), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 7, f_mark(shortRSI)+" "+str.tostring(rsi,"#.0"), text_color=f_mark_color(shortRSI), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 8, "ADX4H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 8, f_mark(longADX)+" "+str.tostring(h4AdxPct*100,"#.0")+"%/"+str.tostring(h4AdxDelta,"#.00"), text_color=f_mark_color(longADX), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 8, f_mark(shortADX)+" "+str.tostring(h4AdxPct*100,"#.0")+"%/"+str.tostring(h4AdxDelta,"#.00"), text_color=f_mark_color(shortADX), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 9, "ROOM", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 9, f_mark(longROOM)+" "+str.tostring(distResATR,"#.00"), text_color=f_mark_color(longROOM), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 9, f_mark(shortROOM)+" "+str.tostring(distSupATR,"#.00"), text_color=f_mark_color(shortROOM), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 10, "EXH", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 10, f_mark(longEXH), text_color=f_mark_color(longEXH), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 10, f_mark(shortEXH), text_color=f_mark_color(shortEXH), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 11, "C2H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 11, f_mark(longCAND), text_color=f_mark_color(longCAND), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 11, f_mark(shortCAND), text_color=f_mark_color(shortCAND), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 12, "FAIL", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 12, longReady ? "READY" : longWhy, text_color=longReady ? cLong : cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 12, shortReady ? "READY" : shortWhy, text_color=shortReady ? cShort : cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 13, "ENTRY", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 13, activeSide == "LONG" ? str.tostring(activeEntry,format.mintick) : "-", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 13, activeSide == "SHORT" ? str.tostring(activeEntry,format.mintick) : "-", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 14, "SL/TP", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 14, activeSide == "LONG" ? str.tostring(activeSL,format.mintick)+"/"+str.tostring(activeTP,format.mintick) : "-", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 14, activeSide == "SHORT" ? str.tostring(activeSL,format.mintick)+"/"+str.tostring(activeTP,format.mintick) : "-", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 15, "MODE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 15, "V15 ADX4H+C2H", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 15, "EXEC 15M CLOSED", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+
+plotchar(showDashboard and longSignalRaw, "V15 LONG candidate", "", location.top)
+
+plotchar(showDashboard and shortSignalRaw, "V15 SHORT candidate", "", location.bottom)
