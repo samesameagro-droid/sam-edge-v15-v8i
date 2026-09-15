@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T05:24:03.799385+00:00",
+  "updated_at": "2026-09-15T05:29:34.496910+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -22,7 +22,6 @@
     "BNB/USDT:USDT",
     "TAO/USDT:USDT",
     "AVAX/USDT:USDT",
-    "RUNE/USDT:USDT",
     "NEAR/USDT:USDT",
     "ENA/USDT:USDT",
     "SEI/USDT:USDT",
@@ -31,8 +30,8 @@
     "BR/USDT:USDT",
     "APT/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "ATOM/USDT:USDT",
     "DOGE/USDT:USDT",
+    "ATOM/USDT:USDT",
     "ONDO/USDT:USDT",
     "YFI/USDT:USDT",
     "BCH/USDT:USDT",
@@ -95,14 +94,15 @@
     "RESOLV/USDT:USDT",
     "STABLE/USDT:USDT",
     "HOME/USDT:USDT",
-    "FOLKS/USDT:USDT",
     "ENSO/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "AWE/USDT:USDT",
     "CLANKER/USDT:USDT",
-    "CATI/USDT:USDT",
     "CC/USDT:USDT",
+    "CATI/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "STBL/USDT:USDT",
-    "HUMA/USDT:USDT"
+    "HUMA/USDT:USDT",
+    "RECALL/USDT:USDT"
   ]
 }
