@@ -1,5 +1,18 @@
 {
   "equity": 100.0,
   "closed": [],
-  "positions": {}
+  "positions": {
+    "AIN/USDT:USDT": {
+      "coin": "AIN/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.18157,
+      "sl": 0.14679037358928326,
+      "tp": 0.22504453301339594,
+      "risk_R": 1.0,
+      "risk_cash": 0.5,
+      "opened_at": "2026-09-15T13:00:00+00:00",
+      "core": "V15_ADX4H_CANDLE2H",
+      "status": "OPEN"
+    }
+  }
 }
