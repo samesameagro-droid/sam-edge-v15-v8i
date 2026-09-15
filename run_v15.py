@@ -6,6 +6,7 @@ REST adapter for market/ticker/OHLCV calls. The V15 strategy engine is untouched
 
 import os
 import sitecustomize  # noqa: F401
+from dataclasses import asdict
 
 import ccxt
 import pandas as pd
@@ -13,15 +14,11 @@ import pandas as pd
 from bingx_direct_v15 import fetch_markets, fetch_tickers, fetch_ohlcv
 
 # CCXT's BingX transport is bypassed only for public market-data calls.
-# The returned structures follow CCXT's unified shapes, so main_paper_v15.py
-# and core_engine_v15.py continue to operate unchanged.
 ccxt.bingx.fetch_markets = fetch_markets
 ccxt.bingx.fetch_tickers = fetch_tickers
 ccxt.bingx.fetch_ohlcv = fetch_ohlcv
 
-
-# One-time transport check at process start. This does not alter V15 rules or
-# the scan cadence; it simply proves how many 15m candles BingX returns.
+# One-time transport check at process start.
 try:
     _probe = fetch_ohlcv(None, 'BTC/USDT:USDT', timeframe='15m', limit=3600)
     if _probe:
@@ -34,24 +31,12 @@ except Exception as _e:
     print(f'HISTORY TEST ERROR | {type(_e).__name__}: {_e}')
 
 
-# The old launcher imported main_paper_v15, patched that module's PaperEngine,
-# and then re-executed the source with runpy as __main__, which created a second
-# PaperEngine class and discarded the patch. Import once, patch that exact class,
-# then call its scan loop directly.
 def _fetch_df_full_history(self, symbol, timeframe='15m', limit=3600):
     rows = self.exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit)
     if not rows:
         return None
-    df = pd.DataFrame(
-        rows,
-        columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'],
-    )
-    df = (
-        df.drop_duplicates('timestamp')
-          .sort_values('timestamp')
-          .tail(limit)
-          .reset_index(drop=True)
-    )
+    df = pd.DataFrame(rows, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+    df = df.drop_duplicates('timestamp').sort_values('timestamp').tail(limit).reset_index(drop=True)
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms', utc=True)
     return df
 
@@ -61,12 +46,46 @@ main_paper_v15.PaperEngine.fetch_df = _fetch_df_full_history
 
 _engine = main_paper_v15.PaperEngine()
 
-# cron-job.org triggers one GitHub Actions run every 5 minutes. In that mode the
-# process must perform exactly one scan and exit; otherwise the old internal
-# 300-second loop would keep each GitHub runner alive and make later triggers queue.
+
+def _retry_unsent_active_signals():
+    """Retry entry alerts whose first Telegram delivery failed.
+
+    A signal is recorded in signal_history only after Telegram confirms delivery.
+    The active paper position remains locked while the notification is retried on
+    the next scheduled run. Successful delivery is recorded so it is never resent.
+    """
+    from notifiers import send_signal
+
+    for coin, p in list(_engine.positions.items()):
+        key = f'{p.coin}|{p.side}|{p.opened_at}|{p.core}'
+        if key in _engine.signal_history:
+            continue
+        payload = asdict(p)
+        payload['selection_score'] = 0.0
+        payload['telegram_status'] = 'EXECUTED'
+        sent = send_signal(payload, _engine.equity)
+        if sent:
+            _engine.signal_history.add(key)
+            print(f'📨 TELEGRAM RETRY OK | {p.coin} | {p.side}')
+        else:
+            print(f'⚠️ TELEGRAM RETRY FAILED | {p.coin} | {p.side}')
+    _engine.save_state()
+
+
 RUN_ONCE = os.getenv('RUN_ONCE', '0').strip().lower() in {'1', 'true', 'yes', 'on'}
 if RUN_ONCE:
     print('RUN MODE | ONE-SHOT SCAN | scheduler=cron-job.org')
     _engine.scan_once()
+    _retry_unsent_active_signals()
 else:
-    _engine.run()
+    while _engine.running:
+        try:
+            _engine.scan_once()
+            _retry_unsent_active_signals()
+        except Exception as e:
+            print(f'FATAL SCAN ERROR | {type(e).__name__}: {e}')
+        if _engine.running:
+            scan_sec = int(os.getenv('SCAN_SEC', '300'))
+            print(f'SLEEP {scan_sec}s...')
+            import time
+            time.sleep(scan_sec)
