@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T04:28:19.363470+00:00",
+  "updated_at": "2026-09-15T04:33:48.672101+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -10,7 +10,6 @@
     "ZEC/USDT:USDT",
     "XRP/USDT:USDT",
     "FIL/USDT:USDT",
-    "TAO/USDT:USDT",
     "IMX/USDT:USDT",
     "LSK/USDT:USDT",
     "HYPE/USDT:USDT",
@@ -20,6 +19,7 @@
     "BANANA/USDT:USDT",
     "INJ/USDT:USDT",
     "SUI/USDT:USDT",
+    "TAO/USDT:USDT",
     "BNB/USDT:USDT",
     "AVAX/USDT:USDT",
     "RUNE/USDT:USDT",
@@ -33,8 +33,8 @@
     "ETHFI/USDT:USDT",
     "ONDO/USDT:USDT",
     "ATOM/USDT:USDT",
-    "YFI/USDT:USDT",
     "ICP/USDT:USDT",
+    "YFI/USDT:USDT",
     "DOGE/USDT:USDT",
     "BCH/USDT:USDT",
     "PUMP/USDT:USDT",
@@ -60,8 +60,8 @@
     "FLOCK/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
-    "VIRTUAL/USDT:USDT",
     "ALLO/USDT:USDT",
+    "VIRTUAL/USDT:USDT",
     "POL/USDT:USDT",
     "LA/USDT:USDT",
     "RIVER/USDT:USDT",
@@ -102,7 +102,7 @@
     "CATI/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "HUMA/USDT:USDT",
-    "ILV/USDT:USDT",
-    "STBL/USDT:USDT"
+    "STBL/USDT:USDT",
+    "KITE/USDT:USDT"
   ]
 }
