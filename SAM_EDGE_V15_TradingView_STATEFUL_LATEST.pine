@@ -326,14 +326,11 @@ if barstate.isconfirmed and levelStatus == "SL HIT" and exitBar == bar_index
 // ============================================================================
 // DETAILED V15 FILTER DASHBOARD
 // OK = filter passes. - = filter does not pass.
-// FINAL SIGNAL shows the actual state of the engine.
 // ============================================================================
-var table dash = table.new(position.top_right, 4, 21, border_width=1, frame_color=color.new(color.white, 88))
+var table dash = table.new(position.top_right, 4, 19, border_width=1, frame_color=color.new(color.white, 88))
 f_mark(_ok) => _ok ? "OK" : "-"
 f_mark_color(_ok) => _ok ? cPass : cFail
 f_val(_x) => na(_x) ? "-" : str.tostring(_x, "#.##")
-f_gate(_ok) => _ok ? "PASS" : "BLOCK"
-f_gate_color(_ok) => _ok ? cPass : cFail
 
 if showDashboard and barstate.islast
     table.cell(dash, 0, 0, "SAM EDGE V15", text_color=color.white, bgcolor=cPanel, text_size=size.small)
@@ -341,11 +338,9 @@ if showDashboard and barstate.islast
     table.cell(dash, 2, 0, "SHORT", text_color=cShort, bgcolor=cPanel, text_size=size.small)
     table.cell(dash, 3, 0, "VALUE", text_color=cEntry, bgcolor=cPanel, text_size=size.small)
 
-    stateLong = activeSide == "LONG"
-    stateShort = activeSide == "SHORT"
     table.cell(dash, 0, 1, "STATE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 1, stateLong ? "ACTIVE" : activeSide == "NONE" ? "READY" : "LOCK", text_color=stateLong ? cLong : cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 1, stateShort ? "ACTIVE" : activeSide == "NONE" ? "READY" : "LOCK", text_color=stateShort ? cShort : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 1, activeSide == "LONG" ? "ACTIVE" : activeSide == "NONE" ? "READY" : "LOCK", text_color=activeSide == "LONG" ? cLong : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 1, activeSide == "SHORT" ? "ACTIVE" : activeSide == "NONE" ? "READY" : "LOCK", text_color=activeSide == "SHORT" ? cShort : cMuted, bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 3, 1, activeSide == "NONE" ? lastResult : "LOCK", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
 
     table.cell(dash, 0, 2, "1H TREND", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
@@ -396,7 +391,7 @@ if showDashboard and barstate.islast
     table.cell(dash, 0, 11, "NO EXHAUSTION", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 1, 11, f_mark(noExhaustion), text_color=f_mark_color(noExhaustion), bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 2, 11, f_mark(noExhaustion), text_color=f_mark_color(noExhaustion), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 11, "MOVE " + f_val(move5ATR) + "ATR / D " + f_val(distEmaATR), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 11, "MOVE " + f_val(move5ATR) + "ATR", text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
 
     table.cell(dash, 0, 12, "2H CANDLE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 1, 12, f_mark(c2hBull), text_color=f_mark_color(c2hBull), bgcolor=cPanel, text_size=size.tiny)
@@ -406,41 +401,35 @@ if showDashboard and barstate.islast
     table.cell(dash, 0, 13, "STRUCTURE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 1, 13, f_mark(structureLong), text_color=f_mark_color(structureLong), bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 2, 13, f_mark(structureShort), text_color=f_mark_color(structureShort), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 13, "HTF+EMA+VWAP+DMI+RSI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 13, "HTF + EMA + DMI + RSI", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
 
-    table.cell(dash, 0, 14, "GATE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 14, f_gate(longSignalRaw), text_color=f_gate_color(longSignalRaw), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 14, f_gate(shortSignalRaw), text_color=f_gate_color(shortSignalRaw), bgcolor=cPanel, text_size=size.tiny)
+    longGate = longSignalRaw and activeSide == "NONE"
+    shortGate = shortSignalRaw and activeSide == "NONE"
+    finalText = activeSide == "LONG" ? "LOCKED • LONG ACTIVE" : activeSide == "SHORT" ? "LOCKED • SHORT ACTIVE" : longGate ? "FIRE • LONG" : shortGate ? "FIRE • SHORT" : "WAIT"
+    finalColor = activeSide == "LONG" ? cLong : activeSide == "SHORT" ? cShort : (longGate or shortGate) ? cPass : cMuted
+
+    table.cell(dash, 0, 14, "GATE", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 14, f_mark(longSignalRaw), text_color=f_mark_color(longSignalRaw), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 14, f_mark(shortSignalRaw), text_color=f_mark_color(shortSignalRaw), bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 3, 14, "ALL FILTERS", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
 
-    finalText = activeSide == "LONG" ? "LOCKED • LONG ACTIVE" : activeSide == "SHORT" ? "LOCKED • SHORT ACTIVE" : longSignal ? "FIRE • LONG" : shortSignal ? "FIRE • SHORT" : "WAIT"
-    finalColor = activeSide == "LONG" ? cLong : activeSide == "SHORT" ? cShort : longSignal ? cLong : shortSignal ? cShort : cEntry
     table.cell(dash, 0, 15, "FINAL SIGNAL", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 15, activeSide == "LONG" ? "LOCK" : f_mark(longSignal), text_color=activeSide == "LONG" ? cMuted : f_mark_color(longSignal), bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 15, activeSide == "SHORT" ? "LOCK" : f_mark(shortSignal), text_color=activeSide == "SHORT" ? cMuted : f_mark_color(shortSignal), bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 15, activeSide == "LONG" ? "LOCK" : longGate ? "FIRE" : "-", text_color=activeSide == "LONG" ? cLong : longGate ? cPass : cFail, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 15, activeSide == "SHORT" ? "LOCK" : shortGate ? "FIRE" : "-", text_color=activeSide == "SHORT" ? cShort : shortGate ? cPass : cFail, bgcolor=cPanel, text_size=size.tiny)
     table.cell(dash, 3, 15, finalText, text_color=finalColor, bgcolor=cPanel, text_size=size.tiny)
 
-    table.cell(dash, 0, 16, "ENTRY", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 16, activeSide == "LONG" ? f_val(activeEntry) : "-", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 16, activeSide == "SHORT" ? f_val(activeEntry) : "-", text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 16, "RR " + f_val(rr), text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    activeLevelsText = activeSide == "NONE" ? "-" : "E " + f_val(activeEntry) + " | SL " + f_val(activeSL) + " | TP " + f_val(activeTP)
+    table.cell(dash, 0, 16, "ACTIVE LEVELS", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 16, activeSide == "LONG" ? "LONG" : "-", text_color=activeSide == "LONG" ? cLong : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 16, activeSide == "SHORT" ? "SHORT" : "-", text_color=activeSide == "SHORT" ? cShort : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 16, activeLevelsText, text_color=cEntry, bgcolor=cPanel, text_size=size.tiny)
 
-    table.cell(dash, 0, 17, "SL", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 17, activeSide == "LONG" ? f_val(activeSL) : "-", text_color=cSL, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 17, activeSide == "SHORT" ? f_val(activeSL) : "-", text_color=cSL, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 17, "LOCK UNTIL HIT", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 17, "LAST RESULT", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 17, lastResult == "TP" ? "TP HIT" : lastResult == "SL" ? "SL HIT" : "-", text_color=lastResult == "TP" ? cTP : lastResult == "SL" ? cSL : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 17, levelStatus, text_color=levelStatus == "ACTIVE" ? cEntry : levelStatus == "TP HIT" ? cTP : levelStatus == "SL HIT" ? cSL : cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 17, "STATEFUL TRADE", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
 
-    table.cell(dash, 0, 18, "TP", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 18, activeSide == "LONG" ? f_val(activeTP) : "-", text_color=cTP, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 18, activeSide == "SHORT" ? f_val(activeTP) : "-", text_color=cTP, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 18, "RR " + f_val(rr), text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-
-    table.cell(dash, 0, 19, "RESULT", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 19, lastResult == "TP" ? "TP HIT" : lastResult == "SL" ? "SL HIT" : "-", text_color=lastResult == "TP" ? cTP : lastResult == "SL" ? cSL : cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 19, levelStatus, text_color=levelStatus == "ACTIVE" ? cLong : levelStatus == "TP HIT" ? cTP : levelStatus == "SL HIT" ? cSL : cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 19, "STATEFUL", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-
-    table.cell(dash, 0, 20, "ADX / ATR", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 1, 20, f_val(h4Adx), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 2, 20, f_val(atr), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
-    table.cell(dash, 3, 20, "4H ADX / 15M ATR", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 0, 18, "ADX / ATR", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 1, 18, f_val(h4Adx), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 2, 18, f_val(atr), text_color=color.white, bgcolor=cPanel, text_size=size.tiny)
+    table.cell(dash, 3, 18, "4H ADX / 15M ATR", text_color=cMuted, bgcolor=cPanel, text_size=size.tiny)
