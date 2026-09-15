@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T23:04:39.920205+00:00",
+  "updated_at": "2026-09-15T23:08:33.489128+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -30,8 +30,8 @@
     "ONDO/USDT:USDT",
     "DOGE/USDT:USDT",
     "ADA/USDT:USDT",
-    "ASTER/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "ASTER/USDT:USDT",
     "LINK/USDT:USDT",
     "WLD/USDT:USDT",
     "UAI/USDT:USDT",
@@ -42,8 +42,8 @@
     "BCH/USDT:USDT",
     "BEAT/USDT:USDT",
     "ZRO/USDT:USDT",
-    "TRUMPSOL/USDT:USDT",
     "DYDX/USDT:USDT",
+    "TRUMPSOL/USDT:USDT",
     "REZ/USDT:USDT",
     "FF/USDT:USDT",
     "XPL/USDT:USDT",
@@ -87,13 +87,13 @@
     "AVNT/USDT:USDT",
     "FHE/USDT:USDT",
     "FOLKS/USDT:USDT",
+    "HOME/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "PNUT/USDT:USDT",
-    "CATI/USDT:USDT",
     "ALCH/USDT:USDT",
+    "CATI/USDT:USDT",
     "0G/USDT:USDT",
     "REDSTONE/USDT:USDT",
-    "HOME/USDT:USDT",
     "DOOD/USDT:USDT",
     "PLUME/USDT:USDT",
     "S/USDT:USDT",
@@ -102,7 +102,7 @@
     "TRUTH/USDT:USDT",
     "INX/USDT:USDT",
     "BTR/USDT:USDT",
-    "SWARMS/USDT:USDT",
-    "HOLO/USDT:USDT"
+    "HOLO/USDT:USDT",
+    "SWARMS/USDT:USDT"
   ]
 }
