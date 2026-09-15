@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T04:55:14.283212+00:00",
+  "updated_at": "2026-09-15T04:58:27.258877+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -88,8 +88,8 @@
     "SKYAI/USDT:USDT",
     "BULLA/USDT:USDT",
     "TRUST/USDT:USDT",
-    "SOON/USDT:USDT",
     "PIEVERSE/USDT:USDT",
+    "SOON/USDT:USDT",
     "SYRUP/USDT:USDT",
     "BTR/USDT:USDT",
     "RESOLV/USDT:USDT",
@@ -102,7 +102,7 @@
     "CC/USDT:USDT",
     "CATI/USDT:USDT",
     "GIGGLE/USDT:USDT",
-    "HUMA/USDT:USDT",
-    "STBL/USDT:USDT"
+    "STBL/USDT:USDT",
+    "HUMA/USDT:USDT"
   ]
 }
