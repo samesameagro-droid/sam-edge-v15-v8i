@@ -68,7 +68,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json"
+          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json"
           if [ -f paper_v15_trades.csv ]; then
             STATE_FILES="$STATE_FILES paper_v15_trades.csv"
           fi
@@ -77,7 +77,9 @@ jobs:
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
-            cp "$f" "$TMP_DIR/$(basename "$f")"
+            if [ -f "$f" ]; then
+              cp "$f" "$TMP_DIR/$(basename "$f")"
+            fi
           done
 
           # Never rebase generated state files. Sync to the latest main, restore this
@@ -88,7 +90,9 @@ jobs:
             git reset --hard origin/main
 
             for f in $STATE_FILES; do
-              cp "$TMP_DIR/$(basename "$f")" "$f"
+              if [ -f "$TMP_DIR/$(basename "$f")" ]; then
+                cp "$TMP_DIR/$(basename "$f")" "$f"
+              fi
             done
 
             git add -f $STATE_FILES
