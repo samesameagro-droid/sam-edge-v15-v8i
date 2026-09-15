@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T01:14:26.996744+00:00",
+  "updated_at": "2026-09-15T01:18:30.698500+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -47,8 +47,8 @@
     "ADA/USDT:USDT",
     "ZRO/USDT:USDT",
     "STX/USDT:USDT",
-    "ASTER/USDT:USDT",
     "CFX/USDT:USDT",
+    "ASTER/USDT:USDT",
     "AIN/USDT:USDT",
     "REZ/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -56,13 +56,14 @@
     "UAI/USDT:USDT",
     "WLD/USDT:USDT",
     "BEAT/USDT:USDT",
+    "DYDX/USDT:USDT",
     "BOME/USDT:USDT",
     "DOT/USDT:USDT",
-    "BANK/USDT:USDT",
     "FLOCK/USDT:USDT",
+    "BANK/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
-    "VIRTUAL/USDT:USDT",
     "XPL/USDT:USDT",
+    "VIRTUAL/USDT:USDT",
     "ALLO/USDT:USDT",
     "POL/USDT:USDT",
     "RIVER/USDT:USDT",
@@ -76,8 +77,8 @@
     "KAITO/USDT:USDT",
     "RENDER/USDT:USDT",
     "GRASS/USDT:USDT",
-    "API3/USDT:USDT",
     "AIO/USDT:USDT",
+    "API3/USDT:USDT",
     "SOPH/USDT:USDT",
     "ON/USDT:USDT",
     "W/USDT:USDT",
@@ -102,7 +103,6 @@
     "CLANKER/USDT:USDT",
     "CATI/USDT:USDT",
     "ENSO/USDT:USDT",
-    "CC/USDT:USDT",
-    "HUMA/USDT:USDT"
+    "CC/USDT:USDT"
   ]
 }
