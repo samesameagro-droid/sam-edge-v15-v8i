@@ -25,6 +25,7 @@ def send_signal(p, equity):
         f'RR: 1.25R\n'
         f'SCORE: {p.get("selection_score", 0):.2f}\n'
         f'RISK: {risk_pct:.2f}%\n'
+        f'STATUS: {p.get("telegram_status", "EXECUTED")}\n'
         f'MODE: PAPER ONLY'
     )
     url = f'https://api.telegram.org/bot{token}/sendMessage'

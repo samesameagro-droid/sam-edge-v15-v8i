@@ -398,17 +398,28 @@ class PaperEngine:
         for rank, c in enumerate(candidates[:max(MAX_ACTIVE, 10)], 1):
             tag = 'SELECT' if c in selected else 'WAIT'
             print(f'  #{rank:<2} {tag:<6} | {c["position"].coin:<24} | {c["side"]:<5} | score={c["score"]:.1f}')
+        # Telegram delivery is independent from MAX_ACTIVE paper execution slots.
+        # Every NEW valid V15 candidate is notified once; only the top candidates are opened as paper positions.
+        from notifiers import send_signal
+        selected_keys = {c['key'] for c in selected}
+        for c in candidates:
+            p = c['position']; key = c['key']
+            if key in self.signal_history:
+                continue
+            payload = asdict(p)
+            payload['selection_score'] = round(c['score'], 2)
+            payload['telegram_status'] = 'EXECUTED' if key in selected_keys else 'VALID V15 SIGNAL - WAITLIST'
+            sent = send_signal(payload, self.equity)
+            if sent:
+                self.signal_history.add(key)
+                print(f'📨 TELEGRAM SIGNAL | {p.coin} | {p.side} | status={payload["telegram_status"]} | score={c["score"]:.1f}')
+            else:
+                print(f'⚠️ TELEGRAM NOT SENT | {p.coin} | {p.side} | score={c["score"]:.1f}')
+
         for c in selected:
             p = c['position']; key = c['key']
             self.positions[p.coin] = p
-            self.signal_history.add(key)
             print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g}')
-            try:
-                from notifiers import send_signal
-                payload = asdict(p); payload['selection_score'] = round(c['score'], 2)
-                send_signal(payload, self.equity)
-            except Exception as e:
-                print('TELEGRAM ERROR:', e)
         if len(candidates) > len(selected):
             print(f'WAITLIST | {len(candidates)-len(selected)} valid V15 candidates not executed because active slots are full.')
         self.save_state(); self.report()
