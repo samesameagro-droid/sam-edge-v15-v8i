@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T01:29:29.352668+00:00",
+  "updated_at": "2026-09-15T01:34:10.444963+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -59,8 +59,8 @@
     "DYDX/USDT:USDT",
     "BOME/USDT:USDT",
     "DOT/USDT:USDT",
-    "FLOCK/USDT:USDT",
     "BANK/USDT:USDT",
+    "FLOCK/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "XPL/USDT:USDT",
