@@ -31,6 +31,12 @@ jobs:
           cache: pip
 
       - name: Install dependencies
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
       - name: Run V15 one-shot signal check
@@ -73,7 +79,6 @@ jobs:
             STATE_FILES="$STATE_FILES paper_v15_trades.csv"
           fi
 
-          # Keep the freshly generated paper state outside git while syncing main.
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
@@ -82,8 +87,6 @@ jobs:
             fi
           done
 
-          # Never rebase generated state files. Sync to the latest main, restore this
-          # scan's state, then push. If another run wins the race, retry from its head.
           for attempt in 1 2 3 4 5; do
             echo "STATE PUSH ATTEMPT $attempt"
             git fetch origin main
@@ -95,7 +98,13 @@ jobs:
               fi
             done
 
-            git add -f $STATE_FILES
+            # pending_telegram_signals.json is a durable retry queue. If this scan
+            # has no pending messages, remove the old queued copy from the branch.
+            if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
+              rm -f pending_telegram_signals.json
+            fi
+
+            git add -A $STATE_FILES
             if git diff --cached --quiet; then
               echo "NO STATE CHANGES AFTER SYNC"
               exit 0
