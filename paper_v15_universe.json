@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T06:08:51.409031+00:00",
+  "updated_at": "2026-09-15T06:12:40.272146+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -59,8 +59,8 @@
     "XPL/USDT:USDT",
     "ALLO/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "POL/USDT:USDT",
     "LA/USDT:USDT",
+    "POL/USDT:USDT",
     "FF/USDT:USDT",
     "XLM/USDT:USDT",
     "RIVER/USDT:USDT",
@@ -90,10 +90,10 @@
     "BTR/USDT:USDT",
     "RESOLV/USDT:USDT",
     "ZK/USDT:USDT",
-    "HOME/USDT:USDT",
     "STABLE/USDT:USDT",
-    "FOLKS/USDT:USDT",
+    "HOME/USDT:USDT",
     "ENSO/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "AWE/USDT:USDT",
     "CLANKER/USDT:USDT",
     "CC/USDT:USDT",
@@ -102,7 +102,7 @@
     "GIGGLE/USDT:USDT",
     "HUMA/USDT:USDT",
     "RECALL/USDT:USDT",
-    "POPCAT/USDT:USDT",
-    "KITE/USDT:USDT"
+    "KITE/USDT:USDT",
+    "POPCAT/USDT:USDT"
   ]
 }
