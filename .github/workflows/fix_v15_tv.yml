@@ -22,8 +22,7 @@ jobs:
           p = Path('SAM_EDGE_V15_TradingView_LATEST.pine')
           s = p.read_text(encoding='utf-8')
 
-          # Pine editor rejects the non-breaking whitespace that was accidentally
-          # introduced into the dashboard section. Keep source strictly ASCII.
+          # Pine editor rejects non-breaking whitespace; keep source strictly ASCII.
           for a, b in {
               '\u00a0': ' ',
               '\u202f': ' ',
@@ -38,7 +37,7 @@ jobs:
           }.items():
               s = s.replace(a, b)
 
-          # Dashboard: reserve row 0 for a clear indicator identity header.
+          # Dashboard: reserve row 0 for the indicator identity header.
           old = 'var table dash = table.new(position.top_right, 3, 16, border_width=1, frame_color=color.new(color.white, 88))'
           new = 'var table dash = table.new(position.top_right, 3, 17, border_width=1, frame_color=color.new(color.white, 88))'
           s = s.replace(old, new)
@@ -46,7 +45,7 @@ jobs:
           def shift(m):
               return f'table.cell(dash, {m.group(1)}, {int(m.group(2)) + 1},'
 
-          s = re.sub(r'table\\.cell\\(dash,\\s*(0|1|2),\\s*(\\d+),', shift, s)
+          s = re.sub(r'table\.cell\(dash,\s*(0|1|2),\s*(\d+),', shift, s)
 
           marker = 'if showDashboard and barstate.islast\n'
           header = (
@@ -61,8 +60,7 @@ jobs:
                   raise SystemExit('Dashboard marker not found')
               s = s.replace(marker, header, 1)
 
-          s = s.encode('ascii').decode('ascii')
-          p.write_text(s, encoding='ascii')
+          p.write_text(s.encode('ascii').decode('ascii'), encoding='ascii')
 
       - name: Commit fixed mirror and remove one-shot workflow
         run: |
