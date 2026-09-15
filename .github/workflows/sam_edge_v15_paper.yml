@@ -65,31 +65,40 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          git add -f paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json
+          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json"
           if [ -f paper_v15_trades.csv ]; then
-            git add -f paper_v15_trades.csv
+            STATE_FILES="$STATE_FILES paper_v15_trades.csv"
           fi
 
-          if git diff --cached --quiet; then
-            echo "NO STATE CHANGES"
-            exit 0
-          fi
+          # Keep the freshly generated paper state outside git while syncing main.
+          TMP_DIR="$(mktemp -d)"
+          trap 'rm -rf "$TMP_DIR"' EXIT
+          for f in $STATE_FILES; do
+            cp "$f" "$TMP_DIR/$(basename "$f")"
+          done
 
-          git commit -m "paper: V15 forward state"
-
+          # Never rebase generated state files. Sync to the latest main, restore this
+          # scan's state, then push. If another run wins the race, retry from its head.
           for attempt in 1 2 3 4 5; do
             echo "STATE PUSH ATTEMPT $attempt"
             git fetch origin main
+            git reset --hard origin/main
 
-            if git rebase origin/main; then
-              if git push origin HEAD:main; then
-                echo "STATE PUSH OK"
-                exit 0
-              fi
-            else
-              echo "REBASE CONFLICT - aborting"
-              git rebase --abort || true
-              exit 1
+            for f in $STATE_FILES; do
+              cp "$TMP_DIR/$(basename "$f")" "$f"
+            done
+
+            git add -f $STATE_FILES
+            if git diff --cached --quiet; then
+              echo "NO STATE CHANGES AFTER SYNC"
+              exit 0
+            fi
+
+            git commit -m "paper: V15 forward state"
+
+            if git push origin HEAD:main; then
+              echo "STATE PUSH OK"
+              exit 0
             fi
 
             echo "REMOTE MOVED - retrying"
