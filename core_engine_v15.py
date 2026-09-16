@@ -27,12 +27,20 @@ def wilder(s, n=14):
     return s.ewm(alpha=1/n, adjust=False).mean()
 
 
+def _normalize_timestamp(s):
+    return pd.to_datetime(s, utc=True).astype('datetime64[ns, UTC]')
+
+
 def _ohlcv_resample(df: pd.DataFrame, rule: str) -> pd.DataFrame:
-    b = df.set_index('timestamp')
-    return b.resample(rule, label='left', closed='left').agg(
+    x = df.copy()
+    x['timestamp'] = _normalize_timestamp(x['timestamp'])
+    b = x.set_index('timestamp')
+    out = b.resample(rule, label='left', closed='left').agg(
         open=('open','first'), high=('high','max'), low=('low','min'),
         close=('close','last'), volume=('volume','sum')
     ).dropna().reset_index()
+    out['timestamp'] = _normalize_timestamp(out['timestamp'])
+    return out
 
 
 def _atr_ohlc(h: pd.DataFrame, n=14):
@@ -54,11 +62,9 @@ def _strict_candle_features(df: pd.DataFrame, rule: str, prefix: str) -> pd.Data
             (h.upper_wick<=0.20)&(h.range_atr<=2.0))
     bear = ((h.close<h.open)&(h.body_atr>=0.55)&(h.close_pos<=0.22)&
             (h.lower_wick<=0.20)&(h.range_atr<=2.0))
-    # Timestamp is the END of the completed HTF candle. A 2H candle
-    # beginning at t and ending at t+2H becomes usable at t+2H.
     delta = pd.Timedelta(rule)
     out = pd.DataFrame({
-        'timestamp': h.timestamp + delta,
+        'timestamp': _normalize_timestamp(h.timestamp + delta),
         f'{prefix}_bull_strict': bull.astype(bool),
         f'{prefix}_bear_strict': bear.astype(bool),
         f'{prefix}_body_atr': h.body_atr,
@@ -81,8 +87,7 @@ def _adx_4h_features(df: pd.DataFrame) -> pd.DataFrame:
     h['adx_pct'] = h.adx.rolling(200, min_periods=100).rank(pct=True)
     h['adx_delta'] = h.adx-h.adx.shift(3)
     h['adx_accel'] = h.adx_delta-h.adx_delta.shift(3)
-    # Preserve the actual timezone-aware datetime; do not reinterpret epoch units.
-    h['timestamp'] = pd.to_datetime(h.timestamp + pd.Timedelta('4h'), utc=True)
+    h['timestamp'] = _normalize_timestamp(h.timestamp + pd.Timedelta('4h'))
     return h[['timestamp','adx','adx_pct','adx_delta','adx_accel']]
 
 
@@ -101,17 +106,18 @@ def load_coin(root: Path, coin: str) -> pd.DataFrame:
         miss=[c for c in need if c not in cmap]
         if miss: raise ValueError(f'{p}: missing columns {miss}')
         q=q[[cmap[c] for c in need]].copy(); q.columns=need
-        q['timestamp']=pd.to_datetime(q.open_time,unit='ms',utc=True)
+        q['timestamp']=_normalize_timestamp(pd.to_datetime(q.open_time,unit='ms',utc=True))
         fs.append(q.drop(columns='open_time'))
     x=pd.concat(fs,ignore_index=True).drop_duplicates('timestamp').sort_values('timestamp').reset_index(drop=True)
     for c in ['open','high','low','close','volume']:
         x[c]=pd.to_numeric(x[c],errors='coerce')
+    x['timestamp'] = _normalize_timestamp(x['timestamp'])
     return x.dropna().reset_index(drop=True)
 
 
 def enrich(df: pd.DataFrame) -> pd.DataFrame:
     x=df.copy()
-    x['timestamp']=pd.to_datetime(x['timestamp'],utc=True).astype('datetime64[ms, UTC]')
+    x['timestamp']=_normalize_timestamp(x['timestamp'])
     x=x.sort_values('timestamp').drop_duplicates('timestamp').reset_index(drop=True)
 
     prev=x.close.shift(1)
@@ -194,9 +200,8 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
             'bear':f'{pfx}_bear'
         })
 
-        # Keep timestamps as real timezone-aware datetimes.
-        x['timestamp']=pd.to_datetime(x['timestamp'], utc=True)
-        h['timestamp']=pd.to_datetime(h['timestamp'], utc=True)
+        x['timestamp']=_normalize_timestamp(x['timestamp'])
+        h['timestamp']=_normalize_timestamp(h['timestamp'])
 
         x=pd.merge_asof(
             x.sort_values('timestamp'),
@@ -206,7 +211,6 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
             allow_exact_matches=False
         )
 
-    # V15 additions: completed 4H ADX regime and completed 2H strict candle.
     a4=_adx_4h_features(df).rename(columns={
         'adx':'h4_adx',
         'adx_pct':'h4_adx_pct',
@@ -216,10 +220,9 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
 
     c2=_strict_candle_features(df,'2h','c2h')
 
-    # Normalize by parsing existing datetimes only.
-    x['timestamp']=pd.to_datetime(x['timestamp'],utc=True)
-    a4['timestamp']=pd.to_datetime(a4['timestamp'],utc=True)
-    c2['timestamp']=pd.to_datetime(c2['timestamp'],utc=True)
+    x['timestamp']=_normalize_timestamp(x['timestamp'])
+    a4['timestamp']=_normalize_timestamp(a4['timestamp'])
+    c2['timestamp']=_normalize_timestamp(c2['timestamp'])
 
     x=pd.merge_asof(
         x.sort_values('timestamp'),
