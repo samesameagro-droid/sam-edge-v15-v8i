@@ -44,11 +44,19 @@ def _fmt(x):
         return "-"
 
 
-def _send_photo(photo_path: Path, caption: str, retries: int = 3) -> bool:
+def _signal_key(p) -> str:
+    return f"{p['coin']}|{p['side']}|{p.get('opened_at', '')}|{p.get('core', 'V15_ADX4H_CANDLE2H')}"
+
+
+def _send_photo(photo_path: Path, caption: str, retries: int = 3, signal_key: str | None = None) -> bool:
     token, chat_id = notifiers._telegram_config()
     if not token or not chat_id:
         print("TELEGRAM SKIP | token/chat_id not configured")
         return False
+    if signal_key and signal_key in notifiers._delivery_history():
+        print(f"TELEGRAM DEDUP | chart already delivered | key={signal_key}")
+        notifiers._remove_pending(caption, signal_key)
+        return True
     url = f"https://api.telegram.org/bot{token}/sendPhoto"
     for attempt in range(1, retries + 1):
         try:
@@ -60,7 +68,11 @@ def _send_photo(photo_path: Path, caption: str, retries: int = 3) -> bool:
                     timeout=45,
                 )
             if r.ok and r.json().get("ok"):
-                print(f"TELEGRAM CHART SENT OK | message_id={r.json().get('result', {}).get('message_id')} | attempt={attempt}")
+                message_id = r.json().get('result', {}).get('message_id')
+                print(f"TELEGRAM CHART SENT OK | message_id={message_id} | attempt={attempt}")
+                if signal_key:
+                    notifiers._mark_delivered(signal_key)
+                    notifiers._remove_pending(caption, signal_key)
                 return True
             print(f"TELEGRAM PHOTO ERROR | attempt={attempt}: {r.text}")
         except Exception as e:
@@ -133,6 +145,7 @@ def professional_send_signal(p, equity):
     icon = "🟢" if side == "LONG" else "🔴"
     status = p.get("telegram_status", "EXECUTED")
     status_icon = "⚡" if status == "EXECUTED" else "🟡"
+    signal_key = _signal_key(p)
     risk_pct = float(p.get("risk_cash", 0)) / float(equity) * 100 if equity else 0.0
     caption = (
         f"<b>🏆 SAM EDGE V15 | NEW SIGNAL</b>\n"
@@ -151,13 +164,42 @@ def professional_send_signal(p, equity):
         f"<i>Live BingX 15M chart attached. Paper trading only.</i>"
     )
     chart = _make_chart(p)
-    if chart and _send_photo(chart, caption):
+    if chart and _send_photo(chart, caption, signal_key=signal_key):
         return True
     return notifiers._send_text(
         "🏆 SAM EDGE V15 | NEW SIGNAL\n"
         f"{p['coin']} | {side}\nENTRY: {_fmt(p['entry'])}\nSL: {_fmt(p['sl'])}\nTP: {_fmt(p['tp'])}\n"
-        f"RR: 1.25R | SCORE: {float(p.get('selection_score', 0)):.2f}\nSTATUS: {status}\nMODE: PAPER ONLY"
+        f"RR: 1.25R | SCORE: {float(p.get('selection_score', 0)):.2f}\nSTATUS: {status}\nMODE: PAPER ONLY",
+        signal_key=signal_key,
     )
+
+
+def _dedupe_forward_state(engine):
+    """Remove accidental duplicate closed records using the V15 trade identity."""
+    seen = set()
+    deduped = []
+    for r in engine.closed:
+        key = f"{r.get('coin','')}|{r.get('side','')}|{r.get('opened_at','')}|{r.get('core','')}"
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(r)
+    if len(deduped) != len(engine.closed):
+        print(f"FORWARD STATE DEDUP | removed={len(engine.closed)-len(deduped)} duplicate closed records")
+        engine.closed = deduped
+
+    seen_master = set()
+    master = []
+    for r in engine.master_rows:
+        key = r.get('trade_key') or f"{r.get('coin','')}|{r.get('side','')}|{r.get('signal_time','')}|{r.get('core','')}"
+        if key in seen_master:
+            continue
+        seen_master.add(key)
+        master.append(r)
+    if len(master) != len(engine.master_rows):
+        print(f"MASTER JOURNAL DEDUP | removed={len(engine.master_rows)-len(master)} duplicate records")
+        engine.master_rows = master
+
 
 
 def resend_active_professional(engine):
@@ -183,7 +225,7 @@ def resend_active_professional(engine):
             f"<i>Live BingX 15M chart. Trade remains active until TP or SL is confirmed.</i>"
         )
         chart = _make_chart(p)
-        if chart and _send_photo(chart, caption):
+        if chart and _send_photo(chart, caption, signal_key=_signal_key(p)):
             print(f"ACTIVE PROFESSIONAL CHART SENT | {p['coin']} | {p['side']}")
     MIGRATION_FLAG.write_text("professional Telegram migration completed\n", encoding="utf-8")
 
@@ -195,8 +237,14 @@ notifiers.send_signal = professional_send_signal
 if __name__ == "__main__":
     print(f"SAM EDGE V15 PROFESSIONAL FORWARD TEST | TARGET={TARGET_TRADES}")
     engine = ForwardPaperEngine()
+    _dedupe_forward_state(engine)
     one_shot = os.getenv("RUN_ONCE", "0").strip().lower() in {"1", "true", "yes", "on"}
     if one_shot:
+        delivered = notifiers.retry_pending_messages()
+        for key in delivered:
+            engine.signal_history.add(key)
+        if delivered:
+            print(f"TELEGRAM PENDING RETRY | delivered={len(delivered)} keyed signals")
         resend_active_professional(engine)
         engine.scan_once()
     else:
