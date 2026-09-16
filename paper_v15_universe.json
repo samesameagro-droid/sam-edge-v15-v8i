@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T02:14:02.018296+00:00",
+  "updated_at": "2026-09-16T02:17:58.454456+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -79,13 +79,13 @@
     "HOME/USDT:USDT",
     "NIL/USDT:USDT",
     "EUL/USDT:USDT",
-    "SOPH/USDT:USDT",
     "W/USDT:USDT",
+    "SOPH/USDT:USDT",
+    "FHE/USDT:USDT",
     "XPIN/USDT:USDT",
     "INIT/USDT:USDT",
-    "FOLKS/USDT:USDT",
     "AVNT/USDT:USDT",
-    "FHE/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "CATI/USDT:USDT",
     "PNUT/USDT:USDT",
     "ALCH/USDT:USDT",
@@ -94,6 +94,7 @@
     "PLUME/USDT:USDT",
     "0G/USDT:USDT",
     "S/USDT:USDT",
+    "AKE/USDT:USDT",
     "HOLO/USDT:USDT",
     "TRUTH/USDT:USDT",
     "GIGGLE/USDT:USDT",
@@ -102,7 +103,6 @@
     "BTR/USDT:USDT",
     "CC/USDT:USDT",
     "BITLIGHT/USDT:USDT",
-    "MMT/USDT:USDT",
-    "SWARMS/USDT:USDT"
+    "MMT/USDT:USDT"
   ]
 }
