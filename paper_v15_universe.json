@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T05:14:52.405290+00:00",
+  "updated_at": "2026-09-16T05:19:32.882257+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -90,8 +90,8 @@
     "ALCH/USDT:USDT",
     "PNUT/USDT:USDT",
     "PLUME/USDT:USDT",
-    "XPIN/USDT:USDT",
     "BTR/USDT:USDT",
+    "XPIN/USDT:USDT",
     "DOOD/USDT:USDT",
     "S/USDT:USDT",
     "0G/USDT:USDT",
