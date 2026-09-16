@@ -31,6 +31,18 @@
       "opened_at": "2026-09-15T22:15:00+00:00",
       "core": "V15_ADX4H_CANDLE2H",
       "status": "OPEN"
+    },
+    "MMT/USDT:USDT": {
+      "coin": "MMT/USDT:USDT",
+      "side": "SHORT",
+      "entry": 0.1322,
+      "sl": 0.13803896294082407,
+      "tp": 0.12490129632396993,
+      "risk_R": 1.0,
+      "risk_cash": 0.4975,
+      "opened_at": "2026-09-16T03:00:00+00:00",
+      "core": "V15_ADX4H_CANDLE2H",
+      "status": "OPEN"
     }
   }
 }
