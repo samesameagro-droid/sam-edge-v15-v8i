@@ -1,10 +1,8 @@
 {
   "target": 20,
-  "next_trade_no": 2,
-  "closed_trades": 1,
-  "active_positions": [
-    "MMT/USDT:USDT"
-  ],
+  "next_trade_no": 3,
+  "closed_trades": 2,
+  "active_positions": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
