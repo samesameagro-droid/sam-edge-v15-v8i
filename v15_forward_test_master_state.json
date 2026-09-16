@@ -4,5 +4,8 @@
   "closed_trades": 1,
   "active_positions": [
     "MMT/USDT:USDT"
-  ]
+  ],
+  "max_active": 5,
+  "score_is_execution_threshold": false,
+  "validation": "9 V15 gates from signal_mask"
 }

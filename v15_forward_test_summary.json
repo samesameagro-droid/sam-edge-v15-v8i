@@ -9,5 +9,9 @@
   "profit_factor": 0.0,
   "drawdown_R": 1.0,
   "equity": 99.5,
+  "active_positions": 1,
+  "max_active": 5,
+  "score_is_execution_threshold": false,
+  "validation": "9 V15 gates from signal_mask",
   "status": "RUNNING"
 }
