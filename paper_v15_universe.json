@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T06:30:13.298434+00:00",
+  "updated_at": "2026-09-16T06:35:07.703990+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -37,8 +37,8 @@
     "LIGHTER/USDT:USDT",
     "APT/USDT:USDT",
     "XLM/USDT:USDT",
-    "WLD/USDT:USDT",
     "JUP/USDT:USDT",
+    "WLD/USDT:USDT",
     "BEAT/USDT:USDT",
     "ZRO/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
@@ -83,9 +83,9 @@
     "EUL/USDT:USDT",
     "CATI/USDT:USDT",
     "FOLKS/USDT:USDT",
+    "INIT/USDT:USDT",
     "AVNT/USDT:USDT",
     "ALCH/USDT:USDT",
-    "INIT/USDT:USDT",
     "0G/USDT:USDT",
     "PLUME/USDT:USDT",
     "MERL/USDT:USDT",
@@ -97,12 +97,12 @@
     "NIL/USDT:USDT",
     "LA/USDT:USDT",
     "TRUTH/USDT:USDT",
+    "MMT/USDT:USDT",
     "COW/USDT:USDT",
     "CC/USDT:USDT",
-    "MMT/USDT:USDT",
     "PIEVERSE/USDT:USDT",
-    "HOLO/USDT:USDT",
     "BROCCOLI/USDT:USDT",
-    "GOAT/USDT:USDT"
+    "HOLO/USDT:USDT",
+    "BITLIGHT/USDT:USDT"
   ]
 }
