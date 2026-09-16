@@ -53,5 +53,18 @@
       "equity_after": 99.621265625
     }
   ],
-  "positions": {}
+  "positions": {
+    "SYN/USDT:USDT": {
+      "coin": "SYN/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.1877,
+      "sl": 0.1584480761207722,
+      "tp": 0.22426490484903477,
+      "risk_R": 1.0,
+      "risk_cash": 0.49561579648437504,
+      "opened_at": "2026-09-16T20:15:00+00:00",
+      "core": "V15_ADX4H_CANDLE2H",
+      "status": "OPEN"
+    }
+  }
 }
