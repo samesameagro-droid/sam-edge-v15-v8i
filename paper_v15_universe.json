@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T04:24:59.300262+00:00",
+  "updated_at": "2026-09-16T04:29:59.569000+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -16,8 +16,8 @@
     "TAO/USDT:USDT",
     "ARB/USDT:USDT",
     "SUI/USDT:USDT",
-    "AVAX/USDT:USDT",
     "ENA/USDT:USDT",
+    "AVAX/USDT:USDT",
     "NEAR/USDT:USDT",
     "LSK/USDT:USDT",
     "INJ/USDT:USDT",
@@ -66,8 +66,8 @@
     "KAITO/USDT:USDT",
     "ILV/USDT:USDT",
     "PI/USDT:USDT",
-    "GRIFFAIN/USDT:USDT",
     "ZORA/USDT:USDT",
+    "GRIFFAIN/USDT:USDT",
     "POPCAT/USDT:USDT",
     "SAFE/USDT:USDT",
     "API3/USDT:USDT",
@@ -103,6 +103,6 @@
     "BITLIGHT/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "SWARMS/USDT:USDT",
-    "REDSTONE/USDT:USDT"
+    "GOAT/USDT:USDT"
   ]
 }
