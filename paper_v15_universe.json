@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T00:13:52.806397+00:00",
+  "updated_at": "2026-09-16T00:19:45.147326+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -42,10 +42,10 @@
     "BEAT/USDT:USDT",
     "DYDX/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
-    "BCH/USDT:USDT",
     "ZRO/USDT:USDT",
-    "REZ/USDT:USDT",
+    "BCH/USDT:USDT",
     "FF/USDT:USDT",
+    "REZ/USDT:USDT",
     "XPL/USDT:USDT",
     "APT/USDT:USDT",
     "VIRTUAL/USDT:USDT",
@@ -71,8 +71,8 @@
     "MERL/USDT:USDT",
     "VANA/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
-    "SAFE/USDT:USDT",
     "KAIA/USDT:USDT",
+    "SAFE/USDT:USDT",
     "API3/USDT:USDT",
     "GRASS/USDT:USDT",
     "POPCAT/USDT:USDT",
@@ -92,8 +92,8 @@
     "ALCH/USDT:USDT",
     "0G/USDT:USDT",
     "GIGGLE/USDT:USDT",
-    "CATI/USDT:USDT",
     "REDSTONE/USDT:USDT",
+    "CATI/USDT:USDT",
     "DOOD/USDT:USDT",
     "PLUME/USDT:USDT",
     "S/USDT:USDT",
@@ -102,7 +102,7 @@
     "CC/USDT:USDT",
     "INX/USDT:USDT",
     "BABY/USDT:USDT",
-    "BTR/USDT:USDT",
-    "BITLIGHT/USDT:USDT"
+    "BITLIGHT/USDT:USDT",
+    "BTR/USDT:USDT"
   ]
 }
