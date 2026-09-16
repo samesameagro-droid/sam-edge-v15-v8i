@@ -2,6 +2,12 @@ name: SAM EDGE V15 - Paper Forward
 
 on:
   workflow_dispatch:
+    inputs:
+      telegram_test:
+        description: 'Test Telegram delivery before running the V15 scan'
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Continuous signal monitoring. GitHub Actions minimum practical cron interval is 5 minutes.
     - cron: '*/5 * * * *'
@@ -32,6 +38,44 @@ jobs:
 
       - name: Install dependencies
         run: python -m pip install -r requirements.txt matplotlib
+
+      - name: Test Telegram delivery
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+          import requests
+
+          token = (os.getenv('TELEGRAM_BOT_TOKEN') or '').strip()
+          chat_id = (os.getenv('TELEGRAM_CHAT_ID') or '').strip()
+          if not token or not chat_id:
+              print('TELEGRAM TEST FAILED | token/chat_id not configured')
+              sys.exit(1)
+
+          url = f'https://api.telegram.org/bot{token}/sendMessage'
+          payload = {
+              'chat_id': chat_id,
+              'text': '✅ SAM EDGE V15 Telegram test OK | GitHub Actions → Telegram',
+          }
+          try:
+              r = requests.post(url, json=payload, timeout=30)
+              print(f'TELEGRAM TEST HTTP={r.status_code}')
+              if not r.ok:
+                  print(f'TELEGRAM TEST FAILED | HTTP {r.status_code} | {r.text}')
+                  sys.exit(1)
+              data = r.json()
+              if not data.get('ok'):
+                  print(f'TELEGRAM TEST FAILED | API response: {data}')
+                  sys.exit(1)
+              print(f'TELEGRAM TEST SENT OK | message_id={data.get("result", {}).get("message_id")}')
+          except Exception as e:
+              print(f'TELEGRAM TEST ERROR | {type(e).__name__}: {e}')
+              sys.exit(1)
+          PY
 
       - name: Run V15 professional one-shot forward-test scan
         id: scan
