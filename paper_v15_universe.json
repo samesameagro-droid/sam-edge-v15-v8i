@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T05:55:36.806165+00:00",
+  "updated_at": "2026-09-16T06:00:24.021254+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -36,8 +36,8 @@
     "UAI/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "WLD/USDT:USDT",
-    "JUP/USDT:USDT",
     "APT/USDT:USDT",
+    "JUP/USDT:USDT",
     "XLM/USDT:USDT",
     "BEAT/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -62,10 +62,10 @@
     "BANK/USDT:USDT",
     "EVAA/USDT:USDT",
     "STBL/USDT:USDT",
-    "WLFI/USDT:USDT",
     "KAITO/USDT:USDT",
-    "GRIFFAIN/USDT:USDT",
+    "WLFI/USDT:USDT",
     "SOMI/USDT:USDT",
+    "GRIFFAIN/USDT:USDT",
     "PI/USDT:USDT",
     "ILV/USDT:USDT",
     "ZORA/USDT:USDT",
@@ -86,9 +86,9 @@
     "AVNT/USDT:USDT",
     "INIT/USDT:USDT",
     "ALCH/USDT:USDT",
+    "MERL/USDT:USDT",
     "BTR/USDT:USDT",
     "NIL/USDT:USDT",
-    "MERL/USDT:USDT",
     "PLUME/USDT:USDT",
     "PNUT/USDT:USDT",
     "0G/USDT:USDT",
@@ -102,7 +102,7 @@
     "MMT/USDT:USDT",
     "HOLO/USDT:USDT",
     "BROCCOLI/USDT:USDT",
-    "SWARMS/USDT:USDT",
-    "BITLIGHT/USDT:USDT"
+    "BITLIGHT/USDT:USDT",
+    "SWARMS/USDT:USDT"
   ]
 }
