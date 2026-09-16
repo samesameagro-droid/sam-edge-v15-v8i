@@ -3,7 +3,6 @@
   "next_trade_no": 3,
   "closed_trades": 2,
   "active_positions": [
-    "MMT/USDT:USDT",
     "VIRTUAL/USDT:USDT"
   ],
   "max_active": 5,
