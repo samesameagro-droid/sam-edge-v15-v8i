@@ -1,7 +1,7 @@
 {
   "target": 20,
-  "next_trade_no": 3,
-  "closed_trades": 2,
+  "next_trade_no": 4,
+  "closed_trades": 3,
   "active_positions": [
     "VIRTUAL/USDT:USDT"
   ],
