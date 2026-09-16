@@ -13,7 +13,8 @@ on:
     - cron: '*/5 * * * *'
 
 concurrency:
-  group: sam-edge-v15-paper
+  # Telegram tests get their own lane so they cannot be cancelled/queued behind a V15 scan.
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true && 'telegram-test' || 'v15-scan' }}
   cancel-in-progress: false
 
 permissions:
