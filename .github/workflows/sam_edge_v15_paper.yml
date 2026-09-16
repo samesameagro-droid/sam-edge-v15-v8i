@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Run V15 one-shot signal check
+      - name: Run V15 professional one-shot forward-test scan
         id: scan
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -44,31 +44,32 @@ jobs:
           FETCH_CHUNK: "900"
           MIN_VOLUME_USDT: "3000000"
           UNIVERSE_LIMIT: "100"
-          MAX_ACTIVE_POSITIONS: "5"
+          MAX_ACTIVE_POSITIONS: "1"
           RUN_ONCE: "1"
+          TELEGRAM_CHART_CANDLES: "80"
         run: |
           START_TS=$(date +%s)
           set +e
-          python run_v15.py
+          python run_v15_forward_test_pro.py
           RC=$?
           END_TS=$(date +%s)
           ELAPSED=$((END_TS-START_TS))
           echo "rc=$RC" >> "$GITHUB_OUTPUT"
           echo "elapsed=$ELAPSED" >> "$GITHUB_OUTPUT"
-          echo "V15 SIGNAL CHECK EXIT=$RC | elapsed=${ELAPSED}s"
+          echo "V15 PROFESSIONAL SCAN EXIT=$RC | elapsed=${ELAPSED}s"
           if [ "$RC" -ne 0 ]; then
-            echo "V15 SIGNAL CHECK FAILED — scanner exited with code $RC"
+            echo "V15 PROFESSIONAL SCAN FAILED — scanner exited with code $RC"
             exit "$RC"
           fi
 
-      - name: Persist V15 paper state
+      - name: Persist V15 + Master Forward Test state
         if: ${{ success() }}
         run: |
           set -e
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json"
+          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json"
           if [ -f paper_v15_trades.csv ]; then
             STATE_FILES="$STATE_FILES paper_v15_trades.csv"
           fi
@@ -92,21 +93,17 @@ jobs:
               fi
             done
 
-            # pending_telegram_signals.json is a durable retry queue. If this scan
-            # has no pending messages, remove the old queued copy from the branch.
             if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
               rm -f pending_telegram_signals.json
             fi
 
-            # The runner contains only this scan's generated state after reset, so
-            # staging all changes is safe and also handles a deleted pending queue.
             git add -A
             if git diff --cached --quiet; then
               echo "NO STATE CHANGES AFTER SYNC"
               exit 0
             fi
 
-            git commit -m "paper: V15 forward state"
+            git commit -m "paper: V15 professional forward state"
 
             if git push origin HEAD:main; then
               echo "STATE PUSH OK"
