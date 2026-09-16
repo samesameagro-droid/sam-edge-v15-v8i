@@ -1,0 +1,13 @@
+{
+  "target_closed_trades": 20,
+  "closed_trades": 1,
+  "remaining": 19,
+  "wins": 0,
+  "losses": 1,
+  "win_rate_pct": 0.0,
+  "net_R": -1.0,
+  "profit_factor": 0.0,
+  "drawdown_R": 1.0,
+  "equity": 99.5,
+  "status": "RUNNING"
+}

@@ -1,0 +1,8 @@
+{
+  "target": 20,
+  "next_trade_no": 2,
+  "closed_trades": 1,
+  "active_positions": [
+    "MMT/USDT:USDT"
+  ]
+}

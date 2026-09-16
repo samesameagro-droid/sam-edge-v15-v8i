@@ -1,0 +1,2 @@
+trade_no,trade_key,signal_time,coin,side,core,score,entry,sl,tp,closed_at,exit,result,R,equity_after,win_loss,win_rate_pct,net_R,profit_factor,drawdown_R
+1,AIN/USDT:USDT|LONG|2026-09-15T13:00:00+00:00|V15_ADX4H_CANDLE2H,2026-09-15T13:00:00+00:00,AIN/USDT:USDT,LONG,V15_ADX4H_CANDLE2H,,0.18157,0.14679037358928326,0.22504453301339594,2026-09-16T01:15:00+00:00,0.14679037358928326,SL HIT,-1.0,99.5,0/1,0.00,-1.00,0.000,1.00
