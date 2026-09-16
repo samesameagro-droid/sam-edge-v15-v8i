@@ -21,6 +21,7 @@ from run_v15_forward_test import ForwardPaperEngine, TARGET_TRADES
 
 CHART_CANDLES = int(os.getenv("TELEGRAM_CHART_CANDLES", "80"))
 CHART_FILE = Path(tempfile.gettempdir()) / "sam_edge_v15_signal_chart.png"
+MIGRATION_FLAG = Path("v15_telegram_professional_migration.done")
 
 
 def _fetch_df_full_history(self, symbol, timeframe="15m", limit=3600):
@@ -33,7 +34,6 @@ def _fetch_df_full_history(self, symbol, timeframe="15m", limit=3600):
     return df
 
 
-# Keep V15's known-good history transport while running entirely from GitHub.
 ForwardPaperEngine.fetch_df = _fetch_df_full_history
 
 
@@ -160,13 +160,44 @@ def professional_send_signal(p, equity):
     )
 
 
+def resend_active_professional(engine):
+    """One-time migration: upgrade already-active legacy Telegram signals to chart cards."""
+    if MIGRATION_FLAG.exists():
+        return
+    for _, pos in engine.positions.items():
+        p = asdict(pos)
+        p["selection_score"] = 0.0
+        p["telegram_status"] = "EXECUTED · ACTIVE"
+        caption = (
+            f"<b>🏆 SAM EDGE V15 | ACTIVE TRADE</b>\n"
+            f"{'🟢' if p['side'] == 'LONG' else '🔴'} <b>{p['coin']} · {p['side']}</b>\n"
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"<b>STATUS:</b> ACTIVE / PAPER ONLY\n"
+            f"<b>CORE:</b> {p.get('core', 'V15_ADX4H_CANDLE2H')}\n"
+            f"<b>TIMEFRAME:</b> 15M\n\n"
+            f"<b>TRADE PLAN</b>\n"
+            f"ENTRY  <code>{_fmt(p['entry'])}</code>\n"
+            f"SL     <code>{_fmt(p['sl'])}</code>\n"
+            f"TP     <code>{_fmt(p['tp'])}</code>\n"
+            f"RR     <b>1.25R</b>\n\n"
+            f"<i>Live BingX 15M chart. Trade remains active until TP or SL is confirmed.</i>"
+        )
+        chart = _make_chart(p)
+        if chart and _send_photo(chart, caption):
+            print(f"ACTIVE PROFESSIONAL CHART SENT | {p['coin']} | {p['side']}")
+    MIGRATION_FLAG.write_text("professional Telegram migration completed\n", encoding="utf-8")
+
+
+# Patch the function imported dynamically by main_paper_v15.scan_once().
 notifiers.send_signal = professional_send_signal
 
 
 if __name__ == "__main__":
     print(f"SAM EDGE V15 PROFESSIONAL FORWARD TEST | TARGET={TARGET_TRADES}")
     engine = ForwardPaperEngine()
-    if os.getenv("RUN_ONCE", "0").strip().lower() in {"1", "true", "yes", "on"}:
+    one_shot = os.getenv("RUN_ONCE", "0").strip().lower() in {"1", "true", "yes", "on"}
+    if one_shot:
+        resend_active_professional(engine)
         engine.scan_once()
     else:
         engine.run()
