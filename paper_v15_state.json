@@ -1,5 +1,5 @@
 {
-  "equity": 99.621265625,
+  "equity": 99.123159296875,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -51,10 +51,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 99.621265625
-    }
-  ],
-  "positions": {
-    "VIRTUAL/USDT:USDT": {
+    },
+    {
       "coin": "VIRTUAL/USDT:USDT",
       "side": "SHORT",
       "entry": 0.5802,
@@ -64,7 +62,13 @@
       "risk_cash": 0.49810632812500005,
       "opened_at": "2026-09-16T17:45:00+00:00",
       "core": "V15_ADX4H_CANDLE2H",
-      "status": "OPEN"
+      "status": "OPEN",
+      "closed_at": "2026-09-16T18:05:00+00:00",
+      "exit": 0.5927708895693659,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 99.123159296875
     }
-  }
+  ],
+  "positions": {}
 }
