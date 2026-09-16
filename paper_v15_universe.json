@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T00:59:36.361564+00:00",
+  "updated_at": "2026-09-16T01:04:10.960651+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -10,8 +10,8 @@
     "XRP/USDT:USDT",
     "ZEC/USDT:USDT",
     "HYPE/USDT:USDT",
-    "UNI/USDT:USDT",
     "AAVE/USDT:USDT",
+    "UNI/USDT:USDT",
     "BNB/USDT:USDT",
     "TAO/USDT:USDT",
     "ARB/USDT:USDT",
@@ -99,8 +99,8 @@
     "S/USDT:USDT",
     "COW/USDT:USDT",
     "CC/USDT:USDT",
-    "TRUTH/USDT:USDT",
     "HOLO/USDT:USDT",
+    "TRUTH/USDT:USDT",
     "INX/USDT:USDT",
     "BITLIGHT/USDT:USDT",
     "BTR/USDT:USDT"
