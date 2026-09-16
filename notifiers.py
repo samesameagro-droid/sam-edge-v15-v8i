@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import json
 import os
 import time
@@ -56,7 +57,12 @@ def _send_text(text: str, retries: int = 3) -> bool:
         return False
 
     url = f'https://api.telegram.org/bot{token}/sendMessage'
-    payload = {'chat_id': chat_id, 'text': text, 'disable_web_page_preview': True}
+    payload = {
+        'chat_id': chat_id,
+        'text': text,
+        'parse_mode': 'HTML',
+        'disable_web_page_preview': True,
+    }
 
     for attempt in range(1, retries + 1):
         try:
@@ -80,39 +86,67 @@ def _send_text(text: str, retries: int = 3) -> bool:
     return False
 
 
+def _esc(value) -> str:
+    return html.escape(str(value), quote=False)
+
+
 def send_signal(p, equity):
-    icon = '🟢' if p['side'] == 'LONG' else '🔴'
+    is_long = p['side'] == 'LONG'
+    side_icon = '🟢' if is_long else '🔴'
+    side_label = 'LONG' if is_long else 'SHORT'
+    status = str(p.get('telegram_status', 'EXECUTED')).upper()
+    core = str(p.get('core', 'V15_ADX4H_CANDLE2H'))
     risk_pct = float(p.get('risk_cash', 0)) / float(equity) * 100 if equity else 0.0
+    score = float(p.get('selection_score', 0) or 0)
+    opened_at = p.get('opened_at', '-')
+
     text = (
-        f'🏆 SAM EDGE V15 | PAPER\n'
-        f'{icon} {p["coin"]} | {p["side"]}\n'
-        f'CORE: {p.get("core", "V15_ADX4H_CANDLE2H")}\n'
-        f'ENTRY: {p["entry"]:.8g}\n'
-        f'SL: {p["sl"]:.8g}\n'
-        f'TP: {p["tp"]:.8g}\n'
-        f'RR: 1.25R\n'
-        f'SCORE: {p.get("selection_score", 0):.2f}\n'
-        f'RISK: {risk_pct:.2f}%\n'
-        f'STATUS: {p.get("telegram_status", "EXECUTED")}\n'
-        f'MODE: PAPER ONLY'
+        '🏆 <b>SAM EDGE V15</b>\n'
+        '━━━━━━━━━━━━━━━━━━━━\n'
+        f'⚡ <b>NEW PAPER SIGNAL</b>\n\n'
+        f'{side_icon} <b>{_esc(p["coin"])}</b>  |  <b>{side_label}</b>\n'
+        f'🧠 Core: <code>{_esc(core)}</code>\n'
+        f'🕒 Signal: <code>{_esc(opened_at)}</code>\n'
+        f'📌 Status: <b>{_esc(status)}</b>\n\n'
+        '💰 <b>TRADE LEVELS</b>\n'
+        '├ Entry     <code>' + f'{p["entry"]:.8g}' + '</code>\n'
+        '├ Stop Loss <code>' + f'{p["sl"]:.8g}' + '</code>\n'
+        '└ Take Profit <code>' + f'{p["tp"]:.8g}' + '</code>\n\n'
+        '📊 <b>RISK &amp; QUALITY</b>\n'
+        f'├ Risk      <b>{risk_pct:.2f}%</b>\n'
+        '├ R:R       <b>1.25R</b>\n'
+        f'└ Score     <b>{score:.2f}</b>\n\n'
+        '🛡 <b>EXECUTION</b>\n'
+        '• Paper trading only\n'
+        '• Follow the predefined Entry / SL / TP\n'
+        '• No chasing after the signal\n\n'
+        '━━━━━━━━━━━━━━━━━━━━\n'
+        '<i>SAM EDGE V15 • Structured Signal Engine</i>'
     )
     return _send_text(text)
 
 
 def send_result(p, result, exit_price, closed_at, equity):
-    icon = '🎯' if result == 'TP' else '🛑'
-    rr_result = '1.25R' if result == 'TP' else '-1.00R'
+    is_tp = result == 'TP'
+    icon = '🎯' if is_tp else '🛑'
+    rr_result = '1.25R' if is_tp else '-1.00R'
+    result_label = 'TAKE PROFIT' if is_tp else 'STOP LOSS'
     text = (
-        f'{icon} SAM EDGE V15 | PAPER RESULT\n'
-        f'{p["coin"]} | {p["side"]}\n'
-        f'RESULT: {result} ({rr_result})\n'
-        f'ENTRY: {p["entry"]:.8g}\n'
-        f'EXIT: {float(exit_price):.8g}\n'
-        f'SL: {p["sl"]:.8g}\n'
-        f'TP: {p["tp"]:.8g}\n'
-        f'CLOSED: {closed_at}\n'
-        f'EQUITY: ${float(equity):.2f}\n'
-        f'MODE: PAPER ONLY'
+        '🏆 <b>SAM EDGE V15</b>\n'
+        '━━━━━━━━━━━━━━━━━━━━\n'
+        f'{icon} <b>PAPER TRADE CLOSED</b>\n\n'
+        f'🪙 <b>{_esc(p["coin"])}</b>  |  <b>{_esc(p["side"])}</b>\n'
+        f'📌 Result: <b>{result_label}</b>\n'
+        f'📈 R-Multiple: <b>{rr_result}</b>\n\n'
+        '💰 <b>TRADE LEVELS</b>\n'
+        '├ Entry  <code>' + f'{p["entry"]:.8g}' + '</code>\n'
+        '├ Exit   <code>' + f'{float(exit_price):.8g}' + '</code>\n'
+        '├ SL     <code>' + f'{p["sl"]:.8g}' + '</code>\n'
+        '└ TP     <code>' + f'{p["tp"]:.8g}' + '</code>\n\n'
+        f'🕒 Closed: <code>{_esc(closed_at)}</code>\n'
+        f'💵 Equity: <b>${float(equity):.2f}</b>\n\n'
+        '━━━━━━━━━━━━━━━━━━━━\n'
+        '<i>SAM EDGE V15 • Paper Forward Record</i>'
     )
     return _send_text(text)
 
