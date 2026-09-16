@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-15T23:58:45.874727+00:00",
+  "updated_at": "2026-09-16T00:04:57.542609+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -90,9 +90,9 @@
     "FHE/USDT:USDT",
     "PNUT/USDT:USDT",
     "ALCH/USDT:USDT",
-    "GIGGLE/USDT:USDT",
     "CATI/USDT:USDT",
     "0G/USDT:USDT",
+    "GIGGLE/USDT:USDT",
     "REDSTONE/USDT:USDT",
     "DOOD/USDT:USDT",
     "PLUME/USDT:USDT",
@@ -101,8 +101,8 @@
     "TRUTH/USDT:USDT",
     "CC/USDT:USDT",
     "INX/USDT:USDT",
-    "BITLIGHT/USDT:USDT",
     "BTR/USDT:USDT",
-    "HOLO/USDT:USDT"
+    "BITLIGHT/USDT:USDT",
+    "BABY/USDT:USDT"
   ]
 }
