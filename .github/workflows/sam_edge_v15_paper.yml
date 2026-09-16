@@ -31,7 +31,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: python -m pip install -r requirements.txt matplotlib
 
       - name: Run V15 professional one-shot forward-test scan
         id: scan
