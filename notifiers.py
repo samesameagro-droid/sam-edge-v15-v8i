@@ -14,8 +14,10 @@ PENDING_FILE = Path('pending_telegram_signals.json')
 
 
 def _telegram_config():
-    token = os.getenv('TELEGRAM_BOT_TOKEN') or os.getenv('BOT_TOKEN')
-    chat_id = os.getenv('TELEGRAM_CHAT_ID') or os.getenv('CHAT_ID')
+    # GitHub Actions secrets are injected as environment variables. Strip accidental
+    # leading/trailing whitespace so a copied token/chat id cannot become malformed.
+    token = (os.getenv('TELEGRAM_BOT_TOKEN') or os.getenv('BOT_TOKEN') or '').strip()
+    chat_id = (os.getenv('TELEGRAM_CHAT_ID') or os.getenv('CHAT_ID') or '').strip()
     return token, chat_id
 
 
@@ -76,6 +78,10 @@ def _send_text(text: str, retries: int = 3) -> bool:
                 print(f'TELEGRAM API ERROR | attempt={attempt}: {data}')
             else:
                 print(f'TELEGRAM HTTP {r.status_code} | attempt={attempt}: {r.text}')
+                if r.status_code == 401:
+                    # 401 is an authentication failure; retrying the same token cannot fix it.
+                    print('TELEGRAM AUTH FAILURE | 401 Unauthorized | check/replace TELEGRAM_BOT_TOKEN in GitHub Secrets')
+                    break
         except Exception as e:
             print(f'TELEGRAM ERROR | attempt={attempt}: {e}')
         if attempt < retries:
