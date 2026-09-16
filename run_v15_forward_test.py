@@ -8,11 +8,13 @@ import main_paper_v15 as base
 
 # Forward-test policy:
 # - scanner still scans the whole eligible universe;
-# - ONE active forward-test position at a time;
-# - Trade # is a MASTER sequence across all coins;
-# - only selected/closed trades count toward the 20-trade target;
-# - waitlist signals do not count.
-base.MAX_ACTIVE = 1
+# - a signal becomes a trade when it passes the SAME 9 V15 gates used by signal_mask();
+# - SCORE is informational/ranking only and is NOT an execution threshold;
+# - Trade # is a MASTER sequence across all coins and is assigned when a trade closes;
+# - selected/closed trades count toward the 20-trade target;
+# - waitlist signals do not count because they were not executed by the paper engine;
+# - preserve the main paper engine's normal multi-position capacity (default 5).
+base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
@@ -39,7 +41,8 @@ class ForwardPaperEngine(base.PaperEngine):
         self._write_summary()
         print(
             f"FORWARD TEST | completed={len(self.master_rows)}/{TARGET_TRADES} "
-            f"| active={len(self.positions)} | policy=ONE_ACTIVE"
+            f"| active={len(self.positions)} | max_active={base.MAX_ACTIVE} "
+            f"| policy=9_GATES_NO_SCORE_THRESHOLD"
         )
 
     @staticmethod
@@ -99,7 +102,6 @@ class ForwardPaperEngine(base.PaperEngine):
             except Exception as e:
                 print(f"LEGACY JOURNAL BOOTSTRAP ERROR: {e}")
 
-        # Preserve chronological order and deduplicate by immutable trade key.
         sources.sort(key=lambda r: str(r.get("closed_at") or r.get("opened_at") or ""))
         seen = set()
         trade_no = 0
@@ -118,11 +120,10 @@ class ForwardPaperEngine(base.PaperEngine):
             print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)} from GitHub state")
 
     def _migrate_legacy_active_positions(self):
-        # The previous generic paper runner allowed multiple active positions.
-        # For the dedicated 20-trade forward test, retain only the newest legacy
-        # position as the active forward trade. This makes the current/newest signal
-        # the next chronological trade while preventing stale legacy positions from
-        # consuming the forward-test slot.
+        # The old generic paper runner could leave several legacy positions open.
+        # Do not let stale pre-forward-test positions contaminate the new sample.
+        # Keep the newest active position (currently the live/newest signal), then
+        # use normal V15 capacity for all signals generated after this migration.
         if len(self.positions) <= 1:
             return
         newest_key, newest = max(
@@ -200,6 +201,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "profit_factor": round(pf, 4) if pf is not None else None,
             "drawdown_R": round(max_dd, 4),
             "equity": float(self.equity),
+            "active_positions": len(self.positions),
+            "max_active": base.MAX_ACTIVE,
+            "score_is_execution_threshold": False,
+            "validation": "9 V15 gates from signal_mask",
             "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
         }, indent=2, ensure_ascii=False), encoding="utf-8")
         MASTER_STATE.write_text(json.dumps({
@@ -207,6 +212,9 @@ class ForwardPaperEngine(base.PaperEngine):
             "next_trade_no": len(self.master_rows) + 1,
             "closed_trades": len(self.master_rows),
             "active_positions": list(self.positions),
+            "max_active": base.MAX_ACTIVE,
+            "score_is_execution_threshold": False,
+            "validation": "9 V15 gates from signal_mask",
         }, indent=2, ensure_ascii=False), encoding="utf-8")
 
     def analyze_latest(self, symbol):
@@ -258,7 +266,7 @@ class ForwardPaperEngine(base.PaperEngine):
         self._write_master()
         self._write_summary()
         self._print_master_summary()
-        print(f"📘 MASTER FORWARD TEST | Trade #{row['trade_no']} | {p.coin} | {p.side} | {row['result']}")
+        print(f"📘 MASTER FORWARD TEST | Trade #{row['trade_no']} | {p.coin} | {p.side} | {row['result']} | SCORE={score}")
 
     def _print_master_summary(self):
         rs = []
