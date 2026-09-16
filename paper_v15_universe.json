@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T23:19:14.416665+00:00",
+  "updated_at": "2026-09-16T23:26:57.911185+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -26,8 +26,8 @@
     "DOGE/USDT:USDT",
     "YFI/USDT:USDT",
     "ONDO/USDT:USDT",
-    "SUI/USDT:USDT",
     "LTC/USDT:USDT",
+    "SUI/USDT:USDT",
     "AIN/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "BOME/USDT:USDT",
@@ -39,8 +39,8 @@
     "UAI/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "ZRO/USDT:USDT",
-    "ETHFI/USDT:USDT",
     "BEAT/USDT:USDT",
+    "ETHFI/USDT:USDT",
     "WLD/USDT:USDT",
     "STX/USDT:USDT",
     "ASTER/USDT:USDT",
@@ -67,8 +67,8 @@
     "PI/USDT:USDT",
     "KAITO/USDT:USDT",
     "SOPH/USDT:USDT",
-    "BANK/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
+    "BANK/USDT:USDT",
     "HOME/USDT:USDT",
     "HOLO/USDT:USDT",
     "ZK/USDT:USDT",
@@ -78,8 +78,8 @@
     "MERL/USDT:USDT",
     "FOLKS/USDT:USDT",
     "EVAA/USDT:USDT",
-    "APT/USDT:USDT",
     "ZORA/USDT:USDT",
+    "APT/USDT:USDT",
     "ILV/USDT:USDT",
     "S/USDT:USDT",
     "TNSR/USDT:USDT",
@@ -102,7 +102,7 @@
     "HANA/USDT:USDT",
     "KAIA/USDT:USDT",
     "FHE/USDT:USDT",
-    "LYN/USDT:USDT",
-    "DIA/USDT:USDT"
+    "DIA/USDT:USDT",
+    "LYN/USDT:USDT"
   ]
 }
