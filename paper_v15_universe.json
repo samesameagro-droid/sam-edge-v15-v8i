@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T00:29:20.158920+00:00",
+  "updated_at": "2026-09-16T00:34:29.644355+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -61,8 +61,8 @@
     "BLESS/USDT:USDT",
     "BANK/USDT:USDT",
     "STBL/USDT:USDT",
-    "ZORA/USDT:USDT",
     "WLFI/USDT:USDT",
+    "ZORA/USDT:USDT",
     "EVAA/USDT:USDT",
     "LA/USDT:USDT",
     "KAITO/USDT:USDT",
@@ -102,7 +102,7 @@
     "CC/USDT:USDT",
     "INX/USDT:USDT",
     "BTR/USDT:USDT",
-    "BABY/USDT:USDT",
-    "BITLIGHT/USDT:USDT"
+    "BITLIGHT/USDT:USDT",
+    "BABY/USDT:USDT"
   ]
 }
