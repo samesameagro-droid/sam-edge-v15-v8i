@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-16T22:32:28.999399+00:00",
+  "updated_at": "2026-09-16T22:37:01.974377+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -13,8 +13,8 @@
     "AAVE/USDT:USDT",
     "LSK/USDT:USDT",
     "ARB/USDT:USDT",
-    "UNI/USDT:USDT",
     "BNB/USDT:USDT",
+    "UNI/USDT:USDT",
     "NEAR/USDT:USDT",
     "BR/USDT:USDT",
     "ENA/USDT:USDT",
@@ -92,17 +92,17 @@
     "NIGHT/USDT:USDT",
     "CATI/USDT:USDT",
     "VANA/USDT:USDT",
-    "AIXBT/USDT:USDT",
     "AIO/USDT:USDT",
     "W/USDT:USDT",
+    "AIXBT/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "LA/USDT:USDT",
     "KAIA/USDT:USDT",
     "MERL/USDT:USDT",
     "TRADOOR/USDT:USDT",
     "HANA/USDT:USDT",
-    "LYN/USDT:USDT",
     "DIA/USDT:USDT",
+    "LYN/USDT:USDT",
     "PIEVERSE/USDT:USDT"
   ]
 }
