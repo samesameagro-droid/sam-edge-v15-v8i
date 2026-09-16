@@ -51,23 +51,6 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 99.621265625
-    },
-    {
-      "coin": "VIRTUAL/USDT:USDT",
-      "side": "SHORT",
-      "entry": 0.5802,
-      "sl": 0.5927708895693659,
-      "tp": 0.5644863880382928,
-      "risk_R": 1.0,
-      "risk_cash": 0.49810632812500005,
-      "opened_at": "2026-09-16T17:45:00+00:00",
-      "core": "V15_ADX4H_CANDLE2H",
-      "status": "OPEN",
-      "closed_at": "2026-09-16T18:05:00+00:00",
-      "exit": 0.5927708895693659,
-      "result": "SL",
-      "R": -1.0,
-      "equity_after": 99.123159296875
     }
   ],
   "positions": {}
