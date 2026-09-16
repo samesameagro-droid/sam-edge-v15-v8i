@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       telegram_test:
-        description: 'Test Telegram delivery before running the V15 scan'
+        description: 'Verify Telegram bot and send a test message before running the V15 scan'
         required: false
         default: false
         type: boolean
@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt matplotlib
 
-      - name: Test Telegram delivery
+      - name: Verify Telegram bot and delivery
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -52,28 +52,50 @@ jobs:
 
           token = (os.getenv('TELEGRAM_BOT_TOKEN') or '').strip()
           chat_id = (os.getenv('TELEGRAM_CHAT_ID') or '').strip()
-          if not token or not chat_id:
-              print('TELEGRAM TEST FAILED | token/chat_id not configured')
+          if not token:
+              print('TELEGRAM AUTH TEST FAILED | TELEGRAM_BOT_TOKEN not configured')
+              sys.exit(1)
+          if not chat_id:
+              print('TELEGRAM DELIVERY TEST FAILED | TELEGRAM_CHAT_ID not configured')
               sys.exit(1)
 
-          url = f'https://api.telegram.org/bot{token}/sendMessage'
+          api = f'https://api.telegram.org/bot{token}'
+
+          # Phase 1: authenticate the bot independently of the target chat.
+          try:
+              r = requests.get(f'{api}/getMe', timeout=30)
+              print(f'TELEGRAM GETME HTTP={r.status_code}')
+              if not r.ok:
+                  print(f'TELEGRAM AUTH TEST FAILED | HTTP {r.status_code} | {r.text}')
+                  sys.exit(1)
+              data = r.json()
+              if not data.get('ok'):
+                  print(f'TELEGRAM AUTH TEST FAILED | API response: {data}')
+                  sys.exit(1)
+              bot = data.get('result', {})
+              print(f'TELEGRAM AUTH OK | bot_id={bot.get("id")} | username=@{bot.get("username")}')
+          except Exception as e:
+              print(f'TELEGRAM AUTH TEST ERROR | {type(e).__name__}: {e}')
+              sys.exit(1)
+
+          # Phase 2: verify that the configured chat can receive a message.
           payload = {
               'chat_id': chat_id,
               'text': '✅ SAM EDGE V15 Telegram test OK | GitHub Actions → Telegram',
           }
           try:
-              r = requests.post(url, json=payload, timeout=30)
-              print(f'TELEGRAM TEST HTTP={r.status_code}')
+              r = requests.post(f'{api}/sendMessage', json=payload, timeout=30)
+              print(f'TELEGRAM SEND HTTP={r.status_code}')
               if not r.ok:
-                  print(f'TELEGRAM TEST FAILED | HTTP {r.status_code} | {r.text}')
+                  print(f'TELEGRAM DELIVERY TEST FAILED | HTTP {r.status_code} | {r.text}')
                   sys.exit(1)
               data = r.json()
               if not data.get('ok'):
-                  print(f'TELEGRAM TEST FAILED | API response: {data}')
+                  print(f'TELEGRAM DELIVERY TEST FAILED | API response: {data}')
                   sys.exit(1)
               print(f'TELEGRAM TEST SENT OK | message_id={data.get("result", {}).get("message_id")}')
           except Exception as e:
-              print(f'TELEGRAM TEST ERROR | {type(e).__name__}: {e}')
+              print(f'TELEGRAM DELIVERY TEST ERROR | {type(e).__name__}: {e}')
               sys.exit(1)
           PY
 
