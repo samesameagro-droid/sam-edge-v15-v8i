@@ -171,6 +171,68 @@
         "trigger": 0.49550249133780716
       },
       "signal_key": "FOLKS/USDT:USDT|LONG|2026-09-17T10:15:00+00:00|V15_EARLY_RECLAIM_V1"
+    },
+    "UNI/USDT:USDT": {
+      "coin": "UNI/USDT:USDT",
+      "side": "LONG",
+      "entry": 6.844,
+      "sl": 6.707964990885455,
+      "tp": 7.014043761393182,
+      "risk_R": 1.0,
+      "risk_cash": 0.49932120216281745,
+      "opened_at": "2026-09-17T10:45:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 42.19040289020698,
+      "entry_diag": {
+        "timestamp": "2026-09-17T10:45:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": false,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 6.844,
+        "rsi": 52.90274785887488,
+        "h4_adx_pct": 0.02,
+        "h4_adx_delta": 1.2940052047914534,
+        "volr": 1.5144123652115857,
+        "vol_slope": 0.7295157628547049,
+        "dist_ema20_atr": 0.16713156064938067,
+        "room_atr": 3.38646292694019,
+        "body_atr": 0.8040916538853515,
+        "close_pos": 0.9629629629629672,
+        "atr": 0.0646692447916077
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.2720026023957267,
+        "room": 1.0,
+        "location": 0.2785526010823012,
+        "volume": 0.7572061826057929,
+        "trigger": 1.0
+      },
+      "signal_key": "UNI/USDT:USDT|LONG|2026-09-17T10:45:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }
