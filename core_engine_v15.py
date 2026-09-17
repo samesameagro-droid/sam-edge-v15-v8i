@@ -5,16 +5,34 @@ import zipfile
 import numpy as np
 import pandas as pd
 
-CORE_NAME = 'V15_ADX4H_CANDLE2H'
+LEGACY_CORE_NAME = 'V15_ADX4H_CANDLE2H'
+CORE_NAME = 'V15_EARLY_RECLAIM_V1'
 RR = 1.25
 SWING_LOOKBACK = 20
 MAX_HOLD_BARS = 96
 COINS = ['ADA','AVAX','BNB','BTC','CRV','DOGE','ETH','FET','LINK','SOL','SUI','UNI','XRP']
 
+# Keep the proven HTF regime strength requirements; change only the trigger timing.
 ADX_LONG_PCT = 0.80
 ADX_LONG_DELTA = 0.75
 ADX_SHORT_PCT = 0.85
 ADX_SHORT_DELTA = 0.90
+
+# Early-entry guardrails: they explicitly reject already-expanded candles.
+EARLY_MOVE5_MAX_ATR = 2.50
+EARLY_DIST_EMA_MAX_ATR = 1.20
+EARLY_ROOM_MIN_ATR = 0.85
+EARLY_PULLBACK_LOOKBACK = 6
+EARLY_PULLBACK_MAX_ATR = 0.60
+EARLY_RECLAIM_BUFFER_ATR = 0.05
+EARLY_VOLUME_RATIO_MIN = 1.00
+EARLY_VOLUME_SLOPE_MIN = -0.20
+
+# Structure-aware stop: tighter than the old 20-bar swing + 1 ATR stop, but bounded.
+STRUCTURE_STOP_LOOKBACK = 8
+STRUCTURE_STOP_ATR_BUFFER = 0.65
+STRUCTURE_STOP_MIN_ATR = 0.80
+STRUCTURE_STOP_MAX_ATR = 2.50
 
 @dataclass(frozen=True)
 class Candidate:
@@ -244,8 +262,23 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def signal_mask(x: pd.DataFrame, core: str = CORE_NAME):
+    if core == LEGACY_CORE_NAME:
+        r=x
+        bull=r.h1_trend_bull&r.h4_trend_bull
+        bear=r.h1_trend_bear&r.h4_trend_bear
+        emaL=(r.close>r.ema20)&(r.ema20>r.ema50)
+        emaS=(r.close<r.ema20)&(r.ema20<r.ema50)
+        structureL=bull&emaL&(r.close>r.vwap)&(r.pdi>r.mdi)&r.rsi.between(46,64)
+        structureS=bear&emaS&(r.close<r.vwap)&(r.mdi>r.pdi)&r.rsi.between(36,54)
+        roomL=r.dist_res_atr>=0.85
+        roomS=r.dist_sup_atr>=0.85
+        noex=(r.move5_atr<=3.50)&(r.dist_ema20_atr<=1.60)&(r.range_atr<=2.25)
+        adxL=(r.h4_adx_pct>=ADX_LONG_PCT)&(r.h4_adx_delta>=ADX_LONG_DELTA)
+        adxS=(r.h4_adx_pct>=ADX_SHORT_PCT)&(r.h4_adx_delta>=ADX_SHORT_DELTA)
+        return (structureL&adxL&roomL&noex&r.c2h_bull_strict).fillna(False), (structureS&adxS&roomS&noex&r.c2h_bear_strict).fillna(False)
     if core != CORE_NAME:
         raise ValueError(f'Unsupported core: {core}')
+
     r=x
     bull=r.h1_trend_bull&r.h4_trend_bull
     bear=r.h1_trend_bear&r.h4_trend_bear
@@ -253,30 +286,57 @@ def signal_mask(x: pd.DataFrame, core: str = CORE_NAME):
     emaS=(r.close<r.ema20)&(r.ema20<r.ema50)
     structureL=bull&emaL&(r.close>r.vwap)&(r.pdi>r.mdi)&r.rsi.between(46,64)
     structureS=bear&emaS&(r.close<r.vwap)&(r.mdi>r.pdi)&r.rsi.between(36,54)
-    roomL=r.dist_res_atr>=0.85
-    roomS=r.dist_sup_atr>=0.85
-    noex=(r.move5_atr<=3.50)&(r.dist_ema20_atr<=1.60)&(r.range_atr<=2.25)
-    adxL=(r.h4_adx_pct>=ADX_LONG_PCT)&(r.h4_adx_delta>=ADX_LONG_DELTA)
-    adxS=(r.h4_adx_pct>=ADX_SHORT_PCT)&(r.h4_adx_delta>=ADX_SHORT_DELTA)
-    long=structureL&adxL&roomL&noex&r.c2h_bull_strict
-    short=structureS&adxS&roomS&noex&r.c2h_bear_strict
+    roomL=r.dist_res_atr>=EARLY_ROOM_MIN_ATR
+    roomS=r.dist_sup_atr>=EARLY_ROOM_MIN_ATR
+    no_chase=(r.move5_atr<=EARLY_MOVE5_MAX_ATR)&(r.dist_ema20_atr<=EARLY_DIST_EMA_MAX_ATR)&(r.range_atr<=2.25)
+    vol_ok=(r.volr>=EARLY_VOLUME_RATIO_MIN)&(r.vol_slope>=EARLY_VOLUME_SLOPE_MIN)
+    touchL=r.low.rolling(EARLY_PULLBACK_LOOKBACK).min() <= (r.ema20+EARLY_PULLBACK_MAX_ATR*r.atr)
+    touchS=r.high.rolling(EARLY_PULLBACK_LOOKBACK).max() >= (r.ema20-EARLY_PULLBACK_MAX_ATR*r.atr)
+    reclaimL=(r.close > r.high.shift(1)+EARLY_RECLAIM_BUFFER_ATR*r.atr)&(r.close>r.ema20)&(r.close_pos>=0.60)&(r.body_atr>=0.20)
+    reclaimS=(r.close < r.low.shift(1)-EARLY_RECLAIM_BUFFER_ATR*r.atr)&(r.close<r.ema20)&(r.close_pos<=0.40)&(r.body_atr>=0.20)
+    long=(structureL&roomL&no_chase&vol_ok&touchL&reclaimL)
+    short=(structureS&roomS&no_chase&vol_ok&touchS&reclaimS)
     return long.fillna(False), short.fillna(False)
 
 
-def backtest_core(x, core=CORE_NAME, rr=RR):
+def trade_levels(x: pd.DataFrame, i: int, side: int, stop_style: str = 'STRUCTURE'):
+    entry=float(x.close.iloc[i]); atr=float(x.atr.iloc[i])
+    if not np.isfinite(atr) or atr<=0:
+        return None
+    if stop_style.upper() == 'LEGACY':
+        if side==1:
+            sl=float(x.low.iloc[max(0,i-SWING_LOOKBACK):i].min())-atr
+        else:
+            sl=float(x.high.iloc[max(0,i-SWING_LOOKBACK):i].max())+atr
+    else:
+        if side==1:
+            anchor=float(x.low.iloc[max(0,i-STRUCTURE_STOP_LOOKBACK):i].min())
+            sl=anchor-STRUCTURE_STOP_ATR_BUFFER*atr
+        else:
+            anchor=float(x.high.iloc[max(0,i-STRUCTURE_STOP_LOOKBACK):i].max())
+            sl=anchor+STRUCTURE_STOP_ATR_BUFFER*atr
+        risk=entry-sl if side==1 else sl-entry
+        if risk < STRUCTURE_STOP_MIN_ATR*atr:
+            sl=entry-STRUCTURE_STOP_MIN_ATR*atr if side==1 else entry+STRUCTURE_STOP_MIN_ATR*atr
+        elif risk > STRUCTURE_STOP_MAX_ATR*atr:
+            sl=entry-STRUCTURE_STOP_MAX_ATR*atr if side==1 else entry+STRUCTURE_STOP_MAX_ATR*atr
+    risk=entry-sl if side==1 else sl-entry
+    if not np.isfinite(risk) or risk<=0:
+        return None
+    tp=entry+RR*risk if side==1 else entry-RR*risk
+    return entry,float(sl),float(tp),float(risk)
+
+
+def backtest_core(x, core=CORE_NAME, rr=RR, stop_style='STRUCTURE'):
     long,short=signal_mask(x,core)
     idx=sorted([(int(i),1) for i in np.flatnonzero(long.to_numpy()) if i>=250]+[(int(i),-1) for i in np.flatnonzero(short.to_numpy()) if i>=250])
     H,L,T,C=x.high.to_numpy(),x.low.to_numpy(),x.timestamp.to_numpy(),x.close.to_numpy()
     out=[]; last=-1
     for i,side in idx:
         if i<=last: continue
-        a=float(x.atr.iloc[i]); e=float(C[i])
-        if not np.isfinite(a) or a<=0: continue
-        if side==1:
-            sl=float(x.low.iloc[max(0,i-SWING_LOOKBACK):i].min())-a; risk=e-sl; tp=e+rr*risk
-        else:
-            sl=float(x.high.iloc[max(0,i-SWING_LOOKBACK):i].max())+a; risk=sl-e; tp=e-rr*risk
-        if not np.isfinite(risk) or risk<=0: continue
+        levels=trade_levels(x,i,side,stop_style)
+        if levels is None: continue
+        e,sl,tp,risk=levels
         ex=None; result=None
         for j in range(i+1,min(len(x),i+1+MAX_HOLD_BARS)):
             hit_sl=L[j]<=sl if side==1 else H[j]>=sl
@@ -297,13 +357,11 @@ def latest_signal(x: pd.DataFrame):
     lm,sm=signal_mask(x,CORE_NAME)
     side='LONG' if bool(lm.iloc[i]) else ('SHORT' if bool(sm.iloc[i]) else None)
     if side is None: return None
-    entry=float(x.close.iloc[i]); atr=float(x.atr.iloc[i])
-    if not np.isfinite(atr) or atr<=0: return None
-    if side=='LONG':
-        sl=float(x.low.iloc[max(0,i-SWING_LOOKBACK):i].min())-atr; risk=entry-sl; tp=entry+RR*risk
-    else:
-        sl=float(x.high.iloc[max(0,i-SWING_LOOKBACK):i].max())+atr; risk=sl-entry; tp=entry-RR*risk
-    if not np.isfinite(risk) or risk<=0: return None
-    return {'side':side,'timestamp':x.timestamp.iloc[i].isoformat(),'entry':entry,'sl':float(sl),'tp':float(tp),
-            'atr':atr,'adx4h_pct':float(x.h4_adx_pct.iloc[i]),'adx4h_delta':float(x.h4_adx_delta.iloc[i]),
-            'candle2h_body_atr':float(x.c2h_body_atr.iloc[i]),'candle2h_close_pos':float(x.c2h_close_pos.iloc[i])}
+    levels=trade_levels(x,i,1 if side=='LONG' else -1,'STRUCTURE')
+    if levels is None: return None
+    entry,sl,tp,risk=levels
+    return {'side':side,'timestamp':x.timestamp.iloc[i].isoformat(),'entry':entry,'sl':sl,'tp':tp,
+            'atr':float(x.atr.iloc[i]),'risk_atr':risk/float(x.atr.iloc[i]),
+            'adx4h_pct':float(x.h4_adx_pct.iloc[i]),'adx4h_delta':float(x.h4_adx_delta.iloc[i]),
+            'move5_atr':float(x.move5_atr.iloc[i]),'dist_ema20_atr':float(x.dist_ema20_atr.iloc[i]),
+            'volume_ratio':float(x.volr.iloc[i])}
