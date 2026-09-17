@@ -230,8 +230,14 @@ class PaperEngine:
         touchS = r.high.rolling(6).max() >= (r.ema20 - 0.60*r.atr)
         reclaimL = (r.close > r.high.shift(1) + 0.05*r.atr) & (r.close > r.ema20) & (r.close_pos >= 0.60) & (r.body_atr >= 0.20)
         reclaimS = (r.close < r.low.shift(1) - 0.05*r.atr) & (r.close < r.ema20) & (r.close_pos <= 0.40) & (r.body_atr >= 0.20)
-        finalL = structureL & roomL & noChase & volOk & touchL & reclaimL & (r.h4_adx_pct >= ADX_LONG_PCT) & (r.h4_adx_delta >= ADX_LONG_DELTA)
-        finalS = structureS & roomS & noChase & volOk & touchS & reclaimS & (r.h4_adx_pct >= ADX_SHORT_PCT) & (r.h4_adx_delta >= ADX_SHORT_DELTA)
+
+        # IMPORTANT: final diagnostic state must be the exact same mask used
+        # by analyze_latest() for execution. Do not duplicate the signal gate
+        # here, otherwise diagnostic and execution can drift apart again.
+        signal_long, signal_short = signal_mask(x, CORE_NAME)
+        finalL = signal_long.fillna(False)
+        finalS = signal_short.fillna(False)
+
         long_steps = {
             'trend': bool(bull.iloc[i]), 'ema': bool((bull & emaL).iloc[i]),
             'vwap': bool((bull & emaL & vwapL).iloc[i]), 'di': bool((bull & emaL & vwapL & diL).iloc[i]),
@@ -364,7 +370,7 @@ class PaperEngine:
 
     def scan_once(self):
         t0 = time.perf_counter()
-        print('\n' + '='*100)
+        print('\\n' + '='*100)
         print(f'SAM EDGE V15 | BUILD={BUILD} | CORE={CORE_NAME}')
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
@@ -458,7 +464,7 @@ class PaperEngine:
     def run(self):
         def stop_handler(signum, frame):
             self.running=False
-            print('\nSTOP REQUESTED | saving V15 state...')
+            print('\\nSTOP REQUESTED | saving V15 state...')
             self.save_state()
         signal.signal(signal.SIGINT, stop_handler)
         try:
