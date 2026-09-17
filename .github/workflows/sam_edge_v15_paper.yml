@@ -8,6 +8,8 @@ on:
       - 'run_v15_forward_test_pro.py'
       - 'notifiers.py'
       - 'reconcile_v15_results.py'
+      - 'telegram_result_guard.py'
+      - 'sitecustomize.py'
       - '.github/workflows/sam_edge_v15_paper.yml'
   workflow_dispatch:
     inputs:
