@@ -62,7 +62,6 @@ jobs:
 
           api = f'https://api.telegram.org/bot{token}'
 
-          # Phase 1: authenticate the bot independently of the target chat.
           try:
               r = requests.get(f'{api}/getMe', timeout=30)
               print(f'TELEGRAM GETME HTTP={r.status_code}')
@@ -79,7 +78,6 @@ jobs:
               print(f'TELEGRAM AUTH TEST ERROR | {type(e).__name__}: {e}')
               sys.exit(1)
 
-          # Phase 2: verify that the configured chat can receive a message.
           payload = {
               'chat_id': chat_id,
               'text': '✅ SAM EDGE V15 Telegram test OK | GitHub Actions → Telegram',
@@ -129,6 +127,13 @@ jobs:
             exit "$RC"
           fi
 
+      - name: Reconcile and deliver missed TP SL notifications
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python reconcile_v15_results.py
+
       - name: Persist V15 + Master Forward Test state
         if: ${{ success() }}
         run: |
@@ -136,7 +141,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json"
+          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json"
           if [ -f paper_v15_trades.csv ]; then
             STATE_FILES="$STATE_FILES paper_v15_trades.csv"
           fi
