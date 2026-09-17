@@ -6,7 +6,8 @@
     "UNI/USDT:USDT",
     "ARB/USDT:USDT",
     "ASTER/USDT:USDT",
-    "FLOCK/USDT:USDT"
+    "FLOCK/USDT:USDT",
+    "SOMI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
