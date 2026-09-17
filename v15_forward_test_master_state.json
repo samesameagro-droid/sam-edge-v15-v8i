@@ -3,7 +3,6 @@
   "next_trade_no": 7,
   "closed_trades": 6,
   "active_positions": [
-    "FOLKS/USDT:USDT",
     "UNI/USDT:USDT"
   ],
   "max_active": 5,
