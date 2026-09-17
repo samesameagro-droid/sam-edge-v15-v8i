@@ -1,0 +1,37 @@
+name: V15 Engine Research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'core_engine_v15.py'
+      - 'research_v15_engine.py'
+      - '.github/workflows/v15_engine_research.yml'
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install -r requirements.txt pandas numpy requests
+
+      - name: Run 180-day V15 engine comparison
+        run: python research_v15_engine.py --days 180
+
+      - name: Upload research results
+        uses: actions/upload-artifact@v4
+        with:
+          name: v15-engine-research
+          path: |
+            v15_engine_research_results.csv
+            v15_engine_research_trades.csv
