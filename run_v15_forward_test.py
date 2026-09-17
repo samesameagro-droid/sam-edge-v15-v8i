@@ -120,12 +120,19 @@ class ForwardPaperEngine(base.PaperEngine):
             print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)} from GitHub state")
 
     def _migrate_legacy_active_positions(self):
-        # The old generic paper runner could leave several legacy positions open.
-        # Do not let stale pre-forward-test positions contaminate the new sample.
-        # Keep the newest active position (currently the live/newest signal), then
-        # use normal V15 capacity for all signals generated after this migration.
-        if len(self.positions) <= 1:
+        # IMPORTANT:
+        # Never delete active positions merely because more than one position
+        # exists. The V15 forward test is intentionally multi-position (up to
+        # FORWARD_MAX_ACTIVE), so older versions of this migration were silently
+        # deleting legitimate trades such as ARB and ASTER on every workflow run.
+        #
+        # Only perform the legacy cleanup on the very first bootstrap, when the
+        # master forward-test journal does not yet exist. Once MASTER_JOURNAL is
+        # present, every active position is part of the forward-test state and
+        # must survive restarts unchanged.
+        if MASTER_JOURNAL.exists() or len(self.positions) <= 1:
             return
+
         newest_key, newest = max(
             self.positions.items(),
             key=lambda kv: str(kv[1].opened_at),
@@ -133,7 +140,7 @@ class ForwardPaperEngine(base.PaperEngine):
         dropped = [p.coin for k, p in self.positions.items() if k != newest_key]
         self.positions = {newest_key: newest}
         print(
-            f"LEGACY ACTIVE MIGRATION | kept={newest.coin} | dropped_stale={','.join(dropped)}"
+            f"LEGACY ACTIVE MIGRATION | initial bootstrap only | kept={newest.coin} | dropped_stale={','.join(dropped)}"
         )
 
     def _write_master(self):
