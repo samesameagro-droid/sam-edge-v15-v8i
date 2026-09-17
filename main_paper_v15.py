@@ -4,7 +4,7 @@ import json
 import os
 import signal
 import time
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -52,6 +52,12 @@ class Position:
     opened_at: str
     core: str = CORE_NAME
     status: str = 'OPEN'
+    # Telegram/post-mortem snapshot. Defaults keep old V15 state files compatible.
+    entry_score: float = 0.0
+    entry_diag: dict = field(default_factory=dict)
+    entry_metrics: dict = field(default_factory=dict)
+    score_breakdown: dict = field(default_factory=dict)
+    signal_key: str = ''
 
 
 class PaperEngine:
@@ -270,18 +276,44 @@ class PaperEngine:
         adx_delta = float(x.h4_adx_delta.iloc[i])
         adx_floor = ADX_LONG_PCT if side == 'LONG' else ADX_SHORT_PCT
         delta_floor = ADX_LONG_DELTA if side == 'LONG' else ADX_SHORT_DELTA
-        adx_margin = np.clip((adx_pct-adx_floor)/(1-adx_floor), 0, 1)
-        delta_margin = np.clip((adx_delta-delta_floor)/2.0, 0, 1)
+        adx_margin = float(np.clip((adx_pct-adx_floor)/(1-adx_floor), 0, 1))
+        delta_margin = float(np.clip((adx_delta-delta_floor)/2.0, 0, 1))
         room = float(x.dist_res_atr.iloc[i] if side == 'LONG' else x.dist_sup_atr.iloc[i])
-        room_margin = np.clip((room-EARLY_ROOM_MIN_ATR)/1.50, 0, 1)
+        room_margin = float(np.clip((room-EARLY_ROOM_MIN_ATR)/1.50, 0, 1))
         dist = float(x.dist_ema20_atr.iloc[i])
-        loc_center = np.clip(1.0-abs(dist-0.60)/0.60, 0, 1)
-        vol_margin = np.clip(float(x.volr.iloc[i])/2.0, 0, 1)
-        trigger_margin = np.clip(float(x.body_atr.iloc[i])/0.80, 0, 1)
+        loc_center = float(np.clip(1.0-abs(dist-0.60)/0.60, 0, 1))
+        vol_margin = float(np.clip(float(x.volr.iloc[i])/2.0, 0, 1))
+        trigger_margin = float(np.clip(float(x.body_atr.iloc[i])/0.80, 0, 1))
         score = 100.0*(0.30*adx_margin + 0.20*delta_margin + 0.20*room_margin + 0.15*loc_center + 0.10*vol_margin + 0.05*trigger_margin)
-        p = Position(symbol, side, entry, sl, tp, 1.0, self.equity*RISK_PCT, ts)
+        score_breakdown = {
+            'adx': adx_margin,
+            'delta': delta_margin,
+            'room': room_margin,
+            'location': loc_center,
+            'volume': vol_margin,
+            'trigger': trigger_margin,
+        }
+        entry_metrics = {
+            'close': float(x.close.iloc[i]),
+            'rsi': float(x.rsi.iloc[i]),
+            'h4_adx_pct': adx_pct,
+            'h4_adx_delta': adx_delta,
+            'volr': float(x.volr.iloc[i]),
+            'vol_slope': float(x.vol_slope.iloc[i]),
+            'dist_ema20_atr': dist,
+            'room_atr': room,
+            'body_atr': float(x.body_atr.iloc[i]),
+            'close_pos': float(x.close_pos.iloc[i]),
+            'atr': float(x.atr.iloc[i]),
+        }
+        p = Position(
+            symbol, side, entry, sl, tp, 1.0, self.equity*RISK_PCT, ts,
+            entry_score=float(score), entry_diag=diag, entry_metrics=entry_metrics,
+            score_breakdown=score_breakdown, signal_key=key,
+        )
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
-                           'timestamp': ts, 'entry': entry, 'sl': sl, 'tp': tp},
+                           'timestamp': ts, 'entry': entry, 'sl': sl, 'tp': tp,
+                           'entry_metrics': entry_metrics, 'score_breakdown': score_breakdown},
                 'timestamp': ts, 'diag': diag}
 
     def track(self, p):
@@ -307,6 +339,16 @@ class PaperEngine:
         self.closed.append(rec)
         pd.DataFrame([rec]).to_csv(JOURNAL_FILE, mode='a', header=not JOURNAL_FILE.exists(), index=False)
         print(f'🎯 {result} | {p.coin} | {p.side} | R={rr:+.2f} | Equity=${self.equity:.2f}')
+        try:
+            from notifiers import send_result
+            sent = send_result(asdict(p), result, price, ts, self.equity)
+            if sent:
+                print(f'📨 TELEGRAM RESULT | {p.coin} | {p.side} | {result} | delivered')
+            else:
+                print(f'⚠️ TELEGRAM RESULT NOT SENT | {p.coin} | {p.side} | {result}')
+        except Exception as e:
+            # Notification failure must never break the trading/paper engine.
+            print(f'TELEGRAM RESULT ERROR | {p.coin} | {result} | {type(e).__name__}: {e}')
 
     def report(self):
         if not self.closed:
