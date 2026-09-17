@@ -1,0 +1,14 @@
+coin,candles,legacy_signal_bars,early_signal_bars,error
+ADA,0,0,0,RuntimeError: no archive data
+AVAX,0,0,0,RuntimeError: no archive data
+BNB,0,0,0,RuntimeError: no archive data
+BTC,0,0,0,RuntimeError: no archive data
+CRV,0,0,0,RuntimeError: no archive data
+DOGE,0,0,0,RuntimeError: no archive data
+ETH,0,0,0,RuntimeError: no archive data
+FET,0,0,0,RuntimeError: no archive data
+LINK,0,0,0,RuntimeError: no archive data
+SOL,0,0,0,RuntimeError: no archive data
+SUI,0,0,0,RuntimeError: no archive data
+UNI,0,0,0,RuntimeError: no archive data
+XRP,0,0,0,RuntimeError: no archive data

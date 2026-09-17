@@ -1,0 +1,4 @@
+variant,trades,wins,losses,winrate_pct,net_R,profit_factor,expectancy_R,max_dd_R,median_dist_ema_atr,median_move5_atr,median_MFE_R,median_MAE_R
+LEGACY_BASELINE,0,0,0,0,0,0,0,0,,,,
+EARLY_RECLAIM_LEGACY_STOP,0,0,0,0,0,0,0,0,,,,
+EARLY_RECLAIM_STRUCTURE_STOP,0,0,0,0,0,0,0,0,,,,
