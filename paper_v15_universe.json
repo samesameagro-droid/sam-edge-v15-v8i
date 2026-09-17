@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T07:34:23.302759+00:00",
+  "updated_at": "2026-09-17T07:38:29.419671+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -78,8 +78,8 @@
     "PI/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
     "SOPH/USDT:USDT",
-    "GRASS/USDT:USDT",
     "ZK/USDT:USDT",
+    "GRASS/USDT:USDT",
     "BANK/USDT:USDT",
     "WLFI/USDT:USDT",
     "HOLO/USDT:USDT",
@@ -99,10 +99,10 @@
     "POPCAT/USDT:USDT",
     "BARD/USDT:USDT",
     "STBL/USDT:USDT",
-    "BROCCOLI/USDT:USDT",
     "BABY/USDT:USDT",
+    "BROCCOLI/USDT:USDT",
     "LA/USDT:USDT",
     "W/USDT:USDT",
-    "CATI/USDT:USDT"
+    "AIXBT/USDT:USDT"
   ]
 }
