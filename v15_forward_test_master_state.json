@@ -3,7 +3,8 @@
   "next_trade_no": 7,
   "closed_trades": 6,
   "active_positions": [
-    "UNI/USDT:USDT"
+    "UNI/USDT:USDT",
+    "INIT/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
