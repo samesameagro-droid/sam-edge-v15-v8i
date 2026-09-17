@@ -1,6 +1,14 @@
 name: SAM EDGE V15 - Paper Forward
 
 on:
+  push:
+    paths:
+      - 'main_paper_v15.py'
+      - 'run_v15_forward_test.py'
+      - 'run_v15_forward_test_pro.py'
+      - 'notifiers.py'
+      - 'reconcile_v15_results.py'
+      - '.github/workflows/sam_edge_v15_paper.yml'
   workflow_dispatch:
     inputs:
       telegram_test:
@@ -9,11 +17,9 @@ on:
         default: false
         type: boolean
   schedule:
-    # Continuous signal monitoring. GitHub Actions minimum practical cron interval is 5 minutes.
     - cron: '*/5 * * * *'
 
 concurrency:
-  # Telegram tests get their own lane so they cannot be cancelled/queued behind a V15 scan.
   group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true && 'telegram-test' || 'v15-scan' }}
   cancel-in-progress: false
 
@@ -50,52 +56,23 @@ jobs:
           import os
           import sys
           import requests
-
           token = (os.getenv('TELEGRAM_BOT_TOKEN') or '').strip()
           chat_id = (os.getenv('TELEGRAM_CHAT_ID') or '').strip()
-          if not token:
-              print('TELEGRAM AUTH TEST FAILED | TELEGRAM_BOT_TOKEN not configured')
+          if not token or not chat_id:
+              print('TELEGRAM TEST FAILED | token/chat_id not configured')
               sys.exit(1)
-          if not chat_id:
-              print('TELEGRAM DELIVERY TEST FAILED | TELEGRAM_CHAT_ID not configured')
-              sys.exit(1)
-
           api = f'https://api.telegram.org/bot{token}'
-
-          try:
-              r = requests.get(f'{api}/getMe', timeout=30)
-              print(f'TELEGRAM GETME HTTP={r.status_code}')
-              if not r.ok:
-                  print(f'TELEGRAM AUTH TEST FAILED | HTTP {r.status_code} | {r.text}')
-                  sys.exit(1)
-              data = r.json()
-              if not data.get('ok'):
-                  print(f'TELEGRAM AUTH TEST FAILED | API response: {data}')
-                  sys.exit(1)
-              bot = data.get('result', {})
-              print(f'TELEGRAM AUTH OK | bot_id={bot.get("id")} | username=@{bot.get("username")}')
-          except Exception as e:
-              print(f'TELEGRAM AUTH TEST ERROR | {type(e).__name__}: {e}')
+          r = requests.get(f'{api}/getMe', timeout=30)
+          print(f'TELEGRAM GETME HTTP={r.status_code}')
+          if not r.ok or not r.json().get('ok'):
+              print(f'TELEGRAM AUTH TEST FAILED | {r.text}')
               sys.exit(1)
-
-          payload = {
-              'chat_id': chat_id,
-              'text': '✅ SAM EDGE V15 Telegram test OK | GitHub Actions → Telegram',
-          }
-          try:
-              r = requests.post(f'{api}/sendMessage', json=payload, timeout=30)
-              print(f'TELEGRAM SEND HTTP={r.status_code}')
-              if not r.ok:
-                  print(f'TELEGRAM DELIVERY TEST FAILED | HTTP {r.status_code} | {r.text}')
-                  sys.exit(1)
-              data = r.json()
-              if not data.get('ok'):
-                  print(f'TELEGRAM DELIVERY TEST FAILED | API response: {data}')
-                  sys.exit(1)
-              print(f'TELEGRAM TEST SENT OK | message_id={data.get("result", {}).get("message_id")}')
-          except Exception as e:
-              print(f'TELEGRAM DELIVERY TEST ERROR | {type(e).__name__}: {e}')
+          r = requests.post(f'{api}/sendMessage', json={'chat_id': chat_id, 'text': '✅ SAM EDGE V15 Telegram test OK | GitHub Actions → Telegram'}, timeout=30)
+          print(f'TELEGRAM SEND HTTP={r.status_code}')
+          if not r.ok or not r.json().get('ok'):
+              print(f'TELEGRAM DELIVERY TEST FAILED | {r.text}')
               sys.exit(1)
+          print(f'TELEGRAM TEST SENT OK | message_id={r.json().get("result", {}).get("message_id")}')
           PY
 
       - name: Run V15 professional one-shot forward-test scan
@@ -158,33 +135,26 @@ jobs:
             echo "STATE PUSH ATTEMPT $attempt"
             git fetch origin main
             git reset --hard origin/main
-
             for f in $STATE_FILES; do
               if [ -f "$TMP_DIR/$(basename "$f")" ]; then
                 cp "$TMP_DIR/$(basename "$f")" "$f"
               fi
             done
-
             if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
               rm -f pending_telegram_signals.json
             fi
-
             git add -A
             if git diff --cached --quiet; then
               echo "NO STATE CHANGES AFTER SYNC"
               exit 0
             fi
-
             git commit -m "paper: V15 professional forward state"
-
             if git push origin HEAD:main; then
               echo "STATE PUSH OK"
               exit 0
             fi
-
             echo "REMOTE MOVED - retrying"
             sleep 2
           done
-
           echo "STATE PUSH FAILED AFTER 5 ATTEMPTS"
           exit 1
