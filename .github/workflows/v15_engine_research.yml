@@ -15,7 +15,7 @@ permissions:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,19 +31,26 @@ jobs:
       - name: Run 180-day legacy vs early comparison
         run: python research_v15_compare.py --days 180
 
-      - name: Upload research results
+      - name: Upload research results and diagnostics
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: v15-engine-research
+          if-no-files-found: warn
           path: |
             v15_engine_compare_results.csv
             v15_engine_compare_trades.csv
             v15_engine_compare_diagnostics.csv
 
       - name: Persist research results
+        if: always()
         run: |
           git config user.name "SAM EDGE V15 RESEARCH"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add v15_engine_compare_results.csv v15_engine_compare_trades.csv v15_engine_compare_diagnostics.csv
-          git diff --cached --quiet || git commit -m "research: persist legacy-vs-early V15 backtest"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "research: persist legacy-vs-early V15 backtest"
+            git push
+          else
+            echo "No research files changed."
+          fi
