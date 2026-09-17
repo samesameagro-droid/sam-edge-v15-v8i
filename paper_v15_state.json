@@ -88,18 +88,6 @@
     }
   ],
   "positions": {
-    "ZEC/USDT:USDT": {
-      "coin": "ZEC/USDT:USDT",
-      "side": "LONG",
-      "entry": 1368.42,
-      "sl": 1339.1578554680707,
-      "tp": 1404.9976806649117,
-      "risk_R": 1.0,
-      "risk_cash": 0.49621982823634037,
-      "opened_at": "2026-09-17T04:30:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN"
-    },
     "WLFI/USDT:USDT": {
       "coin": "WLFI/USDT:USDT",
       "side": "LONG",
