@@ -1,5 +1,5 @@
 {
-  "equity": 99.36491923040067,
+  "equity": 98.86809463424866,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -174,10 +174,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 99.36491923040067
-    }
-  ],
-  "positions": {
-    "REZ/USDT:USDT": {
+    },
+    {
       "coin": "REZ/USDT:USDT",
       "side": "LONG",
       "entry": 0.003815,
@@ -237,7 +235,13 @@
         "volume": 0.5134716855356509,
         "trigger": 0.8823466300912348
       },
-      "signal_key": "REZ/USDT:USDT|LONG|2026-09-17T16:00:00+00:00|V15_EARLY_RECLAIM_V1"
+      "signal_key": "REZ/USDT:USDT|LONG|2026-09-17T16:00:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-17T17:00:00+00:00",
+      "exit": 0.0036418788439347436,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 98.86809463424866
     }
-  }
+  ],
+  "positions": {}
 }

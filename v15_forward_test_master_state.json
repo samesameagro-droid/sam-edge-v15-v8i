@@ -1,10 +1,8 @@
 {
   "target": 20,
-  "next_trade_no": 8,
-  "closed_trades": 7,
-  "active_positions": [
-    "REZ/USDT:USDT"
-  ],
+  "next_trade_no": 9,
+  "closed_trades": 8,
+  "active_positions": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
