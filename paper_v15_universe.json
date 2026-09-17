@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T10:36:16.176794+00:00",
+  "updated_at": "2026-09-17T10:40:03.331356+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -76,8 +76,8 @@
     "KAITO/USDT:USDT",
     "SIGN/USDT:USDT",
     "FLOCK/USDT:USDT",
-    "TURBO/USDT:USDT",
     "ETC/USDT:USDT",
+    "TURBO/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
     "PI/USDT:USDT",
     "0G/USDT:USDT",
@@ -100,9 +100,9 @@
     "BROCCOLI/USDT:USDT",
     "BABY/USDT:USDT",
     "OPENLEDGER/USDT:USDT",
-    "CATI/USDT:USDT",
-    "STBL/USDT:USDT",
+    "ATOM/USDT:USDT",
     "LA/USDT:USDT",
-    "W/USDT:USDT"
+    "STBL/USDT:USDT",
+    "CATI/USDT:USDT"
   ]
 }
