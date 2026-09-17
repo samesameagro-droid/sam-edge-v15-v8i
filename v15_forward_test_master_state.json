@@ -3,7 +3,6 @@
   "next_trade_no": 8,
   "closed_trades": 7,
   "active_positions": [
-    "NEAR/USDT:USDT",
     "REZ/USDT:USDT"
   ],
   "max_active": 5,
