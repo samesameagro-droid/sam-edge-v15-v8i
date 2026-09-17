@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T19:24:36.152076+00:00",
+  "updated_at": "2026-09-17T19:29:21.930129+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -14,8 +14,8 @@
     "HYPE/USDT:USDT",
     "UNI/USDT:USDT",
     "BNB/USDT:USDT",
-    "LTC/USDT:USDT",
     "TAO/USDT:USDT",
+    "LTC/USDT:USDT",
     "ARB/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "ETHFI/USDT:USDT",
@@ -77,8 +77,8 @@
     "ON/USDT:USDT",
     "POPCAT/USDT:USDT",
     "ALLO/USDT:USDT",
-    "0G/USDT:USDT",
     "REZ/USDT:USDT",
+    "0G/USDT:USDT",
     "RIVER/USDT:USDT",
     "SOMI/USDT:USDT",
     "FLOCK/USDT:USDT",
@@ -100,9 +100,9 @@
     "KAITO/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "THE/USDT:USDT",
-    "STBL/USDT:USDT",
     "ILV/USDT:USDT",
+    "STBL/USDT:USDT",
     "DRIFT/USDT:USDT",
-    "STABLE/USDT:USDT"
+    "GOAT/USDT:USDT"
   ]
 }
