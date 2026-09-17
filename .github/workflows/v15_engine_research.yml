@@ -38,11 +38,13 @@ jobs:
           path: |
             v15_engine_research_results.csv
             v15_engine_research_trades.csv
+            v15_engine_research_diagnostics.csv
+            v15_engine_research_errors.csv
 
       - name: Persist research results
         run: |
           git config user.name "SAM EDGE V15 RESEARCH"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add v15_engine_research_results.csv v15_engine_research_trades.csv
+          git add v15_engine_research_results.csv v15_engine_research_trades.csv v15_engine_research_diagnostics.csv v15_engine_research_errors.csv
           git diff --cached --quiet || git commit -m "research: persist V15 engine backtest results"
           git push
