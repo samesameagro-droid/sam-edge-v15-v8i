@@ -171,6 +171,68 @@
         "trigger": 1.0
       },
       "signal_key": "INIT/USDT:USDT|LONG|2026-09-17T12:00:00+00:00|V15_EARLY_RECLAIM_V1"
+    },
+    "GRIFFAIN/USDT:USDT": {
+      "coin": "GRIFFAIN/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.013654,
+      "sl": 0.013268791358076463,
+      "tp": 0.014135510802404421,
+      "risk_R": 1.0,
+      "risk_cash": 0.49932120216281745,
+      "opened_at": "2026-09-17T12:45:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 62.22589287421386,
+      "entry_diag": {
+        "timestamp": "2026-09-17T12:45:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 0.013654,
+        "rsi": 52.894644856660186,
+        "h4_adx_pct": 0.48,
+        "h4_adx_delta": 3.826597242749113,
+        "volr": 1.0011927639745795,
+        "vol_slope": 0.0013616477671454241,
+        "dist_ema20_atr": 0.48879716217363833,
+        "room_atr": 2.8133894602774285,
+        "body_atr": 0.8325336157963764,
+        "close_pos": 0.9101796407185564,
+        "atr": 0.00017416714142082622
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 1.0,
+        "location": 0.8146619369560639,
+        "volume": 0.5005963819872897,
+        "trigger": 1.0
+      },
+      "signal_key": "GRIFFAIN/USDT:USDT|LONG|2026-09-17T12:45:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }

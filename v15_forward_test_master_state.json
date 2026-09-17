@@ -3,7 +3,8 @@
   "next_trade_no": 7,
   "closed_trades": 6,
   "active_positions": [
-    "INIT/USDT:USDT"
+    "INIT/USDT:USDT",
+    "GRIFFAIN/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
