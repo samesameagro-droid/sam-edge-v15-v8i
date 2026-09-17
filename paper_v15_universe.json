@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T02:29:06.172555+00:00",
+  "updated_at": "2026-09-17T02:34:33.010576+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -52,9 +52,9 @@
     "XLM/USDT:USDT",
     "SOMI/USDT:USDT",
     "DASH/USDT:USDT",
-    "FIL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "APT/USDT:USDT",
+    "FIL/USDT:USDT",
     "XPL/USDT:USDT",
     "BLESS/USDT:USDT",
     "REZ/USDT:USDT",
@@ -83,10 +83,10 @@
     "FOLKS/USDT:USDT",
     "S/USDT:USDT",
     "EVAA/USDT:USDT",
+    "ZORA/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "TNSR/USDT:USDT",
     "ILV/USDT:USDT",
-    "ZORA/USDT:USDT",
     "SOLV/USDT:USDT",
     "NIGHT/USDT:USDT",
     "BARD/USDT:USDT",
@@ -101,8 +101,8 @@
     "LA/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "PIEVERSE/USDT:USDT",
-    "AIO/USDT:USDT",
     "CC/USDT:USDT",
-    "KAIA/USDT:USDT"
+    "AIO/USDT:USDT",
+    "INIT/USDT:USDT"
   ]
 }
