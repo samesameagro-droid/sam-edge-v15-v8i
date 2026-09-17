@@ -109,5 +109,68 @@
       "equity_after": 99.86424043256349
     }
   ],
-  "positions": {}
+  "positions": {
+    "FOLKS/USDT:USDT": {
+      "coin": "FOLKS/USDT:USDT",
+      "side": "LONG",
+      "entry": 2.1,
+      "sl": 2.0731615025449455,
+      "tp": 2.1335481218188184,
+      "risk_R": 1.0,
+      "risk_cash": 0.49932120216281745,
+      "opened_at": "2026-09-17T10:15:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 26.850507861987417,
+      "entry_diag": {
+        "timestamp": "2026-09-17T10:15:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": false,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 2.1,
+        "rsi": 52.85336220143921,
+        "h4_adx_pct": 0.59,
+        "h4_adx_delta": 1.4522972464231856,
+        "volr": 1.0057799508648493,
+        "vol_slope": 0.006266223001153759,
+        "dist_ema20_atr": 0.13575640830388136,
+        "room_atr": 1.5195409734358933,
+        "body_atr": 0.39640199307024576,
+        "close_pos": 0.7777777777777806,
+        "atr": 0.015136149930853089
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.3511486232115928,
+        "room": 0.44636064895726224,
+        "location": 0.22626068050646897,
+        "volume": 0.5028899754324246,
+        "trigger": 0.49550249133780716
+      },
+      "signal_key": "FOLKS/USDT:USDT|LONG|2026-09-17T10:15:00+00:00|V15_EARLY_RECLAIM_V1"
+    }
+  }
 }

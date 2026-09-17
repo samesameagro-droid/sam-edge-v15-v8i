@@ -2,7 +2,9 @@
   "target": 20,
   "next_trade_no": 7,
   "closed_trades": 6,
-  "active_positions": [],
+  "active_positions": [
+    "FOLKS/USDT:USDT"
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
