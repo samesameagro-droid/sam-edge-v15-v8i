@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T09:33:40.411776+00:00",
+  "updated_at": "2026-09-17T09:41:16.448367+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -28,14 +28,15 @@
     "1000PEPE/USDT:USDT",
     "BOME/USDT:USDT",
     "PUMP/USDT:USDT",
-    "ONDO/USDT:USDT",
     "STX/USDT:USDT",
+    "ONDO/USDT:USDT",
     "BANANA/USDT:USDT",
     "BCH/USDT:USDT",
     "SYN/USDT:USDT",
     "ADA/USDT:USDT",
     "YFI/USDT:USDT",
     "CFX/USDT:USDT",
+    "OP/USDT:USDT",
     "DOT/USDT:USDT",
     "LINK/USDT:USDT",
     "JTO/USDT:USDT",
@@ -49,7 +50,6 @@
     "ASTER/USDT:USDT",
     "UAI/USDT:USDT",
     "BULLA/USDT:USDT",
-    "OP/USDT:USDT",
     "SEI/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "NOT/USDT:USDT",
@@ -97,12 +97,12 @@
     "FF/USDT:USDT",
     "EVAA/USDT:USDT",
     "ILV/USDT:USDT",
-    "TNSR/USDT:USDT",
     "GIGGLE/USDT:USDT",
+    "TNSR/USDT:USDT",
     "BARD/USDT:USDT",
     "BABY/USDT:USDT",
+    "0G/USDT:USDT",
     "EUL/USDT:USDT",
-    "BROCCOLI/USDT:USDT",
-    "0G/USDT:USDT"
+    "BROCCOLI/USDT:USDT"
   ]
 }

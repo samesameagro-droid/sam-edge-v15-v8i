@@ -98,7 +98,12 @@
       "risk_cash": 0.49621982823634037,
       "opened_at": "2026-09-17T09:00:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN"
+      "status": "OPEN",
+      "entry_score": 0.0,
+      "entry_diag": {},
+      "entry_metrics": {},
+      "score_breakdown": {},
+      "signal_key": ""
     }
   }
 }
