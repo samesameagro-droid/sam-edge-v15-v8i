@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T00:23:54.995378+00:00",
+  "updated_at": "2026-09-17T00:28:55.780333+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -52,9 +52,9 @@
     "SOMI/USDT:USDT",
     "BLESS/USDT:USDT",
     "VIRTUAL/USDT:USDT",
+    "DOT/USDT:USDT",
     "ON/USDT:USDT",
     "XPL/USDT:USDT",
-    "DOT/USDT:USDT",
     "REZ/USDT:USDT",
     "POL/USDT:USDT",
     "SKYAI/USDT:USDT",
@@ -90,19 +90,19 @@
     "KITE/USDT:USDT",
     "BARD/USDT:USDT",
     "STBL/USDT:USDT",
-    "BABY/USDT:USDT",
     "NIGHT/USDT:USDT",
+    "BABY/USDT:USDT",
     "CATI/USDT:USDT",
     "VANA/USDT:USDT",
-    "W/USDT:USDT",
     "AIXBT/USDT:USDT",
-    "BROCCOLI/USDT:USDT",
+    "W/USDT:USDT",
     "LA/USDT:USDT",
+    "BROCCOLI/USDT:USDT",
     "HANA/USDT:USDT",
     "AIO/USDT:USDT",
     "TRADOOR/USDT:USDT",
     "DIA/USDT:USDT",
-    "KAIA/USDT:USDT",
-    "PIEVERSE/USDT:USDT"
+    "PIEVERSE/USDT:USDT",
+    "KAIA/USDT:USDT"
   ]
 }
