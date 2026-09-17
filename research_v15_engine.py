@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import io
 import time
+import zipfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -12,53 +14,58 @@ import requests
 from core_engine_v15 import (
     COINS, CORE_NAME, RR, SWING_LOOKBACK, MAX_HOLD_BARS,
     enrich, signal_mask,
-    ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
 )
 
-BINANCE_FAPI = "https://fapi.binance.com/fapi/v1/klines"
+BINANCE_ARCHIVE = "https://data.binance.vision/data/futures/um/monthly/klines/{symbol}USDT/15m/{symbol}USDT-15m-{month}.zip"
 SESSION = requests.Session()
 
 
-def fetch_binance_15m(symbol: str, days: int = 180) -> pd.DataFrame:
-    end_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
-    start_ms = end_ms - days * 24 * 60 * 60 * 1000
-    rows_all = []
-    cursor = start_ms
-    while cursor < end_ms:
-        params = {
-            "symbol": f"{symbol}USDT",
-            "interval": "15m",
-            "startTime": cursor,
-            "endTime": end_ms,
-            "limit": 1500,
-        }
-        r = SESSION.get(BINANCE_FAPI, params=params, timeout=30)
-        r.raise_for_status()
-        rows = r.json()
-        if not rows:
-            break
-        rows_all.extend(rows)
-        last_open = int(rows[-1][0])
-        next_cursor = last_open + 15 * 60 * 1000
-        if next_cursor <= cursor:
-            break
-        cursor = next_cursor
-        time.sleep(0.08)
-        if len(rows) < 1500:
-            break
+def month_range(start: datetime, end: datetime):
+    cur = datetime(start.year, start.month, 1, tzinfo=timezone.utc)
+    while cur <= end:
+        yield cur.strftime("%Y-%m")
+        if cur.month == 12:
+            cur = datetime(cur.year + 1, 1, 1, tzinfo=timezone.utc)
+        else:
+            cur = datetime(cur.year, cur.month + 1, 1, tzinfo=timezone.utc)
 
-    if not rows_all:
-        raise RuntimeError(f"No Binance 15m data for {symbol}")
-    a = np.asarray(rows_all, dtype=object)
-    df = pd.DataFrame({
-        "timestamp": pd.to_datetime(a[:, 0].astype(np.int64), unit="ms", utc=True),
-        "open": a[:, 1].astype(float),
-        "high": a[:, 2].astype(float),
-        "low": a[:, 3].astype(float),
-        "close": a[:, 4].astype(float),
-        "volume": a[:, 5].astype(float),
-    })
-    return df.drop_duplicates("timestamp").sort_values("timestamp").reset_index(drop=True)
+
+def fetch_binance_15m(symbol: str, days: int = 180) -> pd.DataFrame:
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(days=days)
+    chunks = []
+    for month in month_range(start, end):
+        url = BINANCE_ARCHIVE.format(symbol=symbol, month=month)
+        try:
+            r = SESSION.get(url, timeout=60)
+            if r.status_code == 404:
+                continue
+            r.raise_for_status()
+            with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+                names = [n for n in z.namelist() if n.lower().endswith(".csv")]
+                if not names:
+                    continue
+                raw = pd.read_csv(z.open(names[0]), header=None)
+            if raw.shape[1] < 6:
+                continue
+            df = pd.DataFrame({
+                "timestamp": pd.to_datetime(raw.iloc[:, 0], unit="ms", utc=True),
+                "open": pd.to_numeric(raw.iloc[:, 1], errors="coerce"),
+                "high": pd.to_numeric(raw.iloc[:, 2], errors="coerce"),
+                "low": pd.to_numeric(raw.iloc[:, 3], errors="coerce"),
+                "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
+                "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
+            }).dropna()
+            chunks.append(df)
+        except Exception as e:
+            print(f"DATA ERROR | {symbol} | {month} | {type(e).__name__}: {e}")
+        time.sleep(0.05)
+    if not chunks:
+        raise RuntimeError(f"No Binance archive data for {symbol}")
+    out = pd.concat(chunks, ignore_index=True)
+    out = out.drop_duplicates("timestamp").sort_values("timestamp")
+    out = out[(out.timestamp >= pd.Timestamp(start)) & (out.timestamp <= pd.Timestamp(end))]
+    return out.reset_index(drop=True)
 
 
 def masks_early(x: pd.DataFrame):
@@ -77,19 +84,12 @@ def masks_early(x: pd.DataFrame):
     structure_s = bear & ema_s & vwap_s & di_s & rsi_s
     room_l = r.dist_res_atr >= 0.85
     room_s = r.dist_sup_atr >= 0.85
-
-    # Anti-chase guard: a valid setup must not be an already-expanded 15m impulse.
     no_chase = (r.move5_atr <= 2.50) & (r.dist_ema20_atr <= 1.20) & (r.range_atr <= 2.25)
-
-    # Entry trigger: recent pullback/touch of EMA20, then a confirmed 15m reclaim.
     touched_l = r.low.rolling(5).min() <= (r.ema20 + 0.35 * r.atr)
     touched_s = r.high.rolling(5).max() >= (r.ema20 - 0.35 * r.atr)
     reclaim_l = (r.close > r.high.shift(1)) & (r.close > r.ema20)
     reclaim_s = (r.close < r.low.shift(1)) & (r.close < r.ema20)
-    trigger_l = touched_l & reclaim_l
-    trigger_s = touched_s & reclaim_s
-
-    return (structure_l & room_l & no_chase & trigger_l).fillna(False), (structure_s & room_s & no_chase & trigger_s).fillna(False)
+    return (structure_l & room_l & no_chase & touched_l & reclaim_l).fillna(False), (structure_s & room_s & no_chase & touched_s & reclaim_s).fillna(False)
 
 
 def masks_early_loose(x: pd.DataFrame):
@@ -192,7 +192,7 @@ def run_backtest(x: pd.DataFrame, long_mask, short_mask, stop_style: str):
 
 def summarize(name, frames):
     if not frames:
-        return {"variant": name, "trades": 0, "wins": 0, "losses": 0, "winrate_pct": 0.0, "net_R": 0.0, "profit_factor": 0.0, "expectancy_R": 0.0, "max_dd_R": 0.0, "median_entry_dist_ema_atr": np.nan, "median_entry_move5_atr": np.nan}
+        return {"variant": name, "trades": 0, "wins": 0, "losses": 0, "winrate_pct": 0.0, "net_R": 0.0, "profit_factor": 0.0, "expectancy_R": 0.0, "max_dd_R": 0.0, "median_entry_dist_ema_atr": np.nan, "median_entry_move5_atr": np.nan, "median_MFE_R": np.nan, "median_MAE_R": np.nan}
     tr = pd.concat(frames, ignore_index=True).sort_values("entry_time").reset_index(drop=True)
     wins = int((tr.result == "TP").sum())
     losses = int((tr.result == "SL").sum())
@@ -217,7 +217,7 @@ def main():
     ap.add_argument("--out", type=Path, default=Path("v15_engine_research_results.csv"))
     args = ap.parse_args()
 
-    results = []; trade_frames = []
+    trade_frames = []
     for coin in COINS:
         try:
             raw = fetch_binance_15m(coin, args.days)
@@ -225,25 +225,26 @@ def main():
             base_l, base_s = signal_mask(x, CORE_NAME)
             early_l, early_s = masks_early(x)
             loose_l, loose_s = masks_early_loose(x)
-            for variant, lm, sm, stop in [
+            configs = [
                 ("V15_BASELINE", base_l, base_s, "baseline"),
                 ("V15_EARLY", early_l, early_s, "baseline"),
                 ("V15_EARLY_STRUCTURE_STOP", early_l, early_s, "structure"),
                 ("V15_EARLY_LOOSE", loose_l, loose_s, "baseline"),
                 ("V15_EARLY_LOOSE_STRUCTURE_STOP", loose_l, loose_s, "structure"),
-            ]:
+            ]
+            for variant, lm, sm, stop in configs:
                 tr = run_backtest(x, lm, sm, stop)
                 if not tr.empty:
                     tr.insert(0, "coin", coin)
                     tr.insert(1, "variant", variant)
                     trade_frames.append(tr)
-                results.append({"coin": coin, **summarize(variant, [tr] if not tr.empty else [])})
             print(f"{coin:5s} | candles={len(x):6d} | base={int(base_l.sum()+base_s.sum()):3d} | early={int(early_l.sum()+early_s.sum()):3d} | loose={int(loose_l.sum()+loose_s.sum()):3d}")
         except Exception as e:
             print(f"{coin:5s} | ERROR | {type(e).__name__}: {e}")
 
     all_trades = pd.concat(trade_frames, ignore_index=True) if trade_frames else pd.DataFrame()
-    all_trades.to_csv(args.out.with_name("v15_engine_research_trades.csv"), index=False)
+    trades_path = args.out.with_name("v15_engine_research_trades.csv")
+    all_trades.to_csv(trades_path, index=False)
     summary_rows = []
     for v in ["V15_BASELINE", "V15_EARLY", "V15_EARLY_STRUCTURE_STOP", "V15_EARLY_LOOSE", "V15_EARLY_LOOSE_STRUCTURE_STOP"]:
         tr = all_trades[all_trades.variant == v] if not all_trades.empty else pd.DataFrame()
@@ -254,7 +255,7 @@ def main():
     print(pd.DataFrame(summary_rows).to_string(index=False, float_format=lambda z: f"{z:.3f}"))
     print("="*100)
     print(f"SUMMARY: {args.out.resolve()}")
-    print(f"TRADES : {args.out.with_name('v15_engine_research_trades.csv').resolve()}")
+    print(f"TRADES : {trades_path.resolve()}")
 
 
 if __name__ == "__main__":
