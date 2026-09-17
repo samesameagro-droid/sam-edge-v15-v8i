@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 
 import telegram_result_guard as result_guard
 
 STATE_FILE = Path('paper_v15_state.json')
+MASTER_JOURNAL = Path('v15_forward_test_master_journal.csv')
 
 
 def outcome_key(r: dict) -> str:
@@ -32,9 +34,31 @@ def main() -> None:
     if not isinstance(closed, list):
         closed = []
 
+    # Also reconcile the authoritative 20-trade master journal. This protects
+    # TP/SL delivery when state and master journal briefly diverge.
+    master_rows = []
+    if MASTER_JOURNAL.exists():
+        try:
+            with MASTER_JOURNAL.open('r', encoding='utf-8', newline='') as f:
+                master_rows = list(csv.DictReader(f))
+        except Exception as e:
+            print(f'OUTCOME RECONCILE | master journal read error: {type(e).__name__}: {e}')
+
+    candidates = []
+    seen = set()
+    for r in list(closed) + list(master_rows):
+        result = str(r.get('result', '')).upper().strip()
+        if result not in {'TP', 'SL'}:
+            continue
+        key = outcome_key(r)
+        if key in seen:
+            continue
+        seen.add(key)
+        candidates.append(r)
+
     history = result_guard.notifiers._delivery_history()
     missing = []
-    for r in closed:
+    for r in candidates:
         result = str(r.get('result', '')).upper().strip()
         if result not in {'TP', 'SL'}:
             continue
@@ -42,7 +66,7 @@ def main() -> None:
         if key not in history:
             missing.append((key, r))
 
-    print(f'OUTCOME RECONCILE | closed={len(closed)} | missing_notifications={len(missing)}')
+    print(f'OUTCOME RECONCILE | state_closed={len(closed)} | master_closed={len(master_rows)} | unique_results={len(candidates)} | missing_notifications={len(missing)}')
 
     delivered = 0
     failed = 0
