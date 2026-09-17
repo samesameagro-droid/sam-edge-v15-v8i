@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T19:49:50.531775+00:00",
+  "updated_at": "2026-09-17T19:55:01.237053+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -94,8 +94,8 @@
     "SIGN/USDT:USDT",
     "MMT/USDT:USDT",
     "PI/USDT:USDT",
-    "WLFI/USDT:USDT",
     "MERL/USDT:USDT",
+    "WLFI/USDT:USDT",
     "ZORA/USDT:USDT",
     "KAITO/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
