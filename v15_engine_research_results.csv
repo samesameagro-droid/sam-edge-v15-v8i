@@ -1,0 +1,6 @@
+variant,trades,wins,losses,winrate_pct,net_R,profit_factor,expectancy_R,max_dd_R,median_entry_dist_ema_atr,median_entry_move5_atr
+V15_BASELINE,0,0,0,0.0,0.0,0.0,0.0,0.0,,
+V15_EARLY,0,0,0,0.0,0.0,0.0,0.0,0.0,,
+V15_EARLY_STRUCTURE_STOP,0,0,0,0.0,0.0,0.0,0.0,0.0,,
+V15_EARLY_LOOSE,0,0,0,0.0,0.0,0.0,0.0,0.0,,
+V15_EARLY_LOOSE_STRUCTURE_STOP,0,0,0,0.0,0.0,0.0,0.0,0.0,,
