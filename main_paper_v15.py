@@ -14,13 +14,14 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from core_engine_v15 import (
-    CORE_NAME, RR, SWING_LOOKBACK, enrich, signal_mask,
+    CORE_NAME, RR, enrich, signal_mask, trade_levels,
     ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
+    EARLY_MOVE5_MAX_ATR, EARLY_DIST_EMA_MAX_ATR, EARLY_ROOM_MIN_ATR,
 )
 
 load_dotenv()
 
-BUILD = 'V15-LIVE-DIAG-3'
+BUILD = 'V15-EARLY-RECLAIM-V1'
 TIMEFRAME = '15m'
 TRACK_TIMEFRAME = '5m'
 START_EQUITY = float(os.getenv('START_EQUITY', '100'))
@@ -215,37 +216,32 @@ class PaperEngine:
         rsiS = r.rsi.between(36, 54)
         structureL = bull & emaL & vwapL & diL & rsiL
         structureS = bear & emaS & vwapS & diS & rsiS
-        roomL = r.dist_res_atr >= 0.85
-        roomS = r.dist_sup_atr >= 0.85
-        noex = (r.move5_atr <= 3.50) & (r.dist_ema20_atr <= 1.60) & (r.range_atr <= 2.25)
-        adxL = (r.h4_adx_pct >= ADX_LONG_PCT) & (r.h4_adx_delta >= ADX_LONG_DELTA)
-        adxS = (r.h4_adx_pct >= ADX_SHORT_PCT) & (r.h4_adx_delta >= ADX_SHORT_DELTA)
-        candleL = r.c2h_bull_strict
-        candleS = r.c2h_bear_strict
+        roomL = r.dist_res_atr >= EARLY_ROOM_MIN_ATR
+        roomS = r.dist_sup_atr >= EARLY_ROOM_MIN_ATR
+        noChase = (r.move5_atr <= EARLY_MOVE5_MAX_ATR) & (r.dist_ema20_atr <= EARLY_DIST_EMA_MAX_ATR) & (r.range_atr <= 2.25)
+        volOk = (r.volr >= 1.00) & (r.vol_slope >= -0.20)
+        touchL = r.low.rolling(6).min() <= (r.ema20 + 0.60*r.atr)
+        touchS = r.high.rolling(6).max() >= (r.ema20 - 0.60*r.atr)
+        reclaimL = (r.close > r.high.shift(1) + 0.05*r.atr) & (r.close > r.ema20) & (r.close_pos >= 0.60) & (r.body_atr >= 0.20)
+        reclaimS = (r.close < r.low.shift(1) - 0.05*r.atr) & (r.close < r.ema20) & (r.close_pos <= 0.40) & (r.body_atr >= 0.20)
+        finalL = structureL & roomL & noChase & volOk & touchL & reclaimL & (r.h4_adx_pct >= ADX_LONG_PCT) & (r.h4_adx_delta >= ADX_LONG_DELTA)
+        finalS = structureS & roomS & noChase & volOk & touchS & reclaimS & (r.h4_adx_pct >= ADX_SHORT_PCT) & (r.h4_adx_delta >= ADX_SHORT_DELTA)
         long_steps = {
             'trend': bool(bull.iloc[i]), 'ema': bool((bull & emaL).iloc[i]),
-            'vwap': bool((bull & emaL & vwapL).iloc[i]),
-            'di': bool((bull & emaL & vwapL & diL).iloc[i]),
+            'vwap': bool((bull & emaL & vwapL).iloc[i]), 'di': bool((bull & emaL & vwapL & diL).iloc[i]),
             'rsi': bool(structureL.iloc[i]), 'room': bool((structureL & roomL).iloc[i]),
-            'noex': bool((structureL & roomL & noex).iloc[i]),
-            'adx': bool((structureL & roomL & noex & adxL).iloc[i]),
-            'candle2h': bool((structureL & roomL & noex & adxL & candleL).iloc[i]),
+            'no_chase': bool((structureL & roomL & noChase).iloc[i]), 'adx': bool((structureL & roomL & noChase & volOk & touchL & (r.h4_adx_pct >= ADX_LONG_PCT) & (r.h4_adx_delta >= ADX_LONG_DELTA)).iloc[i]),
+            'early_reclaim': bool(finalL.iloc[i]),
         }
         short_steps = {
             'trend': bool(bear.iloc[i]), 'ema': bool((bear & emaS).iloc[i]),
-            'vwap': bool((bear & emaS & vwapS).iloc[i]),
-            'di': bool((bear & emaS & vwapS & diS).iloc[i]),
+            'vwap': bool((bear & emaS & vwapS).iloc[i]), 'di': bool((bear & emaS & vwapS & diS).iloc[i]),
             'rsi': bool(structureS.iloc[i]), 'room': bool((structureS & roomS).iloc[i]),
-            'noex': bool((structureS & roomS & noex).iloc[i]),
-            'adx': bool((structureS & roomS & noex & adxS).iloc[i]),
-            'candle2h': bool((structureS & roomS & noex & adxS & candleS).iloc[i]),
+            'no_chase': bool((structureS & roomS & noChase).iloc[i]), 'adx': bool((structureS & roomS & noChase & volOk & touchS & (r.h4_adx_pct >= ADX_SHORT_PCT) & (r.h4_adx_delta >= ADX_SHORT_DELTA)).iloc[i]),
+            'early_reclaim': bool(finalS.iloc[i]),
         }
-        return {
-            'timestamp': r.timestamp.iloc[i].isoformat(),
-            'long': long_steps, 'short': short_steps,
-            'final_long': bool((structureL & adxL & roomL & noex & candleL).iloc[i]),
-            'final_short': bool((structureS & adxS & roomS & noex & candleS).iloc[i]),
-        }
+        return {'timestamp': r.timestamp.iloc[i].isoformat(), 'long': long_steps, 'short': short_steps,
+                'final_long': bool(finalL.iloc[i]), 'final_short': bool(finalS.iloc[i])}
 
     def analyze_latest(self, symbol):
         df = self.fetch_df(symbol)
@@ -265,31 +261,27 @@ class PaperEngine:
         key = f'{symbol}|{side}|{ts}|{CORE_NAME}'
         if key in self.signal_history:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
-        entry = float(x.close.iloc[i]); atr = float(x.atr.iloc[i])
-        if not np.isfinite(atr) or atr <= 0:
+        side_int = 1 if side == 'LONG' else -1
+        levels = trade_levels(x, i, side_int, 'STRUCTURE')
+        if levels is None:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
-        if side == 'LONG':
-            sl = float(x.low.iloc[max(0, i-SWING_LOOKBACK):i].min()) - atr
-            risk = entry - sl; tp = entry + RR * risk
-            adx_margin = np.clip((float(x.h4_adx_pct.iloc[i])-ADX_LONG_PCT)/(1-ADX_LONG_PCT), 0, 1)
-            delta_margin = np.clip((float(x.h4_adx_delta.iloc[i])-ADX_LONG_DELTA)/2.0, 0, 1)
-            room = float(x.dist_res_atr.iloc[i]); candle = float(x.c2h_body_atr.iloc[i])
-        else:
-            sl = float(x.high.iloc[max(0, i-SWING_LOOKBACK):i].max()) + atr
-            risk = sl - entry; tp = entry - RR * risk
-            adx_margin = np.clip((float(x.h4_adx_pct.iloc[i])-ADX_SHORT_PCT)/(1-ADX_SHORT_PCT), 0, 1)
-            delta_margin = np.clip((float(x.h4_adx_delta.iloc[i])-ADX_SHORT_DELTA)/2.0, 0, 1)
-            room = float(x.dist_sup_atr.iloc[i]); candle = float(x.c2h_body_atr.iloc[i])
-        if not np.isfinite(risk) or risk <= 0:
-            return {'signal': None, 'timestamp': ts, 'diag': diag}
+        entry, sl, tp, risk = levels
+        adx_pct = float(x.h4_adx_pct.iloc[i])
+        adx_delta = float(x.h4_adx_delta.iloc[i])
+        adx_floor = ADX_LONG_PCT if side == 'LONG' else ADX_SHORT_PCT
+        delta_floor = ADX_LONG_DELTA if side == 'LONG' else ADX_SHORT_DELTA
+        adx_margin = np.clip((adx_pct-adx_floor)/(1-adx_floor), 0, 1)
+        delta_margin = np.clip((adx_delta-delta_floor)/2.0, 0, 1)
+        room = float(x.dist_res_atr.iloc[i] if side == 'LONG' else x.dist_sup_atr.iloc[i])
+        room_margin = np.clip((room-EARLY_ROOM_MIN_ATR)/1.50, 0, 1)
         dist = float(x.dist_ema20_atr.iloc[i])
-        room_margin = np.clip((room-0.85)/1.50, 0, 1)
-        loc_center = np.clip(1.0-abs(dist-0.70)/0.70, 0, 1)
-        candle_margin = np.clip((candle-0.55)/0.80, 0, 1)
-        score = 100.0*(0.35*adx_margin + 0.25*delta_margin + 0.20*room_margin + 0.10*loc_center + 0.10*candle_margin)
-        p = Position(symbol, side, entry, float(sl), float(tp), 1.0, self.equity*RISK_PCT, ts)
+        loc_center = np.clip(1.0-abs(dist-0.60)/0.60, 0, 1)
+        vol_margin = np.clip(float(x.volr.iloc[i])/2.0, 0, 1)
+        trigger_margin = np.clip(float(x.body_atr.iloc[i])/0.80, 0, 1)
+        score = 100.0*(0.30*adx_margin + 0.20*delta_margin + 0.20*room_margin + 0.15*loc_center + 0.10*vol_margin + 0.05*trigger_margin)
+        p = Position(symbol, side, entry, sl, tp, 1.0, self.equity*RISK_PCT, ts)
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
-                           'timestamp': ts, 'entry': entry, 'sl': float(sl), 'tp': float(tp)},
+                           'timestamp': ts, 'entry': entry, 'sl': sl, 'tp': tp},
                 'timestamp': ts, 'diag': diag}
 
     def track(self, p):
@@ -323,15 +315,17 @@ class PaperEngine:
         r = np.array([float(x['R']) for x in self.closed])
         w = int((r > 0).sum()); l = int((r < 0).sum())
         pf = float(r[r>0].sum() / (-r[r<0].sum())) if l else float('inf')
-        dd = np.maximum.accumulate(np.cumsum(r)) - np.cumsum(r)
-        print(f'PAPER REPORT | closed={len(r)} | W/L={w}/{l} | WR={w/len(r)*100:.2f}% | NetR={r.sum():+.2f} | PF={pf:.3f} | DD_R={dd.max():.2f} | Equity=${self.equity:.2f}')
+        eq = np.cumsum(r)
+        peak = np.maximum.accumulate(eq)
+        dd = eq - peak
+        print(f'PAPER REPORT | closed={len(r)} | W/L={w}/{l} | WR={w/len(r)*100:.2f}% | NetR={r.sum():+.2f} | PF={pf:.3f} | DD_R={dd.min():.2f} | Equity=${self.equity:.2f}')
 
     def scan_once(self):
         t0 = time.perf_counter()
         print('\n' + '='*100)
-        print(f'SAM EDGE V15 | BUILD={BUILD} | UNIVERSAL PAPER FORWARD | V15 ADX4H + CANDLE2H')
+        print(f'SAM EDGE V15 | BUILD={BUILD} | CORE={CORE_NAME}')
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
-        print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | 2H CANDLE=STRICT')
+        print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         syms = self.discover_universe()
         for key, p in list(self.positions.items()):
             try:
@@ -342,13 +336,10 @@ class PaperEngine:
                 print(f'TRACK ERROR | {p.coin} | {e}')
         free_slots = max(0, MAX_ACTIVE-len(self.positions))
         candidates = []
-        scanned = 0
-        valid_data = 0
-        data_skips = 0
-        request_errors = 0
+        scanned = valid_data = request_errors = 0
         diag_total = {
-            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','noex','adx','candle2h')},
-            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','noex','adx','candle2h')},
+            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx','early_reclaim')},
+            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx','early_reclaim')},
             'final_long': 0, 'final_short': 0,
         }
         near_miss = []
@@ -359,13 +350,13 @@ class PaperEngine:
             before = time.perf_counter()
             try:
                 a = self.analyze_latest(sym)
-                elapsed_symbol = time.perf_counter() - before
+                _ = time.perf_counter() - before
                 if a is not None:
                     if a.get('diag'):
                         valid_data += 1
                     d = a.get('diag')
                     if d:
-                        for side_key, side_name in (('long','LONG'), ('short','SHORT')):
+                        for side_key, side_name in (('long','LONG'),('short','SHORT')):
                             for gate, ok in d[side_key].items():
                                 if ok: diag_total[side_name][gate] += 1
                         if d['final_long']: diag_total['final_long'] += 1
@@ -377,57 +368,54 @@ class PaperEngine:
                             near_miss.append((max(score_diag_long, score_diag_short), sym, side, d))
                 if a and a.get('signal'):
                     c = a['signal']; candidates.append(c)
-                    print(f'CANDIDATE [{n}/{len(syms)}] | {sym} | {c["side"]} | score={c["score"]:.1f} | Entry={c["entry"]:.8g}')
+                    print(f'CANDIDATE [{n}/{len(syms)}] | {sym} | {c["side"]} | score={c["score"]:.1f} | Entry={c["entry"]:.8g} | SL={c["sl"]:.8g} | TP={c["tp"]:.8g}')
                 if n % 25 == 0:
                     print(f'PROGRESS {n}/{len(syms)} | data_ok={valid_data} | candidates={len(candidates)}')
             except Exception as e:
                 if isinstance(e, (ccxt.NetworkError, ccxt.RequestTimeout, ConnectionError)):
                     request_errors += 1
                 print(f'SCAN ERROR [{n}/{len(syms)}] | {sym} | {type(e).__name__}: {e}')
-        data_skips = max(0, scanned - valid_data - request_errors)
+        data_skips = max(0, scanned-valid_data-request_errors)
         print(f'DATA QUALITY | scanned={scanned} | data_ok={valid_data} | data_skips={data_skips} | request_errors={request_errors}')
         print('GATE DIAG | LONG | ' + ' | '.join(f'{k}={v}' for k,v in diag_total['LONG'].items()))
         print('GATE DIAG | SHORT| ' + ' | '.join(f'{k}={v}' for k,v in diag_total['SHORT'].items()))
-        print(f'FINAL V15 | LONG={diag_total["final_long"]} | SHORT={diag_total["final_short"]} | TOTAL={diag_total["final_long"]+diag_total["final_short"]}')
-        near_miss.sort(key=lambda z: (z[0], z[1]), reverse=True)
-        for rank, (score_diag, sym, side, d) in enumerate(near_miss[:5], 1):
+        print(f'FINAL {CORE_NAME} | LONG={diag_total["final_long"]} | SHORT={diag_total["final_short"]} | TOTAL={diag_total["final_long"]+diag_total["final_short"]}')
+        near_miss.sort(key=lambda z: (z[0],z[1]), reverse=True)
+        for rank, (score_diag, sym, side, d) in enumerate(near_miss[:5],1):
             print(f'NEAR MISS #{rank} | {sym} | {side} | gates={score_diag}/9 | ts={d["timestamp"]}')
         candidates.sort(key=lambda z: (z['score'], z['timestamp']), reverse=True)
         selected = candidates[:free_slots]
         print(f'SELECTION | candidates={len(candidates)} | free_slots={free_slots} | selected={len(selected)}')
-        for rank, c in enumerate(candidates[:max(MAX_ACTIVE, 10)], 1):
-            tag = 'SELECT' if c in selected else 'WAIT'
+        for rank, c in enumerate(candidates[:max(MAX_ACTIVE,10)],1):
+            tag='SELECT' if c in selected else 'WAIT'
             print(f'  #{rank:<2} {tag:<6} | {c["position"].coin:<24} | {c["side"]:<5} | score={c["score"]:.1f}')
-        # Telegram delivery is independent from MAX_ACTIVE paper execution slots.
-        # Every NEW valid V15 candidate is notified once; only the top candidates are opened as paper positions.
         from notifiers import send_signal
-        selected_keys = {c['key'] for c in selected}
+        selected_keys={c['key'] for c in selected}
         for c in candidates:
-            p = c['position']; key = c['key']
+            p=c['position']; key=c['key']
             if key in self.signal_history:
                 continue
-            payload = asdict(p)
-            payload['selection_score'] = round(c['score'], 2)
-            payload['telegram_status'] = 'EXECUTED' if key in selected_keys else 'VALID V15 SIGNAL - WAITLIST'
-            sent = send_signal(payload, self.equity)
+            payload=asdict(p)
+            payload['selection_score']=round(c['score'],2)
+            payload['telegram_status']='EXECUTED' if key in selected_keys else 'VALID V15 SIGNAL - WAITLIST'
+            sent=send_signal(payload,self.equity)
             if sent:
                 self.signal_history.add(key)
                 print(f'📨 TELEGRAM SIGNAL | {p.coin} | {p.side} | status={payload["telegram_status"]} | score={c["score"]:.1f}')
             else:
                 print(f'⚠️ TELEGRAM NOT SENT | {p.coin} | {p.side} | score={c["score"]:.1f}')
-
         for c in selected:
-            p = c['position']; key = c['key']
-            self.positions[p.coin] = p
+            p=c['position']; key=c['key']
+            self.positions[p.coin]=p
             print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g}')
-        if len(candidates) > len(selected):
+        if len(candidates)>len(selected):
             print(f'WAITLIST | {len(candidates)-len(selected)} valid V15 candidates not executed because active slots are full.')
         self.save_state(); self.report()
         print(f'SCAN COMPLETE | elapsed={time.perf_counter()-t0:.1f}s | universe={scanned} | candidates={len(candidates)} | selected={len(selected)} | next in ~{SCAN_SEC}s')
 
     def run(self):
         def stop_handler(signum, frame):
-            self.running = False
+            self.running=False
             print('\nSTOP REQUESTED | saving V15 state...')
             self.save_state()
         signal.signal(signal.SIGINT, stop_handler)
