@@ -1,5 +1,5 @@
 {
-  "equity": 98.62754350039063,
+  "equity": 99.24396564726807,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -68,10 +68,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 98.62754350039063
-    }
-  ],
-  "positions": {
-    "GRIFFAIN/USDT:USDT": {
+    },
+    {
       "coin": "GRIFFAIN/USDT:USDT",
       "side": "LONG",
       "entry": 0.01328,
@@ -81,7 +79,13 @@
       "risk_cash": 0.4931377175019532,
       "opened_at": "2026-09-17T01:00:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN"
+      "status": "OPEN",
+      "closed_at": "2026-09-17T01:55:00+00:00",
+      "exit": 0.013778971969352329,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 99.24396564726807
     }
-  }
+  ],
+  "positions": {}
 }
