@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T15:44:10.382381+00:00",
+  "updated_at": "2026-09-17T15:49:20.817263+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -19,8 +19,8 @@
     "TAO/USDT:USDT",
     "AVAX/USDT:USDT",
     "LSK/USDT:USDT",
-    "ETHFI/USDT:USDT",
     "1000PEPE/USDT:USDT",
+    "ETHFI/USDT:USDT",
     "ONDO/USDT:USDT",
     "ENA/USDT:USDT",
     "INJ/USDT:USDT",
@@ -53,8 +53,8 @@
     "TRUMPSOL/USDT:USDT",
     "UAI/USDT:USDT",
     "FIL/USDT:USDT",
-    "BULLA/USDT:USDT",
     "SEI/USDT:USDT",
+    "BULLA/USDT:USDT",
     "BEAT/USDT:USDT",
     "ENS/USDT:USDT",
     "AIN/USDT:USDT",
@@ -65,7 +65,6 @@
     "VIRTUAL/USDT:USDT",
     "SKYAI/USDT:USDT",
     "APT/USDT:USDT",
-    "ORDI/USDT:USDT",
     "ALLO/USDT:USDT",
     "POL/USDT:USDT",
     "ON/USDT:USDT",
@@ -75,11 +74,11 @@
     "0G/USDT:USDT",
     "POPCAT/USDT:USDT",
     "FLOCK/USDT:USDT",
-    "BLESS/USDT:USDT",
     "SOMI/USDT:USDT",
+    "BLESS/USDT:USDT",
     "SOPH/USDT:USDT",
-    "BANK/USDT:USDT",
     "API3/USDT:USDT",
+    "BANK/USDT:USDT",
     "BTR/USDT:USDT",
     "SIGN/USDT:USDT",
     "FF/USDT:USDT",
@@ -103,6 +102,7 @@
     "CATI/USDT:USDT",
     "EVAA/USDT:USDT",
     "OPENLEDGER/USDT:USDT",
-    "AIO/USDT:USDT"
+    "AIO/USDT:USDT",
+    "HOME/USDT:USDT"
   ]
 }
