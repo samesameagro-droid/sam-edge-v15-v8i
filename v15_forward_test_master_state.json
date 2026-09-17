@@ -2,7 +2,9 @@
   "target": 20,
   "next_trade_no": 6,
   "closed_trades": 5,
-  "active_positions": [],
+  "active_positions": [
+    "ZEC/USDT:USDT"
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
