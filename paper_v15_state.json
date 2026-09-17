@@ -70,5 +70,18 @@
       "equity_after": 98.62754350039063
     }
   ],
-  "positions": {}
+  "positions": {
+    "GRIFFAIN/USDT:USDT": {
+      "coin": "GRIFFAIN/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.01328,
+      "sl": 0.012880822424518138,
+      "tp": 0.013778971969352329,
+      "risk_R": 1.0,
+      "risk_cash": 0.4931377175019532,
+      "opened_at": "2026-09-17T01:00:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN"
+    }
+  }
 }
