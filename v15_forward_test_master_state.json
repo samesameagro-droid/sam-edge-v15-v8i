@@ -3,7 +3,6 @@
   "next_trade_no": 6,
   "closed_trades": 5,
   "active_positions": [
-    "WLFI/USDT:USDT",
     "SYN/USDT:USDT"
   ],
   "max_active": 5,
