@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import html
 import json
 import os
@@ -12,6 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 PENDING_FILE = Path('pending_telegram_signals.json')
 DELIVERY_FILE = Path('telegram_delivery_history.json')
+TRADING_JOURNAL_FILE = Path('paper_v15_trading_journal.csv')
 MAX_PENDING = 200
 MAX_DELIVERED = 20000
 
@@ -174,11 +176,122 @@ def _fmt(v, digits=4):
         return '-'
 
 
+def _journal_signal(p, status: str):
+    """Persist every valid V15 signal, starting from the first signal such as AIN."""
+    key = str(p.get('signal_key') or '').strip()
+    if not key:
+        return
+    try:
+        rows = []
+        if TRADING_JOURNAL_FILE.exists():
+            with TRADING_JOURNAL_FILE.open('r', encoding='utf-8', newline='') as f:
+                rows = list(csv.DictReader(f))
+
+        existing = next((r for r in rows if r.get('signal_key') == key), None)
+        if existing:
+            # Do not overwrite an already recorded outcome.
+            if existing.get('result') not in ('', None):
+                return
+            existing['status'] = status
+        else:
+            metrics = p.get('entry_metrics') or {}
+            existing = {
+                'signal_key': key,
+                'signal_time': p.get('opened_at', ''),
+                'coin': p.get('coin', ''),
+                'side': p.get('side', ''),
+                'core': p.get('core', ''),
+                'status': status,
+                'entry': p.get('entry', ''),
+                'sl': p.get('sl', ''),
+                'tp': p.get('tp', ''),
+                'entry_score': p.get('entry_score', p.get('selection_score', '')),
+                'rsi_entry': metrics.get('rsi', ''),
+                'adx4h_pct_entry': metrics.get('h4_adx_pct', ''),
+                'adx4h_delta_entry': metrics.get('h4_adx_delta', ''),
+                'volume_ratio_entry': metrics.get('volr', ''),
+                'ema20_dist_atr_entry': metrics.get('dist_ema20_atr', ''),
+                'result': '',
+                'exit': '',
+                'R': '',
+                'closed_at': '',
+                'equity_after': '',
+                'post_mortem': '',
+            }
+            rows.append(existing)
+
+        fields = [
+            'signal_key','signal_time','coin','side','core','status','entry','sl','tp',
+            'entry_score','rsi_entry','adx4h_pct_entry','adx4h_delta_entry',
+            'volume_ratio_entry','ema20_dist_atr_entry','result','exit','R',
+            'closed_at','equity_after','post_mortem'
+        ]
+        # Normalise all rows to the same schema.
+        for r in rows:
+            for field in fields:
+                r.setdefault(field, '')
+        with TRADING_JOURNAL_FILE.open('w', encoding='utf-8', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f'📒 JOURNAL SIGNAL | {p.get("coin")} | {p.get("side")} | status={status}')
+    except Exception as e:
+        # Journal failure must never stop signal delivery or the paper engine.
+        print(f'JOURNAL SIGNAL ERROR | {p.get("coin")} | {type(e).__name__}: {e}')
+
+
+def _journal_result(p, result, exit_price, closed_at, equity):
+    """Update the original signal row with TP/SL outcome and post-mortem."""
+    key = str(p.get('signal_key') or '').strip()
+    if not key:
+        return
+    try:
+        rows = []
+        if TRADING_JOURNAL_FILE.exists():
+            with TRADING_JOURNAL_FILE.open('r', encoding='utf-8', newline='') as f:
+                rows = list(csv.DictReader(f))
+        row = next((r for r in rows if r.get('signal_key') == key), None)
+        if row is None:
+            # Defensive fallback if an old signal was closed before journaling existed.
+            _journal_signal(p, 'EXECUTED')
+            with TRADING_JOURNAL_FILE.open('r', encoding='utf-8', newline='') as f:
+                rows = list(csv.DictReader(f))
+            row = next((r for r in rows if r.get('signal_key') == key), None)
+        if row is None:
+            return
+
+        rr = 1.25 if result == 'TP' else -1.0
+        row['status'] = 'CLOSED'
+        row['result'] = result
+        row['exit'] = exit_price
+        row['R'] = rr
+        row['closed_at'] = closed_at
+        row['equity_after'] = equity
+        row['post_mortem'] = (
+            'FOLLOW_THROUGH_OK_TP' if result == 'TP' else 'FAILED_FOLLOW_THROUGH_SL'
+        )
+        fields = [
+            'signal_key','signal_time','coin','side','core','status','entry','sl','tp',
+            'entry_score','rsi_entry','adx4h_pct_entry','adx4h_delta_entry',
+            'volume_ratio_entry','ema20_dist_atr_entry','result','exit','R',
+            'closed_at','equity_after','post_mortem'
+        ]
+        for r in rows:
+            for field in fields:
+                r.setdefault(field, '')
+        with TRADING_JOURNAL_FILE.open('w', encoding='utf-8', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f'📒 JOURNAL RESULT | {p.get("coin")} | {result} | R={rr:+.2f}')
+    except Exception as e:
+        print(f'JOURNAL RESULT ERROR | {p.get("coin")} | {type(e).__name__}: {e}')
+
+
 def _reason_lines(p):
     """Build human-readable reasons from the exact V15 entry snapshot."""
     side = str(p.get('side', 'LONG')).upper()
     diag = p.get('entry_diag') or {}
-    metrics = p.get('entry_metrics') or {}
     gates = diag.get('long' if side == 'LONG' else 'short', {})
     names = {
         'trend': 'HTF 1H + 4H searah',
@@ -216,16 +329,19 @@ def _score_breakdown(p):
     lines = []
     for key, label, weight in labels:
         val = float(b.get(key, 0) or 0)
-        contrib = val * weight / 100.0
-        lines.append(f'├ {label:<13} {contrib:>5.2f}/{weight/100:.2f}')
+        contrib = val * weight
+        lines.append(f'├ {label:<13} {contrib:>5.2f}/{weight}')
     return '\n'.join(lines)
 
 
 def send_signal(p, equity):
+    # Journal first so the signal is recorded even if Telegram is temporarily down.
+    status = str(p.get('telegram_status', 'EXECUTED')).upper()
+    _journal_signal(p, status)
+
     is_long = p['side'] == 'LONG'
     side_icon = '🟢' if is_long else '🔴'
     side_label = 'LONG' if is_long else 'SHORT'
-    status = str(p.get('telegram_status', 'EXECUTED')).upper()
     core = str(p.get('core', 'V15_ADX4H_CANDLE2H'))
     signal_key = str(p.get('signal_key') or '').strip() or None
     risk_pct = float(p.get('risk_cash', 0)) / float(equity) * 100 if equity else 0.0
@@ -274,6 +390,8 @@ def send_signal(p, equity):
 
 
 def send_result(p, result, exit_price, closed_at, equity):
+    _journal_result(p, result, exit_price, closed_at, equity)
+
     is_tp = result == 'TP'
     icon = '🎯' if is_tp else '🛑'
     rr_result = '1.25R' if is_tp else '-1.00R'
