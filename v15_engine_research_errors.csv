@@ -1,0 +1,14 @@
+coin,error
+ADA,RuntimeError: No Binance archive data for ADA
+AVAX,RuntimeError: No Binance archive data for AVAX
+BNB,RuntimeError: No Binance archive data for BNB
+BTC,RuntimeError: No Binance archive data for BTC
+CRV,RuntimeError: No Binance archive data for CRV
+DOGE,RuntimeError: No Binance archive data for DOGE
+ETH,RuntimeError: No Binance archive data for ETH
+FET,RuntimeError: No Binance archive data for FET
+LINK,RuntimeError: No Binance archive data for LINK
+SOL,RuntimeError: No Binance archive data for SOL
+SUI,RuntimeError: No Binance archive data for SUI
+UNI,RuntimeError: No Binance archive data for UNI
+XRP,RuntimeError: No Binance archive data for XRP
