@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T16:54:06.219389+00:00",
+  "updated_at": "2026-09-17T16:58:35.022757+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -24,8 +24,8 @@
     "ONDO/USDT:USDT",
     "LTC/USDT:USDT",
     "INJ/USDT:USDT",
-    "LSK/USDT:USDT",
     "SUI/USDT:USDT",
+    "LSK/USDT:USDT",
     "DOGE/USDT:USDT",
     "BCH/USDT:USDT",
     "PUMP/USDT:USDT",
@@ -93,8 +93,8 @@
     "MERL/USDT:USDT",
     "GALA/USDT:USDT",
     "ILV/USDT:USDT",
-    "KITE/USDT:USDT",
     "GIGGLE/USDT:USDT",
+    "KITE/USDT:USDT",
     "STBL/USDT:USDT",
     "RESOLV/USDT:USDT",
     "THE/USDT:USDT",
@@ -103,6 +103,6 @@
     "ZK/USDT:USDT",
     "ORDI/USDT:USDT",
     "AIO/USDT:USDT",
-    "STABLE/USDT:USDT"
+    "OPENLEDGER/USDT:USDT"
   ]
 }
