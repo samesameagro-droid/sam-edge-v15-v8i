@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T11:39:09.254155+00:00",
+  "updated_at": "2026-09-17T11:43:35.704609+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -74,8 +74,8 @@
     "SOPH/USDT:USDT",
     "KAITO/USDT:USDT",
     "ATOM/USDT:USDT",
-    "API3/USDT:USDT",
     "FLOCK/USDT:USDT",
+    "API3/USDT:USDT",
     "SIGN/USDT:USDT",
     "ETC/USDT:USDT",
     "TURBO/USDT:USDT",
@@ -89,20 +89,20 @@
     "ZORA/USDT:USDT",
     "HOME/USDT:USDT",
     "MERL/USDT:USDT",
-    "KITE/USDT:USDT",
     "POPCAT/USDT:USDT",
+    "KITE/USDT:USDT",
     "FF/USDT:USDT",
     "EVAA/USDT:USDT",
     "ILV/USDT:USDT",
     "FOLKS/USDT:USDT",
-    "EUL/USDT:USDT",
     "STBL/USDT:USDT",
+    "EUL/USDT:USDT",
     "HOLO/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "ZK/USDT:USDT",
     "OPENLEDGER/USDT:USDT",
     "CATI/USDT:USDT",
-    "MMT/USDT:USDT",
-    "MOVE/USDT:USDT"
+    "MOVE/USDT:USDT",
+    "MMT/USDT:USDT"
   ]
 }
