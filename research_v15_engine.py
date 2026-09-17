@@ -11,10 +11,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from core_engine_v15 import (
-    COINS, CORE_NAME, RR, SWING_LOOKBACK, MAX_HOLD_BARS,
-    enrich, signal_mask,
-)
+from core_engine_v15 import COINS, CORE_NAME, RR, SWING_LOOKBACK, MAX_HOLD_BARS, enrich, signal_mask
 
 BINANCE_ARCHIVE = "https://data.binance.vision/data/futures/um/monthly/klines/{symbol}USDT/15m/{symbol}USDT-15m-{month}.zip"
 SESSION = requests.Session()
@@ -126,8 +123,8 @@ def stop_prices(x, i: int, side: int, style: str):
             anchor = float(x.low.iloc[max(0, i-look):i].min())
             sl = anchor - 0.65 * atr
         else:
-            anchor = float(x.high.iloc[max(0, i-look):i].max())
-            sl = anchor + 0.65 * atr
+            anchor = float(x.high.iloc[max(0, i-look):i].max()) + 0.65 * atr
+            sl = anchor
         risk = abs(entry-sl)
         if risk < 0.80 * atr:
             sl = entry - 0.80 * atr if side == 1 else entry + 0.80 * atr
@@ -218,6 +215,8 @@ def main():
     args = ap.parse_args()
 
     trade_frames = []
+    diagnostics = []
+    errors = []
     for coin in COINS:
         try:
             raw = fetch_binance_15m(coin, args.days)
@@ -225,6 +224,13 @@ def main():
             base_l, base_s = signal_mask(x, CORE_NAME)
             early_l, early_s = masks_early(x)
             loose_l, loose_s = masks_early_loose(x)
+            diagnostics.append({
+                "coin": coin, "candles": len(x),
+                "start": str(x.timestamp.iloc[0]), "end": str(x.timestamp.iloc[-1]),
+                "base_signals": int(base_l.sum()+base_s.sum()),
+                "early_signals": int(early_l.sum()+early_s.sum()),
+                "loose_signals": int(loose_l.sum()+loose_s.sum()),
+            })
             configs = [
                 ("V15_BASELINE", base_l, base_s, "baseline"),
                 ("V15_EARLY", early_l, early_s, "baseline"),
@@ -240,8 +246,11 @@ def main():
                     trade_frames.append(tr)
             print(f"{coin:5s} | candles={len(x):6d} | base={int(base_l.sum()+base_s.sum()):3d} | early={int(early_l.sum()+early_s.sum()):3d} | loose={int(loose_l.sum()+loose_s.sum()):3d}")
         except Exception as e:
+            errors.append({"coin": coin, "error": f"{type(e).__name__}: {e}"})
             print(f"{coin:5s} | ERROR | {type(e).__name__}: {e}")
 
+    pd.DataFrame(diagnostics).to_csv(args.out.with_name("v15_engine_research_diagnostics.csv"), index=False)
+    pd.DataFrame(errors).to_csv(args.out.with_name("v15_engine_research_errors.csv"), index=False)
     all_trades = pd.concat(trade_frames, ignore_index=True) if trade_frames else pd.DataFrame()
     trades_path = args.out.with_name("v15_engine_research_trades.csv")
     all_trades.to_csv(trades_path, index=False)
