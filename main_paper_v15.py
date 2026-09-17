@@ -358,15 +358,19 @@ class PaperEngine:
         self.equity = new_equity
         print(f'🎯 {result} | {p.coin} | {p.side} | R={rr:+.2f} | Equity=${self.equity:.2f}')
         try:
-            from notifiers import send_result
-            sent = send_result(asdict(p), result, price, ts, self.equity)
+            # Use the deterministic result-delivery guard so TP/SL notifications
+            # have their own RESULT identity, 5 delivery retries, and are always
+            # recoverable by reconcile_v15_results.py on the next workflow run.
+            from telegram_result_guard import send_result as send_guarded_result
+            sent = send_guarded_result(asdict(p), result, price, ts, self.equity)
             if sent:
-                print(f'📨 TELEGRAM RESULT | {p.coin} | {p.side} | {result} | delivered')
+                print(f'📨 TELEGRAM RESULT GUARDED | {p.coin} | {p.side} | {result} | delivered')
             else:
-                print(f'⚠️ TELEGRAM RESULT NOT SENT | {p.coin} | {p.side} | {result}')
+                print(f'⚠️ TELEGRAM RESULT GUARDED NOT SENT | {p.coin} | {p.side} | {result} | queued_for_reconcile')
         except Exception as e:
-            # Notification failure must never break the trading/paper engine.
-            print(f'TELEGRAM RESULT ERROR | {p.coin} | {result} | {type(e).__name__}: {e}')
+            # Notification failure must never break the trading/paper engine;
+            # the closed record remains in state and reconcile retries delivery.
+            print(f'TELEGRAM RESULT GUARDED ERROR | {p.coin} | {result} | {type(e).__name__}: {e}')
 
         # Only now is it safe to remove the live position.
         self.positions.pop(key, None)
