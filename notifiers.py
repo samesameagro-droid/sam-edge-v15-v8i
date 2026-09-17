@@ -83,7 +83,6 @@ def _queue_pending(text: str, signal_key: str | None = None):
         rows = _normalise_pending(_load_json(PENDING_FILE, []))
         if signal_key and signal_key in _delivery_history():
             return
-        # Replace any existing pending item for the same signal key.
         if signal_key:
             rows = [r for r in rows if r.get('key') != signal_key]
         elif any(r.get('key') is None and r.get('text') == text for r in rows):
@@ -152,7 +151,6 @@ def _send_text(text: str, retries: int = 3, signal_key: str | None = None) -> bo
             else:
                 print(f'TELEGRAM HTTP {r.status_code} | attempt={attempt}: {r.text}')
                 if r.status_code == 401:
-                    # Authentication failure will not be fixed by retrying the same token.
                     print('TELEGRAM AUTH FAILURE | 401 Unauthorized | check/replace TELEGRAM_BOT_TOKEN in GitHub Secrets')
                     break
         except Exception as e:
@@ -169,6 +167,60 @@ def _esc(value) -> str:
     return html.escape(str(value), quote=False)
 
 
+def _fmt(v, digits=4):
+    try:
+        return f'{float(v):.{digits}f}'
+    except Exception:
+        return '-'
+
+
+def _reason_lines(p):
+    """Build human-readable reasons from the exact V15 entry snapshot."""
+    side = str(p.get('side', 'LONG')).upper()
+    diag = p.get('entry_diag') or {}
+    metrics = p.get('entry_metrics') or {}
+    gates = diag.get('long' if side == 'LONG' else 'short', {})
+    names = {
+        'trend': 'HTF 1H + 4H searah',
+        'ema': 'struktur EMA mendukung',
+        'vwap': 'harga berada di sisi VWAP yang sesuai',
+        'di': '+DI/-DI mendukung arah',
+        'rsi': 'RSI berada di zona setup',
+        'room': 'ruang ke resistance/support mencukupi',
+        'no_chase': 'belum masuk kondisi chase',
+        'adx': 'ADX 4H memenuhi filter kekuatan',
+        'early_reclaim': 'terjadi Early Reclaim sebagai trigger',
+    }
+    passed = [names[k] for k in names if gates.get(k)]
+    failed = [names[k] for k in names if not gates.get(k)]
+    parts = []
+    if passed:
+        parts.append(' + '.join(passed[:5]))
+    if failed:
+        parts.append('Gate gagal: ' + ', '.join(failed[:3]))
+    return parts
+
+
+def _score_breakdown(p):
+    b = p.get('score_breakdown') or {}
+    if not b:
+        return ''
+    labels = [
+        ('adx', 'ADX', 30),
+        ('delta', 'ADX Delta', 20),
+        ('room', 'Room', 20),
+        ('location', 'Lokasi EMA20', 15),
+        ('volume', 'Volume', 10),
+        ('trigger', 'Trigger Body', 5),
+    ]
+    lines = []
+    for key, label, weight in labels:
+        val = float(b.get(key, 0) or 0)
+        contrib = val * weight / 100.0
+        lines.append(f'├ {label:<13} {contrib:>5.2f}/{weight/100:.2f}')
+    return '\n'.join(lines)
+
+
 def send_signal(p, equity):
     is_long = p['side'] == 'LONG'
     side_icon = '🟢' if is_long else '🔴'
@@ -179,6 +231,10 @@ def send_signal(p, equity):
     risk_pct = float(p.get('risk_cash', 0)) / float(equity) * 100 if equity else 0.0
     score = float(p.get('selection_score', 0) or 0)
     opened_at = p.get('opened_at', '-')
+    metrics = p.get('entry_metrics') or {}
+    reasons = _reason_lines(p)
+    breakdown = _score_breakdown(p)
+    reason_text = '\n'.join(f'• {x}' for x in reasons) if reasons else '• Setup memenuhi gate V15.'
 
     text = (
         '🏆 <b>SAM EDGE V15</b>\n'
@@ -188,17 +244,28 @@ def send_signal(p, equity):
         f'🧠 Core: <code>{_esc(core)}</code>\n'
         f'🕒 Signal: <code>{_esc(opened_at)}</code>\n'
         f'📌 Status: <b>{_esc(status)}</b>\n\n'
+        '🧠 <b>WHY ENTRY?</b>\n'
+        f'{reason_text}\n\n'
+        '📊 <b>SCORE BREAKDOWN</b>\n'
+        f'{breakdown or "• Score breakdown tidak tersedia pada snapshot ini."}\n'
+        f'└ <b>Total Score: {score:.2f}</b>\n\n'
+        '📐 <b>ENTRY SNAPSHOT</b>\n'
+        f'├ RSI       <b>{_fmt(metrics.get("rsi"), 2)}</b>\n'
+        f'├ ADX 4H %  <b>{_fmt(metrics.get("h4_adx_pct"), 3)}</b>\n'
+        f'├ ADX Δ     <b>{_fmt(metrics.get("h4_adx_delta"), 3)}</b>\n'
+        f'├ Vol Ratio <b>{_fmt(metrics.get("volr"), 2)}x</b>\n'
+        f'└ EMA20 dist <b>{_fmt(metrics.get("dist_ema20_atr"), 2)} ATR</b>\n\n'
         '💰 <b>TRADE LEVELS</b>\n'
         '├ Entry     <code>' + f'{p["entry"]:.8g}' + '</code>\n'
         '├ Stop Loss <code>' + f'{p["sl"]:.8g}' + '</code>\n'
         '└ Take Profit <code>' + f'{p["tp"]:.8g}' + '</code>\n\n'
-        '📊 <b>RISK &amp; QUALITY</b>\n'
+        '🛡 <b>RISK &amp; QUALITY</b>\n'
         f'├ Risk      <b>{risk_pct:.2f}%</b>\n'
         '├ R:R       <b>1.25R</b>\n'
         f'└ Score     <b>{score:.2f}</b>\n\n'
         '🛡 <b>EXECUTION</b>\n'
         '• Paper trading only\n'
-        '• Follow the predefined Entry / SL / TP\n'
+        '• Follow predefined Entry / SL / TP\n'
         '• No chasing after the signal\n\n'
         '━━━━━━━━━━━━━━━━━━━━\n'
         '<i>SAM EDGE V15 • Structured Signal Engine</i>'
@@ -211,6 +278,30 @@ def send_result(p, result, exit_price, closed_at, equity):
     icon = '🎯' if is_tp else '🛑'
     rr_result = '1.25R' if is_tp else '-1.00R'
     result_label = 'TAKE PROFIT' if is_tp else 'STOP LOSS'
+    metrics = p.get('entry_metrics') or {}
+    score = float(p.get('entry_score', 0) or 0)
+    gates = p.get('entry_diag') or {}
+    side_key = 'long' if p.get('side') == 'LONG' else 'short'
+    gate_map = gates.get(side_key, {})
+    passed = sum(1 for v in gate_map.values() if v)
+    total = len(gate_map) or 9
+
+    if is_tp:
+        why = (
+            '• Setup tervalidasi sampai target.\n'
+            f'• Saat ENTRY, {passed}/{total} gate {p.get("side")} aktif.\n'
+            '• Trigger Early Reclaim berhasil mendapat follow-through sesuai TP.'
+        )
+        post = 'Follow-through sesuai skenario V15 → TP tercapai.'
+    else:
+        why = (
+            '• Setup saat ENTRY tetap dicatat berdasarkan snapshot V15, bukan diubah setelah kejadian.\n'
+            f'• Saat ENTRY, {passed}/{total} gate {p.get("side")} aktif.\n'
+            '• Setelah ENTRY, harga bergerak berlawanan sampai SL; ini dikategorikan sebagai <b>failed follow-through</b>. '
+            'SL menjadi invalidation sesuai aturan trade.'
+        )
+        post = 'Follow-through gagal → invalidation/SL tersentuh.'
+
     text = (
         '🏆 <b>SAM EDGE V15</b>\n'
         '━━━━━━━━━━━━━━━━━━━━\n'
@@ -218,6 +309,13 @@ def send_result(p, result, exit_price, closed_at, equity):
         f'🪙 <b>{_esc(p["coin"])}</b>  |  <b>{_esc(p["side"])}</b>\n'
         f'📌 Result: <b>{result_label}</b>\n'
         f'📈 R-Multiple: <b>{rr_result}</b>\n\n'
+        f'🔎 <b>WHY {"PROFIT" if is_tp else "LOSS"}?</b>\n'
+        f'{why}\n\n'
+        f'🧾 <b>POST-MORTEM</b>\n'
+        f'• {post}\n'
+        f'• Entry Score: <b>{score:.2f}</b>\n'
+        f'• RSI saat Entry: <b>{_fmt(metrics.get("rsi"), 2)}</b>\n'
+        f'• ADX 4H % saat Entry: <b>{_fmt(metrics.get("h4_adx_pct"), 3)}</b>\n\n'
         '💰 <b>TRADE LEVELS</b>\n'
         '├ Entry  <code>' + f'{p["entry"]:.8g}' + '</code>\n'
         '├ Exit   <code>' + f'{float(exit_price):.8g}' + '</code>\n'
@@ -228,7 +326,11 @@ def send_result(p, result, exit_price, closed_at, equity):
         '━━━━━━━━━━━━━━━━━━━━\n'
         '<i>SAM EDGE V15 • Paper Forward Record</i>'
     )
-    return _send_text(text)
+    key = str(p.get('signal_key') or '').strip() or None
+    # Outcome notifications use their own key so they cannot be blocked by the
+    # signal-delivery dedup history.
+    outcome_key = f'{key}|RESULT|{result}|{closed_at}' if key else None
+    return _send_text(text, signal_key=outcome_key)
 
 
 def retry_pending_messages() -> list[str]:
