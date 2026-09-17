@@ -336,14 +336,26 @@ class PaperEngine:
         return None
 
     def close(self, key, result, price, ts):
-        p = self.positions.pop(key)
+        # IMPORTANT: do not pop the position before persistence succeeds.
+        # The old order could silently delete a live trade if CSV/journal
+        # persistence raised an exception.
+        p = self.positions[key]
         rr = RR if result == 'TP' else -1.0
         risk_now = self.equity * RISK_PCT
-        self.equity += risk_now * rr
+        new_equity = self.equity + risk_now * rr
         rec = asdict(p)
-        rec.update({'closed_at': ts, 'exit': price, 'result': result, 'R': rr, 'equity_after': self.equity})
+        rec.update({'closed_at': ts, 'exit': price, 'result': result, 'R': rr, 'equity_after': new_equity})
+
+        # Persist the result before removing the live position. If this fails,
+        # the position remains active and the next scan can retry.
+        pd.DataFrame([rec]).to_csv(
+            JOURNAL_FILE,
+            mode='a',
+            header=not JOURNAL_FILE.exists(),
+            index=False,
+        )
         self.closed.append(rec)
-        pd.DataFrame([rec]).to_csv(JOURNAL_FILE, mode='a', header=not JOURNAL_FILE.exists(), index=False)
+        self.equity = new_equity
         print(f'🎯 {result} | {p.coin} | {p.side} | R={rr:+.2f} | Equity=${self.equity:.2f}')
         try:
             from notifiers import send_result
@@ -356,6 +368,8 @@ class PaperEngine:
             # Notification failure must never break the trading/paper engine.
             print(f'TELEGRAM RESULT ERROR | {p.coin} | {result} | {type(e).__name__}: {e}')
 
+        # Only now is it safe to remove the live position.
+        self.positions.pop(key, None)
     def report(self):
         if not self.closed:
             print(f'PAPER REPORT | closed=0 | active={len(self.positions)} | equity=${self.equity:.2f}')
