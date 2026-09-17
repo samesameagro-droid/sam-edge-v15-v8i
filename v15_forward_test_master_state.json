@@ -3,12 +3,9 @@
   "next_trade_no": 9,
   "closed_trades": 8,
   "active_positions": [
-    "UNI/USDT:USDT",
-    "ARB/USDT:USDT",
-    "ASTER/USDT:USDT"
+    "UNI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
-  "validation": "9 V15 gates from signal_mask",
-  "active_positions_count": 3
+  "validation": "9 V15 gates from signal_mask"
 }
