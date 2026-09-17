@@ -3,7 +3,6 @@
   "next_trade_no": 9,
   "closed_trades": 8,
   "active_positions": [
-    "ARB/USDT:USDT",
     "ASTER/USDT:USDT"
   ],
   "max_active": 5,
