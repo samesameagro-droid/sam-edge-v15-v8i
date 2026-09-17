@@ -1,11 +1,8 @@
 {
   "target": 20,
-  "next_trade_no": 7,
-  "closed_trades": 6,
-  "active_positions": [
-    "GRIFFAIN/USDT:USDT",
-    "PI/USDT:USDT"
-  ],
+  "next_trade_no": 8,
+  "closed_trades": 7,
+  "active_positions": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
