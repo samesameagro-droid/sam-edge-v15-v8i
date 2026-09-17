@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T00:28:55.780333+00:00",
+  "updated_at": "2026-09-17T00:34:06.287659+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -32,6 +32,7 @@
     "1000PEPE/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "LINK/USDT:USDT",
+    "DOT/USDT:USDT",
     "BOME/USDT:USDT",
     "CFX/USDT:USDT",
     "ADA/USDT:USDT",
@@ -50,9 +51,8 @@
     "XLM/USDT:USDT",
     "JUP/USDT:USDT",
     "SOMI/USDT:USDT",
-    "BLESS/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "DOT/USDT:USDT",
+    "BLESS/USDT:USDT",
     "ON/USDT:USDT",
     "XPL/USDT:USDT",
     "REZ/USDT:USDT",
@@ -65,8 +65,8 @@
     "RIVER/USDT:USDT",
     "BTR/USDT:USDT",
     "KAITO/USDT:USDT",
-    "PI/USDT:USDT",
     "SIGN/USDT:USDT",
+    "PI/USDT:USDT",
     "APT/USDT:USDT",
     "SOPH/USDT:USDT",
     "BANK/USDT:USDT",
@@ -95,14 +95,14 @@
     "CATI/USDT:USDT",
     "VANA/USDT:USDT",
     "AIXBT/USDT:USDT",
-    "W/USDT:USDT",
     "LA/USDT:USDT",
+    "W/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "HANA/USDT:USDT",
     "AIO/USDT:USDT",
     "TRADOOR/USDT:USDT",
     "DIA/USDT:USDT",
     "PIEVERSE/USDT:USDT",
-    "KAIA/USDT:USDT"
+    "CC/USDT:USDT"
   ]
 }
