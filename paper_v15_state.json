@@ -7,7 +7,7 @@
       "entry": 0.18157,
       "sl": 0.14679037358928326,
       "tp": 0.22504453301339594,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.5,
       "opened_at": "2026-09-15T13:00:00+00:00",
       "core": "V15_ADX4H_CANDLE2H",
@@ -15,7 +15,7 @@
       "closed_at": "2026-09-16T01:15:00+00:00",
       "exit": 0.14679037358928326,
       "result": "SL",
-      "R": -1,
+      "R": -1.0,
       "equity_after": 99.5
     },
     {
@@ -24,7 +24,7 @@
       "entry": 0.1322,
       "sl": 0.13803896294082407,
       "tp": 0.12490129632396993,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.4975,
       "opened_at": "2026-09-16T03:00:00+00:00",
       "core": "V15_ADX4H_CANDLE2H",
@@ -41,7 +41,7 @@
       "entry": 0.5802,
       "sl": 0.5927708895693659,
       "tp": 0.5644863880382928,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.500609375,
       "opened_at": "2026-09-16T17:45:00+00:00",
       "core": "V15_ADX4H_CANDLE2H",
@@ -49,7 +49,7 @@
       "closed_at": "2026-09-16T18:05:00+00:00",
       "exit": 0.5927708895693659,
       "result": "SL",
-      "R": -1,
+      "R": -1.0,
       "equity_after": 99.621265625
     },
     {
@@ -58,7 +58,7 @@
       "entry": 0.1877,
       "sl": 0.1584480761207722,
       "tp": 0.22426490484903477,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.49561579648437504,
       "opened_at": "2026-09-16T20:15:00+00:00",
       "core": "V15_ADX4H_CANDLE2H",
@@ -66,7 +66,7 @@
       "closed_at": "2026-09-16T22:00:00+00:00",
       "exit": 0.1584480761207722,
       "result": "SL",
-      "R": -1,
+      "R": -1.0,
       "equity_after": 98.62754350039063
     },
     {
@@ -75,7 +75,7 @@
       "entry": 0.01328,
       "sl": 0.012880822424518138,
       "tp": 0.013778971969352329,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.4931377175019532,
       "opened_at": "2026-09-17T01:00:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
@@ -92,12 +92,12 @@
       "entry": 0.18147,
       "sl": 0.1621477370504826,
       "tp": 0.20562282868689674,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.49621982823634037,
       "opened_at": "2026-09-17T09:00:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
       "status": "OPEN",
-      "entry_score": 0,
+      "entry_score": 0.0,
       "entry_diag": {},
       "entry_metrics": {},
       "score_breakdown": {},
@@ -114,7 +114,7 @@
       "entry": 0.08189,
       "sl": 0.08329318025536524,
       "tp": 0.08013602468079346,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.49932120216281745,
       "opened_at": "2026-09-17T14:45:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
@@ -157,12 +157,12 @@
         "dist_ema20_atr": 1.0757093551474617,
         "room_atr": 1.2115335813056352,
         "body_atr": 0.7661168234726806,
-        "close_pos": 0,
+        "close_pos": 0.0,
         "atr": 0.0005612721021460945
       },
       "score_breakdown": {
         "adx": 0.7999999999999998,
-        "delta": 1,
+        "delta": 1.0,
         "room": 0.24102238753709013,
         "location": 0.20715107475423045,
         "volume": 0.50490749855624,
@@ -172,7 +172,7 @@
       "closed_at": "2026-09-17T14:10:00+00:00",
       "exit": 0.08329318025536524,
       "result": "SL",
-      "R": -1,
+      "R": -1.0,
       "equity_after": 99.36491923040067
     },
     {
@@ -181,7 +181,7 @@
       "entry": 0.003815,
       "sl": 0.0036418788439347436,
       "tp": 0.00403140144508157,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.49682459615200336,
       "opened_at": "2026-09-17T16:00:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
@@ -228,9 +228,9 @@
         "atr": 6.941716317731812e-05
       },
       "score_breakdown": {
-        "adx": 0,
-        "delta": 0,
-        "room": 1,
+        "adx": 0.0,
+        "delta": 0.0,
+        "room": 1.0,
         "location": 0.19724359538016678,
         "volume": 0.5134716855356509,
         "trigger": 0.8823466300912348
@@ -239,7 +239,7 @@
       "closed_at": "2026-09-17T17:00:00+00:00",
       "exit": 0.0036418788439347436,
       "result": "SL",
-      "R": -1,
+      "R": -1.0,
       "equity_after": 98.86809463424866
     }
   ],
@@ -250,7 +250,7 @@
       "entry": 7.673,
       "sl": 7.441063205900834,
       "tp": 7.962920992623958,
-      "risk_R": 1,
+      "risk_R": 1.0,
       "risk_cash": 0.49434047317124336,
       "opened_at": "2026-09-17T21:00:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
@@ -297,48 +297,14 @@
         "atr": 0.10913352938333182
       },
       "score_breakdown": {
-        "adx": 0,
-        "delta": 1,
+        "adx": 0.0,
+        "delta": 1.0,
         "room": 0.2946634903543232,
         "location": 0.4004488576542625,
-        "volume": 1,
+        "volume": 1.0,
         "trigger": 0.5383313481381152
       },
       "signal_key": "UNI/USDT:USDT|LONG|2026-09-17T21:00:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
-    "ARB/USDT:USDT": {
-      "coin": "ARB/USDT:USDT",
-      "side": "LONG",
-      "entry": 0.1764,
-      "sl": 0.17121753,
-      "tp": 0.18287809,
-      "risk_R": 1,
-      "risk_cash": 0.49434047317124336,
-      "opened_at": "2026-09-17T20:15:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 63.3,
-      "entry_diag": {},
-      "entry_metrics": {},
-      "score_breakdown": {},
-      "signal_key": "ARB/USDT:USDT|LONG|2026-09-17T20:15:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
-    "ASTER/USDT:USDT": {
-      "coin": "ASTER/USDT:USDT",
-      "side": "LONG",
-      "entry": 0.746,
-      "sl": 0.7382916394103878,
-      "tp": 0.7556354507370153,
-      "risk_R": 1,
-      "risk_cash": 0.49434047317124336,
-      "opened_at": "2026-09-17T20:30:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 29.384654478535644,
-      "entry_diag": {},
-      "entry_metrics": {},
-      "score_breakdown": {},
-      "signal_key": "ASTER/USDT:USDT|LONG|2026-09-17T20:30:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }
