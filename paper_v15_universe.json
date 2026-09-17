@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-17T13:04:39.390587+00:00",
+  "updated_at": "2026-09-17T13:09:03.252332+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -45,10 +45,10 @@
     "JUP/USDT:USDT",
     "ZRO/USDT:USDT",
     "KAS/USDT:USDT",
-    "WLD/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "DASH/USDT:USDT",
     "ASTER/USDT:USDT",
+    "WLD/USDT:USDT",
     "UAI/USDT:USDT",
     "NOT/USDT:USDT",
     "FIL/USDT:USDT",
@@ -85,8 +85,8 @@
     "PI/USDT:USDT",
     "WLFI/USDT:USDT",
     "GRIFFAIN/USDT:USDT",
-    "W/USDT:USDT",
     "BTR/USDT:USDT",
+    "W/USDT:USDT",
     "MERL/USDT:USDT",
     "ZORA/USDT:USDT",
     "ILV/USDT:USDT",
@@ -96,13 +96,13 @@
     "EVAA/USDT:USDT",
     "FF/USDT:USDT",
     "RESOLV/USDT:USDT",
-    "AIO/USDT:USDT",
     "ZK/USDT:USDT",
-    "EUL/USDT:USDT",
+    "AIO/USDT:USDT",
     "STBL/USDT:USDT",
+    "EUL/USDT:USDT",
     "HOLO/USDT:USDT",
-    "CATI/USDT:USDT",
+    "THE/USDT:USDT",
     "OPENLEDGER/USDT:USDT",
-    "THE/USDT:USDT"
+    "CATI/USDT:USDT"
   ]
 }
