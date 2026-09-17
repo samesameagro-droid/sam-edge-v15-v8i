@@ -1,5 +1,5 @@
 {
-  "equity": 99.24396564726807,
+  "equity": 99.86424043256349,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -85,10 +85,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 99.24396564726807
-    }
-  ],
-  "positions": {
-    "SYN/USDT:USDT": {
+    },
+    {
       "coin": "SYN/USDT:USDT",
       "side": "LONG",
       "entry": 0.18147,
@@ -103,7 +101,13 @@
       "entry_diag": {},
       "entry_metrics": {},
       "score_breakdown": {},
-      "signal_key": ""
+      "signal_key": "",
+      "closed_at": "2026-09-17T09:40:00+00:00",
+      "exit": 0.20562282868689674,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 99.86424043256349
     }
-  }
+  ],
+  "positions": {}
 }
