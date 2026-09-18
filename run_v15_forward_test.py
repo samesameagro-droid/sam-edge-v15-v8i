@@ -51,7 +51,7 @@ class ForwardPaperEngine(base.PaperEngine):
 
     def _append_closed_record(self, r, trade_no):
         result = str(r.get("result", "")).upper().strip()
-        if result not in {"TP", "SL"}:
+        if result not in {"TP", "SL"} or not self._valid_closed_record({**r, "signal_time": r.get("opened_at", "")}):
             return
         self.master_rows.append({
             "trade_no": str(trade_no),
@@ -102,6 +102,7 @@ class ForwardPaperEngine(base.PaperEngine):
             except Exception as e:
                 print(f"LEGACY JOURNAL BOOTSTRAP ERROR: {e}")
 
+        sources = [r for r in sources if self._valid_closed_record({**r, "signal_time": r.get("opened_at", "")})]
         sources.sort(key=lambda r: str(r.get("closed_at") or r.get("opened_at") or ""))
         seen = set()
         trade_no = 0
