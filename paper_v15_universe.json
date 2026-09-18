@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T18:59:03.076006+00:00",
+  "updated_at": "2026-09-18T19:04:37.645358+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -39,8 +39,8 @@
     "CFX/USDT:USDT",
     "LTC/USDT:USDT",
     "RENDER/USDT:USDT",
-    "SUI/USDT:USDT",
     "STRK/USDT:USDT",
+    "SUI/USDT:USDT",
     "STX/USDT:USDT",
     "AUCTION/USDT:USDT",
     "BOME/USDT:USDT",
