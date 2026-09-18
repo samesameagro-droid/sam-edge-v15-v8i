@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T15:58:59.299877+00:00",
+  "updated_at": "2026-09-18T16:04:27.693431+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -26,8 +26,8 @@
     "AVAX/USDT:USDT",
     "TIA/USDT:USDT",
     "ADA/USDT:USDT",
-    "DOT/USDT:USDT",
     "INJ/USDT:USDT",
+    "DOT/USDT:USDT",
     "WLD/USDT:USDT",
     "BANANA/USDT:USDT",
     "KAS/USDT:USDT",
@@ -38,9 +38,9 @@
     "DOGE/USDT:USDT",
     "STX/USDT:USDT",
     "CFX/USDT:USDT",
-    "SEI/USDT:USDT",
     "ENA/USDT:USDT",
     "SUI/USDT:USDT",
+    "SEI/USDT:USDT",
     "ETHFI/USDT:USDT",
     "ZRO/USDT:USDT",
     "STRK/USDT:USDT",
@@ -100,8 +100,8 @@
     "BANK/USDT:USDT",
     "S/USDT:USDT",
     "RIVER/USDT:USDT",
-    "WLFI/USDT:USDT",
     "GRASS/USDT:USDT",
+    "WLFI/USDT:USDT",
     "MOODENG/USDT:USDT",
     "BLESS/USDT:USDT"
   ]
