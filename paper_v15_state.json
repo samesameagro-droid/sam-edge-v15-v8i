@@ -1,5 +1,5 @@
 {
-  "equity": 100.7334816511992,
+  "equity": 101.3630659115192,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -397,27 +397,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 100.7334816511992
-    }
-  ],
-  "positions": {
-    "ASTER/USDT:USDT": {
-      "coin": "ASTER/USDT:USDT",
-      "side": "LONG",
-      "entry": 0.746,
-      "sl": 0.7382916394103878,
-      "tp": 0.7556354507370153,
-      "risk_R": 1,
-      "risk_cash": 0.49434047317124336,
-      "opened_at": "2026-09-17T20:30:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 29.384654478535644,
-      "entry_diag": {},
-      "entry_metrics": {},
-      "score_breakdown": {},
-      "signal_key": "ASTER/USDT:USDT|LONG|2026-09-17T20:30:00+00:00|V15_EARLY_RECLAIM_V1"
     },
-    "SOMI/USDT:USDT": {
+    {
       "coin": "SOMI/USDT:USDT",
       "side": "LONG",
       "entry": 0.1717,
@@ -477,7 +458,31 @@
         "volume": 0.5000920832498998,
         "trigger": 0.8857010808746492
       },
-      "signal_key": "SOMI/USDT:USDT|LONG|2026-09-17T23:00:00+00:00|V15_EARLY_RECLAIM_V1"
+      "signal_key": "SOMI/USDT:USDT|LONG|2026-09-17T23:00:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-18T03:25:00+00:00",
+      "exit": 0.17611034801057543,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 101.3630659115192
+    }
+  ],
+  "positions": {
+    "ASTER/USDT:USDT": {
+      "coin": "ASTER/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.746,
+      "sl": 0.7382916394103878,
+      "tp": 0.7556354507370153,
+      "risk_R": 1,
+      "risk_cash": 0.49434047317124336,
+      "opened_at": "2026-09-17T20:30:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 29.384654478535644,
+      "entry_diag": {},
+      "entry_metrics": {},
+      "score_breakdown": {},
+      "signal_key": "ASTER/USDT:USDT|LONG|2026-09-17T20:30:00+00:00|V15_EARLY_RECLAIM_V1"
     },
     "ZEC/USDT:USDT": {
       "coin": "ZEC/USDT:USDT",
