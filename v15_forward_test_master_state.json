@@ -4,7 +4,8 @@
   "closed_trades": 14,
   "active_positions": [
     "DASH/USDT:USDT",
-    "ONE/USDT:USDT"
+    "ONE/USDT:USDT",
+    "1000PEPE/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
