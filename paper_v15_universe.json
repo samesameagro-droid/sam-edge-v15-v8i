@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T07:58:23.694836+00:00",
+  "updated_at": "2026-09-18T08:04:30.845307+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -43,8 +43,8 @@
     "PUMP/USDT:USDT",
     "ETHFI/USDT:USDT",
     "STRK/USDT:USDT",
-    "FIL/USDT:USDT",
     "ORDI/USDT:USDT",
+    "FIL/USDT:USDT",
     "DYM/USDT:USDT",
     "SEI/USDT:USDT",
     "ATOM/USDT:USDT",
@@ -89,20 +89,20 @@
     "MOODENG/USDT:USDT",
     "ALLO/USDT:USDT",
     "REZ/USDT:USDT",
-    "BULLA/USDT:USDT",
     "0G/USDT:USDT",
     "W/USDT:USDT",
+    "BULLA/USDT:USDT",
     "AIN/USDT:USDT",
+    "ON/USDT:USDT",
     "SKYAI/USDT:USDT",
     "SOLV/USDT:USDT",
     "RIVER/USDT:USDT",
-    "ON/USDT:USDT",
     "FLOCK/USDT:USDT",
     "BANK/USDT:USDT",
+    "GRASS/USDT:USDT",
     "BTR/USDT:USDT",
     "API3/USDT:USDT",
     "SOMI/USDT:USDT",
-    "FF/USDT:USDT",
-    "BABY/USDT:USDT"
+    "FF/USDT:USDT"
   ]
 }
