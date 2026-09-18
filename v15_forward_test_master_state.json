@@ -1,12 +1,10 @@
 {
   "target": 20,
-  "next_trade_no": 15,
-  "closed_trades": 14,
+  "next_trade_no": 17,
+  "closed_trades": 16,
   "active_positions": [
-    "DASH/USDT:USDT",
     "ONE/USDT:USDT",
-    "1000PEPE/USDT:USDT",
-    "ASTER/USDT:USDT"
+    "1000PEPE/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
