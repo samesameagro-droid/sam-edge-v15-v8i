@@ -19,6 +19,23 @@ def outcome_key(r: dict) -> str:
     )
 
 
+
+def valid_result_record(r: dict) -> bool:
+    result = str(r.get('result', '')).upper().replace(' HIT', '').strip()
+    if result not in {'TP', 'SL'}:
+        return False
+    opened = str(r.get('signal_time') or r.get('opened_at') or '').strip()
+    closed = str(r.get('closed_at') or '').strip()
+    if not opened or not closed:
+        return False
+    try:
+        from datetime import datetime
+        opened_dt = datetime.fromisoformat(opened.replace('Z', '+00:00'))
+        closed_dt = datetime.fromisoformat(closed.replace('Z', '+00:00'))
+    except ValueError:
+        return False
+    return closed_dt >= opened_dt
+
 def main() -> None:
     if not STATE_FILE.exists():
         print('OUTCOME RECONCILE | no paper_v15_state.json')
@@ -49,6 +66,9 @@ def main() -> None:
     for r in list(closed) + list(master_rows):
         result = str(r.get('result', '')).upper().strip()
         if result not in {'TP', 'SL'}:
+            continue
+        if not valid_result_record(r):
+            print(f"OUTCOME RECONCILE QUARANTINE | close_before_open_or_invalid_time | {r.get('coin')} | {r.get('side')} | opened={r.get('signal_time') or r.get('opened_at')} | closed={r.get('closed_at')}")
             continue
         key = outcome_key(r)
         if key in seen:
