@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T11:03:34.471618+00:00",
+  "updated_at": "2026-09-18T11:09:09.037795+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -35,8 +35,8 @@
     "RENDER/USDT:USDT",
     "WLD/USDT:USDT",
     "ZRO/USDT:USDT",
-    "STX/USDT:USDT",
     "ENA/USDT:USDT",
+    "STX/USDT:USDT",
     "ONDO/USDT:USDT",
     "SUI/USDT:USDT",
     "AUCTION/USDT:USDT",
@@ -66,6 +66,7 @@
     "ONE/USDT:USDT",
     "1000BONK/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "TURBO/USDT:USDT",
     "FLOKI/USDT:USDT",
     "1INCH/USDT:USDT",
     "ASTER/USDT:USDT",
@@ -101,8 +102,7 @@
     "MOODENG/USDT:USDT",
     "0G/USDT:USDT",
     "BLESS/USDT:USDT",
-    "API3/USDT:USDT",
-    "SOMI/USDT:USDT",
-    "RIVER/USDT:USDT"
+    "RIVER/USDT:USDT",
+    "API3/USDT:USDT"
   ]
 }
