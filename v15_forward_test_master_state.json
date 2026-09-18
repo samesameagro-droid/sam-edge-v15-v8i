@@ -5,7 +5,8 @@
   "active_positions": [
     "ONE/USDT:USDT",
     "DRIFT/USDT:USDT",
-    "REZ/USDT:USDT"
+    "REZ/USDT:USDT",
+    "UNI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
