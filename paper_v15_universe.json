@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T18:33:58.653365+00:00",
+  "updated_at": "2026-09-18T18:38:56.502049+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -14,9 +14,9 @@
     "ARB/USDT:USDT",
     "AAVE/USDT:USDT",
     "HYPE/USDT:USDT",
+    "RUNE/USDT:USDT",
     "BNB/USDT:USDT",
     "ATOM/USDT:USDT",
-    "RUNE/USDT:USDT",
     "LINK/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "NOT/USDT:USDT",
