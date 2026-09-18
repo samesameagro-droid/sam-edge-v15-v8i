@@ -1,11 +1,10 @@
 {
   "target": 20,
-  "next_trade_no": 19,
-  "closed_trades": 18,
+  "next_trade_no": 20,
+  "closed_trades": 19,
   "active_positions": [
     "ONE/USDT:USDT",
     "DRIFT/USDT:USDT",
-    "0G/USDT:USDT",
     "REZ/USDT:USDT"
   ],
   "max_active": 5,
