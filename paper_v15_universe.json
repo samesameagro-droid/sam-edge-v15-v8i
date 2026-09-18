@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T11:55:15.631006+00:00",
+  "updated_at": "2026-09-18T11:59:21.458445+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -76,8 +76,8 @@
     "DASH/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "BR/USDT:USDT",
-    "ICP/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
+    "ICP/USDT:USDT",
     "POL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "UAI/USDT:USDT",
