@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T03:03:40.931355+00:00",
+  "updated_at": "2026-09-18T03:08:27.790596+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -80,8 +80,8 @@
     "POPCAT/USDT:USDT",
     "BULLA/USDT:USDT",
     "ALLO/USDT:USDT",
-    "PENDLE/USDT:USDT",
     "DRIFT/USDT:USDT",
+    "PENDLE/USDT:USDT",
     "AIN/USDT:USDT",
     "SKYAI/USDT:USDT",
     "REZ/USDT:USDT",
@@ -99,8 +99,8 @@
     "BABY/USDT:USDT",
     "BLESS/USDT:USDT",
     "MMT/USDT:USDT",
-    "ZORA/USDT:USDT",
     "PI/USDT:USDT",
+    "ZORA/USDT:USDT",
     "SOPH/USDT:USDT",
     "KAITO/USDT:USDT",
     "SIGN/USDT:USDT"
