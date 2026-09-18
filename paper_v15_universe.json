@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T22:15:03.389422+00:00",
+  "updated_at": "2026-09-18T22:19:19.995882+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -85,8 +85,8 @@
     "F/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "XPL/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "POL/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "EVAA/USDT:USDT",
     "SIGN/USDT:USDT",
     "UAI/USDT:USDT",
@@ -97,12 +97,12 @@
     "ALLO/USDT:USDT",
     "S/USDT:USDT",
     "ZK/USDT:USDT",
-    "RIVER/USDT:USDT",
     "REZ/USDT:USDT",
+    "RIVER/USDT:USDT",
     "POPCAT/USDT:USDT",
     "GRASS/USDT:USDT",
-    "AIN/USDT:USDT",
     "WLFI/USDT:USDT",
+    "AIN/USDT:USDT",
     "BANK/USDT:USDT"
   ]
 }
