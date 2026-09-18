@@ -1,5 +1,5 @@
 {
-  "equity": 99.48602022571272,
+  "equity": 100.10780785212343,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -308,6 +308,28 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 99.48602022571272
+    },
+    {
+      "coin": "ARB/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.1764,
+      "sl": 0.17121753,
+      "tp": 0.18287809,
+      "risk_R": 1,
+      "risk_cash": 0.49434047317124336,
+      "opened_at": "2026-09-17T20:15:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 63.3,
+      "entry_diag": {},
+      "entry_metrics": {},
+      "score_breakdown": {},
+      "signal_key": "ARB/USDT:USDT|LONG|2026-09-17T20:15:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-18T00:55:00+00:00",
+      "exit": 0.18287809,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 100.10780785212343
     }
   ],
   "positions": {
@@ -372,23 +394,6 @@
         "trigger": 0.5383313481381152
       },
       "signal_key": "UNI/USDT:USDT|LONG|2026-09-17T21:00:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
-    "ARB/USDT:USDT": {
-      "coin": "ARB/USDT:USDT",
-      "side": "LONG",
-      "entry": 0.1764,
-      "sl": 0.17121753,
-      "tp": 0.18287809,
-      "risk_R": 1,
-      "risk_cash": 0.49434047317124336,
-      "opened_at": "2026-09-17T20:15:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 63.3,
-      "entry_diag": {},
-      "entry_metrics": {},
-      "score_breakdown": {},
-      "signal_key": "ARB/USDT:USDT|LONG|2026-09-17T20:15:00+00:00|V15_EARLY_RECLAIM_V1"
     },
     "ASTER/USDT:USDT": {
       "coin": "ASTER/USDT:USDT",

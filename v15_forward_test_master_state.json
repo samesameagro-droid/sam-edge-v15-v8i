@@ -1,10 +1,9 @@
 {
   "target": 20,
-  "next_trade_no": 10,
-  "closed_trades": 9,
+  "next_trade_no": 11,
+  "closed_trades": 10,
   "active_positions": [
     "UNI/USDT:USDT",
-    "ARB/USDT:USDT",
     "ASTER/USDT:USDT",
     "SOMI/USDT:USDT"
   ],
