@@ -6,7 +6,8 @@
     "ONE/USDT:USDT",
     "DRIFT/USDT:USDT",
     "UNI/USDT:USDT",
-    "PENDLE/USDT:USDT"
+    "PENDLE/USDT:USDT",
+    "1000PEPE/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
