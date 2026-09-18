@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T11:59:21.458445+00:00",
+  "updated_at": "2026-09-18T12:04:20.449821+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -74,8 +74,8 @@
     "COMP/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "DASH/USDT:USDT",
-    "PEOPLE/USDT:USDT",
     "BR/USDT:USDT",
+    "PEOPLE/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "ICP/USDT:USDT",
     "POL/USDT:USDT",
@@ -100,9 +100,9 @@
     "BLESS/USDT:USDT",
     "FLOCK/USDT:USDT",
     "SOLV/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "RIVER/USDT:USDT",
-    "SOMI/USDT:USDT",
-    "API3/USDT:USDT"
+    "MOODENG/USDT:USDT",
+    "API3/USDT:USDT",
+    "SOMI/USDT:USDT"
   ]
 }
