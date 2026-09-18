@@ -4,7 +4,8 @@
   "closed_trades": 16,
   "active_positions": [
     "ONE/USDT:USDT",
-    "1000PEPE/USDT:USDT"
+    "1000PEPE/USDT:USDT",
+    "DRIFT/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
