@@ -5,7 +5,8 @@
   "active_positions": [
     "DASH/USDT:USDT",
     "ONE/USDT:USDT",
-    "1000PEPE/USDT:USDT"
+    "1000PEPE/USDT:USDT",
+    "ASTER/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
