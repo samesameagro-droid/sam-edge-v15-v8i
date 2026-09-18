@@ -456,21 +456,23 @@ class PaperEngine:
             tag='SELECT' if c in selected else 'WAIT'
             print(f'  #{rank:<2} {tag:<6} | {c["position"].coin:<24} | {c["side"]:<5} | score={c["score"]:.1f}')
         from notifiers import send_signal
-        selected_keys={c['key'] for c in selected}
-        for c in candidates:
+        # Telegram must contain ONLY executable entries. Candidates that lose
+        # active-slot selection stay in Actions logs as WAITLIST and are never
+        # journaled or sent to Telegram.
+        for c in selected:
             p=c['position']; key=c['key']
             if key in self.signal_history:
                 continue
             payload=asdict(p)
             payload['selection_score']=round(c['score'],2)
-            payload['telegram_status']='EXECUTED' if key in selected_keys else 'VALID V15 SIGNAL - WAITLIST'
+            payload['telegram_status']='EXECUTED'
             sent=send_signal(payload,self.equity)
             if sent:
                 self.signal_history.add(key)
-                print(f'📨 TELEGRAM SIGNAL | {p.coin} | {p.side} | status={payload["telegram_status"]} | score={c["score"]:.1f}')
+                print(f'📨 TELEGRAM SIGNAL | {p.coin} | {p.side} | status=EXECUTED | score={c["score"]:.1f}')
             else:
                 print(f'⚠️ TELEGRAM NOT SENT | {p.coin} | {p.side} | score={c["score"]:.1f}')
-        for c in selected:
+
             p=c['position']; key=c['key']
             self.positions[p.coin]=p
             print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g}')
