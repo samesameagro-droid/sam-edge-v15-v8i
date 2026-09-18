@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T23:34:17.478853+00:00",
+  "updated_at": "2026-09-18T23:41:15.313110+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -67,15 +67,15 @@
     "ORDI/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "G/USDT:USDT",
-    "ICP/USDT:USDT",
     "FIL/USDT:USDT",
+    "ICP/USDT:USDT",
     "JASMY/USDT:USDT",
     "BLUR/USDT:USDT",
     "ASTER/USDT:USDT",
     "MYX/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "ENS/USDT:USDT",
     "JTO/USDT:USDT",
+    "ENS/USDT:USDT",
     "DASH/USDT:USDT",
     "GALA/USDT:USDT",
     "FLOKI/USDT:USDT",
@@ -97,12 +97,12 @@
     "ZK/USDT:USDT",
     "S/USDT:USDT",
     "REZ/USDT:USDT",
-    "ONE/USDT:USDT",
     "RIVER/USDT:USDT",
     "POPCAT/USDT:USDT",
     "GRASS/USDT:USDT",
     "ETC/USDT:USDT",
     "WLFI/USDT:USDT",
-    "AIN/USDT:USDT"
+    "AIN/USDT:USDT",
+    "ONE/USDT:USDT"
   ]
 }
