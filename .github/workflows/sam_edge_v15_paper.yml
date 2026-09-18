@@ -22,7 +22,9 @@ on:
     - cron: '*/5 * * * *'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true && 'telegram-test' || 'v15-scan' }}
+  # One writer/runner at a time. Prevents Telegram-test and scheduled scans
+  # from racing on the same persistent state and Git history.
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 permissions:
@@ -88,13 +90,13 @@ jobs:
           FETCH_CHUNK: "900"
           MIN_VOLUME_USDT: "3000000"
           UNIVERSE_LIMIT: "100"
-          MAX_ACTIVE_POSITIONS: "1"
+          MAX_ACTIVE_POSITIONS: "5"
           RUN_ONCE: "1"
           TELEGRAM_CHART_CANDLES: "80"
         run: |
           START_TS=$(date +%s)
           set +e
-          python run_v15_forward_test_pro.py
+          python -u run_v15_forward_test_pro.py
           RC=$?
           END_TS=$(date +%s)
           ELAPSED=$((END_TS-START_TS))
@@ -111,7 +113,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python reconcile_v15_results.py
+          python -u reconcile_v15_results.py
 
       - name: Persist V15 + Master Forward Test state
         if: ${{ success() }}
