@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T14:44:13.222519+00:00",
+  "updated_at": "2026-09-18T14:48:24.134895+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -28,8 +28,8 @@
     "DOT/USDT:USDT",
     "ADA/USDT:USDT",
     "INJ/USDT:USDT",
-    "WLD/USDT:USDT",
     "KAS/USDT:USDT",
+    "WLD/USDT:USDT",
     "BANANA/USDT:USDT",
     "TRX/USDT:USDT",
     "LTC/USDT:USDT",
@@ -99,8 +99,8 @@
     "WLFI/USDT:USDT",
     "RIVER/USDT:USDT",
     "W/USDT:USDT",
-    "BLESS/USDT:USDT",
     "OP/USDT:USDT",
+    "BLESS/USDT:USDT",
     "BULLA/USDT:USDT",
     "MOODENG/USDT:USDT",
     "FF/USDT:USDT"
