@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T09:21:25.790746+00:00",
+  "updated_at": "2026-09-18T09:25:23.062247+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -42,6 +42,7 @@
     "10000SATS/USDT:USDT",
     "TRB/USDT:USDT",
     "ETHFI/USDT:USDT",
+    "IMX/USDT:USDT",
     "JASMY/USDT:USDT",
     "1000BONK/USDT:USDT",
     "DOGE/USDT:USDT",
@@ -66,7 +67,6 @@
     "BLUR/USDT:USDT",
     "ONE/USDT:USDT",
     "FARTCOIN/USDT:USDT",
-    "IMX/USDT:USDT",
     "JUP/USDT:USDT",
     "BR/USDT:USDT",
     "1INCH/USDT:USDT",
@@ -102,7 +102,7 @@
     "GRASS/USDT:USDT",
     "FLOCK/USDT:USDT",
     "FF/USDT:USDT",
-    "RIVER/USDT:USDT",
-    "SOLV/USDT:USDT"
+    "BTR/USDT:USDT",
+    "RIVER/USDT:USDT"
   ]
 }
