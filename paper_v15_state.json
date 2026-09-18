@@ -1,5 +1,5 @@
 {
-  "equity": 106.41378995813787,
+  "equity": 107.07887614537623,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -888,10 +888,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 106.01076435582605
-    }
-  ],
-  "positions": {
-    "ONE/USDT:USDT": {
+    },
+    {
       "coin": "ONE/USDT:USDT",
       "side": "LONG",
       "entry": 0.0016756,
@@ -951,8 +949,15 @@
         "volume": 0.6420637317751658,
         "trigger": 1.0
       },
-      "signal_key": "ONE/USDT:USDT|LONG|2026-09-18T04:30:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
+      "signal_key": "ONE/USDT:USDT|LONG|2026-09-18T04:30:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-18T22:45:00+00:00",
+      "exit": 0.002026523570999498,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 107.07887614537623
+    }
+  ],
+  "positions": {
     "DRIFT/USDT:USDT": {
       "coin": "DRIFT/USDT:USDT",
       "side": "LONG",
