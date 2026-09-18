@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T10:49:18.867283+00:00",
+  "updated_at": "2026-09-18T10:54:07.454705+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -21,8 +21,8 @@
     "1000PEPE/USDT:USDT",
     "BCH/USDT:USDT",
     "NOT/USDT:USDT",
-    "APT/USDT:USDT",
     "TAO/USDT:USDT",
+    "APT/USDT:USDT",
     "AVAX/USDT:USDT",
     "TIA/USDT:USDT",
     "ADA/USDT:USDT",
@@ -100,9 +100,9 @@
     "0G/USDT:USDT",
     "BLESS/USDT:USDT",
     "SOLV/USDT:USDT",
+    "MOODENG/USDT:USDT",
     "API3/USDT:USDT",
     "RIVER/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "SOMI/USDT:USDT"
   ]
 }
