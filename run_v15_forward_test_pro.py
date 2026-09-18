@@ -176,30 +176,61 @@ def professional_send_signal(p, equity):
 
 def _dedupe_forward_state(engine):
     """Remove accidental duplicate closed records using the V15 trade identity."""
+    from datetime import datetime
+
+    def valid_closed(r, signal_field):
+        try:
+            signal = datetime.fromisoformat(str(r.get(signal_field, '')).replace('Z', '+00:00'))
+            closed = datetime.fromisoformat(str(r.get('closed_at', '')).replace('Z', '+00:00'))
+            return closed >= signal and str(r.get('result', '')).upper().strip() in {'TP', 'SL'}
+        except Exception:
+            return False
+
+    # Remove duplicates and chronologically impossible closed trades.
     seen = set()
     deduped = []
+    invalid_closed = []
     for r in engine.closed:
         key = f"{r.get('coin','')}|{r.get('side','')}|{r.get('opened_at','')}|{r.get('core','')}"
         if key in seen:
             continue
         seen.add(key)
+        if not valid_closed(r, 'opened_at'):
+            invalid_closed.append(key)
+            continue
         deduped.append(r)
-    if len(deduped) != len(engine.closed):
-        print(f"FORWARD STATE DEDUP | removed={len(engine.closed)-len(deduped)} duplicate closed records")
+    if invalid_closed or len(deduped) != len(engine.closed):
+        print(f"FORWARD STATE SANITIZE | removed_duplicates={len(engine.closed)-len(deduped)-len(invalid_closed)} | quarantined_invalid={len(invalid_closed)}")
         engine.closed = deduped
 
     seen_master = set()
     master = []
+    invalid_master = 0
     for r in engine.master_rows:
         key = r.get('trade_key') or f"{r.get('coin','')}|{r.get('side','')}|{r.get('signal_time','')}|{r.get('core','')}"
         if key in seen_master:
             continue
         seen_master.add(key)
+        if not valid_closed(r, 'signal_time'):
+            invalid_master += 1
+            continue
         master.append(r)
-    if len(master) != len(engine.master_rows):
-        print(f"MASTER JOURNAL DEDUP | removed={len(engine.master_rows)-len(master)} duplicate records")
+    if invalid_master or len(master) != len(engine.master_rows):
+        print(f"MASTER JOURNAL SANITIZE | removed_duplicates={len(engine.master_rows)-len(master)-invalid_master} | quarantined_invalid={invalid_master}")
         engine.master_rows = master
 
+    # Rebuild equity only from valid closed trades so invalid historical SLs
+    # cannot permanently distort equity/PF/DD.
+    try:
+        equity = float(os.getenv('START_EQUITY', '100'))
+        risk_pct = float(os.getenv('RISK_PCT', '0.005'))
+        valid_rows = sorted(engine.closed, key=lambda r: str(r.get('closed_at', '')))
+        for r in valid_rows:
+            equity += equity * risk_pct * float(r.get('R', 0) or 0)
+        engine.equity = equity
+        print(f"FORWARD EQUITY REBUILT | valid_closed={len(valid_rows)} | equity=${equity:.2f}")
+    except Exception as e:
+        print(f"FORWARD EQUITY REBUILD ERROR | {type(e).__name__}: {e}")
 
 
 def resend_active_professional(engine):
