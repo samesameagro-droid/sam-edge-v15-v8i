@@ -3,7 +3,8 @@
   "next_trade_no": 15,
   "closed_trades": 14,
   "active_positions": [
-    "DASH/USDT:USDT"
+    "DASH/USDT:USDT",
+    "ONE/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
