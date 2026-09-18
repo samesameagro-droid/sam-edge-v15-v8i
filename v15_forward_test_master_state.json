@@ -1,7 +1,7 @@
 {
   "target": 20,
-  "next_trade_no": 2,
-  "closed_trades": 1,
+  "next_trade_no": 1,
+  "closed_trades": 0,
   "active_positions": [
     "DRIFT/USDT:USDT",
     "UNI/USDT:USDT",
