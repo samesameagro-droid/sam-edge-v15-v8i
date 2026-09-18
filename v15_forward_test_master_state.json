@@ -5,7 +5,8 @@
   "active_positions": [
     "UNI/USDT:USDT",
     "ASTER/USDT:USDT",
-    "SOMI/USDT:USDT"
+    "SOMI/USDT:USDT",
+    "ZEC/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,

@@ -473,6 +473,68 @@
         "trigger": 0.8857010808746492
       },
       "signal_key": "SOMI/USDT:USDT|LONG|2026-09-17T23:00:00+00:00|V15_EARLY_RECLAIM_V1"
+    },
+    "ZEC/USDT:USDT": {
+      "coin": "ZEC/USDT:USDT",
+      "side": "LONG",
+      "entry": 1471.05,
+      "sl": 1439.7765019182036,
+      "tp": 1510.1418726022453,
+      "risk_R": 1.0,
+      "risk_cash": 0.5005390392606172,
+      "opened_at": "2026-09-18T01:30:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 56.930799215427605,
+      "entry_diag": {
+        "timestamp": "2026-09-18T01:30:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 1471.05,
+        "rsi": 54.285182941291325,
+        "h4_adx_pct": 0.585,
+        "h4_adx_delta": 7.2742863002014495,
+        "volr": 1.7243974477637087,
+        "vol_slope": 1.533252729591935,
+        "dist_ema20_atr": 0.35896822872160294,
+        "room_atr": 2.1535806395512704,
+        "body_atr": 0.31256497032832725,
+        "close_pos": 0.7878048780487805,
+        "atr": 12.50939923271849
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.8690537597008469,
+        "location": 0.5982803812026716,
+        "volume": 0.8621987238818544,
+        "trigger": 0.390706212910409
+      },
+      "signal_key": "ZEC/USDT:USDT|LONG|2026-09-18T01:30:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }
