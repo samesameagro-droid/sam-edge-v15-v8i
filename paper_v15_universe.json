@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T14:48:24.134895+00:00",
+  "updated_at": "2026-09-18T14:54:08.065555+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -46,8 +46,8 @@
     "10000SATS/USDT:USDT",
     "TRB/USDT:USDT",
     "JUP/USDT:USDT",
-    "ONDO/USDT:USDT",
     "BOME/USDT:USDT",
+    "ONDO/USDT:USDT",
     "DOGE/USDT:USDT",
     "IMX/USDT:USDT",
     "PUMP/USDT:USDT",
@@ -69,8 +69,8 @@
     "FARTCOIN/USDT:USDT",
     "TURBO/USDT:USDT",
     "FLOKI/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "BLUR/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "DASH/USDT:USDT",
     "ENS/USDT:USDT",
     "ASTER/USDT:USDT",
@@ -96,13 +96,13 @@
     "ALLO/USDT:USDT",
     "S/USDT:USDT",
     "GRASS/USDT:USDT",
-    "WLFI/USDT:USDT",
     "RIVER/USDT:USDT",
+    "WLFI/USDT:USDT",
     "W/USDT:USDT",
     "OP/USDT:USDT",
     "BLESS/USDT:USDT",
-    "BULLA/USDT:USDT",
     "MOODENG/USDT:USDT",
+    "BULLA/USDT:USDT",
     "FF/USDT:USDT"
   ]
 }
