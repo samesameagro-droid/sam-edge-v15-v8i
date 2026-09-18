@@ -1,5 +1,5 @@
 {
-  "equity": 101.3630659115192,
+  "equity": 102.63406373017536,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -464,10 +464,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 101.3630659115192
-    }
-  ],
-  "positions": {
-    "ASTER/USDT:USDT": {
+    },
+    {
       "coin": "ASTER/USDT:USDT",
       "side": "LONG",
       "entry": 0.746,
@@ -482,9 +480,14 @@
       "entry_diag": {},
       "entry_metrics": {},
       "score_breakdown": {},
-      "signal_key": "ASTER/USDT:USDT|LONG|2026-09-17T20:30:00+00:00|V15_EARLY_RECLAIM_V1"
+      "signal_key": "ASTER/USDT:USDT|LONG|2026-09-17T20:30:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-18T03:45:00+00:00",
+      "exit": 0.7556354507370153,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 101.99658507346619
     },
-    "ZEC/USDT:USDT": {
+    {
       "coin": "ZEC/USDT:USDT",
       "side": "LONG",
       "entry": 1471.05,
@@ -544,8 +547,15 @@
         "volume": 0.8621987238818544,
         "trigger": 0.390706212910409
       },
-      "signal_key": "ZEC/USDT:USDT|LONG|2026-09-18T01:30:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
+      "signal_key": "ZEC/USDT:USDT|LONG|2026-09-18T01:30:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-18T03:45:00+00:00",
+      "exit": 1510.1418726022453,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 102.63406373017536
+    }
+  ],
+  "positions": {
     "DASH/USDT:USDT": {
       "coin": "DASH/USDT:USDT",
       "side": "LONG",
