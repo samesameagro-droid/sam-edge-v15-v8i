@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T02:34:02.334787+00:00",
+  "updated_at": "2026-09-18T02:38:53.098387+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -66,7 +66,6 @@
     "TRUMPSOL/USDT:USDT",
     "ENS/USDT:USDT",
     "ORDI/USDT:USDT",
-    "MEW/USDT:USDT",
     "DASH/USDT:USDT",
     "TIA/USDT:USDT",
     "SOLV/USDT:USDT",
@@ -95,14 +94,15 @@
     "SOMI/USDT:USDT",
     "FF/USDT:USDT",
     "BTR/USDT:USDT",
-    "API3/USDT:USDT",
     "GRASS/USDT:USDT",
+    "API3/USDT:USDT",
     "BABY/USDT:USDT",
-    "ZORA/USDT:USDT",
     "BLESS/USDT:USDT",
+    "ZORA/USDT:USDT",
     "MMT/USDT:USDT",
     "PI/USDT:USDT",
     "SOPH/USDT:USDT",
-    "SIGN/USDT:USDT"
+    "SIGN/USDT:USDT",
+    "WLFI/USDT:USDT"
   ]
 }
