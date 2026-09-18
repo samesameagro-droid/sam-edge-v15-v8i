@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T07:14:44.670623+00:00",
+  "updated_at": "2026-09-18T07:19:12.395156+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -51,8 +51,8 @@
     "WIF/USDT:USDT",
     "AUCTION/USDT:USDT",
     "YFI/USDT:USDT",
-    "OP/USDT:USDT",
     "PENDLE/USDT:USDT",
+    "OP/USDT:USDT",
     "CRV/USDT:USDT",
     "TIA/USDT:USDT",
     "JASMY/USDT:USDT",
@@ -102,7 +102,7 @@
     "API3/USDT:USDT",
     "SOMI/USDT:USDT",
     "FF/USDT:USDT",
-    "10000SATS/USDT:USDT",
-    "BABY/USDT:USDT"
+    "BABY/USDT:USDT",
+    "GRASS/USDT:USDT"
   ]
 }
