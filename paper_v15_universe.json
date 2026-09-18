@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T13:09:40.412535+00:00",
+  "updated_at": "2026-09-18T13:13:30.489482+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -32,8 +32,8 @@
     "ADA/USDT:USDT",
     "WLD/USDT:USDT",
     "TRX/USDT:USDT",
-    "RENDER/USDT:USDT",
     "LTC/USDT:USDT",
+    "RENDER/USDT:USDT",
     "ZRO/USDT:USDT",
     "SEI/USDT:USDT",
     "ETHFI/USDT:USDT",
@@ -95,14 +95,14 @@
     "WLFI/USDT:USDT",
     "W/USDT:USDT",
     "GRASS/USDT:USDT",
-    "BULLA/USDT:USDT",
     "S/USDT:USDT",
+    "BULLA/USDT:USDT",
     "FF/USDT:USDT",
     "BLESS/USDT:USDT",
     "SOLV/USDT:USDT",
     "BTR/USDT:USDT",
     "FLOCK/USDT:USDT",
     "RIVER/USDT:USDT",
-    "OP/USDT:USDT"
+    "MOODENG/USDT:USDT"
   ]
 }
