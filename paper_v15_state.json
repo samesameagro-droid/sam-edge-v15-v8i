@@ -1,5 +1,5 @@
 {
-  "equity": 100.10780785212343,
+  "equity": 100.7334816511992,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -330,10 +330,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 100.10780785212343
-    }
-  ],
-  "positions": {
-    "UNI/USDT:USDT": {
+    },
+    {
       "coin": "UNI/USDT:USDT",
       "side": "LONG",
       "entry": 7.673,
@@ -393,8 +391,15 @@
         "volume": 1,
         "trigger": 0.5383313481381152
       },
-      "signal_key": "UNI/USDT:USDT|LONG|2026-09-17T21:00:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
+      "signal_key": "UNI/USDT:USDT|LONG|2026-09-17T21:00:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-18T01:55:00+00:00",
+      "exit": 7.962920992623958,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 100.7334816511992
+    }
+  ],
+  "positions": {
     "ASTER/USDT:USDT": {
       "coin": "ASTER/USDT:USDT",
       "side": "LONG",
@@ -535,6 +540,68 @@
         "trigger": 0.390706212910409
       },
       "signal_key": "ZEC/USDT:USDT|LONG|2026-09-18T01:30:00+00:00|V15_EARLY_RECLAIM_V1"
+    },
+    "DASH/USDT:USDT": {
+      "coin": "DASH/USDT:USDT",
+      "side": "LONG",
+      "entry": 60.96,
+      "sl": 59.66329200760888,
+      "tp": 62.5808849904889,
+      "risk_R": 1.0,
+      "risk_cash": 0.503667408255996,
+      "opened_at": "2026-09-18T01:45:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 47.66585646013783,
+      "entry_diag": {
+        "timestamp": "2026-09-18T01:45:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 60.96,
+        "rsi": 52.626124028453404,
+        "h4_adx_pct": 0.38,
+        "h4_adx_delta": 5.02700480498342,
+        "volr": 1.689953096835688,
+        "vol_slope": 1.008660886838503,
+        "dist_ema20_atr": 0.3141515557283321,
+        "room_atr": 1.327172656206332,
+        "body_atr": 0.8028575327667944,
+        "close_pos": 0.6117647058823555,
+        "atr": 0.6103199882940278
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.31811510413755467,
+        "location": 0.5235859262138869,
+        "volume": 0.844976548417844,
+        "trigger": 1.0
+      },
+      "signal_key": "DASH/USDT:USDT|LONG|2026-09-18T01:45:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }

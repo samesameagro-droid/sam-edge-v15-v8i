@@ -1,12 +1,12 @@
 {
   "target": 20,
-  "next_trade_no": 11,
-  "closed_trades": 10,
+  "next_trade_no": 12,
+  "closed_trades": 11,
   "active_positions": [
-    "UNI/USDT:USDT",
     "ASTER/USDT:USDT",
     "SOMI/USDT:USDT",
-    "ZEC/USDT:USDT"
+    "ZEC/USDT:USDT",
+    "DASH/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
