@@ -1,5 +1,5 @@
 {
-  "equity": 106.01076435582605,
+  "equity": 106.41378995813787,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -107,73 +107,6 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 99.86424043256349
-    },
-    {
-      "coin": "PI/USDT:USDT",
-      "side": "SHORT",
-      "entry": 0.08189,
-      "sl": 0.08329318025536524,
-      "tp": 0.08013602468079346,
-      "risk_R": 1,
-      "risk_cash": 0.49932120216281745,
-      "opened_at": "2026-09-17T14:45:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 61.76501900432191,
-      "entry_diag": {
-        "timestamp": "2026-09-17T14:45:00+00:00",
-        "long": {
-          "trend": false,
-          "ema": false,
-          "vwap": false,
-          "di": false,
-          "rsi": false,
-          "room": false,
-          "no_chase": false,
-          "adx": false,
-          "early_reclaim": false
-        },
-        "short": {
-          "trend": true,
-          "ema": true,
-          "vwap": true,
-          "di": true,
-          "rsi": true,
-          "room": true,
-          "no_chase": true,
-          "adx": true,
-          "early_reclaim": true
-        },
-        "final_long": false,
-        "final_short": true
-      },
-      "entry_metrics": {
-        "close": 0.08189,
-        "rsi": 41.49980138634454,
-        "h4_adx_pct": 0.97,
-        "h4_adx_delta": 3.862547332434751,
-        "volr": 1.00981499711248,
-        "vol_slope": 0.02923843876492216,
-        "dist_ema20_atr": 1.0757093551474617,
-        "room_atr": 1.2115335813056352,
-        "body_atr": 0.7661168234726806,
-        "close_pos": 0,
-        "atr": 0.0005612721021460945
-      },
-      "score_breakdown": {
-        "adx": 0.7999999999999998,
-        "delta": 1,
-        "room": 0.24102238753709013,
-        "location": 0.20715107475423045,
-        "volume": 0.50490749855624,
-        "trigger": 0.9576460293408507
-      },
-      "signal_key": "PI/USDT:USDT|SHORT|2026-09-17T14:45:00+00:00|V15_EARLY_RECLAIM_V1",
-      "closed_at": "2026-09-17T14:10:00+00:00",
-      "exit": 0.08329318025536524,
-      "result": "SL",
-      "R": -1,
-      "equity_after": 99.36491923040067
     },
     {
       "coin": "REZ/USDT:USDT",
@@ -620,73 +553,6 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 103.27552662848895
-    },
-    {
-      "coin": "ASTER/USDT:USDT",
-      "side": "LONG",
-      "entry": 0.747,
-      "sl": 0.740335268391514,
-      "tp": 0.7553309145106075,
-      "risk_R": 1.0,
-      "risk_cash": 0.5131703186508768,
-      "opened_at": "2026-09-18T04:45:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 55.70408753057917,
-      "entry_diag": {
-        "timestamp": "2026-09-18T04:45:00+00:00",
-        "long": {
-          "trend": true,
-          "ema": true,
-          "vwap": true,
-          "di": true,
-          "rsi": true,
-          "room": true,
-          "no_chase": true,
-          "adx": false,
-          "early_reclaim": true
-        },
-        "short": {
-          "trend": false,
-          "ema": false,
-          "vwap": false,
-          "di": false,
-          "rsi": false,
-          "room": false,
-          "no_chase": false,
-          "adx": false,
-          "early_reclaim": false
-        },
-        "final_long": true,
-        "final_short": false
-      },
-      "entry_metrics": {
-        "close": 0.747,
-        "rsi": 51.84930994739806,
-        "h4_adx_pct": 0.665,
-        "h4_adx_delta": 3.7108645643123204,
-        "volr": 1.5487837104330375,
-        "vol_slope": 0.5822216162250287,
-        "dist_ema20_atr": 0.1184067591365592,
-        "room_atr": 3.122788974623862,
-        "body_atr": 1.1710458654839566,
-        "close_pos": 0.9285714285714362,
-        "atr": 0.0033303563207477504
-      },
-      "score_breakdown": {
-        "adx": 0.0,
-        "delta": 1.0,
-        "room": 1.0,
-        "location": 0.197344598560932,
-        "volume": 0.7743918552165188,
-        "trigger": 1.0
-      },
-      "signal_key": "ASTER/USDT:USDT|LONG|2026-09-18T04:45:00+00:00|V15_EARLY_RECLAIM_V1",
-      "closed_at": "2026-09-18T03:45:00+00:00",
-      "exit": 0.7553309145106075,
-      "result": "TP",
-      "R": 1.25,
-      "equity_after": 103.920998669917
     },
     {
       "coin": "1000PEPE/USDT:USDT",
