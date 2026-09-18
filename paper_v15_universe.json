@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-18T21:54:37.972563+00:00",
+  "updated_at": "2026-09-18T21:58:10.442086+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -38,8 +38,8 @@
     "SUI/USDT:USDT",
     "ETHFI/USDT:USDT",
     "BOME/USDT:USDT",
-    "AUCTION/USDT:USDT",
     "STRK/USDT:USDT",
+    "AUCTION/USDT:USDT",
     "RENDER/USDT:USDT",
     "SEI/USDT:USDT",
     "STX/USDT:USDT",
