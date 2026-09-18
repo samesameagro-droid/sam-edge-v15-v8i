@@ -103,6 +103,26 @@ jobs:
           echo "rc=$RC" >> "$GITHUB_OUTPUT"
           echo "elapsed=$ELAPSED" >> "$GITHUB_OUTPUT"
           echo "V15 PROFESSIONAL SCAN EXIT=$RC | elapsed=${ELAPSED}s"
+          SCAN_RC="$RC" SCAN_ELAPSED="$ELAPSED" python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          payload = {
+              "updated_at": datetime.now(timezone.utc).isoformat(),
+              "workflow": "SAM EDGE V15 - Paper Forward",
+              "status": "SUCCESS" if int(os.environ["SCAN_RC"]) == 0 else "FAILED",
+              "exit_code": int(os.environ["SCAN_RC"]),
+              "elapsed_seconds": int(os.environ["SCAN_ELAPSED"]),
+          }
+          try:
+              with open("v15_forward_test_summary.json", encoding="utf-8") as f:
+                  summary = json.load(f)
+              for key in ("closed_trades","active_positions","equity","wins","losses","win_rate_pct","net_R","profit_factor","drawdown_R"):
+                  payload[key] = summary.get(key)
+          except Exception:
+              pass
+          with open("v15_scan_health.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+          PY
           if [ "$RC" -ne 0 ]; then
             echo "V15 PROFESSIONAL SCAN FAILED — scanner exited with code $RC"
             exit "$RC"
@@ -122,7 +142,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json"
+          STATE_FILES="paper_v15_state.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json"
           if [ -f paper_v15_trades.csv ]; then
             STATE_FILES="$STATE_FILES paper_v15_trades.csv"
           fi
