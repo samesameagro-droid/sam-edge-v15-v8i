@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T12:04:05.574956+00:00",
+  "updated_at": "2026-09-19T12:09:12.928245+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -19,8 +19,8 @@
     "AVAX/USDT:USDT",
     "CFX/USDT:USDT",
     "TAO/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "LINK/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "SUI/USDT:USDT",
     "DOGE/USDT:USDT",
     "APT/USDT:USDT",
@@ -98,11 +98,11 @@
     "BANK/USDT:USDT",
     "POPCAT/USDT:USDT",
     "AIN/USDT:USDT",
-    "REZ/USDT:USDT",
     "DRIFT/USDT:USDT",
     "WLFI/USDT:USDT",
     "BLESS/USDT:USDT",
     "API3/USDT:USDT",
-    "HOME/USDT:USDT"
+    "HOME/USDT:USDT",
+    "RENDER/USDT:USDT"
   ]
 }
