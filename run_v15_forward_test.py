@@ -72,10 +72,9 @@ class ForwardPaperEngine(base.PaperEngine):
         })
 
     def _load_master(self):
-        # Load the existing master journal, then RECONCILE it against the
-        # authoritative paper_v15_state.json closed history. Older versions
-        # returned immediately when MASTER_JOURNAL existed, which permanently
-        # preserved a truncated journal (for example 1 row vs 20 closed trades).
+        # Reconcile the master journal with the authoritative persisted paper
+        # state on EVERY startup. A previously truncated master must never block
+        # recovery just because the CSV file exists.
         existing = []
         if MASTER_JOURNAL.exists():
             try:
@@ -85,8 +84,6 @@ class ForwardPaperEngine(base.PaperEngine):
             except Exception as e:
                 print(f"MASTER JOURNAL RESTORE ERROR: {e}")
 
-        # GitHub Actions persists paper_v15_state.json. Treat its closed history
-        # as the recovery source and merge any records missing from the master.
         sources = []
         state_file = Path("paper_v15_state.json")
         legacy = Path("paper_v15_trades.csv")
@@ -104,11 +101,11 @@ class ForwardPaperEngine(base.PaperEngine):
             except Exception as e:
                 print(f"LEGACY JOURNAL BOOTSTRAP ERROR: {e}")
 
-        # Keep only valid TP/SL records and deduplicate by the canonical trade key.
         merged = []
         seen = set()
         for r in existing + sources:
-            if not self._valid_closed_record({**r, "signal_time": r.get("opened_at", r.get("signal_time", ""))}):
+            normalized = {**r, "signal_time": r.get("opened_at", r.get("signal_time", ""))}
+            if not self._valid_closed_record(normalized):
                 continue
             key = self._trade_key_from_record(r)
             if key in seen:
@@ -116,56 +113,23 @@ class ForwardPaperEngine(base.PaperEngine):
             seen.add(key)
             merged.append(r)
 
-        # The master sequence is chronological and assigned from the reconciled
-        # set, so a partial/truncated master can never block recovery.
-        merged.sort(key=lambda r: str(r.get("closed_at") or r.get("opened_at") or r.get("signal_time") or ""))
+        merged.sort(
+            key=lambda r: str(
+                r.get("closed_at") or r.get("opened_at") or r.get("signal_time") or ""
+            )
+        )
         self.master_rows = []
         for r in merged:
             self._append_closed_record(r, len(self.master_rows) + 1)
 
         if existing and len(self.master_rows) > len(existing):
-            print(f"MASTER JOURNAL RECONCILED | before={len(existing)} | after={len(self.master_rows)}")
+            print(
+                f"MASTER JOURNAL RECONCILED | before={len(existing)} "
+                f"| after={len(self.master_rows)}"
+            )
         elif self.master_rows:
             self.master_bootstrapped = True
             print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)}")
-
-        return
-
-        # Unreachable legacy bootstrap block retained below only as historical
-        # context is intentionally removed by this return.
-        state_file = Path("paper_v15_state.json")
-        legacy = Path("paper_v15_trades.csv")
-        try:
-            if state_file.exists():
-                d = json.loads(state_file.read_text(encoding="utf-8"))
-                sources.extend(d.get("closed", []))
-        except Exception as e:
-            print(f"STATE JOURNAL BOOTSTRAP ERROR: {e}")
-
-        if not sources and legacy.exists():
-            try:
-                with legacy.open("r", newline="", encoding="utf-8") as f:
-                    sources = list(csv.DictReader(f))
-            except Exception as e:
-                print(f"LEGACY JOURNAL BOOTSTRAP ERROR: {e}")
-
-        sources = [r for r in sources if self._valid_closed_record({**r, "signal_time": r.get("opened_at", "")})]
-        sources.sort(key=lambda r: str(r.get("closed_at") or r.get("opened_at") or ""))
-        seen = set()
-        trade_no = 0
-        for r in sources:
-            key = self._trade_key_from_record(r)
-            if key in seen:
-                continue
-            before = len(self.master_rows)
-            self._append_closed_record(r, trade_no + 1)
-            if len(self.master_rows) > before:
-                trade_no += 1
-                seen.add(key)
-
-        if self.master_rows:
-            self.master_bootstrapped = True
-            print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)} from GitHub state")
 
     def _migrate_legacy_active_positions(self):
         # IMPORTANT:
