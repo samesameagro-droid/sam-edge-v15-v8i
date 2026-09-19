@@ -1,11 +1,9 @@
 {
   "target": 20,
-  "next_trade_no": 30,
-  "closed_trades": 29,
+  "next_trade_no": 32,
+  "closed_trades": 31,
   "active_positions": [
     "DRIFT/USDT:USDT",
-    "OP/USDT:USDT",
-    "AAVE/USDT:USDT",
     "DYM/USDT:USDT",
     "ENA/USDT:USDT"
   ],
