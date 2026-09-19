@@ -563,6 +563,9 @@ class PaperEngine:
             p=c['position']; key=c['key']
             self.positions[p.coin]=p
             print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g}')
+            # Persist each newly opened position immediately so a runner interruption
+            # cannot erase an entry created earlier in the same scan.
+            self.save_state()
         if len(candidates)>len(selected):
             print(f'WAITLIST | {len(candidates)-len(selected)} valid V15 candidates not executed because active slots are full.')
         self.save_state(); self.report()
