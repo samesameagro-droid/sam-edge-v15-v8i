@@ -1,0 +1,84 @@
+name: SAM EDGE V15.1 - BingX Regime Acceleration Paper
+
+on:
+  push:
+    branches:
+      - research/v15-1-bingx-regime-acceleration
+    paths:
+      - 'run_v15_forward_test.py'
+      - 'run_v15_forward_test_pro.py'
+      - 'main_paper_v15.py'
+      - 'core_engine_v15.py'
+      - 'notifiers.py'
+      - 'bingx_direct_v15.py'
+      - '.github/workflows/v15_1_regime_acceleration.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: sam-edge-v15-1-research
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+        with:
+          ref: research/v15-1-bingx-regime-acceleration
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt matplotlib
+
+      - name: Preflight
+        run: |
+          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py notifiers.py bingx_direct_v15.py core_engine_v15.py
+          echo "V15.1 PREFLIGHT OK"
+
+      - name: Run V15.1 BingX paper scan
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          START_EQUITY: '100'
+          RISK_PCT: '0.005'
+          HISTORY_15M: '3600'
+          FETCH_CHUNK: '900'
+          MIN_VOLUME_USDT: '3000000'
+          UNIVERSE_LIMIT: '100'
+          MAX_ACTIVE_POSITIONS: '5'
+          RUN_ONCE: '1'
+          TELEGRAM_CHART_CANDLES: '80'
+        run: python -u run_v15_forward_test_pro.py
+
+      - name: Persist V15.1 research state
+        run: |
+          set -e
+          git config user.name "SAM EDGE V15.1 RESEARCH BOT"
+          git config user.email "sam-edge-v15-1-bot@users.noreply.github.com"
+          git add -A paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json paper_v15_trades.csv
+          if git diff --cached --quiet; then
+            echo "NO STATE CHANGES"
+            exit 0
+          fi
+          git commit -m "research: persist V15.1 paper state"
+          git push origin HEAD:research/v15-1-bingx-regime-acceleration
+
+      - name: Queue next prospective scan
+        if: ${{ success() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run v15_1_regime_acceleration.yml --repo ${{ github.repository }} --ref research/v15-1-bingx-regime-acceleration
+          echo "NEXT V15.1 SCAN QUEUED"
