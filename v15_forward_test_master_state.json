@@ -1,12 +1,11 @@
 {
   "target": 20,
-  "next_trade_no": 28,
-  "closed_trades": 27,
+  "next_trade_no": 29,
+  "closed_trades": 28,
   "active_positions": [
     "DRIFT/USDT:USDT",
     "OP/USDT:USDT",
     "AAVE/USDT:USDT",
-    "FIL/USDT:USDT",
     "TAO/USDT:USDT"
   ],
   "max_active": 5,
