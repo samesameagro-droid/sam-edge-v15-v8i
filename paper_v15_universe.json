@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T14:33:29.739517+00:00",
+  "updated_at": "2026-09-19T14:38:51.966498+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -12,12 +12,12 @@
     "NEAR/USDT:USDT",
     "UNI/USDT:USDT",
     "AAVE/USDT:USDT",
+    "ARB/USDT:USDT",
     "AVAX/USDT:USDT",
     "BNB/USDT:USDT",
     "INJ/USDT:USDT",
     "HYPE/USDT:USDT",
     "CFX/USDT:USDT",
-    "ARB/USDT:USDT",
     "TAO/USDT:USDT",
     "APT/USDT:USDT",
     "SUI/USDT:USDT",
@@ -56,8 +56,8 @@
     "PEOPLE/USDT:USDT",
     "WIF/USDT:USDT",
     "ICP/USDT:USDT",
-    "BR/USDT:USDT",
     "ORDI/USDT:USDT",
+    "BR/USDT:USDT",
     "10000SATS/USDT:USDT",
     "DOT/USDT:USDT",
     "ENS/USDT:USDT",
@@ -85,9 +85,9 @@
     "BEAT/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "G/USDT:USDT",
-    "EVAA/USDT:USDT",
     "XPL/USDT:USDT",
     "DYM/USDT:USDT",
+    "EVAA/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "RENDER/USDT:USDT",
     "UAI/USDT:USDT",
@@ -102,7 +102,7 @@
     "WLFI/USDT:USDT",
     "S/USDT:USDT",
     "MOODENG/USDT:USDT",
-    "DRIFT/USDT:USDT",
-    "HOME/USDT:USDT"
+    "HOME/USDT:USDT",
+    "DRIFT/USDT:USDT"
   ]
 }
