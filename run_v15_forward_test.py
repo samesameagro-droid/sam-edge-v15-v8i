@@ -248,9 +248,23 @@ class ForwardPaperEngine(base.PaperEngine):
         result = super().analyze_latest(symbol)
         if result and result.get("signal"):
             candidate = result["signal"]
+            metrics = candidate.get("entry_metrics", {})
+            adx_pct = float(metrics.get("h4_adx_pct", float("nan")))
+            adx_delta = float(metrics.get("h4_adx_delta", float("nan")))
+            if not (adx_pct >= 0.75 and adx_delta >= 5.0):
+                print(
+                    f"V15.1 REGIME REJECT | {symbol} | {candidate.get('side')} | "
+                    f"ADX_PCT={adx_pct:.3f} | ADX_DELTA={adx_delta:.3f}"
+                )
+                result["signal"] = None
+                return result
+            candidate["regime_guard"] = "ADX_PCT>=0.75_AND_DELTA>=5"
             self.candidate_meta[candidate["key"]] = {
                 "score": float(candidate["score"]),
                 "trade_key": candidate["key"],
+                "regime_guard": candidate["regime_guard"],
+                "h4_adx_pct": adx_pct,
+                "h4_adx_delta": adx_delta,
             }
         return result
 
