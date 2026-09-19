@@ -19,6 +19,7 @@ on:
         default: false
         type: boolean
   schedule:
+    # Run every 5 minutes; push trigger below also provides an immediate recovery run after workflow fixes.
     - cron: '*/5 * * * *'
 
 concurrency:
