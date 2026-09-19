@@ -1,13 +1,12 @@
 {
   "target": 20,
-  "next_trade_no": 1,
-  "closed_trades": 0,
+  "next_trade_no": 23,
+  "closed_trades": 22,
   "active_positions": [
     "DRIFT/USDT:USDT",
     "UNI/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "1000PEPE/USDT:USDT",
-    "TIA/USDT:USDT"
+    "LIGHTER/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
