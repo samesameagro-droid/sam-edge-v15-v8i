@@ -1947,6 +1947,68 @@
         "trigger": 0.8157032139726429
       },
       "signal_key": "IMX/USDT:USDT|LONG|2026-09-19T21:45:00+00:00|V15_EARLY_RECLAIM_V1"
+    },
+    "BLUR/USDT:USDT": {
+      "coin": "BLUR/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.01907,
+      "sl": 0.018746369248912535,
+      "tp": 0.01947453843885933,
+      "risk_R": 1.0,
+      "risk_cash": 0.5332917200195867,
+      "opened_at": "2026-09-19T22:00:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 46.043151035934585,
+      "entry_diag": {
+        "timestamp": "2026-09-19T22:00:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 0.01907,
+        "rsi": 59.4911668974192,
+        "h4_adx_pct": 0.54,
+        "h4_adx_delta": 4.283615826259258,
+        "volr": 14.716508966128014,
+        "vol_slope": 14.573367168849332,
+        "dist_ema20_atr": 0.9229288705612267,
+        "room_atr": 1.158727959997394,
+        "body_atr": 0.8497338373314098,
+        "close_pos": 1.0,
+        "atr": 0.00012945230043498576
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.20581863999826275,
+        "location": 0.4617852157312887,
+        "volume": 1.0,
+        "trigger": 1.0
+      },
+      "signal_key": "BLUR/USDT:USDT|LONG|2026-09-19T22:00:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }
