@@ -1,7 +1,7 @@
 {
-  "target_closed_trades": 20,
+  "target_closed_trades": 50,
   "closed_trades": 23,
-  "remaining": 0,
+  "remaining": 27,
   "wins": 16,
   "losses": 7,
   "win_rate_pct": 69.57,
@@ -12,6 +12,6 @@
   "active_positions": 5,
   "max_active": 5,
   "score_is_execution_threshold": false,
-  "validation": "9 V15 gates from signal_mask",
-  "status": "COMPLETE"
+  "validation": "V15 gates + ADX percentile>=0.75 + ADX delta>=5",
+  "status": "RUNNING"
 }
