@@ -35,6 +35,7 @@ UNIVERSE_LIMIT = int(os.getenv('UNIVERSE_LIMIT', '100'))
 MAX_ACTIVE = int(os.getenv('MAX_ACTIVE_POSITIONS', '5'))
 
 STATE_FILE = Path('paper_v15_state.json')
+STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
 JOURNAL_FILE = Path('paper_v15_trades.csv')
 SIGNAL_HISTORY = Path('paper_v15_signal_history.json')
 UNIVERSE_FILE = Path('paper_v15_universe.json')
@@ -77,19 +78,84 @@ class PaperEngine:
         self.load_state()
         self.load_signal_history()
 
-    def load_state(self):
-        if not STATE_FILE.exists():
-            print(f'FRESH V15 STATE | equity=${self.equity:.2f} | active=0 | closed=0')
+    def _restore_state_payload(self, payload):
+        if not isinstance(payload, dict):
+            raise ValueError('state root must be an object')
+        equity = float(payload.get('equity', START_EQUITY))
+        closed = payload.get('closed', [])
+        raw_positions = payload.get('positions', {})
+        if not isinstance(closed, list) or not isinstance(raw_positions, dict):
+            raise ValueError('state closed/positions schema invalid')
+        positions = {}
+        allowed = set(Position.__dataclass_fields__)
+        for key, value in raw_positions.items():
+            if not isinstance(value, dict):
+                raise ValueError(f'position {key} is not an object')
+            clean = {k: v for k, v in value.items() if k in allowed}
+            positions[str(key)] = Position(**clean)
+        self.equity = equity
+        self.closed = closed
+        self.positions = positions
+
+    def _reconcile_closed_journal(self):
+        # Recover a close journaled before a runner died before save_state().
+        if not JOURNAL_FILE.exists():
             return
         try:
-            d = json.loads(STATE_FILE.read_text(encoding='utf-8'))
-            self.equity = float(d.get('equity', START_EQUITY))
-            self.closed = d.get('closed', [])
-            self.positions = {k: Position(**v) for k, v in d.get('positions', {}).items()}
-            print(f'STATE RESTORED | equity=${self.equity:.2f} | active={len(self.positions)} | closed={len(self.closed)}')
+            with JOURNAL_FILE.open('r', encoding='utf-8', newline='') as f:
+                rows = list(pd.read_csv(f, dtype=str).fillna('').to_dict('records'))
         except Exception as e:
-            print('STATE RESTORE ERROR:', e)
+            print(f'JOURNAL RECOVERY SKIP | {type(e).__name__}: {e}')
+            return
+        known = {f"{r.get('coin','')}|{r.get('side','')}|{r.get('opened_at','')}|{r.get('core','')}" for r in self.closed if str(r.get('result','')).upper() in {'TP','SL'}}
+        recovered = 0
+        for r in rows:
+            result = str(r.get('result','')).upper().strip()
+            if result not in {'TP','SL'}:
+                continue
+            key = f"{r.get('coin','')}|{r.get('side','')}|{r.get('opened_at','')}|{r.get('core','')}"
+            if not r.get('opened_at') or not r.get('closed_at') or key in known:
+                continue
+            try:
+                opened = datetime.fromisoformat(str(r['opened_at']).replace('Z', '+00:00'))
+                closed = datetime.fromisoformat(str(r['closed_at']).replace('Z', '+00:00'))
+                if closed < opened:
+                    continue
+                self.closed.append(r)
+                known.add(key)
+                recovered += 1
+            except (TypeError, ValueError):
+                continue
+        if recovered:
+            stale = [k for k, p in self.positions.items() if f"{p.coin}|{p.side}|{p.opened_at}|{p.core}" in known]
+            for k in stale:
+                self.positions.pop(k, None)
+            try:
+                latest = max((r for r in self.closed if r.get('equity_after') not in ('', None)), key=lambda r: str(r.get('closed_at','')))
+                self.equity = float(latest['equity_after'])
+            except (ValueError, TypeError, KeyError):
+                pass
+            print(f'JOURNAL RECOVERY | recovered_closed={recovered} | active_removed={len(stale)}')
 
+    def load_state(self):
+        if not STATE_FILE.exists() and not STATE_BACKUP_FILE.exists():
+            print(f'FRESH V15 STATE | equity=${self.equity:.2f} | active=0 | closed=0')
+            return
+        errors = []
+        for path in (STATE_FILE, STATE_BACKUP_FILE):
+            if not path.exists():
+                continue
+            try:
+                payload = json.loads(path.read_text(encoding='utf-8'))
+                self._restore_state_payload(payload)
+                if path == STATE_BACKUP_FILE:
+                    print('STATE RESTORED FROM BACKUP | primary state was invalid or unavailable')
+                self._reconcile_closed_journal()
+                print(f'STATE RESTORED | equity=${self.equity:.2f} | active={len(self.positions)} | closed={len(self.closed)}')
+                return
+            except Exception as e:
+                errors.append(f'{path.name}: {type(e).__name__}: {e}')
+        raise RuntimeError('V15 state restore failed; refusing to trade with unknown state | ' + ' | '.join(errors))
     def load_signal_history(self):
         if not SIGNAL_HISTORY.exists():
             return
@@ -98,21 +164,27 @@ class PaperEngine:
         except Exception as e:
             print('SIGNAL HISTORY RESTORE ERROR:', e)
 
+    def _atomic_write(self, path: Path, text: str):
+        tmp = path.with_suffix(path.suffix + '.tmp')
+        tmp.write_text(text, encoding='utf-8')
+        os.replace(tmp, path)
+
     def save_state(self):
-        STATE_FILE.write_text(json.dumps({
+        state_text = json.dumps({
             'equity': self.equity,
             'closed': self.closed[-2000:],
             'positions': {k: asdict(v) for k, v in self.positions.items()},
-        }, indent=2), encoding='utf-8')
-        SIGNAL_HISTORY.write_text(json.dumps(list(self.signal_history)[-20000:]), encoding='utf-8')
-        UNIVERSE_FILE.write_text(json.dumps({
+        }, indent=2)
+        self._atomic_write(STATE_FILE, state_text)
+        self._atomic_write(STATE_BACKUP_FILE, state_text)
+        self._atomic_write(SIGNAL_HISTORY, json.dumps(list(self.signal_history)[-20000:]))
+        self._atomic_write(UNIVERSE_FILE, json.dumps({
             'updated_at': datetime.now(timezone.utc).isoformat(),
             'mode': 'TOP_VOLUME' if UNIVERSE_LIMIT else 'ALL_ELIGIBLE',
             'limit': UNIVERSE_LIMIT,
             'min_volume_usdt': MIN_VOLUME_USDT,
             'symbols': self.universe_symbols,
-        }, indent=2), encoding='utf-8')
-
+        }, indent=2))
     @staticmethod
     def is_crypto_market(m):
         base = str(m.get('base') or '').upper()
@@ -138,10 +210,24 @@ class PaperEngine:
         return True
 
     def discover_universe(self):
-        self.exchange.load_markets(reload=False)
-        tickers = self.exchange.fetch_tickers()
-        eligible = []
-        rejected_noncrypto = 0
+        try:
+            self.exchange.load_markets(reload=False)
+            tickers = self.exchange.fetch_tickers()
+        except Exception as e:
+            if self.universe_symbols:
+                print(f'UNIVERSE FALLBACK | using previous {len(self.universe_symbols)} symbols | {type(e).__name__}: {e}')
+                return self.universe_symbols
+            if UNIVERSE_FILE.exists():
+                try:
+                    cached = json.loads(UNIVERSE_FILE.read_text(encoding='utf-8')).get('symbols', [])
+                    if cached:
+                        self.universe_symbols = list(cached)
+                        print(f'UNIVERSE FALLBACK | using cached {len(self.universe_symbols)} symbols | {type(e).__name__}: {e}')
+                        return self.universe_symbols
+                except Exception:
+                    pass
+            raise
+        eligible = []        rejected_noncrypto = 0
         for sym, m in self.exchange.markets.items():
             try:
                 if not m.get('active', True):
