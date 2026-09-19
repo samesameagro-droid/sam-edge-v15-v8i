@@ -46,6 +46,33 @@ class ForwardPaperEngine(base.PaperEngine):
         )
 
     @staticmethod
+    def _valid_closed_record(r):
+        """Validate a closed trade before importing it into the master journal.
+
+        Both the paper-state records (opened_at) and master-journal records
+        (signal_time) are accepted.  A record is valid only when it has a
+        terminal TP/SL result and the close timestamp is not earlier than the
+        signal/open timestamp.
+        """
+        from datetime import datetime
+
+        result = str(r.get("result", "")).upper().strip()
+        if result not in {"TP", "SL", "TP HIT", "SL HIT"}:
+            return False
+
+        signal_raw = r.get("signal_time") or r.get("opened_at")
+        closed_raw = r.get("closed_at")
+        if not signal_raw or not closed_raw:
+            return False
+
+        try:
+            signal = datetime.fromisoformat(str(signal_raw).replace("Z", "+00:00"))
+            closed = datetime.fromisoformat(str(closed_raw).replace("Z", "+00:00"))
+            return closed >= signal
+        except (TypeError, ValueError):
+            return False
+
+    @staticmethod
     def _trade_key_from_record(r):
         return f"{r.get('coin', '')}|{r.get('side', '')}|{r.get('opened_at', '')}|{r.get('core', '')}"
 
