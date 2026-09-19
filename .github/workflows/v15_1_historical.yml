@@ -1,0 +1,26 @@
+name: V15.1 Historical Regime Acceleration
+on:
+  push:
+    branches:
+      - research/v15-1-bingx-regime-acceleration
+  workflow_dispatch:
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch locked research helpers
+        run: |
+          git fetch origin research/v15-true-holdout-score40
+          git show origin/research/v15-true-holdout-score40:research_v15_compare.py > research_v15_compare.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run V15.1 historical test
+        run: python research_v15_1_historical.py
+      - name: Publish summary
+        run: |
+          cat v15_1_historical/summary.csv
+          cat v15_1_historical/manifest.json
