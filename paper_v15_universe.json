@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T11:54:01.026651+00:00",
+  "updated_at": "2026-09-19T11:58:51.767801+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -103,6 +103,6 @@
     "WLFI/USDT:USDT",
     "BLESS/USDT:USDT",
     "API3/USDT:USDT",
-    "MOODENG/USDT:USDT"
+    "HOME/USDT:USDT"
   ]
 }
