@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T11:05:20.226945+00:00",
+  "updated_at": "2026-09-19T11:11:26.272329+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -34,8 +34,8 @@
     "JUP/USDT:USDT",
     "BOME/USDT:USDT",
     "BLUR/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "AKE/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "ONDO/USDT:USDT",
     "FLOKI/USDT:USDT",
     "TURBO/USDT:USDT",
@@ -50,8 +50,8 @@
     "PEOPLE/USDT:USDT",
     "TIA/USDT:USDT",
     "10000SATS/USDT:USDT",
-    "TRX/USDT:USDT",
     "PUMP/USDT:USDT",
+    "TRX/USDT:USDT",
     "ICP/USDT:USDT",
     "RUNE/USDT:USDT",
     "YFI/USDT:USDT",
@@ -101,8 +101,8 @@
     "AIN/USDT:USDT",
     "WLFI/USDT:USDT",
     "GIGGLE/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "API3/USDT:USDT",
+    "MOODENG/USDT:USDT",
     "HOME/USDT:USDT"
   ]
 }
