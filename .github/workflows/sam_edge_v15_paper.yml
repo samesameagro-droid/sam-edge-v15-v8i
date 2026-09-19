@@ -54,6 +54,15 @@ jobs:
       - name: Validate V15 Python sources
         run: |
           python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py sitecustomize.py
+          python - <<'PY'
+          from run_v15_forward_test import ForwardPaperEngine
+          from datetime import datetime, timezone, timedelta
+          assert hasattr(ForwardPaperEngine, '_valid_closed_record'), 'ForwardPaperEngine validator missing'
+          now = datetime.now(timezone.utc)
+          assert ForwardPaperEngine._valid_closed_record({'result':'TP','signal_time':now.isoformat(),'closed_at':(now+timedelta(minutes=1)).isoformat()})
+          assert not ForwardPaperEngine._valid_closed_record({'result':'TP','signal_time':now.isoformat(),'closed_at':(now-timedelta(minutes=1)).isoformat()})
+          print('V15 FORWARD STATE PREFLIGHT OK')
+          PY
           echo "V15 PYTHON PREFLIGHT OK"
 
       - name: Verify Telegram bot and delivery
