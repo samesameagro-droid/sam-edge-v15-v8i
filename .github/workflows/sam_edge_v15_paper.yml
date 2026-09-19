@@ -51,6 +51,11 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt matplotlib
 
+      - name: Validate V15 Python sources
+        run: |
+          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py sitecustomize.py
+          echo "V15 PYTHON PREFLIGHT OK"
+
       - name: Verify Telegram bot and delivery
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true }}
         env:
