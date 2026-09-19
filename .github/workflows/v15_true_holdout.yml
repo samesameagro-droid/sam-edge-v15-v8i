@@ -50,7 +50,7 @@ jobs:
           git add v15_true_holdout/
           if ! git diff --cached --quiet; then
             git commit -m "research: persist V15 score40 true holdout"
-            git push
+            git push origin "HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
           else
             echo "No holdout files changed."
           fi
