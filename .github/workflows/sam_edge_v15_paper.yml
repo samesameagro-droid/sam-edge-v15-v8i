@@ -2,6 +2,8 @@ name: SAM EDGE V15 - Paper Forward
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'main_paper_v15.py'
       - 'run_v15_forward_test.py'
