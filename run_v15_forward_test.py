@@ -217,7 +217,9 @@ class ForwardPaperEngine(base.PaperEngine):
             running += x
             peak = max(peak, running)
             max_dd = max(max_dd, peak - running)
+        from datetime import datetime, timezone
         MASTER_SUMMARY.write_text(json.dumps({
+            "updated_at": datetime.now(timezone.utc).isoformat(),
             "target_closed_trades": TARGET_TRADES,
             "closed_trades": len(rs),
             "remaining": max(0, TARGET_TRADES - len(rs)),
