@@ -47,6 +47,16 @@ jobs:
           python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py notifiers.py bingx_direct_v15.py core_engine_v15.py
           echo "V15.1 PREFLIGHT OK"
 
+      - name: Initialize clean V15.1 research state
+        run: |
+          if [ ! -f v15_1_initialized.flag ]; then
+            echo "INITIALIZING CLEAN V15.1 STATE"
+            rm -f paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json paper_v15_trades.csv v15_1_initialized.flag
+            printf 'V15.1 clean prospective state initialized\n' > v15_1_initialized.flag
+          else
+            echo "V15.1 STATE ALREADY INITIALIZED"
+          fi
+
       - name: Run V15.1 BingX paper scan
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -59,6 +69,7 @@ jobs:
           UNIVERSE_LIMIT: '100'
           MAX_ACTIVE_POSITIONS: '5'
           RUN_ONCE: '1'
+          V15_1_TARGET_TRADES: '50'
           TELEGRAM_CHART_CANDLES: '80'
         run: python -u run_v15_forward_test_pro.py
 
