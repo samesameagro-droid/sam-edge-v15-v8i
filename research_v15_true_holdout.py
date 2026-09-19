@@ -94,7 +94,6 @@ def run_trades(x: pd.DataFrame, start: pd.Timestamp, end: pd.Timestamp) -> pd.Da
             continue
 
         out.append({
-            "coin": "",
             "signal_time": pd.Timestamp(T[i]),
             "closed_at": pd.Timestamp(T[ex]),
             "side": "LONG" if side == 1 else "SHORT",
