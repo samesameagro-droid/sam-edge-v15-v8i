@@ -159,29 +159,10 @@ class ForwardPaperEngine(base.PaperEngine):
             print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)}")
 
     def _migrate_legacy_active_positions(self):
-        # IMPORTANT:
-        # Never delete active positions merely because more than one position
-        # exists. The V15 forward test is intentionally multi-position (up to
-        # FORWARD_MAX_ACTIVE), so older versions of this migration were silently
-        # deleting legitimate trades such as ARB and ASTER on every workflow run.
-        #
-        # Only perform the legacy cleanup on the very first bootstrap, when the
-        # master forward-test journal does not yet exist. Once MASTER_JOURNAL is
-        # present, every active position is part of the forward-test state and
-        # must survive restarts unchanged.
-        if MASTER_JOURNAL.exists() or len(self.positions) <= 1:
-            return
-
-        newest_key, newest = max(
-            self.positions.items(),
-            key=lambda kv: str(kv[1].opened_at),
-        )
-        dropped = [p.coin for k, p in self.positions.items() if k != newest_key]
-        self.positions = {newest_key: newest}
-        print(
-            f"LEGACY ACTIVE MIGRATION | initial bootstrap only | kept={newest.coin} | dropped_stale={','.join(dropped)}"
-        )
-
+        # Never delete active positions during migration. V15 is intentionally
+        # multi-position; destructive cleanup can erase legitimate trades.
+        if len(self.positions) > base.MAX_ACTIVE:
+            print(f'ACTIVE STATE ABOVE LIMIT | restored={len(self.positions)} | max_active={base.MAX_ACTIVE} | no positions deleted')
     def _write_master(self):
         with MASTER_JOURNAL.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=FIELDS)
@@ -285,35 +266,42 @@ class ForwardPaperEngine(base.PaperEngine):
     def close(self, key, result, price, ts):
         p = self.positions[key]
         trade_key = f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"
-        if any(row.get("trade_key") == trade_key for row in self.master_rows):
-            return super().close(key, result, price, ts)
+        # Idempotent recovery: if master already records this trade as closed,
+        # remove the stale live copy without creating a second result/equity event.
+        if any(row.get('trade_key') == trade_key for row in self.master_rows):
+            print(f'FORWARD CLOSE RECOVERY | already closed | {trade_key}')
+            self.positions.pop(key, None)
+            self.save_state()
+            return
         score = self._score_for_position(p)
         super().close(key, result, price, ts)
-        rr = base.RR if result == "TP" else -1.0
+        rr = base.RR if result == 'TP' else -1.0
         row = {
-            "trade_no": str(len(self.master_rows) + 1),
-            "trade_key": trade_key,
-            "signal_time": p.opened_at,
-            "coin": p.coin,
-            "side": p.side,
-            "core": p.core,
-            "score": score,
-            "entry": p.entry,
-            "sl": p.sl,
-            "tp": p.tp,
-            "closed_at": ts,
-            "exit": price,
-            "result": "TP HIT" if result == "TP" else "SL HIT",
-            "R": rr,
-            "equity_after": self.equity,
+            'trade_no': str(len(self.master_rows) + 1),
+            'trade_key': trade_key,
+            'signal_time': p.opened_at,
+            'coin': p.coin,
+            'side': p.side,
+            'core': p.core,
+            'score': score,
+            'entry': p.entry,
+            'sl': p.sl,
+            'tp': p.tp,
+            'closed_at': ts,
+            'exit': price,
+            'result': 'TP HIT' if result == 'TP' else 'SL HIT',
+            'R': rr,
+            'equity_after': self.equity,
         }
         self.master_rows.append(row)
         self._refresh_summary_fields()
         self._write_master()
         self._write_summary()
+        # Persist immediately after a close. If the runner dies before the end
+        # of the scan, the closed trade and equity still survive the restart.
+        self.save_state()
         self._print_master_summary()
         print(f"📘 MASTER FORWARD TEST | Trade #{row['trade_no']} | {p.coin} | {p.side} | {row['result']} | SCORE={score}")
-
     def _print_master_summary(self):
         rs = []
         for row in self.master_rows:
