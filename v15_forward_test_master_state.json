@@ -4,7 +4,8 @@
   "closed_trades": 32,
   "active_positions": [
     "DRIFT/USDT:USDT",
-    "ENA/USDT:USDT"
+    "ENA/USDT:USDT",
+    "IMX/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
