@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout locked research branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -43,7 +45,7 @@ jobs:
           path: v15_true_holdout/
 
       - name: Persist holdout results
-        if: success()
+        if: ${{ success() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
         run: |
           git config user.name "SAM EDGE V15 HOLDOUT"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
