@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T11:44:31.663219+00:00",
+  "updated_at": "2026-09-19T11:48:58.656421+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -75,8 +75,8 @@
     "STRK/USDT:USDT",
     "LDO/USDT:USDT",
     "JASMY/USDT:USDT",
-    "TRUMPSOL/USDT:USDT",
     "LIGHTER/USDT:USDT",
+    "TRUMPSOL/USDT:USDT",
     "WIF/USDT:USDT",
     "ORDI/USDT:USDT",
     "POL/USDT:USDT",
