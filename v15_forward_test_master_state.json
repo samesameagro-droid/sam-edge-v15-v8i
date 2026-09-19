@@ -5,7 +5,9 @@
   "active_positions": [
     "DRIFT/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "LIGHTER/USDT:USDT"
+    "LIGHTER/USDT:USDT",
+    "OP/USDT:USDT",
+    "AAVE/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
