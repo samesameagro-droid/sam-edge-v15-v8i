@@ -1,14 +1,14 @@
 coin,source,candles,data_start,data_end,dev_trades,holdout_trades,error
-ADA,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-AVAX,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-BNB,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-BTC,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-CRV,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-DOGE,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-ETH,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-FET,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-LINK,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-SOL,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-SUI,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-UNI,,0,,,0,0,"ValueError: cannot insert coin, already exists"
-XRP,,0,,,0,0,"ValueError: cannot insert coin, already exists"
+ADA,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,12,3,
+AVAX,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,11,4,
+BNB,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,6,5,
+BTC,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,11,4,
+CRV,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,8,9,
+DOGE,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,22,7,
+ETH,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,9,6,
+FET,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,10,7,
+LINK,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,12,5,
+SOL,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,9,3,
+SUI,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,15,3,
+UNI,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,11,6,
+XRP,archive,20256,2026-02-02 00:00:00+00:00,2026-08-31 23:45:00+00:00,13,7,
