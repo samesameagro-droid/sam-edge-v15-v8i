@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T13:59:31.247620+00:00",
+  "updated_at": "2026-09-19T14:04:09.120728+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -50,6 +50,7 @@
     "JTO/USDT:USDT",
     "FIL/USDT:USDT",
     "PEOPLE/USDT:USDT",
+    "ZRO/USDT:USDT",
     "RUNE/USDT:USDT",
     "WIF/USDT:USDT",
     "BR/USDT:USDT",
@@ -58,7 +59,6 @@
     "DOT/USDT:USDT",
     "TRX/USDT:USDT",
     "ORDI/USDT:USDT",
-    "ZRO/USDT:USDT",
     "ENS/USDT:USDT",
     "PUMP/USDT:USDT",
     "YFI/USDT:USDT",
