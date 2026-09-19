@@ -130,6 +130,7 @@ jobs:
           fi
 
       - name: Reconcile and deliver missed TP SL notifications
+        if: ${{ always() }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -137,7 +138,7 @@ jobs:
           python -u reconcile_v15_results.py
 
       - name: Persist V15 + Master Forward Test state
-        if: ${{ success() }}
+        if: ${{ always() }}
         run: |
           set -e
           git config user.name "SAM EDGE V15 BOT"
