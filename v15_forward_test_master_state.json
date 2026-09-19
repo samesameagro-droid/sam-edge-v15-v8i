@@ -1,13 +1,12 @@
 {
   "target": 20,
-  "next_trade_no": 25,
-  "closed_trades": 24,
+  "next_trade_no": 26,
+  "closed_trades": 25,
   "active_positions": [
     "DRIFT/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "OP/USDT:USDT",
-    "AAVE/USDT:USDT",
-    "ZEC/USDT:USDT"
+    "AAVE/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
