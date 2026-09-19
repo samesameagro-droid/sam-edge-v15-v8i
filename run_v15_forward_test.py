@@ -19,7 +19,7 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
-TARGET_TRADES = 20
+TARGET_TRADES = int(__import__('os').getenv('V15_1_TARGET_TRADES', '50'))
 
 FIELDS = [
     "trade_no", "trade_key", "signal_time", "coin", "side", "core", "score",
@@ -42,7 +42,7 @@ class ForwardPaperEngine(base.PaperEngine):
         print(
             f"FORWARD TEST | completed={len(self.master_rows)}/{TARGET_TRADES} "
             f"| active={len(self.positions)} | max_active={base.MAX_ACTIVE} "
-            f"| policy=9_GATES_NO_SCORE_THRESHOLD"
+            f"| policy=V15_GATES_PLUS_REGIME_ACCELERATION"
         )
 
     @staticmethod
@@ -231,7 +231,7 @@ class ForwardPaperEngine(base.PaperEngine):
             "active_positions": len(self.positions),
             "max_active": base.MAX_ACTIVE,
             "score_is_execution_threshold": False,
-            "validation": "9 V15 gates from signal_mask",
+            "validation": "V15 gates + ADX percentile>=0.75 + ADX delta>=5",
             "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
         }, indent=2, ensure_ascii=False), encoding="utf-8")
         MASTER_STATE.write_text(json.dumps({
