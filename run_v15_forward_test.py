@@ -72,20 +72,67 @@ class ForwardPaperEngine(base.PaperEngine):
         })
 
     def _load_master(self):
+        # Load the existing master journal, then RECONCILE it against the
+        # authoritative paper_v15_state.json closed history. Older versions
+        # returned immediately when MASTER_JOURNAL existed, which permanently
+        # preserved a truncated journal (for example 1 row vs 20 closed trades).
+        existing = []
         if MASTER_JOURNAL.exists():
             try:
                 with MASTER_JOURNAL.open("r", newline="", encoding="utf-8") as f:
-                    self.master_rows = list(csv.DictReader(f))
-                print(f"MASTER JOURNAL RESTORED | closed={len(self.master_rows)}")
+                    existing = list(csv.DictReader(f))
+                print(f"MASTER JOURNAL RESTORED | closed={len(existing)}")
             except Exception as e:
                 print(f"MASTER JOURNAL RESTORE ERROR: {e}")
-                self.master_rows = []
-            return
 
-        # GitHub Actions persists paper_v15_state.json. Prefer its authoritative
-        # closed history so AIN/SL is promoted to Trade #1 even when the legacy CSV
-        # was not committed to the repository.
+        # GitHub Actions persists paper_v15_state.json. Treat its closed history
+        # as the recovery source and merge any records missing from the master.
         sources = []
+        state_file = Path("paper_v15_state.json")
+        legacy = Path("paper_v15_trades.csv")
+        try:
+            if state_file.exists():
+                d = json.loads(state_file.read_text(encoding="utf-8"))
+                sources.extend(d.get("closed", []))
+        except Exception as e:
+            print(f"STATE JOURNAL BOOTSTRAP ERROR: {e}")
+
+        if not sources and legacy.exists():
+            try:
+                with legacy.open("r", newline="", encoding="utf-8") as f:
+                    sources = list(csv.DictReader(f))
+            except Exception as e:
+                print(f"LEGACY JOURNAL BOOTSTRAP ERROR: {e}")
+
+        # Keep only valid TP/SL records and deduplicate by the canonical trade key.
+        merged = []
+        seen = set()
+        for r in existing + sources:
+            if not self._valid_closed_record({**r, "signal_time": r.get("opened_at", r.get("signal_time", ""))}):
+                continue
+            key = self._trade_key_from_record(r)
+            if key in seen:
+                continue
+            seen.add(key)
+            merged.append(r)
+
+        # The master sequence is chronological and assigned from the reconciled
+        # set, so a partial/truncated master can never block recovery.
+        merged.sort(key=lambda r: str(r.get("closed_at") or r.get("opened_at") or r.get("signal_time") or ""))
+        self.master_rows = []
+        for r in merged:
+            self._append_closed_record(r, len(self.master_rows) + 1)
+
+        if existing and len(self.master_rows) > len(existing):
+            print(f"MASTER JOURNAL RECONCILED | before={len(existing)} | after={len(self.master_rows)}")
+        elif self.master_rows:
+            self.master_bootstrapped = True
+            print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)}")
+
+        return
+
+        # Unreachable legacy bootstrap block retained below only as historical
+        # context is intentionally removed by this return.
         state_file = Path("paper_v15_state.json")
         legacy = Path("paper_v15_trades.csv")
         try:
