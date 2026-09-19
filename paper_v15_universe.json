@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T11:36:24.882628+00:00",
+  "updated_at": "2026-09-19T11:40:24.442484+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -25,8 +25,8 @@
     "DOGE/USDT:USDT",
     "APT/USDT:USDT",
     "WLD/USDT:USDT",
-    "LTC/USDT:USDT",
     "ETHFI/USDT:USDT",
+    "LTC/USDT:USDT",
     "STX/USDT:USDT",
     "ADA/USDT:USDT",
     "OP/USDT:USDT",
@@ -64,8 +64,8 @@
     "CRV/USDT:USDT",
     "FIL/USDT:USDT",
     "IMX/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "DASH/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "APE/USDT:USDT",
     "MYX/USDT:USDT",
     "TRB/USDT:USDT",
@@ -99,9 +99,9 @@
     "GIGGLE/USDT:USDT",
     "REZ/USDT:USDT",
     "DRIFT/USDT:USDT",
-    "BLESS/USDT:USDT",
     "WLFI/USDT:USDT",
     "AIN/USDT:USDT",
+    "BLESS/USDT:USDT",
     "API3/USDT:USDT",
     "MOODENG/USDT:USDT"
   ]
