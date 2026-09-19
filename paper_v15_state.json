@@ -1,5 +1,5 @@
 {
-  "equity": 108.81844446781416,
+  "equity": 108.27435224547509,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -1491,6 +1491,73 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 108.81844446781416
+    },
+    {
+      "coin": "TAO/USDT:USDT",
+      "side": "LONG",
+      "entry": 267.96,
+      "sl": 262.52077382412614,
+      "tp": 274.75903271984225,
+      "risk_R": 1.0,
+      "risk_cash": 0.5407127675419338,
+      "opened_at": "2026-09-19T13:45:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 45.315800334927765,
+      "entry_diag": {
+        "timestamp": "2026-09-19T13:45:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 267.96,
+        "rsi": 61.44792277912252,
+        "h4_adx_pct": 0.74,
+        "h4_adx_delta": 7.881771872587631,
+        "volr": 1.06964250688448,
+        "vol_slope": 0.09723181331197328,
+        "dist_ema20_atr": 1.0959633074079516,
+        "room_atr": 1.777500286427811,
+        "body_atr": 0.8591908258121063,
+        "close_pos": 0.9578059071729863,
+        "atr": 2.5372710398059395
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.6183335242852074,
+        "location": 0.17339448765341403,
+        "volume": 0.53482125344224,
+        "trigger": 1.0
+      },
+      "signal_key": "TAO/USDT:USDT|LONG|2026-09-19T13:45:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-19T18:10:00+00:00",
+      "exit": 262.52077382412614,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 108.27435224547509
     }
   ],
   "positions": {
@@ -1679,68 +1746,6 @@
         "trigger": 1.0
       },
       "signal_key": "AAVE/USDT:USDT|LONG|2026-09-19T06:30:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
-    "TAO/USDT:USDT": {
-      "coin": "TAO/USDT:USDT",
-      "side": "LONG",
-      "entry": 267.96,
-      "sl": 262.52077382412614,
-      "tp": 274.75903271984225,
-      "risk_R": 1.0,
-      "risk_cash": 0.5407127675419338,
-      "opened_at": "2026-09-19T13:45:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 45.315800334927765,
-      "entry_diag": {
-        "timestamp": "2026-09-19T13:45:00+00:00",
-        "long": {
-          "trend": true,
-          "ema": true,
-          "vwap": true,
-          "di": true,
-          "rsi": true,
-          "room": true,
-          "no_chase": true,
-          "adx": false,
-          "early_reclaim": true
-        },
-        "short": {
-          "trend": false,
-          "ema": false,
-          "vwap": false,
-          "di": false,
-          "rsi": false,
-          "room": false,
-          "no_chase": false,
-          "adx": false,
-          "early_reclaim": false
-        },
-        "final_long": true,
-        "final_short": false
-      },
-      "entry_metrics": {
-        "close": 267.96,
-        "rsi": 61.44792277912252,
-        "h4_adx_pct": 0.74,
-        "h4_adx_delta": 7.881771872587631,
-        "volr": 1.06964250688448,
-        "vol_slope": 0.09723181331197328,
-        "dist_ema20_atr": 1.0959633074079516,
-        "room_atr": 1.777500286427811,
-        "body_atr": 0.8591908258121063,
-        "close_pos": 0.9578059071729863,
-        "atr": 2.5372710398059395
-      },
-      "score_breakdown": {
-        "adx": 0.0,
-        "delta": 1.0,
-        "room": 0.6183335242852074,
-        "location": 0.17339448765341403,
-        "volume": 0.53482125344224,
-        "trigger": 1.0
-      },
-      "signal_key": "TAO/USDT:USDT|LONG|2026-09-19T13:45:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }
