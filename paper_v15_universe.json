@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T10:29:37.159547+00:00",
+  "updated_at": "2026-09-19T10:33:30.725904+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -19,9 +19,9 @@
     "AVAX/USDT:USDT",
     "CFX/USDT:USDT",
     "TAO/USDT:USDT",
+    "SUI/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "LINK/USDT:USDT",
-    "SUI/USDT:USDT",
     "DOGE/USDT:USDT",
     "WLD/USDT:USDT",
     "APT/USDT:USDT",
