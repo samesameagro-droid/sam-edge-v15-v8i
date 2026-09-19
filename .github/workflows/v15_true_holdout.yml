@@ -9,6 +9,8 @@ on:
       - 'research_v15_compare.py'
       - '.github/workflows/v15_true_holdout.yml'
   workflow_dispatch:
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
