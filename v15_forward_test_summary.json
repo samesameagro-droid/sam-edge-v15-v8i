@@ -1,17 +1,17 @@
 {
   "target_closed_trades": 20,
-  "closed_trades": 0,
-  "remaining": 20,
-  "wins": 0,
-  "losses": 0,
-  "win_rate_pct": 0.0,
-  "net_R": 0,
-  "profit_factor": null,
-  "drawdown_R": 0.0,
+  "closed_trades": 20,
+  "remaining": 0,
+  "wins": 15,
+  "losses": 5,
+  "win_rate_pct": 75,
+  "net_R": 13.75,
+  "profit_factor": 3.75,
+  "drawdown_R": 2,
   "equity": 107.07887614537623,
   "active_positions": 5,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
-  "status": "RUNNING"
+  "status": "COMPLETE"
 }
