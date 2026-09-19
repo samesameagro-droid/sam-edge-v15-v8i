@@ -6,7 +6,8 @@
     "DRIFT/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "OP/USDT:USDT",
-    "AAVE/USDT:USDT"
+    "AAVE/USDT:USDT",
+    "ZEC/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
