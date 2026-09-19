@@ -233,6 +233,34 @@ def _dedupe_forward_state(engine):
         print(f"FORWARD EQUITY REBUILD ERROR | {type(e).__name__}: {e}")
 
 
+def _reconcile_master_from_state(engine):
+    """Authoritatively rebuild master artifacts from the persisted paper closed history."""
+    valid = []
+    seen = set()
+    for r in engine.closed:
+        try:
+            key = f"{r.get('coin','')}|{r.get('side','')}|{r.get('opened_at','')}|{r.get('core','')}"
+            if key in seen:
+                continue
+            if str(r.get('result','')).upper().strip() not in {'TP','SL'}:
+                continue
+            if not engine._valid_closed_record({**r, 'signal_time': r.get('opened_at','')}):
+                continue
+            seen.add(key)
+            valid.append(r)
+        except Exception:
+            continue
+    valid.sort(key=lambda r: str(r.get('closed_at') or r.get('opened_at') or ''))
+    engine.master_rows = []
+    for r in valid:
+        engine._append_closed_record(r, len(engine.master_rows) + 1)
+    engine._refresh_summary_fields()
+    if engine.master_rows:
+        engine._write_master()
+    engine._write_summary()
+    print(f"MASTER RECONCILED FROM PAPER STATE | closed={len(engine.master_rows)} | active={len(engine.positions)}")
+
+
 def resend_active_professional(engine):
     """One-time migration: upgrade already-active legacy Telegram signals to chart cards."""
     if MIGRATION_FLAG.exists():
@@ -269,6 +297,7 @@ if __name__ == "__main__":
     print(f"SAM EDGE V15 PROFESSIONAL FORWARD TEST | TARGET={TARGET_TRADES}")
     engine = ForwardPaperEngine()
     _dedupe_forward_state(engine)
+    _reconcile_master_from_state(engine)
     one_shot = os.getenv("RUN_ONCE", "0").strip().lower() in {"1", "true", "yes", "on"}
     if one_shot:
         delivered = notifiers.retry_pending_messages()
