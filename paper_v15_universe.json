@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T09:39:32.722598+00:00",
+  "updated_at": "2026-09-19T09:43:25.373200+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -46,8 +46,8 @@
     "TRX/USDT:USDT",
     "BCH/USDT:USDT",
     "1INCH/USDT:USDT",
-    "RUNE/USDT:USDT",
     "OP/USDT:USDT",
+    "RUNE/USDT:USDT",
     "BANANA/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "TIA/USDT:USDT",
