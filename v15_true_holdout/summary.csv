@@ -1,0 +1,3 @@
+period,trades,wins,losses,winrate_pct,net_R,profit_factor,expectancy_R,max_dd_R
+DEVELOPMENT,149,72,77,48.32,13.0,1.1688,0.0872,-18.5
+HOLDOUT,69,28,41,40.58,-6.0,0.8537,-0.087,-16.75

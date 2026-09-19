@@ -1,0 +1,58 @@
+name: V15 True Holdout Score40
+
+on:
+  push:
+    branches: [research/v15-true-holdout-score40]
+    paths:
+      - 'research_v15_true_holdout.py'
+      - 'core_engine_v15.py'
+      - 'research_v15_compare.py'
+      - '.github/workflows/v15_true_holdout.yml'
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout locked research branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pandas numpy requests
+
+      - name: Run fixed chronological holdout
+        run: python research_v15_true_holdout.py
+
+      - name: Upload holdout evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v15-true-holdout-score40
+          retention-days: 90
+          path: v15_true_holdout/
+
+      - name: Persist holdout results
+        if: ${{ success() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+        run: |
+          git config user.name "SAM EDGE V15 HOLDOUT"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add v15_true_holdout/
+          if ! git diff --cached --quiet; then
+            git commit -m "research: persist V15 score40 true holdout"
+            git push origin "HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          else
+            echo "No holdout files changed."
+          fi
