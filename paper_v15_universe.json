@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T00:39:22.756985+00:00",
+  "updated_at": "2026-09-19T00:44:09.836320+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -102,7 +102,7 @@
     "POPCAT/USDT:USDT",
     "WLFI/USDT:USDT",
     "AIN/USDT:USDT",
-    "BANK/USDT:USDT",
-    "AKE/USDT:USDT"
+    "AKE/USDT:USDT",
+    "BANK/USDT:USDT"
   ]
 }
