@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T10:49:10.606221+00:00",
+  "updated_at": "2026-09-19T10:53:56.138294+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -20,8 +20,8 @@
     "CFX/USDT:USDT",
     "TAO/USDT:USDT",
     "SUI/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "LINK/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "DOGE/USDT:USDT",
     "WLD/USDT:USDT",
     "APT/USDT:USDT",
@@ -98,10 +98,10 @@
     "REZ/USDT:USDT",
     "BANK/USDT:USDT",
     "BLESS/USDT:USDT",
-    "WLFI/USDT:USDT",
     "AIN/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "GIGGLE/USDT:USDT",
+    "MOODENG/USDT:USDT",
+    "WLFI/USDT:USDT",
     "API3/USDT:USDT",
     "KAITO/USDT:USDT"
   ]
