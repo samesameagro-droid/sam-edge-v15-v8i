@@ -1,6 +1,13 @@
 name: V15 True Holdout Score40
 
 on:
+  push:
+    branches: [research/v15-true-holdout-score40]
+    paths:
+      - 'research_v15_true_holdout.py'
+      - 'core_engine_v15.py'
+      - 'research_v15_compare.py'
+      - '.github/workflows/v15_true_holdout.yml'
   workflow_dispatch:
 
 permissions:
