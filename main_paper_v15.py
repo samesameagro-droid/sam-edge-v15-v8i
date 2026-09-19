@@ -227,7 +227,8 @@ class PaperEngine:
                 except Exception:
                     pass
             raise
-        eligible = []        rejected_noncrypto = 0
+        eligible = []
+        rejected_noncrypto = 0
         for sym, m in self.exchange.markets.items():
             try:
                 if not m.get('active', True):
