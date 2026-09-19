@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T19:55:23.121493+00:00",
+  "updated_at": "2026-09-19T19:59:17.968776+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -36,8 +36,8 @@
     "1000PEPE/USDT:USDT",
     "PENDLE/USDT:USDT",
     "WIF/USDT:USDT",
-    "STX/USDT:USDT",
     "AKE/USDT:USDT",
+    "STX/USDT:USDT",
     "FLOKI/USDT:USDT",
     "LTC/USDT:USDT",
     "ZRO/USDT:USDT",
