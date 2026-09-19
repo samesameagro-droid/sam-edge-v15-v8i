@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-19T20:19:04.962444+00:00",
+  "updated_at": "2026-09-19T20:24:02.370173+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -32,8 +32,8 @@
     "BOME/USDT:USDT",
     "WLD/USDT:USDT",
     "JUP/USDT:USDT",
-    "WIF/USDT:USDT",
     "1000PEPE/USDT:USDT",
+    "WIF/USDT:USDT",
     "AKE/USDT:USDT",
     "LINK/USDT:USDT",
     "PENDLE/USDT:USDT",
@@ -102,7 +102,7 @@
     "GIGGLE/USDT:USDT",
     "KAITO/USDT:USDT",
     "BLESS/USDT:USDT",
-    "ZK/USDT:USDT",
-    "FLOCK/USDT:USDT"
+    "FLOCK/USDT:USDT",
+    "ZK/USDT:USDT"
   ]
 }
