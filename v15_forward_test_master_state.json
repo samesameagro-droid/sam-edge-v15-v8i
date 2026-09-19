@@ -6,7 +6,8 @@
     "DRIFT/USDT:USDT",
     "OP/USDT:USDT",
     "AAVE/USDT:USDT",
-    "FIL/USDT:USDT"
+    "FIL/USDT:USDT",
+    "AIN/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
