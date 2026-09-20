@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-09-20T15:35:41.607266+00:00",
-  "target_closed_trades": 20,
+  "updated_at": "2026-09-20T15:40:30.656884+00:00",
+  "target_closed_trades": 50,
   "closed_trades": 42,
-  "remaining": 0,
+  "remaining": 8,
   "wins": 23,
   "losses": 19,
   "win_rate_pct": 54.76,
@@ -14,7 +14,7 @@
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
-  "status": "COMPLETE",
+  "status": "RUNNING",
   "performance_diagnostics": {
     "optimization_mode": "SHADOW_ONLY_UNTIL_50_TRADES",
     "recent_10": {
