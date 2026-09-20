@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T02:19:59.339874+00:00",
+  "updated_at": "2026-09-20T02:25:39.997142+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -78,8 +78,8 @@
     "FARTCOIN/USDT:USDT",
     "DYDX/USDT:USDT",
     "LDO/USDT:USDT",
-    "PEOPLE/USDT:USDT",
     "NOT/USDT:USDT",
+    "PEOPLE/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "MYX/USDT:USDT",
     "BANK/USDT:USDT",
@@ -99,9 +99,9 @@
     "GIGGLE/USDT:USDT",
     "SIGN/USDT:USDT",
     "WLFI/USDT:USDT",
-    "KAITO/USDT:USDT",
-    "ALLO/USDT:USDT",
     "BLESS/USDT:USDT",
+    "ALLO/USDT:USDT",
+    "KAITO/USDT:USDT",
     "ZK/USDT:USDT",
     "RIVER/USDT:USDT"
   ]
