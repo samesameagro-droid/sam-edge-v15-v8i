@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T18:44:04.950533+00:00",
+  "updated_at": "2026-09-20T18:49:19.155633+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -47,8 +47,8 @@
     "JTO/USDT:USDT",
     "BCH/USDT:USDT",
     "DOGE/USDT:USDT",
-    "OP/USDT:USDT",
     "WLD/USDT:USDT",
+    "OP/USDT:USDT",
     "IMX/USDT:USDT",
     "BLUR/USDT:USDT",
     "GALA/USDT:USDT",
@@ -70,8 +70,8 @@
     "KAS/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "RUNE/USDT:USDT",
-    "BR/USDT:USDT",
     "AUCTION/USDT:USDT",
+    "BR/USDT:USDT",
     "ETC/USDT:USDT",
     "ASTER/USDT:USDT",
     "JASMY/USDT:USDT",
@@ -103,6 +103,6 @@
     "BLESS/USDT:USDT",
     "SOON/USDT:USDT",
     "KAITO/USDT:USDT",
-    "WLFI/USDT:USDT"
+    "HOME/USDT:USDT"
   ]
 }
