@@ -21,12 +21,15 @@ on:
         default: false
         type: boolean
   schedule:
-    # Run every 5 minutes; push trigger below also provides an immediate recovery run after workflow fixes.
-    - cron: '*/5 * * * *'
+    # Run every 10 minutes so a slow scan cannot leave a scheduled run stuck in GitHub's
+    # single-pending concurrency queue. A push trigger still provides immediate recovery.
+    - cron: '*/10 * * * *'
 
 concurrency:
-  # One writer/runner at a time. Prevents Telegram-test and scheduled scans
-  # from racing on the same persistent state and Git history.
+  # One writer/runner at a time. GitHub allows only ONE pending run per concurrency
+  # group; with a 5-minute schedule, a slow/manual run could cause the older scheduled
+  # run to be cancelled when a newer run enters the pending slot. The 10-minute cadence
+  # above gives each scan enough room to finish without dropping scheduled cycles.
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
