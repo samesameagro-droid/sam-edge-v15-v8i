@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T05:24:25.516305+00:00",
+  "updated_at": "2026-09-20T05:30:13.737314+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -25,8 +25,8 @@
     "DOT/USDT:USDT",
     "BNB/USDT:USDT",
     "BCH/USDT:USDT",
-    "CRV/USDT:USDT",
     "ENA/USDT:USDT",
+    "CRV/USDT:USDT",
     "CFX/USDT:USDT",
     "ADA/USDT:USDT",
     "ONDO/USDT:USDT",
@@ -100,8 +100,8 @@
     "RIVER/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "ZK/USDT:USDT",
-    "ALLO/USDT:USDT",
     "SIGN/USDT:USDT",
+    "ALLO/USDT:USDT",
     "W/USDT:USDT",
     "BLESS/USDT:USDT"
   ]
