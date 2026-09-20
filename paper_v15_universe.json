@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T07:18:19.241992+00:00",
+  "updated_at": "2026-09-20T07:22:30.620720+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -47,6 +47,7 @@
     "TRB/USDT:USDT",
     "HYPE/USDT:USDT",
     "STX/USDT:USDT",
+    "1INCH/USDT:USDT",
     "WIF/USDT:USDT",
     "TIA/USDT:USDT",
     "AKE/USDT:USDT",
@@ -57,7 +58,6 @@
     "BANANA/USDT:USDT",
     "COMP/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "1INCH/USDT:USDT",
     "LDO/USDT:USDT",
     "RUNE/USDT:USDT",
     "TURBO/USDT:USDT",
