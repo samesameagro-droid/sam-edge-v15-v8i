@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T19:02:26.737360+00:00",
+  "updated_at": "2026-09-20T19:06:58.662320+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -74,13 +74,11 @@
     "AUCTION/USDT:USDT",
     "ETC/USDT:USDT",
     "ASTER/USDT:USDT",
-    "JASMY/USDT:USDT",
     "ZRO/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "BANK/USDT:USDT",
     "TRB/USDT:USDT",
-    "TRX/USDT:USDT",
     "BEAT/USDT:USDT",
     "EVAA/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -102,7 +100,9 @@
     "RIVER/USDT:USDT",
     "SOON/USDT:USDT",
     "BLESS/USDT:USDT",
+    "JASMY/USDT:USDT",
     "KAITO/USDT:USDT",
-    "WLFI/USDT:USDT"
+    "WLFI/USDT:USDT",
+    "HOME/USDT:USDT"
   ]
 }
