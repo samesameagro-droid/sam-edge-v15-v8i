@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T11:04:58.061926+00:00",
+  "updated_at": "2026-09-20T11:08:38.589876+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -83,8 +83,8 @@
     "ASTER/USDT:USDT",
     "BANK/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
-    "LIGHTER/USDT:USDT",
     "G/USDT:USDT",
+    "LIGHTER/USDT:USDT",
     "DASH/USDT:USDT",
     "BEAT/USDT:USDT",
     "EVAA/USDT:USDT",
