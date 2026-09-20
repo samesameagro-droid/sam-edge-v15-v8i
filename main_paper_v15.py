@@ -360,6 +360,34 @@ class PaperEngine:
         key = f'{symbol}|{side}|{ts}|{CORE_NAME}'
         if key in self.signal_history:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
+
+        # Anti-repeat guard: the scanner runs every 5 minutes while the setup
+        # timeframe is 15m. A persistent setup can therefore produce a new
+        # candle timestamp and look like a brand-new signal even though the
+        # same coin/side has just been traded. Do not re-alert/re-enter the
+        # same coin+side+core during the cooldown after a closed trade.
+        # This is deliberately separate from Telegram delivery deduplication:
+        # it prevents duplicate EXECUTABLE signals, not just duplicate messages.
+        REENTRY_COOLDOWN_MIN = int(os.getenv('V15_REENTRY_COOLDOWN_MIN', '60'))
+        try:
+            now_dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+            for r in reversed(self.closed):
+                if str(r.get('coin', '')) != symbol:
+                    continue
+                if str(r.get('side', '')).upper() != side:
+                    continue
+                if str(r.get('core', CORE_NAME)) != CORE_NAME:
+                    continue
+                closed_at = str(r.get('closed_at', '')).strip()
+                if not closed_at:
+                    continue
+                closed_dt = datetime.fromisoformat(closed_at.replace('Z', '+00:00'))
+                age_min = (now_dt - closed_dt).total_seconds() / 60.0
+                if 0 <= age_min < REENTRY_COOLDOWN_MIN:
+                    print(f'REENTRY COOLDOWN | {symbol} | {side} | closed={closed_at} | age={age_min:.1f}m < {REENTRY_COOLDOWN_MIN}m')
+                    return {'signal': None, 'timestamp': ts, 'diag': diag}
+        except Exception as e:
+            print(f'REENTRY COOLDOWN CHECK ERROR | {symbol} | {type(e).__name__}: {e}')
         side_int = 1 if side == 'LONG' else -1
         levels = trade_levels(x, i, side_int, 'STRUCTURE')
         if levels is None:
