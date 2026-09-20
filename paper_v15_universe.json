@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T01:24:37.733899+00:00",
+  "updated_at": "2026-09-20T01:29:00.928046+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -82,8 +82,8 @@
     "NOT/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "MYX/USDT:USDT",
-    "TRUMPSOL/USDT:USDT",
     "BANK/USDT:USDT",
+    "TRUMPSOL/USDT:USDT",
     "ASTER/USDT:USDT",
     "BEAT/USDT:USDT",
     "F/USDT:USDT",
@@ -99,9 +99,9 @@
     "WLFI/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "SIGN/USDT:USDT",
-    "W/USDT:USDT",
     "BLESS/USDT:USDT",
     "ALLO/USDT:USDT",
+    "W/USDT:USDT",
     "ZK/USDT:USDT",
     "KAITO/USDT:USDT"
   ]
