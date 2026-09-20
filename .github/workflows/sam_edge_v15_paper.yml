@@ -179,7 +179,10 @@ jobs:
           for attempt in 1 2 3 4 5; do
             echo "STATE PUSH ATTEMPT $attempt"
             git fetch origin main
-            git reset --hard origin/main
+            # Do NOT reset --hard origin/main here. The runner may contain a newer
+            # code/workflow checkout than the remote state commit, and a hard reset
+            # makes persistence look like a branch rollback. Commit only the
+            # generated state, then rebase that state commit onto the latest main.
             for f in $STATE_FILES; do
               if [ -f "$TMP_DIR/$(basename "$f")" ]; then
                 cp "$TMP_DIR/$(basename "$f")" "$f"
@@ -187,18 +190,42 @@ jobs:
             done
             if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
               rm -f pending_telegram_signals.json
+              git rm --ignore-unmatch pending_telegram_signals.json >/dev/null 2>&1 || true
             fi
-            git add -A
+
+            git add $STATE_FILES
             if git diff --cached --quiet; then
               echo "NO STATE CHANGES AFTER SYNC"
               exit 0
             fi
+
             git commit -m "paper: V15 professional forward state"
+            for rebase_attempt in 1 2 3; do
+              git fetch origin main
+              if git rebase origin/main; then
+                break
+              fi
+              echo "REBASE RETRY $rebase_attempt FAILED"
+              git rebase --abort || true
+              if [ "$rebase_attempt" -eq 3 ]; then
+                echo "STATE REBASE FAILED"
+                exit 1
+              fi
+              sleep 2
+            done
+
             if git push origin HEAD:main; then
               echo "STATE PUSH OK"
               exit 0
             fi
-            echo "REMOTE MOVED - retrying"
+
+            echo "REMOTE MOVED DURING PUSH - retrying from latest main"
+            git fetch origin main
+            if git rebase origin/main; then
+              :
+            else
+              git rebase --abort || true
+            fi
             sleep 2
           done
           echo "STATE PUSH FAILED AFTER 5 ATTEMPTS"
