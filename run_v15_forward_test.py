@@ -198,6 +198,62 @@ class ForwardPaperEngine(base.PaperEngine):
             row["profit_factor"] = "INF" if gross_loss == 0 else f"{pf:.3f}"
             row["drawdown_R"] = f"{max_dd:.2f}"
 
+    @staticmethod
+    def _stats(rows):
+        rs = []
+        for row in rows:
+            try:
+                rs.append(float(row.get("R", 0)))
+            except (TypeError, ValueError):
+                continue
+        wins = sum(x > 0 for x in rs)
+        losses = sum(x < 0 for x in rs)
+        gross_win = sum(x for x in rs if x > 0)
+        gross_loss = -sum(x for x in rs if x < 0)
+        pf = gross_win / gross_loss if gross_loss else None
+        return {
+            "trades": len(rs),
+            "wins": wins,
+            "losses": losses,
+            "win_rate_pct": round(wins / len(rs) * 100.0, 2) if rs else 0.0,
+            "net_R": round(sum(rs), 4),
+            "profit_factor": round(pf, 4) if pf is not None else None,
+        }
+
+    def _performance_diagnostics(self):
+        rows = list(self.master_rows)
+        def streak():
+            current = 0
+            maximum = 0
+            for row in rows:
+                try:
+                    r = float(row.get("R", 0))
+                except (TypeError, ValueError):
+                    continue
+                if r < 0:
+                    current += 1
+                    maximum = max(maximum, current)
+                else:
+                    current = 0
+            return {"current_loss_streak": current, "max_loss_streak": maximum}
+
+        by_side = {}
+        by_core = {}
+        for side in sorted({str(r.get("side", "")) for r in rows if r.get("side")}):
+            by_side[side] = self._stats([r for r in rows if r.get("side") == side])
+        for core in sorted({str(r.get("core", "")) for r in rows if r.get("core")}):
+            by_core[core] = self._stats([r for r in rows if r.get("core") == core])
+
+        return {
+            "optimization_mode": "SHADOW_ONLY_UNTIL_50_TRADES",
+            "recent_10": self._stats(rows[-10:]),
+            "recent_20": self._stats(rows[-20:]),
+            "all_closed": self._stats(rows),
+            "by_side": by_side,
+            "by_core": by_core,
+            **streak(),
+        }
+
     def _write_summary(self):
         rs = []
         for row in self.master_rows:
@@ -235,6 +291,7 @@ class ForwardPaperEngine(base.PaperEngine):
             "score_is_execution_threshold": False,
             "validation": "9 V15 gates from signal_mask",
             "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
+            "performance_diagnostics": self._performance_diagnostics(),
         }, indent=2, ensure_ascii=False), encoding="utf-8")
         MASTER_STATE.write_text(json.dumps({
             "target": TARGET_TRADES,
