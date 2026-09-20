@@ -2,7 +2,9 @@
   "target": 50,
   "next_trade_no": 43,
   "closed_trades": 42,
-  "active_positions": [],
+  "active_positions": [
+    "GRASS/USDT:USDT"
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
