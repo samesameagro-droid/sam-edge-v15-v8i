@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T03:38:40.317252+00:00",
+  "updated_at": "2026-09-20T03:45:52.160083+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -34,9 +34,9 @@
     "DOGE/USDT:USDT",
     "FLOKI/USDT:USDT",
     "LTC/USDT:USDT",
-    "ATOM/USDT:USDT",
     "HYPE/USDT:USDT",
     "JUP/USDT:USDT",
+    "ATOM/USDT:USDT",
     "APE/USDT:USDT",
     "AUCTION/USDT:USDT",
     "SEI/USDT:USDT",
@@ -48,8 +48,8 @@
     "PENDLE/USDT:USDT",
     "ETHFI/USDT:USDT",
     "BANANA/USDT:USDT",
-    "LINK/USDT:USDT",
     "1000PEPE/USDT:USDT",
+    "LINK/USDT:USDT",
     "10000SATS/USDT:USDT",
     "ZRO/USDT:USDT",
     "TIA/USDT:USDT",
@@ -102,7 +102,7 @@
     "RIVER/USDT:USDT",
     "BLESS/USDT:USDT",
     "ALLO/USDT:USDT",
-    "ZK/USDT:USDT",
-    "KAITO/USDT:USDT"
+    "KAITO/USDT:USDT",
+    "ZK/USDT:USDT"
   ]
 }
