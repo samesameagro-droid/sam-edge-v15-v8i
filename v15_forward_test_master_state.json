@@ -1,11 +1,11 @@
 {
   "target": 20,
-  "next_trade_no": 39,
-  "closed_trades": 38,
+  "next_trade_no": 40,
+  "closed_trades": 39,
   "active_positions": [
-    "ZK/USDT:USDT",
     "STRK/USDT:USDT",
-    "ARB/USDT:USDT"
+    "ARB/USDT:USDT",
+    "POL/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
