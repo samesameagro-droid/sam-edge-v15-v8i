@@ -6,7 +6,8 @@
     "DRIFT/USDT:USDT",
     "ENA/USDT:USDT",
     "IMX/USDT:USDT",
-    "BLUR/USDT:USDT"
+    "BLUR/USDT:USDT",
+    "SUI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
