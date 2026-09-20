@@ -1,5 +1,5 @@
 {
-  "equity": 104.79609687961789,
+  "equity": 105.4510724851155,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -2295,10 +2295,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 104.79609687961789
-    }
-  ],
-  "positions": {
-    "STRK/USDT:USDT": {
+    },
+    {
       "coin": "STRK/USDT:USDT",
       "side": "LONG",
       "entry": 0.04537,
@@ -2358,8 +2356,15 @@
         "volume": 0.6082749999216902,
         "trigger": 1.0
       },
-      "signal_key": "STRK/USDT:USDT|LONG|2026-09-20T06:45:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
+      "signal_key": "STRK/USDT:USDT|LONG|2026-09-20T06:45:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-20T13:25:00+00:00",
+      "exit": 0.047642008014158264,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 105.4510724851155
+    }
+  ],
+  "positions": {
     "ARB/USDT:USDT": {
       "coin": "ARB/USDT:USDT",
       "side": "LONG",

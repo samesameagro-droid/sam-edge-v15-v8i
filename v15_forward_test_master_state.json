@@ -1,9 +1,8 @@
 {
   "target": 20,
-  "next_trade_no": 41,
-  "closed_trades": 40,
+  "next_trade_no": 42,
+  "closed_trades": 41,
   "active_positions": [
-    "STRK/USDT:USDT",
     "ARB/USDT:USDT"
   ],
   "max_active": 5,
