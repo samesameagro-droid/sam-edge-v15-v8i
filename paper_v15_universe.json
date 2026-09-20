@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T13:08:34.757706+00:00",
+  "updated_at": "2026-09-20T13:13:57.159403+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -17,7 +17,6 @@
     "AAVE/USDT:USDT",
     "ATOM/USDT:USDT",
     "ARB/USDT:USDT",
-    "CFX/USDT:USDT",
     "TAO/USDT:USDT",
     "BNB/USDT:USDT",
     "ONDO/USDT:USDT",
@@ -27,6 +26,7 @@
     "SEI/USDT:USDT",
     "COMP/USDT:USDT",
     "ENA/USDT:USDT",
+    "CFX/USDT:USDT",
     "ICP/USDT:USDT",
     "BLUR/USDT:USDT",
     "INJ/USDT:USDT",
@@ -43,8 +43,8 @@
     "APE/USDT:USDT",
     "LINK/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "LTC/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "10000SATS/USDT:USDT",
     "DOGE/USDT:USDT",
     "HYPE/USDT:USDT",
@@ -57,8 +57,8 @@
     "IMX/USDT:USDT",
     "TIA/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "LDO/USDT:USDT",
     "ATH/USDT:USDT",
+    "LDO/USDT:USDT",
     "MEW/USDT:USDT",
     "FLOKI/USDT:USDT",
     "ORDI/USDT:USDT",
@@ -100,9 +100,9 @@
     "ZK/USDT:USDT",
     "F/USDT:USDT",
     "ENSO/USDT:USDT",
+    "BLESS/USDT:USDT",
     "RIVER/USDT:USDT",
     "S/USDT:USDT",
-    "BLESS/USDT:USDT",
-    "W/USDT:USDT"
+    "KAITO/USDT:USDT"
   ]
 }
