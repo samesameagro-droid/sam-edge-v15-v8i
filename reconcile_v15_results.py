@@ -65,12 +65,17 @@ def main() -> None:
     seen = set()
     for r in list(closed) + list(master_rows):
         result = str(r.get('result', '')).upper().strip()
-        if result not in {'TP', 'SL'}:
+        # Master journal stores terminal outcomes as "TP HIT" / "SL HIT",
+        # while paper state stores "TP" / "SL". Normalize before validation
+        # so valid master rows are not falsely quarantined on every run.
+        normalized = dict(r)
+        normalized['result'] = result.replace(' HIT', '').strip()
+        if normalized['result'] not in {'TP', 'SL'}:
             continue
-        if not valid_result_record(r):
+        if not valid_result_record(normalized):
             print(f"OUTCOME RECONCILE QUARANTINE | close_before_open_or_invalid_time | {r.get('coin')} | {r.get('side')} | opened={r.get('signal_time') or r.get('opened_at')} | closed={r.get('closed_at')}")
             continue
-        key = outcome_key(r)
+        key = outcome_key(normalized)
         if key in seen:
             continue
         seen.add(key)
