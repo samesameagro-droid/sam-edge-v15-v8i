@@ -19,7 +19,7 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
-TARGET_TRADES = 20
+TARGET_TRADES = 50
 
 FIELDS = [
     "trade_no", "trade_key", "signal_time", "coin", "side", "core", "score",
