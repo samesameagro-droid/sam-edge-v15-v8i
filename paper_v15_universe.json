@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T12:16:09.287377+00:00",
+  "updated_at": "2026-09-20T12:20:04.508231+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -46,11 +46,11 @@
     "1000PEPE/USDT:USDT",
     "LTC/USDT:USDT",
     "TRB/USDT:USDT",
-    "WLD/USDT:USDT",
     "10000SATS/USDT:USDT",
+    "WLD/USDT:USDT",
     "APE/USDT:USDT",
-    "DOGE/USDT:USDT",
     "HYPE/USDT:USDT",
+    "DOGE/USDT:USDT",
     "1INCH/USDT:USDT",
     "TIA/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -70,8 +70,8 @@
     "DYM/USDT:USDT",
     "BR/USDT:USDT",
     "RENDER/USDT:USDT",
-    "YFI/USDT:USDT",
     "TURBO/USDT:USDT",
+    "YFI/USDT:USDT",
     "TRX/USDT:USDT",
     "PUMP/USDT:USDT",
     "1000BONK/USDT:USDT",
@@ -79,7 +79,6 @@
     "DYDX/USDT:USDT",
     "ETC/USDT:USDT",
     "JASMY/USDT:USDT",
-    "NOT/USDT:USDT",
     "ASTER/USDT:USDT",
     "BANK/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
@@ -89,8 +88,8 @@
     "BEAT/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "DASH/USDT:USDT",
-    "MYX/USDT:USDT",
     "BERA/USDT:USDT",
+    "MYX/USDT:USDT",
     "GRASS/USDT:USDT",
     "XPL/USDT:USDT",
     "UAI/USDT:USDT",
@@ -103,6 +102,7 @@
     "S/USDT:USDT",
     "RIVER/USDT:USDT",
     "BLESS/USDT:USDT",
-    "W/USDT:USDT"
+    "W/USDT:USDT",
+    "KAITO/USDT:USDT"
   ]
 }
