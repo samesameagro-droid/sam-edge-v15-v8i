@@ -1,7 +1,7 @@
 {
   "target": 50,
-  "next_trade_no": 44,
-  "closed_trades": 43,
+  "next_trade_no": 43,
+  "closed_trades": 42,
   "active_positions": [
     "GRASS/USDT:USDT"
   ],
