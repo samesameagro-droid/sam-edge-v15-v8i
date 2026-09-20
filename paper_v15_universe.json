@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T17:54:03.596646+00:00",
+  "updated_at": "2026-09-20T17:58:58.051857+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -82,8 +82,8 @@
     "TRB/USDT:USDT",
     "BEAT/USDT:USDT",
     "EVAA/USDT:USDT",
-    "TRX/USDT:USDT",
     "LIGHTER/USDT:USDT",
+    "TRX/USDT:USDT",
     "XPL/USDT:USDT",
     "G/USDT:USDT",
     "BERA/USDT:USDT",
