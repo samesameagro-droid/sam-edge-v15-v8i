@@ -3,7 +3,8 @@
   "next_trade_no": 43,
   "closed_trades": 42,
   "active_positions": [
-    "GRASS/USDT:USDT"
+    "GRASS/USDT:USDT",
+    "OP/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
