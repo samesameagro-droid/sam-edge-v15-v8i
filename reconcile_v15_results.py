@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import telegram_result_guard as result_guard
@@ -82,14 +83,36 @@ def main() -> None:
         candidates.append(r)
 
     history = result_guard.notifiers._delivery_history()
+    # Reconciliation is a recovery path for a just-closed trade, not a
+    # permanent replay mechanism. The primary close() path already attempts
+    # delivery immediately with retries. Replaying old outcomes on every
+    # scheduled scan can duplicate Telegram messages when delivery history was
+    # not persisted by a cancelled/interrupted runner.
+    # With a 10-minute workflow cadence, 20 minutes gives one full recovery
+    # window while preventing an old TP/SL from being resent hours later.
+    MAX_RECONCILE_AGE_MIN = 20
+    now = datetime.now(timezone.utc)
     missing = []
     for r in candidates:
         result = str(r.get('result', '')).upper().strip()
         if result not in {'TP', 'SL'}:
             continue
         key = outcome_key(r)
-        if key not in history:
-            missing.append((key, r))
+        if key in history:
+            continue
+        closed_raw = str(r.get('closed_at') or '').strip()
+        try:
+            closed_dt = datetime.fromisoformat(closed_raw.replace('Z', '+00:00'))
+            if closed_dt.tzinfo is None:
+                closed_dt = closed_dt.replace(tzinfo=timezone.utc)
+            age_min = (now - closed_dt).total_seconds() / 60.0
+        except ValueError:
+            print(f'OUTCOME RECONCILE SKIP | invalid closed_at | {r.get("coin")} | {closed_raw}')
+            continue
+        if age_min > MAX_RECONCILE_AGE_MIN:
+            print(f'OUTCOME RECONCILE SKIP | stale_result={age_min:.1f}m > {MAX_RECONCILE_AGE_MIN}m | {r.get("coin")} | {r.get("side")} | {result}')
+            continue
+        missing.append((key, r))
 
     print(f'OUTCOME RECONCILE | state_closed={len(closed)} | master_closed={len(master_rows)} | unique_results={len(candidates)} | missing_notifications={len(missing)}')
 
