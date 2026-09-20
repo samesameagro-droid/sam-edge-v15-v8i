@@ -51,7 +51,7 @@ def main() -> None:
     if not isinstance(closed, list):
         closed = []
 
-    # Also reconcile the authoritative 20-trade master journal. This protects
+    # Also reconcile the authoritative 50-trade master journal. This protects
     # TP/SL delivery when state and master journal briefly diverge.
     master_rows = []
     if MASTER_JOURNAL.exists():
