@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T10:54:26.385198+00:00",
+  "updated_at": "2026-09-20T11:01:11.140015+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -26,8 +26,8 @@
     "SEI/USDT:USDT",
     "GALA/USDT:USDT",
     "COMP/USDT:USDT",
-    "ICP/USDT:USDT",
     "ENA/USDT:USDT",
+    "ICP/USDT:USDT",
     "ATOM/USDT:USDT",
     "INJ/USDT:USDT",
     "SUI/USDT:USDT",
