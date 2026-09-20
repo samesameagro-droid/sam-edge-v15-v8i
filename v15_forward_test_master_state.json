@@ -1,11 +1,10 @@
 {
   "target": 20,
-  "next_trade_no": 35,
-  "closed_trades": 34,
+  "next_trade_no": 36,
+  "closed_trades": 35,
   "active_positions": [
     "DRIFT/USDT:USDT",
-    "BLUR/USDT:USDT",
-    "SUI/USDT:USDT"
+    "BLUR/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
