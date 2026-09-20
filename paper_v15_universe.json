@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T18:24:13.107313+00:00",
+  "updated_at": "2026-09-20T18:28:59.054738+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -39,8 +39,8 @@
     "ADA/USDT:USDT",
     "FIL/USDT:USDT",
     "LTC/USDT:USDT",
-    "HYPE/USDT:USDT",
     "LINK/USDT:USDT",
+    "HYPE/USDT:USDT",
     "ETHFI/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "1INCH/USDT:USDT",
@@ -103,6 +103,6 @@
     "BLESS/USDT:USDT",
     "SOON/USDT:USDT",
     "KAITO/USDT:USDT",
-    "WLFI/USDT:USDT"
+    "HOME/USDT:USDT"
   ]
 }
