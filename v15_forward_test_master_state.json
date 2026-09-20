@@ -1,10 +1,9 @@
 {
   "target": 20,
-  "next_trade_no": 34,
-  "closed_trades": 33,
+  "next_trade_no": 35,
+  "closed_trades": 34,
   "active_positions": [
     "DRIFT/USDT:USDT",
-    "IMX/USDT:USDT",
     "BLUR/USDT:USDT",
     "SUI/USDT:USDT"
   ],
