@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T06:29:11.246325+00:00",
+  "updated_at": "2026-09-20T06:34:41.413510+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -94,14 +94,14 @@
     "XPL/USDT:USDT",
     "UAI/USDT:USDT",
     "F/USDT:USDT",
-    "PIEVERSE/USDT:USDT",
     "FLOCK/USDT:USDT",
+    "PIEVERSE/USDT:USDT",
     "WLFI/USDT:USDT",
-    "ZK/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "RIVER/USDT:USDT",
     "ALLO/USDT:USDT",
     "W/USDT:USDT",
+    "ZK/USDT:USDT",
     "BLESS/USDT:USDT",
     "KAITO/USDT:USDT"
   ]
