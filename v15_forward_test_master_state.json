@@ -3,7 +3,9 @@
   "next_trade_no": 37,
   "closed_trades": 36,
   "active_positions": [
-    "DRIFT/USDT:USDT"
+    "DRIFT/USDT:USDT",
+    "ZK/USDT:USDT",
+    "STRK/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
