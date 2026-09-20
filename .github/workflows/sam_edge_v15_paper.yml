@@ -193,7 +193,22 @@ jobs:
               git rm --ignore-unmatch pending_telegram_signals.json >/dev/null 2>&1 || true
             fi
 
-            git add $STATE_FILES
+            # Stage only state files that actually exist. A missing optional
+            # file (especially pending_telegram_signals.json after a successful
+            # delivery) must NOT make git add fail with "pathspec did not match".
+            # For tracked files that were removed, git add -u stages the deletion.
+            STAGE_FILES=()
+            for f in $STATE_FILES; do
+              if [ -f "$f" ]; then
+                STAGE_FILES+=( "$f" )
+              elif git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+                git add -u -- "$f"
+              fi
+            done
+            if [ "${#STAGE_FILES[@]}" -gt 0 ]; then
+              git add -- "${STAGE_FILES[@]}"
+            fi
+
             if git diff --cached --quiet; then
               echo "NO STATE CHANGES AFTER SYNC"
               exit 0
