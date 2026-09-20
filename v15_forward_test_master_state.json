@@ -5,7 +5,9 @@
   "active_positions": [
     "DRIFT/USDT:USDT",
     "ZK/USDT:USDT",
-    "STRK/USDT:USDT"
+    "STRK/USDT:USDT",
+    "AVAX/USDT:USDT",
+    "ARB/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
