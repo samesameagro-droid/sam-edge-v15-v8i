@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T12:59:35.209923+00:00",
+  "updated_at": "2026-09-20T13:03:52.282225+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -97,11 +97,11 @@
     "POL/USDT:USDT",
     "ALLO/USDT:USDT",
     "ZK/USDT:USDT",
-    "F/USDT:USDT",
     "PIEVERSE/USDT:USDT",
+    "F/USDT:USDT",
     "ENSO/USDT:USDT",
-    "S/USDT:USDT",
     "RIVER/USDT:USDT",
+    "S/USDT:USDT",
     "BLESS/USDT:USDT",
     "W/USDT:USDT"
   ]
