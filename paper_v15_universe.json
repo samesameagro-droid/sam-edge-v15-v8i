@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T18:49:19.155633+00:00",
+  "updated_at": "2026-09-20T18:54:06.497210+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -90,18 +90,18 @@
     "PIEVERSE/USDT:USDT",
     "S/USDT:USDT",
     "GRASS/USDT:USDT",
-    "FLOCK/USDT:USDT",
     "W/USDT:USDT",
+    "FLOCK/USDT:USDT",
     "UAI/USDT:USDT",
-    "ENSO/USDT:USDT",
     "POL/USDT:USDT",
+    "ENSO/USDT:USDT",
     "ZK/USDT:USDT",
     "ALLO/USDT:USDT",
     "MYX/USDT:USDT",
     "NOT/USDT:USDT",
     "RIVER/USDT:USDT",
-    "BLESS/USDT:USDT",
     "SOON/USDT:USDT",
+    "BLESS/USDT:USDT",
     "KAITO/USDT:USDT",
     "HOME/USDT:USDT"
   ]
