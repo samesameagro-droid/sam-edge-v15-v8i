@@ -12,11 +12,10 @@ MASTER_JOURNAL = Path('v15_forward_test_master_journal.csv')
 
 
 def outcome_key(r: dict) -> str:
-    """Stable result identity, including legacy trades with no signal_key."""
-    return result_guard.result_key(
+    """Stable outcome identity per trade; closed_at is audit metadata, not identity."""
+    return result_guard.trade_result_key(
         r,
         str(r.get('result', '')).upper().strip(),
-        str(r.get('closed_at', '')),
     )
 
 
