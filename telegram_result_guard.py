@@ -92,6 +92,9 @@ def send_result(p: dict[str, Any], result: str, exit_price: float, closed_at: st
         or any(str(h).startswith(trade_key + "|") for h in history)
     )
     if already_delivered:
+        # Migrate an older exact timestamped delivery into the stable
+        # timestamp-independent trade marker without sending anything.
+        notifiers._mark_delivered(trade_key)
         print(f"TELEGRAM RESULT DEDUP | trade={trade_key} | exact={key}")
         return True
 
