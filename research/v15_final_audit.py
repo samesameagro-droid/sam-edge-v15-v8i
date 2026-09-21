@@ -300,7 +300,7 @@ def main():
     btcdf.to_csv(OUT/"btc_by_trade.csv",index=False)
 
     def btc_group(mask):
-        q=btcdf.loc[mask]
+        q=btcdf.loc[mask.reindex(btcdf.index, fill_value=False)]
         if q.empty:return {"n":0}
         return {"n":len(q),"wins":int((q.R>0).sum()),"losses":int((q.R<0).sum()),
                 "wr_pct":round(100*(q.R>0).mean(),2),"net_R":round(float(q.R.sum()),2)}
