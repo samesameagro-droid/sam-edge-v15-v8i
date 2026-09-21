@@ -1,0 +1,641 @@
+{
+  "generated_at": "2026-09-21T11:39:03.508901+00:00",
+  "source": "GitHub main production state/journal + BingX public klines",
+  "overall": {
+    "trades": 53,
+    "wins": 34,
+    "losses": 19,
+    "wr_pct": 64.15,
+    "net_R": 23.5,
+    "pf": 2.2368,
+    "expectancy_R": 0.4434,
+    "max_dd_R": -7.5
+  },
+  "first_50": {
+    "trades": 50,
+    "wins": 31,
+    "losses": 19,
+    "wr_pct": 62.0,
+    "net_R": 19.75,
+    "pf": 2.0395,
+    "expectancy_R": 0.395,
+    "max_dd_R": -7.5
+  },
+  "post_50": {
+    "trades": 3,
+    "wins": 3,
+    "losses": 0,
+    "wr_pct": 100.0,
+    "net_R": 3.75,
+    "pf": null,
+    "expectancy_R": 1.25,
+    "max_dd_R": 0.0
+  },
+  "event_replay": {
+    "closed_trades": 53,
+    "max_concurrent": 6,
+    "max_concurrent_time": "2026-09-19T06:30:00+00:00",
+    "event_time_max_dd_R": 7.5,
+    "journal_net_R": 23.5
+  },
+  "sensitivity": {
+    "atr_m10": {
+      "trades": 52,
+      "wins": 32,
+      "losses": 20,
+      "wr_pct": 61.54,
+      "net_R": 20.0,
+      "pf": 2.0,
+      "expectancy_R": 0.3846,
+      "max_dd_R": -7.5
+    },
+    "atr_p10": {
+      "trades": 49,
+      "wins": 33,
+      "losses": 16,
+      "wr_pct": 67.35,
+      "net_R": 25.25,
+      "pf": 2.5781,
+      "expectancy_R": 0.5153,
+      "max_dd_R": -6.5
+    },
+    "rr_115": {
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -7.5
+    },
+    "rr_135": {
+      "trades": 49,
+      "wins": 31,
+      "losses": 18,
+      "wr_pct": 63.27,
+      "net_R": 20.75,
+      "pf": 2.1528,
+      "expectancy_R": 0.4235,
+      "max_dd_R": -7.5
+    },
+    "stopbuf_060": {
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -7.5
+    },
+    "stopbuf_070": {
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -7.5
+    },
+    "delay_1bar_strict": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0.0,
+      "net_R": 0.0,
+      "pf": null,
+      "expectancy_R": 0.0,
+      "max_dd_R": 0.0
+    }
+  },
+  "leave_one_coin": [
+    {
+      "removed_coin": "0G/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "1000PEPE/USDT:USDT",
+      "trades": 51,
+      "wins": 33,
+      "losses": 18,
+      "wr_pct": 64.71,
+      "net_R": 23.25,
+      "pf": 2.2917,
+      "expectancy_R": 0.4559,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "1INCH/USDT:USDT",
+      "trades": 51,
+      "wins": 32,
+      "losses": 19,
+      "wr_pct": 62.75,
+      "net_R": 21.0,
+      "pf": 2.1053,
+      "expectancy_R": 0.4118,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "AAVE/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "AIN/USDT:USDT",
+      "trades": 51,
+      "wins": 34,
+      "losses": 17,
+      "wr_pct": 66.67,
+      "net_R": 25.5,
+      "pf": 2.5,
+      "expectancy_R": 0.5,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "ARB/USDT:USDT",
+      "trades": 50,
+      "wins": 32,
+      "losses": 18,
+      "wr_pct": 64.0,
+      "net_R": 22.0,
+      "pf": 2.2222,
+      "expectancy_R": 0.44,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "ASTER/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "AVAX/USDT:USDT",
+      "trades": 51,
+      "wins": 32,
+      "losses": 19,
+      "wr_pct": 62.75,
+      "net_R": 21.0,
+      "pf": 2.1053,
+      "expectancy_R": 0.4118,
+      "max_dd_R": -8.75
+    },
+    {
+      "removed_coin": "BLUR/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "DASH/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "DOT/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "DRIFT/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "DYM/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "ENA/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -8.75
+    },
+    {
+      "removed_coin": "FIL/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -8.5
+    },
+    {
+      "removed_coin": "FLOCK/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "GRASS/USDT:USDT",
+      "trades": 51,
+      "wins": 32,
+      "losses": 19,
+      "wr_pct": 62.75,
+      "net_R": 21.0,
+      "pf": 2.1053,
+      "expectancy_R": 0.4118,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "GRIFFAIN/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "IMX/USDT:USDT",
+      "trades": 51,
+      "wins": 33,
+      "losses": 18,
+      "wr_pct": 64.71,
+      "net_R": 23.25,
+      "pf": 2.2917,
+      "expectancy_R": 0.4559,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "LIGHTER/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "MEW/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "MMT/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "ONDO/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "ONE/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "OP/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "PENDLE/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "POL/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.75
+    },
+    {
+      "removed_coin": "REZ/USDT:USDT",
+      "trades": 51,
+      "wins": 34,
+      "losses": 17,
+      "wr_pct": 66.67,
+      "net_R": 25.5,
+      "pf": 2.5,
+      "expectancy_R": 0.5,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "SOMI/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "STRK/USDT:USDT",
+      "trades": 51,
+      "wins": 32,
+      "losses": 19,
+      "wr_pct": 62.75,
+      "net_R": 21.0,
+      "pf": 2.1053,
+      "expectancy_R": 0.4118,
+      "max_dd_R": -8.5
+    },
+    {
+      "removed_coin": "SUI/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "SYN/USDT:USDT",
+      "trades": 51,
+      "wins": 33,
+      "losses": 18,
+      "wr_pct": 64.71,
+      "net_R": 23.25,
+      "pf": 2.2917,
+      "expectancy_R": 0.4559,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "TAO/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.5
+    },
+    {
+      "removed_coin": "TIA/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "UNI/USDT:USDT",
+      "trades": 51,
+      "wins": 32,
+      "losses": 19,
+      "wr_pct": 62.75,
+      "net_R": 21.0,
+      "pf": 2.1053,
+      "expectancy_R": 0.4118,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "VIRTUAL/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "XPL/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "YFI/USDT:USDT",
+      "trades": 52,
+      "wins": 33,
+      "losses": 19,
+      "wr_pct": 63.46,
+      "net_R": 22.25,
+      "pf": 2.1711,
+      "expectancy_R": 0.4279,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "ZEC/USDT:USDT",
+      "trades": 51,
+      "wins": 32,
+      "losses": 19,
+      "wr_pct": 62.75,
+      "net_R": 21.0,
+      "pf": 2.1053,
+      "expectancy_R": 0.4118,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_coin": "ZK/USDT:USDT",
+      "trades": 52,
+      "wins": 34,
+      "losses": 18,
+      "wr_pct": 65.38,
+      "net_R": 24.5,
+      "pf": 2.3611,
+      "expectancy_R": 0.4712,
+      "max_dd_R": -6.75
+    }
+  ],
+  "leave_one_core": [
+    {
+      "removed_core": "V15_ADX4H_CANDLE2H",
+      "trades": 49,
+      "wins": 33,
+      "losses": 16,
+      "wr_pct": 67.35,
+      "net_R": 25.25,
+      "pf": 2.5781,
+      "expectancy_R": 0.5153,
+      "max_dd_R": -7.5
+    },
+    {
+      "removed_core": "V15_EARLY_RECLAIM_V1",
+      "trades": 4,
+      "wins": 1,
+      "losses": 3,
+      "wr_pct": 25.0,
+      "net_R": -1.75,
+      "pf": 0.4167,
+      "expectancy_R": -0.4375,
+      "max_dd_R": -2.0
+    }
+  ],
+  "btc": {
+    "n_aligned": 53,
+    "missing_alignment": 0,
+    "mean_pre1h_wins": 0.00177,
+    "mean_pre1h_losses": 0.00079,
+    "mean_after1h_wins": 0.00293,
+    "mean_after1h_losses": 0.00035,
+    "long_groups": {
+      "pre1h_drop_gt_0.5pct": {
+        "n": 0
+      },
+      "pre1h_flat_or_up": {
+        "n": 50,
+        "wins": 33,
+        "losses": 17,
+        "wr_pct": 66.0,
+        "net_R": 24.25
+      },
+      "after1h_drop_gt_0.5pct": {
+        "n": 1,
+        "wins": 0,
+        "losses": 1,
+        "wr_pct": 0.0,
+        "net_R": -1.0
+      },
+      "after1h_not_drop": {
+        "n": 49,
+        "wins": 33,
+        "losses": 16,
+        "wr_pct": 67.35,
+        "net_R": 25.25
+      },
+      "trade_btc_return_negative": {
+        "n": 15,
+        "wins": 6,
+        "losses": 9,
+        "wr_pct": 40.0,
+        "net_R": -1.5
+      },
+      "trade_btc_return_nonnegative": {
+        "n": 35,
+        "wins": 27,
+        "losses": 8,
+        "wr_pct": 77.14,
+        "net_R": 25.75
+      }
+    }
+  },
+  "uncertainty": {
+    "wr_wilson_95": [
+      0.5069,
+      0.757
+    ],
+    "break_even_wr": 0.4444,
+    "one_sided_binomial_p": 0.00303635318877587
+  },
+  "data_errors": {},
+  "notes": [
+    "Sensitivity tests are robustness studies on the exact 53-trade event set; they do not change production V15.",
+    "BTC analysis is association/context, not causal proof. It uses BingX BTC candles aligned to each trade.",
+    "Strict 1-bar delay requires the same V15 side signal to still be valid on the next 15m bar."
+  ]
+}
