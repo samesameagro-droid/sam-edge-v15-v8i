@@ -14,6 +14,11 @@ def trade_result_key(p: dict[str, Any], result: str) -> str:
     return f"{_trade_base_key(p)}|RESULT|{str(result).upper()}"
 
 
+def trade_closed_key(p: dict[str, Any]) -> str:
+    """Stable terminal marker: one TP/SL notification per trade, regardless of result label."""
+    return f"{_trade_base_key(p)}|RESULT_CLOSED"
+
+
 def result_key(p: dict[str, Any], result: str, closed_at: str) -> str:
     # Keep the exact close timestamp for audit/recovery, but do not use it as
     # the only delivery identity. A stale runner can close the same trade again
@@ -83,19 +88,23 @@ def send_result(p: dict[str, Any], result: str, exit_price: float, closed_at: st
 
     history = notifiers._delivery_history()
     trade_key = trade_result_key(q, result)
-    # Exact-key check handles normal idempotency. Prefix/trade-key check handles
-    # the important stale-state case: the same trade may be observed again with
-    # a different closed_at after a failed state persistence.
+    closed_key = trade_closed_key(q)
+    base_key = _trade_base_key(q)
+    # A trade is terminal exactly once. Check both the exact result identity and
+    # the stable trade-level terminal marker. The prefix check also catches a
+    # legacy TP marker when a stale runner later mislabels the same trade as SL.
     already_delivered = (
         key in history
+        or closed_key in history
         or trade_key in history
-        or any(str(h).startswith(trade_key + "|") for h in history)
+        or any(str(h).startswith(base_key + "|RESULT|") for h in history)
     )
     if already_delivered:
         # Migrate an older exact timestamped delivery into the stable
         # timestamp-independent trade marker without sending anything.
         notifiers._mark_delivered(trade_key)
-        print(f"TELEGRAM RESULT DEDUP | trade={trade_key} | exact={key}")
+        notifiers._mark_delivered(closed_key)
+        print(f"TELEGRAM RESULT DEDUP | trade={base_key} | exact={key}")
         return True
 
     token, chat_id = notifiers._telegram_config()
@@ -112,6 +121,7 @@ def send_result(p: dict[str, Any], result: str, exit_price: float, closed_at: st
         # already persisted by _send_text(); this marker makes future stale-run
         # duplicates impossible even when closed_at changes.
         notifiers._mark_delivered(trade_key)
+        notifiers._mark_delivered(closed_key)
         print(f"TELEGRAM RESULT GUARDED DELIVERY OK | {p.get('coin')} | {result} | key={key}")
     else:
         print(f"TELEGRAM RESULT GUARDED DELIVERY FAILED | {p.get('coin')} | {result} | queued")
