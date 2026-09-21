@@ -1,8 +1,10 @@
 {
-  "target": 50,
+  "target": 100,
   "next_trade_no": 54,
   "closed_trades": 53,
-  "active_positions": [],
+  "active_positions": [
+    "DYDX/USDT:USDT"
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"

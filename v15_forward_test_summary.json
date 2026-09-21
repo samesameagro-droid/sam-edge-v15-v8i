@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-09-21T16:04:09.385788+00:00",
-  "target_closed_trades": 50,
+  "updated_at": "2026-09-21T16:08:39.663857+00:00",
+  "target_closed_trades": 100,
   "closed_trades": 53,
-  "remaining": 0,
+  "remaining": 47,
   "wins": 34,
   "losses": 19,
   "win_rate_pct": 64.15,
@@ -10,13 +10,13 @@
   "profit_factor": 2.2368,
   "drawdown_R": 7.5,
   "equity": 112.36703177919917,
-  "active_positions": 0,
+  "active_positions": 1,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
-  "status": "COMPLETE",
+  "status": "RUNNING",
   "performance_diagnostics": {
-    "optimization_mode": "SHADOW_ONLY_UNTIL_50_TRADES",
+    "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
       "wins": 10,
