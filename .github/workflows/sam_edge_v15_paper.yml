@@ -175,10 +175,13 @@ jobs:
           for attempt in 1 2 3 4 5; do
             echo "STATE PUSH ATTEMPT $attempt"
             git fetch origin main
-            # Do NOT reset --hard origin/main here. The runner may contain a newer
-            # code/workflow checkout than the remote state commit, and a hard reset
-            # makes persistence look like a branch rollback. Commit only the
-            # generated state, then rebase that state commit onto the latest main.
+            # Rebase is intentionally avoided here. Concurrent state commits can
+            # touch the same JSON/CSV files and create merge conflicts. The runner
+            # already has a complete snapshot of the generated state in TMP_DIR,
+            # so reset to the latest main first, then restore ONLY that snapshot.
+            # This keeps the newest code/workflow intact while making state
+            # persistence deterministic and conflict-free.
+            git reset --hard origin/main
             for f in $STATE_FILES; do
               if [ -f "$TMP_DIR/$(basename "$f")" ]; then
                 cp "$TMP_DIR/$(basename "$f")" "$f"
@@ -211,19 +214,6 @@ jobs:
             fi
 
             git commit -m "paper: V15 professional forward state"
-            for rebase_attempt in 1 2 3; do
-              git fetch origin main
-              if git rebase origin/main; then
-                break
-              fi
-              echo "REBASE RETRY $rebase_attempt FAILED"
-              git rebase --abort || true
-              if [ "$rebase_attempt" -eq 3 ]; then
-                echo "STATE REBASE FAILED"
-                exit 1
-              fi
-              sleep 2
-            done
 
             if git push origin HEAD:main; then
               echo "STATE PUSH OK"
@@ -232,10 +222,35 @@ jobs:
 
             echo "REMOTE MOVED DURING PUSH - retrying from latest main"
             git fetch origin main
-            if git rebase origin/main; then
-              :
-            else
-              git rebase --abort || true
+            git reset --hard origin/main
+            for f in $STATE_FILES; do
+              if [ -f "$TMP_DIR/$(basename "$f")" ]; then
+                cp "$TMP_DIR/$(basename "$f")" "$f"
+              fi
+            done
+            if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
+              rm -f pending_telegram_signals.json
+              git rm --ignore-unmatch pending_telegram_signals.json >/dev/null 2>&1 || true
+            fi
+            STAGE_FILES=()
+            for f in $STATE_FILES; do
+              if [ -f "$f" ]; then
+                STAGE_FILES+=( "$f" )
+              elif git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+                git add -u -- "$f"
+              fi
+            done
+            if [ "${#STAGE_FILES[@]}" -gt 0 ]; then
+              git add -- "${STAGE_FILES[@]}"
+            fi
+            if git diff --cached --quiet; then
+              echo "NO STATE CHANGES AFTER REMOTE SYNC"
+              exit 0
+            fi
+            git commit -m "paper: V15 professional forward state"
+            if git push origin HEAD:main; then
+              echo "STATE PUSH OK AFTER REMOTE SYNC"
+              exit 0
             fi
             sleep 2
           done
