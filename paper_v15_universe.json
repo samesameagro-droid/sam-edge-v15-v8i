@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T06:04:15.412490+00:00",
+  "updated_at": "2026-09-21T06:09:05.775501+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -98,10 +98,10 @@
     "BLESS/USDT:USDT",
     "POPCAT/USDT:USDT",
     "0G/USDT:USDT",
+    "HBAR/USDT:USDT",
     "CLANKER/USDT:USDT",
     "SIGN/USDT:USDT",
     "REZ/USDT:USDT",
-    "HBAR/USDT:USDT",
     "WLFI/USDT:USDT",
     "F/USDT:USDT"
   ]
