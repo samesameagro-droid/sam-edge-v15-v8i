@@ -1,0 +1,91 @@
+name: SAM EDGE V15.1 - BTC-AWARE SHADOW TEST
+
+on:
+  push:
+    branches:
+      - research/v15-1-btc-aware-shadow
+    paths:
+      - 'v15_1_btc_aware_shadow.py'
+      - 'run_v15_btc_aware_shadow.py'
+      - 'run_v15_forward_test.py'
+      - 'main_paper_v15.py'
+      - 'core_engine_v15.py'
+      - 'bingx_direct_v15.py'
+      - 'notifiers.py'
+      - '.github/workflows/v15_1_btc_aware_shadow.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: sam-edge-v15-1-btc-aware-shadow
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research branch only
+        uses: actions/checkout@v5
+        with:
+          ref: research/v15-1-btc-aware-shadow
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Preflight
+        run: |
+          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_btc_aware_shadow.py v15_1_btc_aware_shadow.py notifiers.py bingx_direct_v15.py core_engine_v15.py
+          echo "V15.1 BTC-AWARE SHADOW PREFLIGHT OK"
+
+      - name: Initialize isolated research state
+        run: |
+          if [ ! -f v15_1_btc_shadow_initialized.flag ]; then
+            rm -f paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json paper_v15_trades.csv
+            printf 'V15.1 BTC-AWARE shadow state initialized from production baseline; execution unchanged.\n' > v15_1_btc_shadow_initialized.flag
+          fi
+
+      - name: Run one V15 baseline + BTC shadow scan
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          START_EQUITY: '100'
+          RISK_PCT: '0.005'
+          HISTORY_15M: '3600'
+          FETCH_CHUNK: '900'
+          MIN_VOLUME_USDT: '3000000'
+          UNIVERSE_LIMIT: '100'
+          MAX_ACTIVE_POSITIONS: '5'
+          RUN_ONCE: '1'
+          TELEGRAM_CHART_CANDLES: '80'
+        run: python -u run_v15_btc_aware_shadow.py
+
+      - name: Persist isolated V15 + BTC shadow state
+        run: |
+          set -e
+          git config user.name "SAM EDGE V15.1 BTC SHADOW BOT"
+          git config user.email "sam-edge-v15-1-btc-shadow-bot@users.noreply.github.com"
+          git add -A paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json paper_v15_trades.csv v15_1_btc_aware_shadow_journal.csv v15_1_btc_aware_shadow_summary.json v15_1_btc_shadow_initialized.flag
+          if git diff --cached --quiet; then
+            echo "NO STATE CHANGES"
+            exit 0
+          fi
+          git commit -m "research: persist BTC-aware shadow state"
+          git push origin HEAD:research/v15-1-btc-aware-shadow
+
+      - name: Queue next shadow scan
+        if: ${{ success() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run v15_1_btc_aware_shadow.yml --repo ${{ github.repository }} --ref research/v15-1-btc-aware-shadow
