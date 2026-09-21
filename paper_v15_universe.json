@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T07:53:21.650272+00:00",
+  "updated_at": "2026-09-21T07:59:02.847112+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -7,16 +7,17 @@
     "ETH/USDT:USDT",
     "BTC/USDT:USDT",
     "SOL/USDT:USDT",
+    "NEAR/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "AVAX/USDT:USDT",
     "10000SATS/USDT:USDT",
     "ZEC/USDT:USDT",
     "WIF/USDT:USDT",
-    "NEAR/USDT:USDT",
     "XRP/USDT:USDT",
     "WLD/USDT:USDT",
     "JTO/USDT:USDT",
     "DOT/USDT:USDT",
+    "RUNE/USDT:USDT",
     "ATOM/USDT:USDT",
     "STRK/USDT:USDT",
     "DOGE/USDT:USDT",
@@ -64,8 +65,8 @@
     "ASTER/USDT:USDT",
     "BR/USDT:USDT",
     "ZRO/USDT:USDT",
-    "VIRTUAL/USDT:USDT",
     "BOME/USDT:USDT",
+    "VIRTUAL/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -102,7 +103,6 @@
     "KERNEL/USDT:USDT",
     "CLANKER/USDT:USDT",
     "REZ/USDT:USDT",
-    "F/USDT:USDT",
-    "WLFI/USDT:USDT"
+    "F/USDT:USDT"
   ]
 }
