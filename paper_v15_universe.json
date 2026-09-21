@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T07:14:41.162001+00:00",
+  "updated_at": "2026-09-21T07:18:42.464870+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -24,14 +24,15 @@
     "1INCH/USDT:USDT",
     "LTC/USDT:USDT",
     "INJ/USDT:USDT",
+    "KAS/USDT:USDT",
     "ENA/USDT:USDT",
     "PENDLE/USDT:USDT",
     "APT/USDT:USDT",
-    "MEW/USDT:USDT",
     "BNB/USDT:USDT",
+    "MEW/USDT:USDT",
     "CFX/USDT:USDT",
-    "AAVE/USDT:USDT",
     "HYPE/USDT:USDT",
+    "AAVE/USDT:USDT",
     "UNI/USDT:USDT",
     "ONDO/USDT:USDT",
     "BCH/USDT:USDT",
@@ -39,9 +40,9 @@
     "TAO/USDT:USDT",
     "STX/USDT:USDT",
     "BANANA/USDT:USDT",
-    "FIL/USDT:USDT",
     "SUI/USDT:USDT",
     "AKE/USDT:USDT",
+    "FIL/USDT:USDT",
     "SEI/USDT:USDT",
     "JUP/USDT:USDT",
     "OP/USDT:USDT",
@@ -65,7 +66,6 @@
     "VIRTUAL/USDT:USDT",
     "ZRO/USDT:USDT",
     "BOME/USDT:USDT",
-    "KAS/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -103,6 +103,6 @@
     "REZ/USDT:USDT",
     "F/USDT:USDT",
     "WLFI/USDT:USDT",
-    "MOODENG/USDT:USDT"
+    "KERNEL/USDT:USDT"
   ]
 }
