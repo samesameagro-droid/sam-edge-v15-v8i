@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T23:15:24.761960+00:00",
+  "updated_at": "2026-09-21T23:21:33.363725+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -77,8 +77,8 @@
     "JASMY/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "BEAT/USDT:USDT",
-    "NOT/USDT:USDT",
     "PLUME/USDT:USDT",
+    "NOT/USDT:USDT",
     "GRASS/USDT:USDT",
     "POL/USDT:USDT",
     "WLFI/USDT:USDT",
