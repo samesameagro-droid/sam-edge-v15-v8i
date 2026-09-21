@@ -164,10 +164,6 @@ jobs:
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
           STATE_FILES="paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json"
-          if [ -f paper_v15_trades.csv ]; then
-            STATE_FILES="$STATE_FILES paper_v15_trades.csv"
-          fi
-
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
