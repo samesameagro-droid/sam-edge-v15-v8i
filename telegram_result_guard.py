@@ -6,9 +6,19 @@ from typing import Any
 import notifiers
 
 
+def _trade_base_key(p: dict[str, Any]) -> str:
+    return f"{p.get('coin','')}|{p.get('side','')}|{p.get('opened_at','')}|{p.get('core','')}"
+
+
+def trade_result_key(p: dict[str, Any], result: str) -> str:
+    return f"{_trade_base_key(p)}|RESULT|{str(result).upper()}"
+
+
 def result_key(p: dict[str, Any], result: str, closed_at: str) -> str:
-    base = f"{p.get('coin','')}|{p.get('side','')}|{p.get('opened_at','')}|{p.get('core','')}"
-    return f"{base}|RESULT|{str(result).upper()}|{closed_at}"
+    # Keep the exact close timestamp for audit/recovery, but do not use it as
+    # the only delivery identity. A stale runner can close the same trade again
+    # with a different timestamp; that must still be one Telegram outcome.
+    return f"{trade_result_key(p, result)}|{closed_at}"
 
 
 def signal_key(p: dict[str, Any]) -> str:
@@ -72,8 +82,17 @@ def send_result(p: dict[str, Any], result: str, exit_price: float, closed_at: st
         print(f"RESULT JOURNAL PATCH ERROR | {p.get('coin')} | {e}")
 
     history = notifiers._delivery_history()
-    if key in history:
-        print(f"TELEGRAM RESULT DEDUP | {key}")
+    trade_key = trade_result_key(q, result)
+    # Exact-key check handles normal idempotency. Prefix/trade-key check handles
+    # the important stale-state case: the same trade may be observed again with
+    # a different closed_at after a failed state persistence.
+    already_delivered = (
+        key in history
+        or trade_key in history
+        or any(str(h).startswith(trade_key + "|") for h in history)
+    )
+    if already_delivered:
+        print(f"TELEGRAM RESULT DEDUP | trade={trade_key} | exact={key}")
         return True
 
     token, chat_id = notifiers._telegram_config()
@@ -86,6 +105,10 @@ def send_result(p: dict[str, Any], result: str, exit_price: float, closed_at: st
     text = _build_text(q, result, exit_price, closed_at, equity)
     ok = notifiers._send_text(text, retries=5, signal_key=key)
     if ok:
+        # Persist a timestamp-independent outcome marker too. The exact key is
+        # already persisted by _send_text(); this marker makes future stale-run
+        # duplicates impossible even when closed_at changes.
+        notifiers._mark_delivered(trade_key)
         print(f"TELEGRAM RESULT GUARDED DELIVERY OK | {p.get('coin')} | {result} | key={key}")
     else:
         print(f"TELEGRAM RESULT GUARDED DELIVERY FAILED | {p.get('coin')} | {result} | queued")
