@@ -140,12 +140,51 @@ def _make_chart(p) -> Path | None:
         return None
 
 
+def _recent_signal_duplicate(signal_key: str, cooldown_minutes: int = 60) -> bool:
+    """Block repeated Telegram entries for the same coin/side/core within a short window."""
+    try:
+        from datetime import datetime, timezone
+        parts = signal_key.split("|")
+        if len(parts) < 4:
+            return False
+        prefix = "|".join(parts[:2]) + "|"
+        signal_ts = datetime.fromisoformat(parts[2].replace("Z", "+00:00"))
+        if signal_ts.tzinfo is None:
+            signal_ts = signal_ts.replace(tzinfo=timezone.utc)
+        history = notifiers._delivery_history()
+        for h in history:
+            hs = str(h)
+            # Only ENTRY identities are considered here. RESULT keys contain
+            # an extra RESULT segment and must not suppress a new entry.
+            hp = hs.split("|")
+            if len(hp) != 4 or "|".join(hp[:2]) + "|" != prefix:
+                continue
+            if hp[3] != parts[3]:
+                continue
+            try:
+                old_ts = datetime.fromisoformat(hp[2].replace("Z", "+00:00"))
+                if old_ts.tzinfo is None:
+                    old_ts = old_ts.replace(tzinfo=timezone.utc)
+                age = (signal_ts - old_ts).total_seconds() / 60.0
+                if 0 <= age < cooldown_minutes:
+                    print(f"TELEGRAM SIGNAL DEDUP | recent same setup | key={signal_key} | prior={hs} | age={age:.1f}m")
+                    return True
+            except ValueError:
+                continue
+    except Exception as e:
+        print(f"TELEGRAM SIGNAL DEDUP CHECK ERROR | {type(e).__name__}: {e}")
+    return False
+
+
 def professional_send_signal(p, equity):
     side = p["side"]
     icon = "🟢" if side == "LONG" else "🔴"
     status = p.get("telegram_status", "EXECUTED")
     status_icon = "⚡" if status == "EXECUTED" else "🟡"
     signal_key = _signal_key(p)
+    if signal_key in notifiers._delivery_history() or _recent_signal_duplicate(signal_key):
+        print(f"TELEGRAM SIGNAL DEDUP | {signal_key}")
+        return True
     risk_pct = float(p.get("risk_cash", 0)) / float(equity) * 100 if equity else 0.0
     caption = (
         f"<b>🏆 SAM EDGE V15 | NEW SIGNAL</b>\n"
