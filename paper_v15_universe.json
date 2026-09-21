@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T04:40:17.055714+00:00",
+  "updated_at": "2026-09-21T04:45:26.179418+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -93,8 +93,8 @@
     "RIVER/USDT:USDT",
     "GRASS/USDT:USDT",
     "API3/USDT:USDT",
-    "DEEP/USDT:USDT",
     "BLESS/USDT:USDT",
+    "DEEP/USDT:USDT",
     "POPCAT/USDT:USDT",
     "KAITO/USDT:USDT",
     "0G/USDT:USDT",
