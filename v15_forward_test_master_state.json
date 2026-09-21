@@ -1,13 +1,13 @@
 {
   "target": 50,
-  "next_trade_no": 48,
-  "closed_trades": 47,
+  "next_trade_no": 49,
+  "closed_trades": 48,
   "active_positions": [
     "DOT/USDT:USDT",
     "GRASS/USDT:USDT",
-    "IMX/USDT:USDT",
     "1INCH/USDT:USDT",
-    "YFI/USDT:USDT"
+    "YFI/USDT:USDT",
+    "XPL/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
