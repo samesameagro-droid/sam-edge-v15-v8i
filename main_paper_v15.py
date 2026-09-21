@@ -34,6 +34,8 @@ MIN_VOLUME_USDT = float(os.getenv('MIN_VOLUME_USDT', '3000000'))
 UNIVERSE_LIMIT = int(os.getenv('UNIVERSE_LIMIT', '100'))
 MAX_ACTIVE = int(os.getenv('MAX_ACTIVE_POSITIONS', '5'))
 BTC_FILTER_ENABLED = os.getenv('BTC_FILTER_ENABLED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
+# BTC is shadow/diagnostic only during the forward test; it never changes V15 execution.
+BTC_FILTER_MODE = os.getenv('BTC_FILTER_MODE', 'shadow').strip().lower()
 BTC_FILTER_FAIL_CLOSED = os.getenv('BTC_FILTER_FAIL_CLOSED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
 
 STATE_FILE = Path('paper_v15_state.json')
@@ -61,6 +63,8 @@ class Position:
     entry_metrics: dict = field(default_factory=dict)
     score_breakdown: dict = field(default_factory=dict)
     signal_key: str = ''
+    # Persist BTC context for post-hoc analysis only.
+    btc_context: dict = field(default_factory=dict)
 
 
 class PaperEngine:
@@ -392,6 +396,8 @@ class PaperEngine:
         ctx = self._get_btc_filter_context()
         if not ctx.get('enabled', False):
             return True, ctx
+        if BTC_FILTER_MODE == 'shadow':
+            return True, ctx
         allowed = bool(ctx.get('allowed_long' if side == 'LONG' else 'allowed_short', False))
         return allowed, ctx
 
@@ -414,14 +420,13 @@ class PaperEngine:
         if key in self.signal_history:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
 
-        # BTC is an execution/context filter only. The V15 core signal mask above
-        # remains untouched; BTC can block a new entry but never changes core gates.
+        # BTC is SHADOW/DIAGNOSTIC ONLY. The authoritative V15 core signal
+        # remains signal_mask() above and is never blocked by BTC.
         btc_allowed, btc_ctx = self._btc_allows(side)
-        if not btc_allowed:
-            print(f'BTC FILTER BLOCK | {symbol} | {side} | BTC_reason={btc_ctx.get("reason")} | BTC_ts={btc_ctx.get("timestamp", "-")}')
-            diag = dict(diag)
-            diag['btc_filter_blocked'] = True
-            return {'signal': None, 'timestamp': ts, 'diag': diag}
+        diag = dict(diag)
+        diag['btc_filter_mode'] = BTC_FILTER_MODE
+        diag['btc_filter_allowed'] = bool(btc_allowed)
+        diag['btc_context'] = btc_ctx
 
         # Anti-repeat guard: the scanner runs every 5 minutes while the setup
         # timeframe is 15m. A persistent setup can therefore produce a new
@@ -492,11 +497,11 @@ class PaperEngine:
         p = Position(
             symbol, side, entry, sl, tp, 1.0, self.equity*RISK_PCT, ts,
             entry_score=float(score), entry_diag=diag, entry_metrics=entry_metrics,
-            score_breakdown=score_breakdown, signal_key=key,
+            score_breakdown=score_breakdown, signal_key=key, btc_context=btc_ctx,
         )
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
                            'timestamp': ts, 'entry': entry, 'sl': sl, 'tp': tp,
-                           'entry_metrics': entry_metrics, 'score_breakdown': score_breakdown},
+                           'entry_metrics': entry_metrics, 'score_breakdown': score_breakdown, 'btc_context': btc_ctx},
                 'timestamp': ts, 'diag': diag}
 
     def track(self, p):
@@ -569,7 +574,7 @@ class PaperEngine:
         print(f'SAM EDGE V15 | BUILD={BUILD} | CORE={CORE_NAME}')
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
-        print(f'BTC FILTER | enabled={BTC_FILTER_ENABLED} | alignment=1H+4H same direction | fail_closed={BTC_FILTER_FAIL_CLOSED}')
+        print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
         syms = self.discover_universe()
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
         self._btc_filter_context = None
