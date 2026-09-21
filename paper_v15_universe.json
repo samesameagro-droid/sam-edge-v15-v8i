@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T19:23:50.137976+00:00",
+  "updated_at": "2026-09-21T19:28:44.991041+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -70,8 +70,8 @@
     "ASTER/USDT:USDT",
     "NIL/USDT:USDT",
     "DYDX/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "VIRTUAL/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
     "BEAT/USDT:USDT",
