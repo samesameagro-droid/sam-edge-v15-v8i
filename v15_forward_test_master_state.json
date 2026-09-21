@@ -4,7 +4,10 @@
   "closed_trades": 46,
   "active_positions": [
     "DOT/USDT:USDT",
-    "MEW/USDT:USDT"
+    "MEW/USDT:USDT",
+    "GRASS/USDT:USDT",
+    "W/USDT:USDT",
+    "IMX/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
