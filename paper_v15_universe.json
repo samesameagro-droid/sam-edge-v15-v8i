@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T04:49:18.106980+00:00",
+  "updated_at": "2026-09-21T04:54:36.294977+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -94,8 +94,8 @@
     "API3/USDT:USDT",
     "DEEP/USDT:USDT",
     "POPCAT/USDT:USDT",
-    "KAITO/USDT:USDT",
     "BLESS/USDT:USDT",
+    "KAITO/USDT:USDT",
     "0G/USDT:USDT",
     "SIGN/USDT:USDT",
     "CLANKER/USDT:USDT",
@@ -103,6 +103,6 @@
     "HOME/USDT:USDT",
     "WLFI/USDT:USDT",
     "F/USDT:USDT",
-    "COW/USDT:USDT"
+    "MOODENG/USDT:USDT"
   ]
 }
