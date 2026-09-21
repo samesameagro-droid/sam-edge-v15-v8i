@@ -3,7 +3,8 @@
   "next_trade_no": 54,
   "closed_trades": 53,
   "active_positions": [
-    "DYDX/USDT:USDT"
+    "DYDX/USDT:USDT",
+    "WIF/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
