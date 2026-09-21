@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T20:19:03.898491+00:00",
+  "updated_at": "2026-09-21T20:24:18.966818+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -97,8 +97,8 @@
     "ALLO/USDT:USDT",
     "KAITO/USDT:USDT",
     "CLANKER/USDT:USDT",
-    "ENSO/USDT:USDT",
     "KERNEL/USDT:USDT",
+    "ENSO/USDT:USDT",
     "MOODENG/USDT:USDT",
     "ZK/USDT:USDT",
     "API3/USDT:USDT",
