@@ -353,7 +353,7 @@ class PaperEngine:
     def _get_btc_filter_context(self):
         """Execution-layer BTC context. Does not modify CORE signal_mask()."""
         if not BTC_FILTER_ENABLED:
-            return {'enabled': False, 'allowed_long': True, 'allowed_short': True, 'reason': 'disabled'}
+            return {'enabled': False, 'mode': BTC_FILTER_MODE, 'allowed_long': True, 'allowed_short': True, 'reason': 'disabled'}
         if self._btc_filter_context is not None:
             return self._btc_filter_context
         try:
@@ -370,6 +370,7 @@ class PaperEngine:
                 h4_bear = bool(bx.h4_trend_bear.iloc[i])
                 ctx = {
                     'enabled': True,
+                    'mode': BTC_FILTER_MODE,
                     'allowed_long': h1_bull and h4_bull,
                     'allowed_short': h1_bear and h4_bear,
                     'h1_bull': h1_bull, 'h4_bull': h4_bull,
@@ -383,7 +384,7 @@ class PaperEngine:
             print(f'BTC FILTER | enabled={ctx.get("enabled")} | LONG={ctx.get("allowed_long")} | SHORT={ctx.get("allowed_short")} | reason={ctx.get("reason")} | ts={ctx.get("timestamp", "-")}')
             return ctx
         except Exception as e:
-            ctx = {'enabled': True, 'allowed_long': False, 'allowed_short': False,
+            ctx = {'enabled': True, 'mode': BTC_FILTER_MODE, 'allowed_long': False, 'allowed_short': False,
                    'reason': f'{type(e).__name__}: {e}'}
             self._btc_filter_context = ctx
             print(f'BTC FILTER ERROR | fail_closed={BTC_FILTER_FAIL_CLOSED} | {type(e).__name__}: {e}')
