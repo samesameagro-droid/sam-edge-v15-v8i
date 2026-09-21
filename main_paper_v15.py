@@ -33,6 +33,8 @@ REQUEST_TIMEOUT_MS = int(os.getenv('REQUEST_TIMEOUT_MS', '15000'))
 MIN_VOLUME_USDT = float(os.getenv('MIN_VOLUME_USDT', '3000000'))
 UNIVERSE_LIMIT = int(os.getenv('UNIVERSE_LIMIT', '100'))
 MAX_ACTIVE = int(os.getenv('MAX_ACTIVE_POSITIONS', '5'))
+BTC_FILTER_ENABLED = os.getenv('BTC_FILTER_ENABLED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
+BTC_FILTER_FAIL_CLOSED = os.getenv('BTC_FILTER_FAIL_CLOSED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
 
 STATE_FILE = Path('paper_v15_state.json')
 STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
@@ -75,6 +77,8 @@ class PaperEngine:
         self.markets = {}
         self.universe_symbols = []
         self.running = True
+        self._btc_filter_context = None
+        self._btc_filter_timestamp = None
         self.load_state()
         self.load_signal_history()
 
@@ -342,6 +346,55 @@ class PaperEngine:
         return {'timestamp': r.timestamp.iloc[i].isoformat(), 'long': long_steps, 'short': short_steps,
                 'final_long': bool(finalL.iloc[i]), 'final_short': bool(finalS.iloc[i])}
 
+    def _get_btc_filter_context(self):
+        """Execution-layer BTC context. Does not modify CORE signal_mask()."""
+        if not BTC_FILTER_ENABLED:
+            return {'enabled': False, 'allowed_long': True, 'allowed_short': True, 'reason': 'disabled'}
+        if self._btc_filter_context is not None:
+            return self._btc_filter_context
+        try:
+            btc = self.fetch_df('BTC/USDT:USDT', TIMEFRAME, HISTORY_15M)
+            if btc is None or len(btc) < 3300:
+                reason = f'BTC data unavailable/insufficient rows={0 if btc is None else len(btc)}'
+                ctx = {'enabled': True, 'allowed_long': False, 'allowed_short': False, 'reason': reason}
+            else:
+                bx = enrich(btc)
+                i = len(bx) - 2
+                h1_bull = bool(bx.h1_trend_bull.iloc[i])
+                h4_bull = bool(bx.h4_trend_bull.iloc[i])
+                h1_bear = bool(bx.h1_trend_bear.iloc[i])
+                h4_bear = bool(bx.h4_trend_bear.iloc[i])
+                ctx = {
+                    'enabled': True,
+                    'allowed_long': h1_bull and h4_bull,
+                    'allowed_short': h1_bear and h4_bear,
+                    'h1_bull': h1_bull, 'h4_bull': h4_bull,
+                    'h1_bear': h1_bear, 'h4_bear': h4_bear,
+                    'timestamp': bx.timestamp.iloc[i].isoformat(),
+                    'close': float(bx.close.iloc[i]),
+                    'reason': '1H+4H trend alignment',
+                }
+            self._btc_filter_context = ctx
+            self._btc_filter_timestamp = datetime.now(timezone.utc).isoformat()
+            print(f'BTC FILTER | enabled={ctx.get("enabled")} | LONG={ctx.get("allowed_long")} | SHORT={ctx.get("allowed_short")} | reason={ctx.get("reason")} | ts={ctx.get("timestamp", "-")}')
+            return ctx
+        except Exception as e:
+            ctx = {'enabled': True, 'allowed_long': False, 'allowed_short': False,
+                   'reason': f'{type(e).__name__}: {e}'}
+            self._btc_filter_context = ctx
+            print(f'BTC FILTER ERROR | fail_closed={BTC_FILTER_FAIL_CLOSED} | {type(e).__name__}: {e}')
+            if not BTC_FILTER_FAIL_CLOSED:
+                ctx['allowed_long'] = True
+                ctx['allowed_short'] = True
+            return ctx
+
+    def _btc_allows(self, side):
+        ctx = self._get_btc_filter_context()
+        if not ctx.get('enabled', False):
+            return True, ctx
+        allowed = bool(ctx.get('allowed_long' if side == 'LONG' else 'allowed_short', False))
+        return allowed, ctx
+
     def analyze_latest(self, symbol):
         df = self.fetch_df(symbol)
         if df is None:
@@ -359,6 +412,15 @@ class PaperEngine:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
         key = f'{symbol}|{side}|{ts}|{CORE_NAME}'
         if key in self.signal_history:
+            return {'signal': None, 'timestamp': ts, 'diag': diag}
+
+        # BTC is an execution/context filter only. The V15 core signal mask above
+        # remains untouched; BTC can block a new entry but never changes core gates.
+        btc_allowed, btc_ctx = self._btc_allows(side)
+        if not btc_allowed:
+            print(f'BTC FILTER BLOCK | {symbol} | {side} | BTC_reason={btc_ctx.get("reason")} | BTC_ts={btc_ctx.get("timestamp", "-")}')
+            diag = dict(diag)
+            diag['btc_filter_blocked'] = True
             return {'signal': None, 'timestamp': ts, 'diag': diag}
 
         # Anti-repeat guard: the scanner runs every 5 minutes while the setup
@@ -507,7 +569,13 @@ class PaperEngine:
         print(f'SAM EDGE V15 | BUILD={BUILD} | CORE={CORE_NAME}')
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
+        print(f'BTC FILTER | enabled={BTC_FILTER_ENABLED} | alignment=1H+4H same direction | fail_closed={BTC_FILTER_FAIL_CLOSED}')
         syms = self.discover_universe()
+        # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
+        self._btc_filter_context = None
+        self._btc_filter_timestamp = None
+        if BTC_FILTER_ENABLED:
+            self._get_btc_filter_context()
         for key, p in list(self.positions.items()):
             try:
                 res = self.track(p)
