@@ -207,7 +207,7 @@ def main():
             lv=level_scaled(x,i,side_i,atr_factor=1.0,stop_buffer=buf)
             sim=simulate_path(bars5,side,*lv[:3],pd.Timestamp(ts)+pd.Timedelta(minutes=15),max_end) if lv else None
             rec[label]=sim[0] if sim else "NO_RESULT"
-        # Strict 1-bar delay: the same side must still satisfy the V15 signal on the next closed 15m candle.
+        # Strict 1-bar delay: require the same signal to remain valid.
         i2=i+1
         delayed="EXPIRED"
         if i2 < len(x):
@@ -219,6 +219,17 @@ def main():
                     sim=simulate_path(bars5,side,*lv[:3],pd.Timestamp(x.timestamp.iloc[i2])+pd.Timedelta(minutes=15),max_end)
                     delayed=sim[0] if sim else "NO_RESULT"
         rec["delay_1bar_strict"]=delayed
+
+        # Execution-delay robustness: shift the actual V15 decision by one 15m bar
+        # without requiring the signal to persist, recomputing the normal V15
+        # STRUCTURE stop/TP from the delayed candle.
+        delayed_exec="EXPIRED"
+        if i2 < len(x):
+            lv2=trade_levels(x,i2,side_i,"STRUCTURE")
+            if lv2:
+                sim=simulate_path(bars5,side,*lv2[:3],pd.Timestamp(x.timestamp.iloc[i2])+pd.Timedelta(minutes=15),max_end)
+                delayed_exec=sim[0] if sim else "NO_RESULT"
+        rec["delay_1bar_execution"]=delayed_exec
         rows.append(rec)
 
     sens=pd.DataFrame(rows)
@@ -230,7 +241,7 @@ def main():
         rrmap={"TP":1.25,"SL":-1}
         return rstats(pd.DataFrame({"R":[rrmap[x] for x in q[col]]}))
 
-    sensitivity={c:outcome_metric(c) for c in ["atr_m10","atr_p10","rr_115","rr_135","stopbuf_060","stopbuf_070","delay_1bar_strict"]}
+    sensitivity={c:outcome_metric(c) for c in ["atr_m10","atr_p10","rr_115","rr_135","stopbuf_060","stopbuf_070","delay_1bar_strict","delay_1bar_execution"]}
 
     # Leave-one-coin/core concentration analysis from the authoritative 53 closed events.
     overall=rstats(d)
@@ -342,7 +353,8 @@ def main():
              "data_errors":errors,
              "notes":["Sensitivity tests are robustness studies on the exact 53-trade event set; they do not change production V15.",
                       "BTC analysis is association/context, not causal proof. It uses BingX BTC candles aligned to each trade.",
-                      "Strict 1-bar delay requires the same V15 side signal to still be valid on the next 15m bar."]}
+                      "Strict 1-bar delay requires the same V15 side signal to still be valid on the next 15m bar.",
+                      "Execution-delay test shifts the decision one 15m bar later and recomputes the normal V15 STRUCTURE levels."]}
     (OUT/"summary.json").write_text(json.dumps(summary,indent=2,ensure_ascii=False,default=str),encoding="utf-8")
     print(json.dumps({"overall":overall,"event_replay":event_replay,"sensitivity":sensitivity,"btc":btc_summary,"uncertainty":uncertainty,"data_errors":errors},indent=2,default=str))
 
