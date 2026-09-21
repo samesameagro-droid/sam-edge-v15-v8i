@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T02:29:32.584179+00:00",
+  "updated_at": "2026-09-21T02:34:38.291815+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -56,10 +56,10 @@
     "TRX/USDT:USDT",
     "RUNE/USDT:USDT",
     "BLUR/USDT:USDT",
-    "APE/USDT:USDT",
     "BANANA/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
+    "APE/USDT:USDT",
     "ONE/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "10000SATS/USDT:USDT",
     "DYDX/USDT:USDT",
     "ASTER/USDT:USDT",
@@ -87,8 +87,8 @@
     "W/USDT:USDT",
     "POL/USDT:USDT",
     "UAI/USDT:USDT",
-    "G/USDT:USDT",
     "ZK/USDT:USDT",
+    "G/USDT:USDT",
     "ALLO/USDT:USDT",
     "RIVER/USDT:USDT",
     "BERA/USDT:USDT",
@@ -98,11 +98,11 @@
     "BLESS/USDT:USDT",
     "KAITO/USDT:USDT",
     "API3/USDT:USDT",
-    "POPCAT/USDT:USDT",
     "DEEP/USDT:USDT",
-    "HBAR/USDT:USDT",
+    "POPCAT/USDT:USDT",
     "HOME/USDT:USDT",
     "0G/USDT:USDT",
-    "STBL/USDT:USDT"
+    "STBL/USDT:USDT",
+    "HBAR/USDT:USDT"
   ]
 }
