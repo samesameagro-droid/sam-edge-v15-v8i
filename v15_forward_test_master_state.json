@@ -4,7 +4,8 @@
   "closed_trades": 53,
   "active_positions": [
     "DYDX/USDT:USDT",
-    "WIF/USDT:USDT"
+    "WIF/USDT:USDT",
+    "PLUME/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
