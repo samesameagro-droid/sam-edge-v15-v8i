@@ -19,7 +19,7 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
-TARGET_TRADES = 50
+TARGET_TRADES = 100
 
 FIELDS = [
     "trade_no", "trade_key", "signal_time", "coin", "side", "core", "score",
@@ -245,7 +245,7 @@ class ForwardPaperEngine(base.PaperEngine):
             by_core[core] = self._stats([r for r in rows if r.get("core") == core])
 
         return {
-            "optimization_mode": "SHADOW_ONLY_UNTIL_50_TRADES",
+            "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
             "recent_10": self._stats(rows[-10:]),
             "recent_20": self._stats(rows[-20:]),
             "all_closed": self._stats(rows),
