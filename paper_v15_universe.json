@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T08:24:16.278627+00:00",
+  "updated_at": "2026-09-21T08:28:43.543460+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -40,8 +40,8 @@
     "TAO/USDT:USDT",
     "STX/USDT:USDT",
     "INJ/USDT:USDT",
-    "BANANA/USDT:USDT",
     "SUI/USDT:USDT",
+    "BANANA/USDT:USDT",
     "AKE/USDT:USDT",
     "FIL/USDT:USDT",
     "SEI/USDT:USDT",
@@ -60,12 +60,12 @@
     "JUP/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "APE/USDT:USDT",
-    "ONE/USDT:USDT",
     "DYDX/USDT:USDT",
+    "ONE/USDT:USDT",
     "BR/USDT:USDT",
     "ZRO/USDT:USDT",
-    "ASTER/USDT:USDT",
     "BOME/USDT:USDT",
+    "ASTER/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
@@ -92,8 +92,8 @@
     "SOON/USDT:USDT",
     "BERA/USDT:USDT",
     "MYX/USDT:USDT",
-    "GRASS/USDT:USDT",
     "DEEP/USDT:USDT",
+    "GRASS/USDT:USDT",
     "API3/USDT:USDT",
     "KAITO/USDT:USDT",
     "POPCAT/USDT:USDT",
@@ -101,8 +101,8 @@
     "SIGN/USDT:USDT",
     "CLANKER/USDT:USDT",
     "BLESS/USDT:USDT",
+    "PLUME/USDT:USDT",
     "0G/USDT:USDT",
-    "REZ/USDT:USDT",
-    "WLFI/USDT:USDT"
+    "REZ/USDT:USDT"
   ]
 }
