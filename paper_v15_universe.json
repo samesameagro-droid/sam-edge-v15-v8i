@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T19:13:29.251468+00:00",
+  "updated_at": "2026-09-21T19:19:07.286752+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -30,8 +30,8 @@
     "1INCH/USDT:USDT",
     "COMP/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "ENA/USDT:USDT",
     "BNB/USDT:USDT",
+    "ENA/USDT:USDT",
     "SEI/USDT:USDT",
     "BCH/USDT:USDT",
     "BOME/USDT:USDT",
@@ -44,8 +44,8 @@
     "ORDI/USDT:USDT",
     "ONDO/USDT:USDT",
     "BANANA/USDT:USDT",
-    "CFX/USDT:USDT",
     "MEW/USDT:USDT",
+    "CFX/USDT:USDT",
     "INJ/USDT:USDT",
     "CRV/USDT:USDT",
     "JUP/USDT:USDT",
@@ -61,8 +61,8 @@
     "BLUR/USDT:USDT",
     "DYM/USDT:USDT",
     "APE/USDT:USDT",
-    "YFI/USDT:USDT",
     "FIL/USDT:USDT",
+    "YFI/USDT:USDT",
     "UAI/USDT:USDT",
     "GALA/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -90,9 +90,9 @@
     "GRASS/USDT:USDT",
     "RIVER/USDT:USDT",
     "EVAA/USDT:USDT",
+    "XLM/USDT:USDT",
     "MYX/USDT:USDT",
     "POPCAT/USDT:USDT",
-    "XLM/USDT:USDT",
     "ENSO/USDT:USDT",
     "CLANKER/USDT:USDT",
     "ALLO/USDT:USDT",
@@ -103,6 +103,6 @@
     "API3/USDT:USDT",
     "DEEP/USDT:USDT",
     "OP/USDT:USDT",
-    "MERL/USDT:USDT"
+    "GIGGLE/USDT:USDT"
   ]
 }

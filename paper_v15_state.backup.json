@@ -1,5 +1,5 @@
 {
-  "equity": 112.36703177919917,
+  "equity": 111.80519662030316,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -3166,10 +3166,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 112.36703177919917
-    }
-  ],
-  "positions": {
-    "DYDX/USDT:USDT": {
+    },
+    {
       "coin": "DYDX/USDT:USDT",
       "side": "LONG",
       "entry": 0.1388,
@@ -3257,8 +3255,15 @@
         "timestamp": "2026-09-21T15:45:00+00:00",
         "close": 85881.7,
         "reason": "1H+4H trend alignment"
-      }
-    },
+      },
+      "closed_at": "2026-09-21T19:10:00+00:00",
+      "exit": 0.1352965811901491,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 111.80519662030316
+    }
+  ],
+  "positions": {
     "WIF/USDT:USDT": {
       "coin": "WIF/USDT:USDT",
       "side": "LONG",
