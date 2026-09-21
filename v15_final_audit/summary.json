@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T11:39:03.508901+00:00",
+  "generated_at": "2026-09-21T11:40:48.461213+00:00",
   "source": "GitHub main production state/journal + BingX public klines",
   "overall": {
     "trades": 53,
@@ -108,6 +108,16 @@
       "pf": null,
       "expectancy_R": 0.0,
       "max_dd_R": 0.0
+    },
+    "delay_1bar_execution": {
+      "trades": 44,
+      "wins": 26,
+      "losses": 18,
+      "wr_pct": 59.09,
+      "net_R": 14.5,
+      "pf": 1.8056,
+      "expectancy_R": 0.3295,
+      "max_dd_R": -5.25
     }
   },
   "leave_one_coin": [
@@ -636,6 +646,7 @@
   "notes": [
     "Sensitivity tests are robustness studies on the exact 53-trade event set; they do not change production V15.",
     "BTC analysis is association/context, not causal proof. It uses BingX BTC candles aligned to each trade.",
-    "Strict 1-bar delay requires the same V15 side signal to still be valid on the next 15m bar."
+    "Strict 1-bar delay requires the same V15 side signal to still be valid on the next 15m bar.",
+    "Execution-delay test shifts the decision one 15m bar later and recomputes the normal V15 STRUCTURE levels."
   ]
 }
