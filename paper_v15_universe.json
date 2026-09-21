@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T03:53:20.507133+00:00",
+  "updated_at": "2026-09-21T03:59:24.861914+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -50,7 +50,6 @@
     "DYM/USDT:USDT",
     "RENDER/USDT:USDT",
     "DOGE/USDT:USDT",
-    "IMX/USDT:USDT",
     "PUMP/USDT:USDT",
     "YFI/USDT:USDT",
     "TRX/USDT:USDT",
@@ -63,17 +62,16 @@
     "DYDX/USDT:USDT",
     "1INCH/USDT:USDT",
     "ZRO/USDT:USDT",
-    "BR/USDT:USDT",
     "ASTER/USDT:USDT",
     "KAS/USDT:USDT",
+    "BR/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "BOME/USDT:USDT",
     "BEAT/USDT:USDT",
     "EVAA/USDT:USDT",
-    "LIGHTER/USDT:USDT",
     "XPL/USDT:USDT",
-    "1000BONK/USDT:USDT",
+    "LIGHTER/USDT:USDT",
     "FF/USDT:USDT",
     "TURBO/USDT:USDT",
     "S/USDT:USDT",
@@ -83,6 +81,7 @@
     "ENSO/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "W/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "FLOCK/USDT:USDT",
     "TIA/USDT:USDT",
     "POL/USDT:USDT",
@@ -103,6 +102,7 @@
     "SIGN/USDT:USDT",
     "CLANKER/USDT:USDT",
     "REZ/USDT:USDT",
-    "HOME/USDT:USDT"
+    "HOME/USDT:USDT",
+    "STBL/USDT:USDT"
   ]
 }
