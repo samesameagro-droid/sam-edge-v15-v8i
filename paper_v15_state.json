@@ -1,5 +1,5 @@
 {
-  "equity": 107.5716066951615,
+  "equity": 108.24392923700627,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -2697,6 +2697,73 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 107.5716066951615
+    },
+    {
+      "coin": "MEW/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.0004246,
+      "sl": 0.00041760832776821283,
+      "tp": 0.000433339590289734,
+      "risk_R": 1.0,
+      "risk_cash": 0.5378580334758075,
+      "opened_at": "2026-09-21T03:00:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 34.274404216340045,
+      "entry_diag": {
+        "timestamp": "2026-09-21T03:00:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 0.0004246,
+        "rsi": 55.00715226287957,
+        "h4_adx_pct": 0.375,
+        "h4_adx_delta": -2.993840117227702,
+        "volr": 1.0693442182249118,
+        "vol_slope": 0.05894063579836084,
+        "dist_ema20_atr": 0.46920199580999744,
+        "room_atr": 1.7878412467863511,
+        "body_atr": 0.7508933236502725,
+        "close_pos": 0.7000000000000073,
+        "atr": 2.796668892714871e-06
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.0,
+        "room": 0.6252274978575675,
+        "location": 0.7820033263499957,
+        "volume": 0.5346721091124559,
+        "trigger": 0.9386166545628406
+      },
+      "signal_key": "MEW/USDT:USDT|LONG|2026-09-21T03:00:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-21T08:10:00+00:00",
+      "exit": 0.000433339590289734,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 108.24392923700627
     }
   ],
   "positions": {
@@ -2761,68 +2828,6 @@
         "trigger": 0.8029969644301752
       },
       "signal_key": "DOT/USDT:USDT|LONG|2026-09-21T00:15:00+00:00|V15_EARLY_RECLAIM_V1"
-    },
-    "MEW/USDT:USDT": {
-      "coin": "MEW/USDT:USDT",
-      "side": "LONG",
-      "entry": 0.0004246,
-      "sl": 0.00041760832776821283,
-      "tp": 0.000433339590289734,
-      "risk_R": 1.0,
-      "risk_cash": 0.5378580334758075,
-      "opened_at": "2026-09-21T03:00:00+00:00",
-      "core": "V15_EARLY_RECLAIM_V1",
-      "status": "OPEN",
-      "entry_score": 34.274404216340045,
-      "entry_diag": {
-        "timestamp": "2026-09-21T03:00:00+00:00",
-        "long": {
-          "trend": true,
-          "ema": true,
-          "vwap": true,
-          "di": true,
-          "rsi": true,
-          "room": true,
-          "no_chase": true,
-          "adx": false,
-          "early_reclaim": true
-        },
-        "short": {
-          "trend": false,
-          "ema": false,
-          "vwap": false,
-          "di": false,
-          "rsi": false,
-          "room": false,
-          "no_chase": false,
-          "adx": false,
-          "early_reclaim": false
-        },
-        "final_long": true,
-        "final_short": false
-      },
-      "entry_metrics": {
-        "close": 0.0004246,
-        "rsi": 55.00715226287957,
-        "h4_adx_pct": 0.375,
-        "h4_adx_delta": -2.993840117227702,
-        "volr": 1.0693442182249118,
-        "vol_slope": 0.05894063579836084,
-        "dist_ema20_atr": 0.46920199580999744,
-        "room_atr": 1.7878412467863511,
-        "body_atr": 0.7508933236502725,
-        "close_pos": 0.7000000000000073,
-        "atr": 2.796668892714871e-06
-      },
-      "score_breakdown": {
-        "adx": 0.0,
-        "delta": 0.0,
-        "room": 0.6252274978575675,
-        "location": 0.7820033263499957,
-        "volume": 0.5346721091124559,
-        "trigger": 0.9386166545628406
-      },
-      "signal_key": "MEW/USDT:USDT|LONG|2026-09-21T03:00:00+00:00|V15_EARLY_RECLAIM_V1"
     },
     "GRASS/USDT:USDT": {
       "coin": "GRASS/USDT:USDT",
@@ -3009,6 +3014,68 @@
         "trigger": 1.0
       },
       "signal_key": "1INCH/USDT:USDT|LONG|2026-09-21T03:15:00+00:00|V15_EARLY_RECLAIM_V1"
+    },
+    "YFI/USDT:USDT": {
+      "coin": "YFI/USDT:USDT",
+      "side": "LONG",
+      "entry": 2219.0,
+      "sl": 2184.8905007107774,
+      "tp": 2261.6368741115284,
+      "risk_R": 1.0,
+      "risk_cash": 0.5412196461850314,
+      "opened_at": "2026-09-21T08:00:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 25.29223706860733,
+      "entry_diag": {
+        "timestamp": "2026-09-21T08:00:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false
+      },
+      "entry_metrics": {
+        "close": 2219.0,
+        "rsi": 55.54315187048313,
+        "h4_adx_pct": 0.37,
+        "h4_adx_delta": -4.235757263261831,
+        "volr": 1.0034931859119394,
+        "vol_slope": -0.0024615018883820117,
+        "dist_ema20_atr": 0.6289996946579073,
+        "room_atr": 0.9989572106083063,
+        "body_atr": 0.6421867782481969,
+        "close_pos": 0.8125,
+        "atr": 14.01461429111145
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.0,
+        "room": 0.09930480707220424,
+        "location": 0.9516671755701545,
+        "volume": 0.5017465929559697,
+        "trigger": 0.8027334728102461
+      },
+      "signal_key": "YFI/USDT:USDT|LONG|2026-09-21T08:00:00+00:00|V15_EARLY_RECLAIM_V1"
     }
   }
 }
