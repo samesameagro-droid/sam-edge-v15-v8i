@@ -3,7 +3,8 @@
   "next_trade_no": 47,
   "closed_trades": 46,
   "active_positions": [
-    "DOT/USDT:USDT"
+    "DOT/USDT:USDT",
+    "MEW/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
