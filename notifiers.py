@@ -119,6 +119,18 @@ def _remove_pending(text: str, signal_key: str | None = None):
 
 
 def _send_text(text: str, retries: int = 3, signal_key: str | None = None) -> bool:
+    """
+    Deliver at-most-once over the Bot API.
+
+    IMPORTANT: Bot API sendMessage has no client-supplied idempotency/random_id.
+    A timeout/5xx can therefore be ambiguous: Telegram may have accepted the
+    message while the HTTP response was lost. Retrying an ambiguous request can
+    create duplicate Telegram messages. We therefore:
+      - retry only explicit 429 rate-limit responses;
+      - never retry transport errors or 5xx responses;
+      - mark an ambiguous delivery as delivered locally so the next scan cannot
+        resend it automatically.
+    """
     token, chat_id = _telegram_config()
     if not token or not chat_id:
         print('TELEGRAM SKIP | token/chat_id not configured')
@@ -138,7 +150,9 @@ def _send_text(text: str, retries: int = 3, signal_key: str | None = None) -> bo
         'disable_web_page_preview': True,
     }
 
-    for attempt in range(1, retries + 1):
+    attempt = 1
+    max_attempts = max(1, int(retries or 1))
+    while attempt <= max_attempts:
         try:
             r = requests.post(url, json=payload, timeout=30)
             if r.ok:
@@ -149,21 +163,53 @@ def _send_text(text: str, retries: int = 3, signal_key: str | None = None) -> bo
                     _mark_delivered(signal_key)
                     _remove_pending(text, signal_key)
                     return True
-                print(f'TELEGRAM API ERROR | attempt={attempt}: {data}')
-            else:
-                print(f'TELEGRAM HTTP {r.status_code} | attempt={attempt}: {r.text}')
+                # HTTP 2xx + ok:false is a definite API rejection.
+                print(f'TELEGRAM API REJECTED | attempt={attempt}: {data}')
+                _queue_pending(text, signal_key)
+                return False
+
+            # 429 means Telegram explicitly rejected this attempt due to rate
+            # limiting, so retrying after retry_after cannot duplicate a sent
+            # message from this request.
+            if r.status_code == 429:
+                try:
+                    data = r.json()
+                except Exception:
+                    data = {}
+                retry_after = int((data.get('parameters') or {}).get('retry_after', 2))
+                print(f'TELEGRAM RATE LIMITED | retry_after={retry_after}s | attempt={attempt}')
+                if attempt < max_attempts:
+                    time.sleep(min(max(retry_after, 1), 30))
+                    attempt += 1
+                    continue
+                _queue_pending(text, signal_key)
+                return False
+
+            # 4xx other than 429 is a definite rejection; safe to queue.
+            if 400 <= r.status_code < 500:
+                print(f'TELEGRAM HTTP {r.status_code} | definite rejection | {r.text}')
                 if r.status_code == 401:
                     print('TELEGRAM AUTH FAILURE | 401 Unauthorized | check/replace TELEGRAM_BOT_TOKEN in GitHub Secrets')
-                    break
+                _queue_pending(text, signal_key)
+                return False
+
+            # 5xx is ambiguous: Telegram may have processed the message before
+            # returning the server error. DO NOT retry.
+            print(f'TELEGRAM HTTP {r.status_code} | AMBIGUOUS DELIVERY — NOT RETRIED')
+            _mark_delivered(signal_key)
+            _remove_pending(text, signal_key)
+            return True
+
         except Exception as e:
-            print(f'TELEGRAM ERROR | attempt={attempt}: {e}')
-        if attempt < retries:
-            time.sleep(2 * attempt)
+            # Network timeout/connection reset is also ambiguous: the request may
+            # already have reached Telegram. Retrying is the duplicate-message
+            # failure mode we are explicitly eliminating.
+            print(f'TELEGRAM AMBIGUOUS TRANSPORT ERROR — NOT RETRIED | {type(e).__name__}: {e}')
+            _mark_delivered(signal_key)
+            _remove_pending(text, signal_key)
+            return True
 
-    _queue_pending(text, signal_key)
-    print('TELEGRAM DELIVERY FAILED | queued for next V15 run')
     return False
-
 
 def _esc(value) -> str:
     return html.escape(str(value), quote=False)
