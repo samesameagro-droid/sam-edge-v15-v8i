@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T02:14:09.034709+00:00",
+  "updated_at": "2026-09-21T02:21:40.294654+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -17,8 +17,8 @@
     "AAVE/USDT:USDT",
     "APT/USDT:USDT",
     "BNB/USDT:USDT",
-    "INJ/USDT:USDT",
     "TAO/USDT:USDT",
+    "INJ/USDT:USDT",
     "ATOM/USDT:USDT",
     "ENA/USDT:USDT",
     "JUP/USDT:USDT",
@@ -85,8 +85,8 @@
     "PIEVERSE/USDT:USDT",
     "FLOCK/USDT:USDT",
     "W/USDT:USDT",
-    "G/USDT:USDT",
     "POL/USDT:USDT",
+    "G/USDT:USDT",
     "UAI/USDT:USDT",
     "ZK/USDT:USDT",
     "ALLO/USDT:USDT",
@@ -102,7 +102,7 @@
     "POPCAT/USDT:USDT",
     "HOME/USDT:USDT",
     "0G/USDT:USDT",
-    "STBL/USDT:USDT",
-    "HBAR/USDT:USDT"
+    "HBAR/USDT:USDT",
+    "STBL/USDT:USDT"
   ]
 }
