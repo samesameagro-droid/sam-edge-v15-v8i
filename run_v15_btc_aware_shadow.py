@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from dataclasses import asdict
 
 import ccxt
 
@@ -11,11 +10,28 @@ ccxt.bingx.fetch_tickers = fetch_tickers
 ccxt.bingx.fetch_ohlcv = fetch_ohlcv
 
 import notifiers
-from run_v15_forward_test import ForwardPaperEngine, TARGET_TRADES
+import telegram_result_guard
+from run_v15_forward_test import ForwardPaperEngine
 from v15_1_btc_aware_shadow import BTCAwareShadow
 
-BASE_SCAN = os.getenv("BTC_SHADOW_BASE_SCAN", "V15")
 RUN_ONCE = os.getenv("RUN_ONCE", "0").lower() in {"1", "true", "yes", "on"}
+
+# IMPORTANT: this branch is a research shadow only. Production main already
+# sends the real V15 Telegram signal/result notifications. Never duplicate them.
+def _shadow_send_signal(*args, **kwargs):
+    p = args[0] if args else {}
+    print(f"BTC SHADOW TELEGRAM SUPPRESS | {p.get('coin', '?')} | {p.get('side', '?')} | V15 production owns delivery")
+    return True
+
+
+def _shadow_result_guard(*args, **kwargs):
+    p = args[0] if args else {}
+    print(f"BTC SHADOW RESULT SUPPRESS | {p.get('coin', '?')} | V15 production owns delivery")
+    return True
+
+
+notifiers.send_signal = _shadow_send_signal
+telegram_result_guard.send_result = _shadow_result_guard
 
 _original_analyze = ForwardPaperEngine.analyze_latest
 _original_close = ForwardPaperEngine.close
@@ -34,7 +50,7 @@ def _analyze_latest(self, symbol):
         try:
             self.btc_shadow.record_signal(p)
         except Exception as e:
-            # Shadow failure must never block the actual V15 trade.
+            # Shadow failure must never block the actual V15 paper trade.
             print(f"BTC SHADOW ERROR | {symbol} | {type(e).__name__}: {e}")
     return result
 
@@ -57,16 +73,13 @@ ForwardPaperEngine.close = _close
 
 
 if __name__ == "__main__":
-    print("SAM EDGE V15 | BTC-AWARE SHADOW TEST")
+    print("SAM EDGE V15.1 | BTC-AWARE SHADOW TEST")
     print("EXECUTION: V15 BASELINE UNCHANGED")
-    print("BTC-AWARE: SHADOW ONLY / NO TRADE BLOCK")
+    print("BTC-AWARE: SHADOW ONLY / NO TRADE BLOCK / NO TELEGRAM DUPLICATION")
     engine = ForwardPaperEngine()
     _init_shadow(engine)
     engine.btc_shadow.write_summary()
     if RUN_ONCE:
-        delivered = notifiers.retry_pending_messages()
-        for key in delivered:
-            engine.signal_history.add(key)
         engine.scan_once()
     else:
         engine.run()
