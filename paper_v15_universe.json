@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T07:23:43.823679+00:00",
+  "updated_at": "2026-09-21T07:29:19.456292+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -64,13 +64,13 @@
     "ASTER/USDT:USDT",
     "BR/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "ZRO/USDT:USDT",
     "BOME/USDT:USDT",
+    "ZRO/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
     "LIGHTER/USDT:USDT",
-    "BEAT/USDT:USDT",
     "NIL/USDT:USDT",
+    "BEAT/USDT:USDT",
     "FF/USDT:USDT",
     "EVAA/USDT:USDT",
     "1000BONK/USDT:USDT",
@@ -101,8 +101,8 @@
     "CLANKER/USDT:USDT",
     "SIGN/USDT:USDT",
     "REZ/USDT:USDT",
-    "F/USDT:USDT",
     "KERNEL/USDT:USDT",
+    "F/USDT:USDT",
     "WLFI/USDT:USDT"
   ]
 }

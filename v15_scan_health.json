@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-09-21T07:23:44.078433+00:00",
+  "updated_at": "2026-09-21T07:29:19.632750+00:00",
   "workflow": "SAM EDGE V15 - Paper Forward",
   "status": "SUCCESS",
   "exit_code": 0,
-  "elapsed_seconds": 176,
+  "elapsed_seconds": 222,
   "closed_trades": 46,
   "active_positions": 5,
   "equity": 107.5716066951615,
