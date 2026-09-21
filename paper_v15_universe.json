@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T03:08:45.065409+00:00",
+  "updated_at": "2026-09-21T03:14:31.020150+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -63,18 +63,18 @@
     "FARTCOIN/USDT:USDT",
     "DYDX/USDT:USDT",
     "ZRO/USDT:USDT",
-    "ASTER/USDT:USDT",
     "1INCH/USDT:USDT",
-    "KAS/USDT:USDT",
+    "ASTER/USDT:USDT",
     "BR/USDT:USDT",
+    "KAS/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "BEAT/USDT:USDT",
     "TURBO/USDT:USDT",
     "EVAA/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "XPL/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "FF/USDT:USDT",
     "S/USDT:USDT",
     "NIL/USDT:USDT",
@@ -90,8 +90,8 @@
     "ZK/USDT:USDT",
     "RIVER/USDT:USDT",
     "BERA/USDT:USDT",
-    "G/USDT:USDT",
     "SOON/USDT:USDT",
+    "G/USDT:USDT",
     "MYX/USDT:USDT",
     "GRASS/USDT:USDT",
     "BLESS/USDT:USDT",
@@ -103,6 +103,6 @@
     "STBL/USDT:USDT",
     "HOME/USDT:USDT",
     "REZ/USDT:USDT",
-    "CLANKER/USDT:USDT"
+    "SIGN/USDT:USDT"
   ]
 }
