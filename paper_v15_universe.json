@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T17:00:05.671366+00:00",
+  "updated_at": "2026-09-21T17:03:48.798830+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -42,8 +42,8 @@
     "ORDI/USDT:USDT",
     "ETHFI/USDT:USDT",
     "ATOM/USDT:USDT",
-    "BANANA/USDT:USDT",
     "ONDO/USDT:USDT",
+    "BANANA/USDT:USDT",
     "MEW/USDT:USDT",
     "CFX/USDT:USDT",
     "INJ/USDT:USDT",
@@ -61,8 +61,8 @@
     "BLUR/USDT:USDT",
     "DYM/USDT:USDT",
     "APE/USDT:USDT",
-    "AKE/USDT:USDT",
     "FIL/USDT:USDT",
+    "AKE/USDT:USDT",
     "YFI/USDT:USDT",
     "GALA/USDT:USDT",
     "UAI/USDT:USDT",
@@ -75,8 +75,8 @@
     "TRUMPSOL/USDT:USDT",
     "XPL/USDT:USDT",
     "BEAT/USDT:USDT",
-    "LIGHTER/USDT:USDT",
     "1000BONK/USDT:USDT",
+    "LIGHTER/USDT:USDT",
     "NOT/USDT:USDT",
     "PLUME/USDT:USDT",
     "FF/USDT:USDT",
@@ -88,8 +88,8 @@
     "BR/USDT:USDT",
     "BANK/USDT:USDT",
     "FLOCK/USDT:USDT",
-    "XLM/USDT:USDT",
     "ONE/USDT:USDT",
+    "XLM/USDT:USDT",
     "RIVER/USDT:USDT",
     "OP/USDT:USDT",
     "GRASS/USDT:USDT",
@@ -102,7 +102,7 @@
     "DEEP/USDT:USDT",
     "MOODENG/USDT:USDT",
     "KERNEL/USDT:USDT",
-    "KAITO/USDT:USDT",
-    "API3/USDT:USDT"
+    "API3/USDT:USDT",
+    "KAITO/USDT:USDT"
   ]
 }
