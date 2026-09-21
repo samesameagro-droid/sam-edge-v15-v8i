@@ -1,5 +1,5 @@
 {
-  "equity": 111.66909990479421,
+  "equity": 112.36703177919917,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -3099,10 +3099,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 111.66909990479421
-    }
-  ],
-  "positions": {
-    "GRASS/USDT:USDT": {
+    },
+    {
       "coin": "GRASS/USDT:USDT",
       "side": "LONG",
       "entry": 0.3617,
@@ -3162,7 +3160,13 @@
         "volume": 0.515238359287915,
         "trigger": 0.8373965941082354
       },
-      "signal_key": "GRASS/USDT:USDT|LONG|2026-09-21T03:15:00+00:00|V15_EARLY_RECLAIM_V1"
+      "signal_key": "GRASS/USDT:USDT|LONG|2026-09-21T03:15:00+00:00|V15_EARLY_RECLAIM_V1",
+      "closed_at": "2026-09-21T09:20:00+00:00",
+      "exit": 0.37102951012097174,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 112.36703177919917
     }
-  }
+  ],
+  "positions": {}
 }
