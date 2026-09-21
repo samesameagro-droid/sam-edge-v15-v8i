@@ -94,6 +94,7 @@ class BTCAwareShadow:
     def __init__(self, exchange):
         self.exchange = exchange
         self.rows = self._load()
+        self._snapshot_cache = {}
 
     def _load(self):
         if not SHADOW_FILE.exists():
@@ -118,6 +119,9 @@ class BTCAwareShadow:
         return pd.DataFrame(rows, columns=["timestamp", "open", "high", "low", "close", "volume"])
 
     def snapshot(self, signal_time: str, side: str):
+        cache_key = (str(signal_time), str(side).upper())
+        if cache_key in self._snapshot_cache:
+            return dict(self._snapshot_cache[cache_key])
         ts = pd.to_datetime(signal_time, utc=True)
         h1 = self._fetch_btc("1h", 100)
         h4 = self._fetch_btc("4h", 100)
@@ -140,7 +144,7 @@ class BTCAwareShadow:
         s1 = _indicator_snapshot(h1, ts, 1)
         s4 = _indicator_snapshot(h4, ts, 4)
         regime, decision = classify(side, ret4)
-        return {
+        result = {
             "btc_1h_return": _pct(ret1),
             "btc_4h_return": _pct(ret4),
             "btc_1h_ema20_relation": _pct(s1["ema20_relation"]) if s1 else None,
@@ -152,6 +156,8 @@ class BTCAwareShadow:
             "btc_4h_regime": regime,
             "btc_aware_decision": decision,
         }
+        self._snapshot_cache[cache_key] = dict(result)
+        return result
 
     def record_signal(self, p):
         key = str(p.get("signal_key") or "")
