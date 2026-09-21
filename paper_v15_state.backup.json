@@ -3206,7 +3206,22 @@
           "early_reclaim": false
         },
         "final_long": true,
-        "final_short": false
+        "final_short": false,
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": true,
+          "allowed_short": false,
+          "h1_bull": true,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-21T15:45:00+00:00",
+          "close": 85881.7,
+          "reason": "1H+4H trend alignment"
+        }
       },
       "entry_metrics": {
         "close": 0.1388,
@@ -3230,7 +3245,19 @@
         "trigger": 0.4726118582694121
       },
       "signal_key": "DYDX/USDT:USDT|LONG|2026-09-21T15:45:00+00:00|V15_EARLY_RECLAIM_V1",
-      "btc_context": {}
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": true,
+        "allowed_short": false,
+        "h1_bull": true,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-21T15:45:00+00:00",
+        "close": 85881.7,
+        "reason": "1H+4H trend alignment"
+      }
     }
   }
 }
