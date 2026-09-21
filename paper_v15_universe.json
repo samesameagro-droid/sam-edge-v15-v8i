@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T23:21:33.363725+00:00",
+  "updated_at": "2026-09-21T23:25:24.702669+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -17,8 +17,8 @@
     "SUI/USDT:USDT",
     "DOGE/USDT:USDT",
     "KAS/USDT:USDT",
-    "WLD/USDT:USDT",
     "JTO/USDT:USDT",
+    "WLD/USDT:USDT",
     "WIF/USDT:USDT",
     "RUNE/USDT:USDT",
     "HYPE/USDT:USDT",
@@ -45,9 +45,9 @@
     "ORDI/USDT:USDT",
     "MEW/USDT:USDT",
     "ONDO/USDT:USDT",
-    "ATH/USDT:USDT",
     "CRV/USDT:USDT",
     "INJ/USDT:USDT",
+    "ATH/USDT:USDT",
     "LINK/USDT:USDT",
     "JUP/USDT:USDT",
     "CFX/USDT:USDT",
@@ -77,8 +77,8 @@
     "JASMY/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "BEAT/USDT:USDT",
-    "PLUME/USDT:USDT",
     "NOT/USDT:USDT",
+    "PLUME/USDT:USDT",
     "GRASS/USDT:USDT",
     "POL/USDT:USDT",
     "WLFI/USDT:USDT",
@@ -86,8 +86,8 @@
     "EVAA/USDT:USDT",
     "XLM/USDT:USDT",
     "BANK/USDT:USDT",
-    "FF/USDT:USDT",
     "W/USDT:USDT",
+    "FF/USDT:USDT",
     "OP/USDT:USDT",
     "ZETA/USDT:USDT",
     "RIVER/USDT:USDT",
@@ -101,8 +101,8 @@
     "CLANKER/USDT:USDT",
     "ENSO/USDT:USDT",
     "ALLO/USDT:USDT",
-    "API3/USDT:USDT",
+    "MOODENG/USDT:USDT",
     "ZK/USDT:USDT",
-    "MOODENG/USDT:USDT"
+    "API3/USDT:USDT"
   ]
 }
