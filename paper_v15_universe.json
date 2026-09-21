@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T21:45:19.860685+00:00",
+  "updated_at": "2026-09-21T21:49:14.108425+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -84,10 +84,10 @@
     "PIEVERSE/USDT:USDT",
     "FF/USDT:USDT",
     "GRASS/USDT:USDT",
+    "XLM/USDT:USDT",
     "W/USDT:USDT",
     "BANK/USDT:USDT",
     "EVAA/USDT:USDT",
-    "XLM/USDT:USDT",
     "FLOCK/USDT:USDT",
     "OP/USDT:USDT",
     "RIVER/USDT:USDT",
