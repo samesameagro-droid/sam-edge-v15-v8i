@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T04:14:33.967957+00:00",
+  "updated_at": "2026-09-21T04:21:05.361256+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -13,10 +13,10 @@
     "AVAX/USDT:USDT",
     "NEAR/USDT:USDT",
     "STRK/USDT:USDT",
+    "BNB/USDT:USDT",
     "XRP/USDT:USDT",
     "PENDLE/USDT:USDT",
     "DOT/USDT:USDT",
-    "BNB/USDT:USDT",
     "ATOM/USDT:USDT",
     "INJ/USDT:USDT",
     "AAVE/USDT:USDT",
@@ -30,6 +30,7 @@
     "CFX/USDT:USDT",
     "HYPE/USDT:USDT",
     "TAO/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "ONDO/USDT:USDT",
     "ICP/USDT:USDT",
     "ARB/USDT:USDT",
@@ -45,7 +46,6 @@
     "OP/USDT:USDT",
     "LDO/USDT:USDT",
     "ORDI/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "ENS/USDT:USDT",
     "DYM/USDT:USDT",
     "RENDER/USDT:USDT",
@@ -94,15 +94,15 @@
     "GRASS/USDT:USDT",
     "API3/USDT:USDT",
     "BLESS/USDT:USDT",
-    "G/USDT:USDT",
     "POPCAT/USDT:USDT",
-    "DEEP/USDT:USDT",
     "KAITO/USDT:USDT",
+    "DEEP/USDT:USDT",
+    "G/USDT:USDT",
     "0G/USDT:USDT",
     "SIGN/USDT:USDT",
     "REZ/USDT:USDT",
     "CLANKER/USDT:USDT",
     "HOME/USDT:USDT",
-    "STBL/USDT:USDT"
+    "WLFI/USDT:USDT"
   ]
 }
