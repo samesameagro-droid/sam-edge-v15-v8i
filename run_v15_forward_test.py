@@ -24,6 +24,8 @@ TARGET_TRADES = 100
 FIELDS = [
     "trade_no", "trade_key", "signal_time", "coin", "side", "core", "score",
     "entry", "sl", "tp", "closed_at", "exit", "result", "R", "equity_after",
+    "btc_mode", "btc_allowed_for_side", "btc_h1_bull", "btc_h4_bull",
+    "btc_h1_bear", "btc_h4_bear", "btc_timestamp", "btc_reason",
     "win_loss", "win_rate_pct", "net_R", "profit_factor", "drawdown_R",
 ]
 
@@ -96,6 +98,16 @@ class ForwardPaperEngine(base.PaperEngine):
             "result": "TP HIT" if result == "TP" else "SL HIT",
             "R": r.get("R", ""),
             "equity_after": r.get("equity_after", ""),
+            "btc_mode": (r.get("btc_context") or {}).get("mode", "shadow"),
+            "btc_allowed_for_side": (r.get("btc_context") or {}).get(
+                "allowed_long" if str(r.get("side", "")).upper() == "LONG" else "allowed_short", ""
+            ),
+            "btc_h1_bull": (r.get("btc_context") or {}).get("h1_bull", ""),
+            "btc_h4_bull": (r.get("btc_context") or {}).get("h4_bull", ""),
+            "btc_h1_bear": (r.get("btc_context") or {}).get("h1_bear", ""),
+            "btc_h4_bear": (r.get("btc_context") or {}).get("h4_bear", ""),
+            "btc_timestamp": (r.get("btc_context") or {}).get("timestamp", ""),
+            "btc_reason": (r.get("btc_context") or {}).get("reason", ""),
         })
 
     def _load_master(self):
@@ -351,6 +363,16 @@ class ForwardPaperEngine(base.PaperEngine):
             'result': 'TP HIT' if result == 'TP' else 'SL HIT',
             'R': rr,
             'equity_after': self.equity,
+            'btc_mode': (p.btc_context or {}).get('mode', 'shadow'),
+            'btc_allowed_for_side': (p.btc_context or {}).get(
+                'allowed_long' if p.side == 'LONG' else 'allowed_short', ''
+            ),
+            'btc_h1_bull': (p.btc_context or {}).get('h1_bull', ''),
+            'btc_h4_bull': (p.btc_context or {}).get('h4_bull', ''),
+            'btc_h1_bear': (p.btc_context or {}).get('h1_bear', ''),
+            'btc_h4_bear': (p.btc_context or {}).get('h4_bear', ''),
+            'btc_timestamp': (p.btc_context or {}).get('timestamp', ''),
+            'btc_reason': (p.btc_context or {}).get('reason', ''),
         }
         self.master_rows.append(row)
         self._refresh_summary_fields()
