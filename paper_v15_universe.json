@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T05:19:44.043016+00:00",
+  "updated_at": "2026-09-21T05:23:27.947032+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -24,7 +24,6 @@
     "INJ/USDT:USDT",
     "AAVE/USDT:USDT",
     "JUP/USDT:USDT",
-    "ETHFI/USDT:USDT",
     "ENA/USDT:USDT",
     "UNI/USDT:USDT",
     "MEW/USDT:USDT",
@@ -33,6 +32,7 @@
     "HYPE/USDT:USDT",
     "ONDO/USDT:USDT",
     "COMP/USDT:USDT",
+    "ETHFI/USDT:USDT",
     "TAO/USDT:USDT",
     "LINK/USDT:USDT",
     "STX/USDT:USDT",
