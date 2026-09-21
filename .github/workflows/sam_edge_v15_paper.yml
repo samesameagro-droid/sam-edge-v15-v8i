@@ -114,6 +114,7 @@ jobs:
           RUN_ONCE: "1"
           TELEGRAM_CHART_CANDLES: "80"
           BTC_FILTER_ENABLED: "1"
+          BTC_FILTER_MODE: "shadow"
           BTC_FILTER_FAIL_CLOSED: "1"
         run: |
           START_TS=$(date +%s)
