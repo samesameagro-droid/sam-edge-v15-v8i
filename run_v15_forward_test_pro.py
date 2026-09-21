@@ -49,6 +49,12 @@ def _signal_key(p) -> str:
 
 
 def _send_photo(photo_path: Path, caption: str, retries: int = 3, signal_key: str | None = None) -> bool:
+    """
+    At-most-once Telegram photo delivery.
+
+    A timeout/5xx after Telegram accepted the upload is ambiguous. Never retry
+    an ambiguous send and never fall back to a second text message for it.
+    """
     token, chat_id = notifiers._telegram_config()
     if not token or not chat_id:
         print("TELEGRAM SKIP | token/chat_id not configured")
@@ -57,28 +63,48 @@ def _send_photo(photo_path: Path, caption: str, retries: int = 3, signal_key: st
         print(f"TELEGRAM DEDUP | chart already delivered | key={signal_key}")
         notifiers._remove_pending(caption, signal_key)
         return True
-    url = f"https://api.telegram.org/bot{token}/sendPhoto"
-    for attempt in range(1, retries + 1):
-        try:
-            with photo_path.open("rb") as fh:
-                r = notifiers.requests.post(
-                    url,
-                    data={"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"},
-                    files={"photo": (photo_path.name, fh, "image/png")},
-                    timeout=45,
-                )
-            if r.ok and r.json().get("ok"):
-                message_id = r.json().get('result', {}).get('message_id')
-                print(f"TELEGRAM CHART SENT OK | message_id={message_id} | attempt={attempt}")
-                if signal_key:
-                    notifiers._mark_delivered(signal_key)
-                    notifiers._remove_pending(caption, signal_key)
-                return True
-            print(f"TELEGRAM PHOTO ERROR | attempt={attempt}: {r.text}")
-        except Exception as e:
-            print(f"TELEGRAM PHOTO EXCEPTION | attempt={attempt}: {e}")
-    return False
 
+    url = f"https://api.telegram.org/bot{token}/sendPhoto"
+    try:
+        with photo_path.open("rb") as fh:
+            r = notifiers.requests.post(
+                url,
+                data={"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"},
+                files={"photo": (photo_path.name, fh, "image/png")},
+                timeout=45,
+            )
+        if r.ok and r.json().get("ok"):
+            message_id = r.json().get('result', {}).get('message_id')
+            print(f"TELEGRAM CHART SENT OK | message_id={message_id}")
+            if signal_key:
+                notifiers._mark_delivered(signal_key)
+                notifiers._remove_pending(caption, signal_key)
+            return True
+
+        if r.status_code == 429:
+            print(f"TELEGRAM PHOTO RATE LIMITED | NOT SENT | {r.text}")
+            return False
+
+        if 400 <= r.status_code < 500:
+            print(f"TELEGRAM PHOTO HTTP {r.status_code} | definite rejection | {r.text}")
+            return False
+
+        # 5xx is ambiguous; suppress fallback/retry so one signal cannot become
+        # two Telegram messages if Telegram accepted the upload before failing.
+        print(f"TELEGRAM PHOTO HTTP {r.status_code} | AMBIGUOUS DELIVERY — NOT RETRIED")
+        if signal_key:
+            notifiers._mark_delivered(signal_key)
+            notifiers._remove_pending(caption, signal_key)
+        return True
+
+    except Exception as e:
+        # Timeout/connection reset can happen after Telegram has accepted the
+        # upload. Treat it as delivered for dedup purposes and do not retry.
+        print(f"TELEGRAM PHOTO AMBIGUOUS TRANSPORT ERROR — NOT RETRIED | {type(e).__name__}: {e}")
+        if signal_key:
+            notifiers._mark_delivered(signal_key)
+            notifiers._remove_pending(caption, signal_key)
+        return True
 
 def _make_chart(p) -> Path | None:
     try:
