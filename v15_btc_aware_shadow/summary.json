@@ -1,0 +1,113 @@
+{
+  "source": "BingX BTC + historical coin data",
+  "period": [
+    "2026-09-14 00:00:00+00:00",
+    "2026-09-21 12:00:00+00:00"
+  ],
+  "events": 0,
+  "rules": {
+    "BASE": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "NO_LONG_BTC_DOWN_1H": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "NO_LONG_BTC_DOWN_4H": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "LONG_BTC_4H_NONNEG": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "NO_LONG_BTC_DD_1H": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    }
+  },
+  "btc_entry_buckets": {
+    "LONG_pre4h<-0.5%": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "LONG_pre4h[-0.5%,0)": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "LONG_pre4h>=0": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "LONG_pre1h<-0.5%": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    },
+    "LONG_pre1h>=-0.5%": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "wr_pct": 0,
+      "net_R": 0,
+      "pf": null,
+      "expectancy_R": 0,
+      "max_dd_R": 0
+    }
+  },
+  "warning": "Research only; rules use only information available before entry and do not alter production."
+}
