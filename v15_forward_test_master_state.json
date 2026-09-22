@@ -5,7 +5,8 @@
   "active_positions": [
     "S/USDT:USDT",
     "ORDI/USDT:USDT",
-    "TURBO/USDT:USDT"
+    "TURBO/USDT:USDT",
+    "SEI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
