@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T03:34:40.603357+00:00",
+  "updated_at": "2026-09-22T03:39:26.589460+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -27,15 +27,14 @@
     "LTC/USDT:USDT",
     "COMP/USDT:USDT",
     "BNB/USDT:USDT",
+    "TAO/USDT:USDT",
     "TRX/USDT:USDT",
     "ENA/USDT:USDT",
     "BCH/USDT:USDT",
     "SEI/USDT:USDT",
     "BOME/USDT:USDT",
-    "TAO/USDT:USDT",
     "DOT/USDT:USDT",
     "ORDI/USDT:USDT",
-    "STRK/USDT:USDT",
     "ETHFI/USDT:USDT",
     "APT/USDT:USDT",
     "BANANA/USDT:USDT",
@@ -59,6 +58,7 @@
     "BLUR/USDT:USDT",
     "APE/USDT:USDT",
     "PUMP/USDT:USDT",
+    "AUCTION/USDT:USDT",
     "YFI/USDT:USDT",
     "FIL/USDT:USDT",
     "UAI/USDT:USDT",
@@ -67,6 +67,7 @@
     "FLOKI/USDT:USDT",
     "LDO/USDT:USDT",
     "ASTER/USDT:USDT",
+    "STRK/USDT:USDT",
     "NOT/USDT:USDT",
     "PENDLE/USDT:USDT",
     "NIL/USDT:USDT",
@@ -78,7 +79,6 @@
     "ENS/USDT:USDT",
     "TURBO/USDT:USDT",
     "DASH/USDT:USDT",
-    "AUCTION/USDT:USDT",
     "BEAT/USDT:USDT",
     "PLUME/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -103,6 +103,6 @@
     "SOON/USDT:USDT",
     "MOODENG/USDT:USDT",
     "ALLO/USDT:USDT",
-    "API3/USDT:USDT"
+    "BROCCOLI/USDT:USDT"
   ]
 }
