@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T05:23:45.781224+00:00",
+  "updated_at": "2026-09-22T05:28:24.272425+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -40,8 +40,8 @@
     "LINK/USDT:USDT",
     "BNB/USDT:USDT",
     "ATH/USDT:USDT",
-    "INJ/USDT:USDT",
     "ETC/USDT:USDT",
+    "INJ/USDT:USDT",
     "JUP/USDT:USDT",
     "CFX/USDT:USDT",
     "ADA/USDT:USDT",
@@ -99,10 +99,10 @@
     "ALCH/USDT:USDT",
     "MYX/USDT:USDT",
     "KAITO/USDT:USDT",
-    "W/USDT:USDT",
     "FLOCK/USDT:USDT",
+    "W/USDT:USDT",
+    "HBAR/USDT:USDT",
     "SOON/USDT:USDT",
-    "BROCCOLI/USDT:USDT",
-    "ALLO/USDT:USDT"
+    "BROCCOLI/USDT:USDT"
   ]
 }
