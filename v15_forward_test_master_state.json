@@ -3,7 +3,9 @@
   "next_trade_no": 64,
   "closed_trades": 63,
   "active_positions": [
-    "S/USDT:USDT"
+    "S/USDT:USDT",
+    "ORDI/USDT:USDT",
+    "TURBO/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
