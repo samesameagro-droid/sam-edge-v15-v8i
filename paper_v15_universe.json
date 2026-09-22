@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T03:49:24.013185+00:00",
+  "updated_at": "2026-09-22T03:53:32.568508+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -38,7 +38,6 @@
     "APT/USDT:USDT",
     "BANANA/USDT:USDT",
     "ATOM/USDT:USDT",
-    "MEW/USDT:USDT",
     "CRV/USDT:USDT",
     "WIF/USDT:USDT",
     "LINK/USDT:USDT",
@@ -97,12 +96,13 @@
     "S/USDT:USDT",
     "CLANKER/USDT:USDT",
     "KAITO/USDT:USDT",
-    "POPCAT/USDT:USDT",
     "ALCH/USDT:USDT",
+    "POPCAT/USDT:USDT",
     "FLOCK/USDT:USDT",
     "SOON/USDT:USDT",
     "MOODENG/USDT:USDT",
     "ALLO/USDT:USDT",
-    "API3/USDT:USDT"
+    "API3/USDT:USDT",
+    "BROCCOLI/USDT:USDT"
   ]
 }
