@@ -1,11 +1,12 @@
 {
   "target": 100,
-  "next_trade_no": 75,
-  "closed_trades": 74,
+  "next_trade_no": 76,
+  "closed_trades": 75,
   "active_positions": [
-    "TURBO/USDT:USDT",
     "SEI/USDT:USDT",
-    "XLM/USDT:USDT"
+    "XLM/USDT:USDT",
+    "NIL/USDT:USDT",
+    "BTC/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
