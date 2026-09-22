@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T00:24:06.434351+00:00",
+  "updated_at": "2026-09-22T00:31:19.552115+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -96,8 +96,8 @@
     "POPCAT/USDT:USDT",
     "FLOCK/USDT:USDT",
     "KAITO/USDT:USDT",
-    "FF/USDT:USDT",
     "ALCH/USDT:USDT",
+    "FF/USDT:USDT",
     "S/USDT:USDT",
     "KERNEL/USDT:USDT",
     "CLANKER/USDT:USDT",
