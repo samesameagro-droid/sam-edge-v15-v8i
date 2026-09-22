@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T17:44:36.581317+00:00",
+  "updated_at": "2026-09-22T17:49:13.033611+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -37,8 +37,8 @@
     "ADA/USDT:USDT",
     "ORDI/USDT:USDT",
     "TRB/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "WIF/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "TIA/USDT:USDT",
     "CFX/USDT:USDT",
     "YFI/USDT:USDT",
@@ -48,8 +48,8 @@
     "RUNE/USDT:USDT",
     "ENS/USDT:USDT",
     "JASMY/USDT:USDT",
-    "LDO/USDT:USDT",
     "STX/USDT:USDT",
+    "LDO/USDT:USDT",
     "MUBARAK/USDT:USDT",
     "1INCH/USDT:USDT",
     "JUP/USDT:USDT",
@@ -63,8 +63,8 @@
     "UAI/USDT:USDT",
     "DASH/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "GRASS/USDT:USDT",
     "XPL/USDT:USDT",
+    "GRASS/USDT:USDT",
     "KERNEL/USDT:USDT",
     "JTO/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
@@ -102,7 +102,7 @@
     "KITE/USDT:USDT",
     "ON/USDT:USDT",
     "PIEVERSE/USDT:USDT",
-    "COOKIE/USDT:USDT",
-    "GOAT/USDT:USDT"
+    "GOAT/USDT:USDT",
+    "COOKIE/USDT:USDT"
   ]
 }
