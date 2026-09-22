@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T12:59:11.753592+00:00",
+  "updated_at": "2026-09-22T13:04:16.468469+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -45,9 +45,9 @@
     "TIA/USDT:USDT",
     "BANANA/USDT:USDT",
     "TRB/USDT:USDT",
+    "BCH/USDT:USDT",
     "SEI/USDT:USDT",
     "PEOPLE/USDT:USDT",
-    "BCH/USDT:USDT",
     "YFI/USDT:USDT",
     "RUNE/USDT:USDT",
     "ETHFI/USDT:USDT",
@@ -71,8 +71,8 @@
     "DASH/USDT:USDT",
     "GRASS/USDT:USDT",
     "KERNEL/USDT:USDT",
-    "BEAT/USDT:USDT",
     "VIRTUAL/USDT:USDT",
+    "BEAT/USDT:USDT",
     "XPL/USDT:USDT",
     "HBAR/USDT:USDT",
     "EVAA/USDT:USDT",
@@ -81,14 +81,14 @@
     "LIGHTER/USDT:USDT",
     "WLFI/USDT:USDT",
     "S/USDT:USDT",
-    "MUBARAK/USDT:USDT",
     "POL/USDT:USDT",
+    "MUBARAK/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "ATH/USDT:USDT",
     "PLUME/USDT:USDT",
     "ALLO/USDT:USDT",
-    "PIEVERSE/USDT:USDT",
     "BANK/USDT:USDT",
+    "PIEVERSE/USDT:USDT",
     "MOODENG/USDT:USDT",
     "FLOCK/USDT:USDT",
     "POPCAT/USDT:USDT",
@@ -103,6 +103,6 @@
     "ZK/USDT:USDT",
     "API3/USDT:USDT",
     "AIO/USDT:USDT",
-    "BLESS/USDT:USDT"
+    "GIGGLE/USDT:USDT"
   ]
 }
