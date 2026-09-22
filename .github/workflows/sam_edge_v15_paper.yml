@@ -8,6 +8,7 @@ on:
       - 'main_paper_v15.py'
       - 'run_v15_forward_test.py'
       - 'run_v15_forward_test_pro.py'
+      - 'patch_forward_master_compat.py'
       - 'notifiers.py'
       - 'reconcile_v15_results.py'
       - 'telegram_result_guard.py'
@@ -47,6 +48,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Apply forward journal compatibility patch
+        run: python patch_forward_master_compat.py
+
       - name: Setup Python 3.11
         uses: actions/setup-python@v6
         with:
@@ -58,7 +62,7 @@ jobs:
 
       - name: Validate V15 Python sources
         run: |
-          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py sitecustomize.py
+          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py patch_forward_master_compat.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py sitecustomize.py
           python - <<'PY'
           from run_v15_forward_test import ForwardPaperEngine
           from datetime import datetime, timezone, timedelta
@@ -117,13 +121,10 @@ jobs:
           BTC_FILTER_MODE: "shadow"
           BTC_FILTER_FAIL_CLOSED: "1"
         run: |
-          # Scheduled events are intentionally more frequent than the effective
-          # scan cadence. This makes the scheduler self-recover when GitHub delays
-          # a cron event, while preserving the intended ~10-minute scan interval.
           if [ "$GITHUB_EVENT_NAME" = "schedule" ] && [ -f v15_scan_health.json ]; then
             LAST_TS=$(python - <<'PY'
           import json
-          from datetime import datetime, timezone
+          from datetime import datetime
           try:
               with open('v15_scan_health.json', encoding='utf-8') as f:
                   s = json.load(f)
