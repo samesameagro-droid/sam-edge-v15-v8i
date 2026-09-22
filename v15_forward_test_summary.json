@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T14:59:49.873697+00:00",
+  "updated_at": "2026-09-22T15:04:50.471477+00:00",
   "target_closed_trades": 100,
   "closed_trades": 70,
   "remaining": 30,
@@ -10,7 +10,7 @@
   "profit_factor": 1.6667,
   "drawdown_R": 7.5,
   "equity": 110.38959942598883,
-  "active_positions": 2,
+  "active_positions": 3,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
