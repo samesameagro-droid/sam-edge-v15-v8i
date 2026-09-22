@@ -1,10 +1,9 @@
 {
   "target": 100,
-  "next_trade_no": 62,
-  "closed_trades": 61,
+  "next_trade_no": 63,
+  "closed_trades": 62,
   "active_positions": [
-    "XLM/USDT:USDT",
-    "SEI/USDT:USDT"
+    "XLM/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
