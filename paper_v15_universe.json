@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T09:24:53.650219+00:00",
+  "updated_at": "2026-09-22T09:28:35.056504+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -84,8 +84,8 @@
     "WLFI/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "MEW/USDT:USDT",
-    "POL/USDT:USDT",
     "AGT/USDT:USDT",
+    "POL/USDT:USDT",
     "S/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "ALLO/USDT:USDT",
