@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T16:03:40.023888+00:00",
+  "updated_at": "2026-09-22T16:08:22.550874+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -12,8 +12,8 @@
     "XRP/USDT:USDT",
     "NEAR/USDT:USDT",
     "WLD/USDT:USDT",
-    "BNB/USDT:USDT",
     "HYPE/USDT:USDT",
+    "BNB/USDT:USDT",
     "UNI/USDT:USDT",
     "ATOM/USDT:USDT",
     "DOGE/USDT:USDT",
@@ -64,10 +64,10 @@
     "MUBARAK/USDT:USDT",
     "PENDLE/USDT:USDT",
     "NOT/USDT:USDT",
-    "NIL/USDT:USDT",
-    "XPL/USDT:USDT",
-    "GRASS/USDT:USDT",
     "ETC/USDT:USDT",
+    "NIL/USDT:USDT",
+    "GRASS/USDT:USDT",
+    "XPL/USDT:USDT",
     "JTO/USDT:USDT",
     "KERNEL/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
@@ -85,10 +85,10 @@
     "POL/USDT:USDT",
     "DOT/USDT:USDT",
     "BANK/USDT:USDT",
-    "WLFI/USDT:USDT",
     "ATH/USDT:USDT",
-    "ALLO/USDT:USDT",
     "XLM/USDT:USDT",
+    "WLFI/USDT:USDT",
+    "ALLO/USDT:USDT",
     "PLUME/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "ALCH/USDT:USDT",
@@ -102,7 +102,7 @@
     "BLESS/USDT:USDT",
     "ZK/USDT:USDT",
     "LYN/USDT:USDT",
-    "PIEVERSE/USDT:USDT",
-    "API3/USDT:USDT"
+    "API3/USDT:USDT",
+    "PIEVERSE/USDT:USDT"
   ]
 }
