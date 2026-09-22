@@ -5103,8 +5103,8 @@
           "h4_bull": true,
           "h1_bear": false,
           "h4_bear": false,
-          "timestamp": "2026-09-22T15:00:00+00:00",
-          "close": 86264.1,
+          "timestamp": "2026-09-22T14:45:00+00:00",
+          "close": 86215.1,
           "reason": "1H+4H trend alignment"
         }
       },
@@ -5139,8 +5139,8 @@
         "h4_bull": true,
         "h1_bear": false,
         "h4_bear": false,
-        "timestamp": "2026-09-22T15:00:00+00:00",
-        "close": 86264.1,
+        "timestamp": "2026-09-22T14:45:00+00:00",
+        "close": 86215.1,
         "reason": "1H+4H trend alignment"
       }
     },
