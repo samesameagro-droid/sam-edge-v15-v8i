@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T19:37:17.349367+00:00",
+  "updated_at": "2026-09-22T19:41:15.450001+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -66,8 +66,8 @@
     "PENDLE/USDT:USDT",
     "HBAR/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
-    "NIL/USDT:USDT",
     "ETC/USDT:USDT",
+    "NIL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "BEAT/USDT:USDT",
     "BROCCOLI/USDT:USDT",
@@ -81,18 +81,18 @@
     "GIGGLE/USDT:USDT",
     "BANK/USDT:USDT",
     "DRIFT/USDT:USDT",
-    "DOT/USDT:USDT",
     "ALLO/USDT:USDT",
-    "WLFI/USDT:USDT",
     "ON/USDT:USDT",
+    "WLFI/USDT:USDT",
     "PLUME/USDT:USDT",
     "ALCH/USDT:USDT",
+    "DOT/USDT:USDT",
     "POPCAT/USDT:USDT",
     "KAITO/USDT:USDT",
     "ATH/USDT:USDT",
     "MOODENG/USDT:USDT",
-    "AKE/USDT:USDT",
     "RIVER/USDT:USDT",
+    "AKE/USDT:USDT",
     "MYX/USDT:USDT",
     "KITE/USDT:USDT",
     "WET/USDT:USDT",
@@ -103,6 +103,6 @@
     "PIEVERSE/USDT:USDT",
     "ZK/USDT:USDT",
     "ZORA/USDT:USDT",
-    "COOKIE/USDT:USDT"
+    "USELESS/USDT:USDT"
   ]
 }
