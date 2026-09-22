@@ -1,10 +1,9 @@
 {
   "target": 100,
-  "next_trade_no": 58,
-  "closed_trades": 57,
+  "next_trade_no": 59,
+  "closed_trades": 58,
   "active_positions": [
     "WIF/USDT:USDT",
-    "MEW/USDT:USDT",
     "SOL/USDT:USDT",
     "PLUME/USDT:USDT",
     "XLM/USDT:USDT"

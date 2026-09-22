@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T03:59:58.788694+00:00",
+  "updated_at": "2026-09-22T04:04:09.088710+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -38,8 +38,8 @@
     "APT/USDT:USDT",
     "BANANA/USDT:USDT",
     "ATOM/USDT:USDT",
-    "CRV/USDT:USDT",
     "WIF/USDT:USDT",
+    "CRV/USDT:USDT",
     "LINK/USDT:USDT",
     "ONDO/USDT:USDT",
     "ATH/USDT:USDT",
