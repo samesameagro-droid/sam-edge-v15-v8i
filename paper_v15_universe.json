@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T03:24:11.404246+00:00",
+  "updated_at": "2026-09-22T03:30:07.632006+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -77,8 +77,8 @@
     "JASMY/USDT:USDT",
     "ENS/USDT:USDT",
     "TURBO/USDT:USDT",
-    "AUCTION/USDT:USDT",
     "DASH/USDT:USDT",
+    "AUCTION/USDT:USDT",
     "BEAT/USDT:USDT",
     "PLUME/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -101,8 +101,8 @@
     "POPCAT/USDT:USDT",
     "FLOCK/USDT:USDT",
     "SOON/USDT:USDT",
-    "ALLO/USDT:USDT",
     "MOODENG/USDT:USDT",
+    "ALLO/USDT:USDT",
     "API3/USDT:USDT"
   ]
 }
