@@ -21,15 +21,15 @@ on:
         default: false
         type: boolean
   schedule:
-    # Run every 10 minutes so a slow scan cannot leave a scheduled run stuck in GitHub's
-    # single-pending concurrency queue. A push trigger still provides immediate recovery.
-    - cron: '*/10 * * * *'
+    # GitHub scheduled events can occasionally be delayed or dropped under load.
+    # Run every 5 minutes for recovery opportunities; the cadence guard below
+    # still permits a real scan only when the previous scan is >=9 minutes old.
+    - cron: '*/5 * * * *'
 
 concurrency:
-  # One writer/runner at a time. GitHub allows only ONE pending run per concurrency
-  # group; with a 5-minute schedule, a slow/manual run could cause the older scheduled
-  # run to be cancelled when a newer run enters the pending slot. The 10-minute cadence
-  # above gives each scan enough room to finish without dropping scheduled cycles.
+  # One writer/runner at a time. Never cancel an active scan or state-persistence run.
+  # The 5-minute scheduler is paired with the cadence guard so a delayed GitHub
+  # event can recover the next scan without increasing the effective scan frequency.
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
@@ -117,6 +117,33 @@ jobs:
           BTC_FILTER_MODE: "shadow"
           BTC_FILTER_FAIL_CLOSED: "1"
         run: |
+          # Scheduled events are intentionally more frequent than the effective
+          # scan cadence. This makes the scheduler self-recover when GitHub delays
+          # a cron event, while preserving the intended ~10-minute scan interval.
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ] && [ -f v15_scan_health.json ]; then
+            LAST_TS=$(python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          try:
+              with open('v15_scan_health.json', encoding='utf-8') as f:
+                  s = json.load(f)
+              dt = datetime.fromisoformat(str(s.get('updated_at', '')).replace('Z', '+00:00'))
+              print(int(dt.timestamp()))
+          except Exception:
+              print(0)
+          PY
+            )
+            NOW_TS=$(date +%s)
+            if [ "$LAST_TS" -gt 0 ]; then
+              AGE=$((NOW_TS-LAST_TS))
+              if [ "$AGE" -lt 540 ]; then
+                echo "V15 CADENCE GUARD | previous scan ${AGE}s ago | skip scheduled scan"
+                exit 0
+              fi
+              echo "V15 CADENCE GUARD | previous scan ${AGE}s ago | run scan"
+            fi
+          fi
+
           START_TS=$(date +%s)
           set +e
           python -u run_v15_forward_test_pro.py
@@ -178,12 +205,6 @@ jobs:
           for attempt in 1 2 3 4 5; do
             echo "STATE PUSH ATTEMPT $attempt"
             git fetch origin main
-            # Rebase is intentionally avoided here. Concurrent state commits can
-            # touch the same JSON/CSV files and create merge conflicts. The runner
-            # already has a complete snapshot of the generated state in TMP_DIR,
-            # so reset to the latest main first, then restore ONLY that snapshot.
-            # This keeps the newest code/workflow intact while making state
-            # persistence deterministic and conflict-free.
             git reset --hard origin/main
             for f in $STATE_FILES; do
               if [ -f "$TMP_DIR/$(basename "$f")" ]; then
@@ -195,10 +216,6 @@ jobs:
               git rm --ignore-unmatch pending_telegram_signals.json >/dev/null 2>&1 || true
             fi
 
-            # Stage only state files that actually exist. A missing optional
-            # file (especially pending_telegram_signals.json after a successful
-            # delivery) must NOT make git add fail with "pathspec did not match".
-            # For tracked files that were removed, git add -u stages the deletion.
             STAGE_FILES=()
             for f in $STATE_FILES; do
               if [ -f "$f" ]; then
@@ -217,7 +234,6 @@ jobs:
             fi
 
             git commit -m "paper: V15 professional forward state"
-
             if git push origin HEAD:main; then
               echo "STATE PUSH OK"
               exit 0
