@@ -1,12 +1,11 @@
 {
   "target": 100,
-  "next_trade_no": 65,
-  "closed_trades": 64,
+  "next_trade_no": 66,
+  "closed_trades": 65,
   "active_positions": [
     "ORDI/USDT:USDT",
     "TURBO/USDT:USDT",
     "SEI/USDT:USDT",
-    "HBAR/USDT:USDT",
     "NEAR/USDT:USDT"
   ],
   "max_active": 5,
