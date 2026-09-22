@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T01:38:31.022652+00:00",
+  "updated_at": "2026-09-22T01:44:10.210135+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -102,7 +102,7 @@
     "FLOCK/USDT:USDT",
     "ALCH/USDT:USDT",
     "SOON/USDT:USDT",
-    "FF/USDT:USDT",
-    "CLANKER/USDT:USDT"
+    "CLANKER/USDT:USDT",
+    "FF/USDT:USDT"
   ]
 }
