@@ -1,5 +1,5 @@
 {
-  "equity": 111.0951433171549,
+  "equity": 110.53966760056913,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -4021,10 +4021,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 111.0951433171549
-    }
-  ],
-  "positions": {
-    "XLM/USDT:USDT": {
+    },
+    {
       "coin": "XLM/USDT:USDT",
       "side": "LONG",
       "entry": 0.21461,
@@ -4112,7 +4110,13 @@
         "timestamp": "2026-09-22T03:15:00+00:00",
         "close": 85577.5,
         "reason": "1H+4H trend alignment"
-      }
+      },
+      "closed_at": "2026-09-22T05:30:00+00:00",
+      "exit": 0.209447870937295,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 110.53966760056913
     }
-  }
+  ],
+  "positions": {}
 }
