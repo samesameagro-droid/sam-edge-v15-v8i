@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T00:03:58.968813+00:00",
+  "updated_at": "2026-09-22T00:09:14.021748+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -47,8 +47,8 @@
     "CRV/USDT:USDT",
     "ONDO/USDT:USDT",
     "INJ/USDT:USDT",
-    "ATH/USDT:USDT",
     "LINK/USDT:USDT",
+    "ATH/USDT:USDT",
     "ETC/USDT:USDT",
     "CFX/USDT:USDT",
     "JUP/USDT:USDT",
@@ -85,8 +85,8 @@
     "POL/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "EVAA/USDT:USDT",
-    "XLM/USDT:USDT",
     "ZETA/USDT:USDT",
+    "XLM/USDT:USDT",
     "BANK/USDT:USDT",
     "W/USDT:USDT",
     "OP/USDT:USDT",
@@ -96,13 +96,13 @@
     "MYX/USDT:USDT",
     "FLOCK/USDT:USDT",
     "KAITO/USDT:USDT",
-    "S/USDT:USDT",
     "ALCH/USDT:USDT",
+    "S/USDT:USDT",
     "KERNEL/USDT:USDT",
-    "CLANKER/USDT:USDT",
     "SOON/USDT:USDT",
+    "CLANKER/USDT:USDT",
     "ENSO/USDT:USDT",
     "ALLO/USDT:USDT",
-    "MOODENG/USDT:USDT"
+    "API3/USDT:USDT"
   ]
 }
