@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T07:34:31.253377+00:00",
+  "updated_at": "2026-09-22T07:39:02.327932+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -101,8 +101,8 @@
     "ALCH/USDT:USDT",
     "FLOCK/USDT:USDT",
     "KAITO/USDT:USDT",
-    "MEW/USDT:USDT",
     "SOON/USDT:USDT",
+    "MEW/USDT:USDT",
     "LYN/USDT:USDT"
   ]
 }
