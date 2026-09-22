@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-09-22T13:49:41.908619+00:00",
+  "updated_at": "2026-09-22T13:54:23.984186+00:00",
   "target_closed_trades": 100,
-  "closed_trades": 68,
-  "remaining": 32,
+  "closed_trades": 69,
+  "remaining": 31,
   "wins": 40,
-  "losses": 28,
-  "win_rate_pct": 58.82,
-  "net_R": 22.0,
-  "profit_factor": 1.7857,
+  "losses": 29,
+  "win_rate_pct": 57.97,
+  "net_R": 21.0,
+  "profit_factor": 1.7241,
   "drawdown_R": 7.5,
-  "equity": 111.50183018205483,
-  "active_positions": 3,
+  "equity": 110.94432103114455,
+  "active_positions": 2,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -19,36 +19,36 @@
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
-      "wins": 4,
-      "losses": 6,
-      "win_rate_pct": 40.0,
-      "net_R": -1.0,
-      "profit_factor": 0.8333
+      "wins": 3,
+      "losses": 7,
+      "win_rate_pct": 30.0,
+      "net_R": -3.25,
+      "profit_factor": 0.5357
     },
     "recent_20": {
       "trades": 20,
-      "wins": 11,
-      "losses": 9,
-      "win_rate_pct": 55.0,
-      "net_R": 4.75,
-      "profit_factor": 1.5278
+      "wins": 10,
+      "losses": 10,
+      "win_rate_pct": 50.0,
+      "net_R": 2.5,
+      "profit_factor": 1.25
     },
     "all_closed": {
-      "trades": 68,
+      "trades": 69,
       "wins": 40,
-      "losses": 28,
-      "win_rate_pct": 58.82,
-      "net_R": 22.0,
-      "profit_factor": 1.7857
+      "losses": 29,
+      "win_rate_pct": 57.97,
+      "net_R": 21.0,
+      "profit_factor": 1.7241
     },
     "by_side": {
       "LONG": {
-        "trades": 65,
+        "trades": 66,
         "wins": 39,
-        "losses": 26,
-        "win_rate_pct": 60.0,
-        "net_R": 22.75,
-        "profit_factor": 1.875
+        "losses": 27,
+        "win_rate_pct": 59.09,
+        "net_R": 21.75,
+        "profit_factor": 1.8056
       },
       "SHORT": {
         "trades": 3,
@@ -69,15 +69,15 @@
         "profit_factor": 0.4167
       },
       "V15_EARLY_RECLAIM_V1": {
-        "trades": 64,
+        "trades": 65,
         "wins": 39,
-        "losses": 25,
-        "win_rate_pct": 60.94,
-        "net_R": 23.75,
-        "profit_factor": 1.95
+        "losses": 26,
+        "win_rate_pct": 60.0,
+        "net_R": 22.75,
+        "profit_factor": 1.875
       }
     },
-    "current_loss_streak": 0,
+    "current_loss_streak": 1,
     "max_loss_streak": 4
   }
 }

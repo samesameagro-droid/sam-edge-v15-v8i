@@ -1,11 +1,10 @@
 {
   "target": 100,
-  "next_trade_no": 69,
-  "closed_trades": 68,
+  "next_trade_no": 70,
+  "closed_trades": 69,
   "active_positions": [
     "TURBO/USDT:USDT",
-    "SEI/USDT:USDT",
-    "GRASS/USDT:USDT"
+    "SEI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
