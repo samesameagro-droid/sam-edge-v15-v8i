@@ -1,15 +1,15 @@
 {
-  "updated_at": "2026-09-21T23:58:27.199488+00:00",
+  "updated_at": "2026-09-22T00:03:58.970313+00:00",
   "target_closed_trades": 100,
-  "closed_trades": 54,
-  "remaining": 46,
-  "wins": 34,
+  "closed_trades": 55,
+  "remaining": 45,
+  "wins": 35,
   "losses": 20,
-  "win_rate_pct": 62.96,
-  "net_R": 22.5,
-  "profit_factor": 2.125,
+  "win_rate_pct": 63.64,
+  "net_R": 23.75,
+  "profit_factor": 2.1875,
   "drawdown_R": 7.5,
-  "equity": 111.80519662030316,
+  "equity": 112.50397909918006,
   "active_positions": 5,
   "max_active": 5,
   "score_is_execution_threshold": false,
@@ -27,28 +27,28 @@
     },
     "recent_20": {
       "trades": 20,
-      "wins": 13,
-      "losses": 7,
-      "win_rate_pct": 65.0,
-      "net_R": 9.25,
-      "profit_factor": 2.3214
+      "wins": 14,
+      "losses": 6,
+      "win_rate_pct": 70.0,
+      "net_R": 11.5,
+      "profit_factor": 2.9167
     },
     "all_closed": {
-      "trades": 54,
-      "wins": 34,
+      "trades": 55,
+      "wins": 35,
       "losses": 20,
-      "win_rate_pct": 62.96,
-      "net_R": 22.5,
-      "profit_factor": 2.125
+      "win_rate_pct": 63.64,
+      "net_R": 23.75,
+      "profit_factor": 2.1875
     },
     "by_side": {
       "LONG": {
-        "trades": 51,
-        "wins": 33,
+        "trades": 52,
+        "wins": 34,
         "losses": 18,
-        "win_rate_pct": 64.71,
-        "net_R": 23.25,
-        "profit_factor": 2.2917
+        "win_rate_pct": 65.38,
+        "net_R": 24.5,
+        "profit_factor": 2.3611
       },
       "SHORT": {
         "trades": 3,
@@ -69,15 +69,15 @@
         "profit_factor": 0.4167
       },
       "V15_EARLY_RECLAIM_V1": {
-        "trades": 50,
-        "wins": 33,
+        "trades": 51,
+        "wins": 34,
         "losses": 17,
-        "win_rate_pct": 66.0,
-        "net_R": 24.25,
-        "profit_factor": 2.4265
+        "win_rate_pct": 66.67,
+        "net_R": 25.5,
+        "profit_factor": 2.5
       }
     },
-    "current_loss_streak": 1,
+    "current_loss_streak": 0,
     "max_loss_streak": 4
   }
 }

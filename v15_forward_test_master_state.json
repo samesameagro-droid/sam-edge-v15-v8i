@@ -1,13 +1,13 @@
 {
   "target": 100,
-  "next_trade_no": 55,
-  "closed_trades": 54,
+  "next_trade_no": 56,
+  "closed_trades": 55,
   "active_positions": [
     "WIF/USDT:USDT",
-    "PLUME/USDT:USDT",
     "MEW/USDT:USDT",
     "BNB/USDT:USDT",
-    "SOL/USDT:USDT"
+    "SOL/USDT:USDT",
+    "CRV/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
