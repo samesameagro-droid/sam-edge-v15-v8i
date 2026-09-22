@@ -6,7 +6,8 @@
     "WIF/USDT:USDT",
     "MEW/USDT:USDT",
     "SOL/USDT:USDT",
-    "PLUME/USDT:USDT"
+    "PLUME/USDT:USDT",
+    "XLM/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
