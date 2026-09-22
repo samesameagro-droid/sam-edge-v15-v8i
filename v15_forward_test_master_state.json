@@ -6,7 +6,8 @@
     "ORDI/USDT:USDT",
     "TURBO/USDT:USDT",
     "SEI/USDT:USDT",
-    "HBAR/USDT:USDT"
+    "HBAR/USDT:USDT",
+    "NEAR/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
