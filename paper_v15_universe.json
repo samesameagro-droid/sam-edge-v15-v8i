@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T10:34:32.899844+00:00",
+  "updated_at": "2026-09-22T10:41:11.394031+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -48,8 +48,8 @@
     "PUMP/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "COMP/USDT:USDT",
-    "GALA/USDT:USDT",
     "BCH/USDT:USDT",
+    "GALA/USDT:USDT",
     "BANANA/USDT:USDT",
     "TRB/USDT:USDT",
     "APE/USDT:USDT",
@@ -93,8 +93,8 @@
     "PIEVERSE/USDT:USDT",
     "ALLO/USDT:USDT",
     "BANK/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "RIVER/USDT:USDT",
+    "MOODENG/USDT:USDT",
     "XLM/USDT:USDT",
     "MYX/USDT:USDT",
     "POPCAT/USDT:USDT",
@@ -102,7 +102,7 @@
     "CLANKER/USDT:USDT",
     "KAITO/USDT:USDT",
     "FLOCK/USDT:USDT",
-    "LYN/USDT:USDT",
-    "SOON/USDT:USDT"
+    "SOON/USDT:USDT",
+    "LYN/USDT:USDT"
   ]
 }
