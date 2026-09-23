@@ -1,12 +1,11 @@
 {
   "target": 100,
-  "next_trade_no": 88,
-  "closed_trades": 87,
+  "next_trade_no": 89,
+  "closed_trades": 88,
   "active_positions": [
     "SEI/USDT:USDT",
     "DOLO/USDT:USDT",
     "YFI/USDT:USDT",
-    "ZEC/USDT:USDT",
     "S/USDT:USDT"
   ],
   "max_active": 5,
