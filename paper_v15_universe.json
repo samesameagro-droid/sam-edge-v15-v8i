@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T05:04:26.371568+00:00",
+  "updated_at": "2026-09-23T05:08:26.633057+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -89,8 +89,8 @@
     "GOAT/USDT:USDT",
     "BLESS/USDT:USDT",
     "ZORA/USDT:USDT",
-    "AIO/USDT:USDT",
     "PI/USDT:USDT",
+    "AIO/USDT:USDT",
     "HOME/USDT:USDT",
     "DOLO/USDT:USDT",
     "PIEVERSE/USDT:USDT",
