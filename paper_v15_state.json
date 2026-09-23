@@ -5618,6 +5618,96 @@
         "close": 86351.1,
         "reason": "1H+4H trend alignment"
       }
+    },
+    "BROCCOLI/USDT:USDT": {
+      "coin": "BROCCOLI/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.02589,
+      "sl": 0.024767116279717373,
+      "tp": 0.027293604650353284,
+      "risk_R": 1.0,
+      "risk_cash": 0.5630472167253221,
+      "opened_at": "2026-09-23T00:00:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 72.64937019572838,
+      "entry_diag": {
+        "timestamp": "2026-09-23T00:00:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": true,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": true,
+          "allowed_short": false,
+          "h1_bull": true,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-23T00:00:00+00:00",
+          "close": 86316.1,
+          "reason": "1H+4H trend alignment"
+        }
+      },
+      "entry_metrics": {
+        "close": 0.02589,
+        "rsi": 56.97292531594131,
+        "h4_adx_pct": 0.98,
+        "h4_adx_delta": 9.366887581951843,
+        "volr": 1.0539658775473135,
+        "vol_slope": 0.18986081695071355,
+        "dist_ema20_atr": 0.6555754423911037,
+        "room_atr": 1.1250148000076048,
+        "body_atr": 0.4963300588268814,
+        "close_pos": 0.9245283018867894,
+        "atr": 0.0006044364927424986
+      },
+      "score_breakdown": {
+        "adx": 0.8999999999999999,
+        "delta": 1.0,
+        "room": 0.18334320000506987,
+        "location": 0.9073742626814939,
+        "volume": 0.5269829387736568,
+        "trigger": 0.6204125735336017
+      },
+      "signal_key": "BROCCOLI/USDT:USDT|LONG|2026-09-23T00:00:00+00:00|V15_EARLY_RECLAIM_V1",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": true,
+        "allowed_short": false,
+        "h1_bull": true,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-23T00:00:00+00:00",
+        "close": 86316.1,
+        "reason": "1H+4H trend alignment"
+      }
     }
   }
 }
