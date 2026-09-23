@@ -1,15 +1,15 @@
 {
-  "updated_at": "2026-09-23T11:24:57.886769+00:00",
+  "updated_at": "2026-09-23T11:29:11.652446+00:00",
   "target_closed_trades": 100,
-  "closed_trades": 88,
-  "remaining": 12,
+  "closed_trades": 89,
+  "remaining": 11,
   "wins": 49,
-  "losses": 39,
-  "win_rate_pct": 55.68,
-  "net_R": 22.25,
-  "profit_factor": 1.5705,
+  "losses": 40,
+  "win_rate_pct": 55.06,
+  "net_R": 21.25,
+  "profit_factor": 1.5312,
   "drawdown_R": 7.5,
-  "equity": 111.60635498667985,
+  "equity": 111.04832321174645,
   "active_positions": 5,
   "max_active": 5,
   "score_is_execution_threshold": false,
@@ -19,11 +19,11 @@
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
-      "wins": 4,
-      "losses": 6,
-      "win_rate_pct": 40.0,
-      "net_R": -1.0,
-      "profit_factor": 0.8333
+      "wins": 3,
+      "losses": 7,
+      "win_rate_pct": 30.0,
+      "net_R": -3.25,
+      "profit_factor": 0.5357
     },
     "recent_20": {
       "trades": 20,
@@ -34,21 +34,21 @@
       "profit_factor": 1.0227
     },
     "all_closed": {
-      "trades": 88,
+      "trades": 89,
       "wins": 49,
-      "losses": 39,
-      "win_rate_pct": 55.68,
-      "net_R": 22.25,
-      "profit_factor": 1.5705
+      "losses": 40,
+      "win_rate_pct": 55.06,
+      "net_R": 21.25,
+      "profit_factor": 1.5312
     },
     "by_side": {
       "LONG": {
-        "trades": 85,
+        "trades": 86,
         "wins": 48,
-        "losses": 37,
-        "win_rate_pct": 56.47,
-        "net_R": 23.0,
-        "profit_factor": 1.6216
+        "losses": 38,
+        "win_rate_pct": 55.81,
+        "net_R": 22.0,
+        "profit_factor": 1.5789
       },
       "SHORT": {
         "trades": 3,
@@ -69,15 +69,15 @@
         "profit_factor": 0.4167
       },
       "V15_EARLY_RECLAIM_V1": {
-        "trades": 84,
+        "trades": 85,
         "wins": 48,
-        "losses": 36,
-        "win_rate_pct": 57.14,
-        "net_R": 24.0,
-        "profit_factor": 1.6667
+        "losses": 37,
+        "win_rate_pct": 56.47,
+        "net_R": 23.0,
+        "profit_factor": 1.6216
       }
     },
-    "current_loss_streak": 0,
+    "current_loss_streak": 1,
     "max_loss_streak": 6
   }
 }
