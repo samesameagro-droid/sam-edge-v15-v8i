@@ -6,7 +6,8 @@
     "SEI/USDT:USDT",
     "BTC/USDT:USDT",
     "XRP/USDT:USDT",
-    "GIGGLE/USDT:USDT"
+    "GIGGLE/USDT:USDT",
+    "TRB/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
