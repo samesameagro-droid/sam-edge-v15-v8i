@@ -1,13 +1,12 @@
 {
   "target": 100,
-  "next_trade_no": 93,
-  "closed_trades": 92,
+  "next_trade_no": 94,
+  "closed_trades": 93,
   "active_positions": [
     "SEI/USDT:USDT",
     "DOLO/USDT:USDT",
     "ALLO/USDT:USDT",
-    "GRASS/USDT:USDT",
-    "LIGHTER/USDT:USDT"
+    "GRASS/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
