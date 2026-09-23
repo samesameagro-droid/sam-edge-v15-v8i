@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T01:25:50.444190+00:00",
+  "updated_at": "2026-09-23T01:29:19.215760+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -72,21 +72,21 @@
     "GIGGLE/USDT:USDT",
     "USELESS/USDT:USDT",
     "S/USDT:USDT",
-    "EVAA/USDT:USDT",
     "ALLO/USDT:USDT",
+    "EVAA/USDT:USDT",
     "BANK/USDT:USDT",
     "ON/USDT:USDT",
     "MEW/USDT:USDT",
     "KAITO/USDT:USDT",
-    "PLUME/USDT:USDT",
     "POPCAT/USDT:USDT",
+    "PLUME/USDT:USDT",
     "API3/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "WLFI/USDT:USDT",
+    "MOODENG/USDT:USDT",
     "KITE/USDT:USDT",
     "MYX/USDT:USDT",
-    "WET/USDT:USDT",
     "RIVER/USDT:USDT",
+    "WET/USDT:USDT",
     "ZK/USDT:USDT",
     "GOAT/USDT:USDT",
     "BLESS/USDT:USDT",
@@ -101,8 +101,8 @@
     "EUL/USDT:USDT",
     "SOPH/USDT:USDT",
     "AIXBT/USDT:USDT",
-    "ZKP/USDT:USDT",
     "ORCA/USDT:USDT",
-    "CLANKER/USDT:USDT"
+    "CLANKER/USDT:USDT",
+    "PARTI/USDT:USDT"
   ]
 }
