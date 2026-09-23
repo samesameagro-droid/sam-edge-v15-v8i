@@ -6,7 +6,8 @@
     "SEI/USDT:USDT",
     "DOLO/USDT:USDT",
     "ALLO/USDT:USDT",
-    "GRASS/USDT:USDT"
+    "GRASS/USDT:USDT",
+    "LIGHTER/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
