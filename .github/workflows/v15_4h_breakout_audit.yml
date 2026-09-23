@@ -1,0 +1,45 @@
+name: V15 research - 4H breakout audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout research engine
+        uses: actions/checkout@v4
+        with:
+          ref: research/v15-4h-breakout-audit
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy requests urllib3
+
+      - name: Fetch latest production journal from main
+        run: |
+          curl -fsSL --retry 3 \
+            https://raw.githubusercontent.com/samesameagro-droid/sam-edge-v15-v8i/main/v15_forward_test_master_journal.csv \
+            -o v15_forward_test_master_journal.csv
+          echo "Latest production journal:"
+          wc -l v15_forward_test_master_journal.csv
+          tail -n 3 v15_forward_test_master_journal.csv
+
+      - name: Run 4H breakout audit
+        run: python research/v15_4h_breakout_audit.py
+
+      - name: Upload research results
+        uses: actions/upload-artifact@v4
+        with:
+          name: v15-4h-breakout-audit
+          path: v15_4h_breakout_audit/
