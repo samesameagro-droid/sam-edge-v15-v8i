@@ -6663,6 +6663,96 @@
         "close": 86124.5,
         "reason": "1H+4H trend alignment"
       }
+    },
+    "ZEC/USDT:USDT": {
+      "coin": "ZEC/USDT:USDT",
+      "side": "LONG",
+      "entry": 1624.27,
+      "sl": 1595.64471208004,
+      "tp": 1660.0516098999499,
+      "risk_R": 1.0,
+      "risk_cash": 0.5573525015721082,
+      "opened_at": "2026-09-23T09:45:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 45.169520555377865,
+      "entry_diag": {
+        "timestamp": "2026-09-23T09:45:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": true,
+          "allowed_short": false,
+          "h1_bull": true,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-23T09:45:00+00:00",
+          "close": 85818.2,
+          "reason": "1H+4H trend alignment"
+        }
+      },
+      "entry_metrics": {
+        "close": 1624.27,
+        "rsi": 57.68388752166373,
+        "h4_adx_pct": 0.565,
+        "h4_adx_delta": 4.531717158443605,
+        "volr": 1.2179220497798857,
+        "vol_slope": 0.18145415734789716,
+        "dist_ema20_atr": 0.6401448720588986,
+        "room_atr": 0.9144012829910678,
+        "body_atr": 0.6759757335578658,
+        "close_pos": 0.7955854126679373,
+        "atr": 11.450115167983968
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.04293418866071189,
+        "location": 0.9330918799018356,
+        "volume": 0.6089610248899429,
+        "trigger": 0.8449696669473322
+      },
+      "signal_key": "ZEC/USDT:USDT|LONG|2026-09-23T09:45:00+00:00|V15_EARLY_RECLAIM_V1",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": true,
+        "allowed_short": false,
+        "h1_bull": true,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-23T09:45:00+00:00",
+        "close": 85818.2,
+        "reason": "1H+4H trend alignment"
+      }
     }
   }
 }
