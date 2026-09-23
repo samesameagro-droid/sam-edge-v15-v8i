@@ -4,7 +4,8 @@
   "closed_trades": 95,
   "active_positions": [
     "ALLO/USDT:USDT",
-    "GRASS/USDT:USDT"
+    "GRASS/USDT:USDT",
+    "UAI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
