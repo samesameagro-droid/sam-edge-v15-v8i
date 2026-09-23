@@ -147,7 +147,7 @@ jobs:
 
           START_TS=$(date +%s)
           set +e
-          python -u run_v15_forward_test_pro.py
+          timeout --signal=TERM --kill-after=30s 8m python -u run_v15_forward_test_pro.py
           RC=$?
           END_TS=$(date +%s)
           ELAPSED=$((END_TS-START_TS))
