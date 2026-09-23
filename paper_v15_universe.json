@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T00:10:04.078032+00:00",
+  "updated_at": "2026-09-23T00:14:09.476884+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -58,13 +58,13 @@
     "XPL/USDT:USDT",
     "KERNEL/USDT:USDT",
     "UAI/USDT:USDT",
-    "BEAT/USDT:USDT",
     "HBAR/USDT:USDT",
+    "BEAT/USDT:USDT",
     "NIL/USDT:USDT",
     "BROCCOLI/USDT:USDT",
     "ETC/USDT:USDT",
-    "TRUMPSOL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
+    "TRUMPSOL/USDT:USDT",
     "GRASS/USDT:USDT",
     "DRIFT/USDT:USDT",
     "AGT/USDT:USDT",
@@ -79,8 +79,8 @@
     "BANK/USDT:USDT",
     "ON/USDT:USDT",
     "MEW/USDT:USDT",
-    "DOT/USDT:USDT",
     "FOLKS/USDT:USDT",
+    "DOT/USDT:USDT",
     "WLFI/USDT:USDT",
     "PLUME/USDT:USDT",
     "KAITO/USDT:USDT",
@@ -93,8 +93,8 @@
     "WET/USDT:USDT",
     "ZK/USDT:USDT",
     "GOAT/USDT:USDT",
-    "AIO/USDT:USDT",
     "BLESS/USDT:USDT",
+    "AIO/USDT:USDT",
     "ZORA/USDT:USDT",
     "ALCH/USDT:USDT",
     "COOKIE/USDT:USDT",
@@ -102,7 +102,7 @@
     "PIEVERSE/USDT:USDT",
     "AIN/USDT:USDT",
     "EUL/USDT:USDT",
-    "AIXBT/USDT:USDT",
-    "SOPH/USDT:USDT"
+    "SOPH/USDT:USDT",
+    "AIXBT/USDT:USDT"
   ]
 }
