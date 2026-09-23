@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T10:05:13.199172+00:00",
+  "updated_at": "2026-09-23T10:09:23.702410+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -37,8 +37,8 @@
     "NIL/USDT:USDT",
     "WIF/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "ASTER/USDT:USDT",
     "LIGHTER/USDT:USDT",
+    "ASTER/USDT:USDT",
     "XPL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "UAI/USDT:USDT",
@@ -54,17 +54,17 @@
     "GRASS/USDT:USDT",
     "KERNEL/USDT:USDT",
     "FLOCK/USDT:USDT",
+    "XLM/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "OP/USDT:USDT",
-    "XLM/USDT:USDT",
     "ALLO/USDT:USDT",
     "STX/USDT:USDT",
     "USELESS/USDT:USDT",
+    "EVAA/USDT:USDT",
     "BANK/USDT:USDT",
     "ON/USDT:USDT",
-    "EVAA/USDT:USDT",
-    "CFX/USDT:USDT",
     "BANANA/USDT:USDT",
+    "CFX/USDT:USDT",
     "KAITO/USDT:USDT",
     "S/USDT:USDT",
     "PLUME/USDT:USDT",
@@ -103,6 +103,6 @@
     "0G/USDT:USDT",
     "NIGHT/USDT:USDT",
     "KGEN/USDT:USDT",
-    "CC/USDT:USDT"
+    "REZ/USDT:USDT"
   ]
 }
