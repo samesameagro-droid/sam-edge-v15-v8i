@@ -6,7 +6,8 @@
     "SEI/USDT:USDT",
     "XLM/USDT:USDT",
     "BTC/USDT:USDT",
-    "BROCCOLI/USDT:USDT"
+    "BROCCOLI/USDT:USDT",
+    "VIRTUAL/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
