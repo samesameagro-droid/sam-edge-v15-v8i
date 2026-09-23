@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T19:15:42.427398+00:00",
+  "updated_at": "2026-09-23T19:19:11.191185+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -16,8 +16,8 @@
     "AVAX/USDT:USDT",
     "AAVE/USDT:USDT",
     "BCH/USDT:USDT",
-    "DOGE/USDT:USDT",
     "SUI/USDT:USDT",
+    "DOGE/USDT:USDT",
     "TAO/USDT:USDT",
     "ARB/USDT:USDT",
     "BNB/USDT:USDT",
@@ -54,6 +54,7 @@
     "RENDER/USDT:USDT",
     "BOME/USDT:USDT",
     "CRV/USDT:USDT",
+    "KAS/USDT:USDT",
     "XPL/USDT:USDT",
     "FIL/USDT:USDT",
     "ALLO/USDT:USDT",
@@ -64,6 +65,7 @@
     "ICP/USDT:USDT",
     "BEAT/USDT:USDT",
     "POL/USDT:USDT",
+    "PENDLE/USDT:USDT",
     "FOLKS/USDT:USDT",
     "ATOM/USDT:USDT",
     "UAI/USDT:USDT",
@@ -71,11 +73,10 @@
     "GRASS/USDT:USDT",
     "EVAA/USDT:USDT",
     "GIGGLE/USDT:USDT",
-    "BROCCOLI/USDT:USDT",
     "ZK/USDT:USDT",
     "KAITO/USDT:USDT",
-    "PENDLE/USDT:USDT",
     "KERNEL/USDT:USDT",
+    "BROCCOLI/USDT:USDT",
     "PLUME/USDT:USDT",
     "ON/USDT:USDT",
     "RIVER/USDT:USDT",
@@ -102,7 +103,6 @@
     "REDSTONE/USDT:USDT",
     "0G/USDT:USDT",
     "REZ/USDT:USDT",
-    "KITE/USDT:USDT",
-    "HOME/USDT:USDT"
+    "KITE/USDT:USDT"
   ]
 }
