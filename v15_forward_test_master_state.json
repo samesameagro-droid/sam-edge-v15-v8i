@@ -1,12 +1,11 @@
 {
   "target": 100,
-  "next_trade_no": 78,
-  "closed_trades": 77,
+  "next_trade_no": 79,
+  "closed_trades": 78,
   "active_positions": [
     "SEI/USDT:USDT",
     "XLM/USDT:USDT",
-    "BTC/USDT:USDT",
-    "VIRTUAL/USDT:USDT"
+    "BTC/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
