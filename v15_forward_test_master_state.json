@@ -1,12 +1,10 @@
 {
   "target": 100,
-  "next_trade_no": 91,
-  "closed_trades": 90,
+  "next_trade_no": 93,
+  "closed_trades": 92,
   "active_positions": [
     "SEI/USDT:USDT",
     "DOLO/USDT:USDT",
-    "S/USDT:USDT",
-    "BCH/USDT:USDT",
     "ALLO/USDT:USDT"
   ],
   "max_active": 5,
