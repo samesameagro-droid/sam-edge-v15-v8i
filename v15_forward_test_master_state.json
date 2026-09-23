@@ -1,10 +1,8 @@
 {
   "target": 100,
-  "next_trade_no": 96,
-  "closed_trades": 95,
+  "next_trade_no": 98,
+  "closed_trades": 97,
   "active_positions": [
-    "ALLO/USDT:USDT",
-    "GRASS/USDT:USDT",
     "UAI/USDT:USDT"
   ],
   "max_active": 5,

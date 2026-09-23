@@ -1,5 +1,5 @@
 {
-  "equity": 107.75824005478803,
+  "equity": 106.68335161024153,
   "closed": [
     {
       "coin": "AIN/USDT:USDT",
@@ -7156,10 +7156,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 107.75824005478803
-    }
-  ],
-  "positions": {
-    "ALLO/USDT:USDT": {
+    },
+    {
       "coin": "ALLO/USDT:USDT",
       "side": "LONG",
       "entry": 0.33205,
@@ -7247,9 +7245,14 @@
         "timestamp": "2026-09-23T11:15:00+00:00",
         "close": 85475.3,
         "reason": "1H+4H trend alignment"
-      }
+      },
+      "closed_at": "2026-09-23T15:30:00+00:00",
+      "exit": 0.31040306267537104,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 107.2194488545141
     },
-    "GRASS/USDT:USDT": {
+    {
       "coin": "GRASS/USDT:USDT",
       "side": "LONG",
       "entry": 0.4592,
@@ -7337,8 +7340,15 @@
         "timestamp": "2026-09-23T12:00:00+00:00",
         "close": 85438.0,
         "reason": "1H+4H trend alignment"
-      }
-    },
+      },
+      "closed_at": "2026-09-23T15:30:00+00:00",
+      "exit": 0.44344555052160367,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 106.68335161024153
+    }
+  ],
+  "positions": {
     "UAI/USDT:USDT": {
       "coin": "UAI/USDT:USDT",
       "side": "SHORT",
@@ -7346,7 +7356,7 @@
       "sl": 0.4024328367360553,
       "tp": 0.36410895407993094,
       "risk_R": 1.0,
-      "risk_cash": 0.5387912002739402,
+      "risk_cash": 0.5334167580512077,
       "opened_at": "2026-09-23T15:15:00+00:00",
       "core": "V15_EARLY_RECLAIM_V1",
       "status": "OPEN",
