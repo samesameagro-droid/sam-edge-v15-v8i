@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T07:33:42.453779+00:00",
+  "updated_at": "2026-09-23T07:39:16.051480+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -44,8 +44,8 @@
     "WIF/USDT:USDT",
     "NIL/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "ASTER/USDT:USDT",
     "BANANA/USDT:USDT",
+    "ASTER/USDT:USDT",
     "JUP/USDT:USDT",
     "XPL/USDT:USDT",
     "VIRTUAL/USDT:USDT",
@@ -60,8 +60,8 @@
     "DRIFT/USDT:USDT",
     "POL/USDT:USDT",
     "KERNEL/USDT:USDT",
-    "TRUMPSOL/USDT:USDT",
     "USELESS/USDT:USDT",
+    "TRUMPSOL/USDT:USDT",
     "FLOCK/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "S/USDT:USDT",
@@ -83,13 +83,12 @@
     "WLFI/USDT:USDT",
     "POPCAT/USDT:USDT",
     "TIA/USDT:USDT",
-    "RIVER/USDT:USDT",
     "PI/USDT:USDT",
+    "RIVER/USDT:USDT",
     "ZORA/USDT:USDT",
     "GOAT/USDT:USDT",
     "DOLO/USDT:USDT",
     "BLESS/USDT:USDT",
-    "HBAR/USDT:USDT",
     "AIO/USDT:USDT",
     "HOME/USDT:USDT",
     "PIEVERSE/USDT:USDT",
@@ -103,6 +102,7 @@
     "ORCA/USDT:USDT",
     "ZKP/USDT:USDT",
     "W/USDT:USDT",
-    "BERA/USDT:USDT"
+    "BERA/USDT:USDT",
+    "SOON/USDT:USDT"
   ]
 }
