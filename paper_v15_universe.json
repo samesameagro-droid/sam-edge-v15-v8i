@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T03:51:40.724707+00:00",
+  "updated_at": "2026-09-23T03:56:02.779094+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -52,8 +52,8 @@
     "BOME/USDT:USDT",
     "XPL/USDT:USDT",
     "UAI/USDT:USDT",
-    "BEAT/USDT:USDT",
     "ETC/USDT:USDT",
+    "BEAT/USDT:USDT",
     "DASH/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "BROCCOLI/USDT:USDT",
@@ -103,6 +103,6 @@
     "AIXBT/USDT:USDT",
     "ORCA/USDT:USDT",
     "ZKP/USDT:USDT",
-    "PARTI/USDT:USDT"
+    "PI/USDT:USDT"
   ]
 }
