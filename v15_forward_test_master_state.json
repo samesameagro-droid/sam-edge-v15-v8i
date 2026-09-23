@@ -2,7 +2,9 @@
   "target": 100,
   "next_trade_no": 99,
   "closed_trades": 98,
-  "active_positions": [],
+  "active_positions": [
+    "UAI/USDT:USDT"
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
