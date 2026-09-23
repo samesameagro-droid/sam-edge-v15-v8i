@@ -23,13 +23,13 @@ on:
         type: boolean
   schedule:
     # GitHub scheduled events can occasionally be delayed or dropped under load.
-    # Run every 5 minutes for recovery opportunities; the cadence guard below
+    # Run every 10 minutes; the cadence guard below
     # still permits a real scan only when the previous scan is >=9 minutes old.
-    - cron: '*/5 * * * *'
+    - cron: '*/10 * * * *'
 
 concurrency:
   # One writer/runner at a time. Never cancel an active scan or state-persistence run.
-  # The 5-minute scheduler is paired with the cadence guard so a delayed GitHub
+  # The 10-minute scheduler is paired with the cadence guard so a delayed GitHub
   # event can recover the next scan without increasing the effective scan frequency.
   group: ${{ github.workflow }}
   cancel-in-progress: false
