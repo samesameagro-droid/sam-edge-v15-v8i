@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T09:53:47.895276+00:00",
+  "updated_at": "2026-09-23T09:50:29.893463+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -34,6 +34,7 @@
     "YFI/USDT:USDT",
     "ADA/USDT:USDT",
     "ORDI/USDT:USDT",
+    "RUNE/USDT:USDT",
     "LINK/USDT:USDT",
     "APT/USDT:USDT",
     "NIL/USDT:USDT",
@@ -57,14 +58,14 @@
     "KERNEL/USDT:USDT",
     "FLOCK/USDT:USDT",
     "GIGGLE/USDT:USDT",
-    "OP/USDT:USDT",
     "ALLO/USDT:USDT",
+    "OP/USDT:USDT",
     "STX/USDT:USDT",
     "XLM/USDT:USDT",
     "USELESS/USDT:USDT",
     "BANK/USDT:USDT",
-    "EVAA/USDT:USDT",
     "ON/USDT:USDT",
+    "EVAA/USDT:USDT",
     "CFX/USDT:USDT",
     "KAITO/USDT:USDT",
     "BANANA/USDT:USDT",
@@ -90,8 +91,8 @@
     "REDSTONE/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "W/USDT:USDT",
-    "AIXBT/USDT:USDT",
     "AIO/USDT:USDT",
+    "AIXBT/USDT:USDT",
     "ZKP/USDT:USDT",
     "PARTI/USDT:USDT",
     "BITLIGHT/USDT:USDT",
@@ -102,7 +103,6 @@
     "MERL/USDT:USDT",
     "SYRUP/USDT:USDT",
     "0G/USDT:USDT",
-    "TRADOOR/USDT:USDT",
-    "NIGHT/USDT:USDT"
+    "TRADOOR/USDT:USDT"
   ]
 }
