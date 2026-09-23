@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T08:44:16.280866+00:00",
+  "updated_at": "2026-09-23T08:49:20.583398+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -46,8 +46,8 @@
     "ASTER/USDT:USDT",
     "JUP/USDT:USDT",
     "XPL/USDT:USDT",
-    "VIRTUAL/USDT:USDT",
     "LIGHTER/USDT:USDT",
+    "VIRTUAL/USDT:USDT",
     "UAI/USDT:USDT",
     "BOME/USDT:USDT",
     "BEAT/USDT:USDT",
@@ -86,23 +86,23 @@
     "RIVER/USDT:USDT",
     "GOAT/USDT:USDT",
     "WLFI/USDT:USDT",
-    "DOLO/USDT:USDT",
     "BLESS/USDT:USDT",
+    "DOLO/USDT:USDT",
     "HOME/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "WET/USDT:USDT",
     "SOON/USDT:USDT",
     "AIO/USDT:USDT",
     "ALCH/USDT:USDT",
-    "TIA/USDT:USDT",
     "AIXBT/USDT:USDT",
     "PARTI/USDT:USDT",
     "BITLIGHT/USDT:USDT",
     "ZKP/USDT:USDT",
     "ORCA/USDT:USDT",
     "SOPH/USDT:USDT",
+    "SYRUP/USDT:USDT",
     "W/USDT:USDT",
     "BERA/USDT:USDT",
-    "SYRUP/USDT:USDT"
+    "REDSTONE/USDT:USDT"
   ]
 }
