@@ -7,7 +7,7 @@
     "DOLO/USDT:USDT",
     "YFI/USDT:USDT",
     "S/USDT:USDT",
-    "POPCAT/USDT:USDT"
+    "BCH/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
