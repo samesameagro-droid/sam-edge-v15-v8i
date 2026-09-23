@@ -1,12 +1,11 @@
 {
   "target": 100,
-  "next_trade_no": 77,
-  "closed_trades": 76,
+  "next_trade_no": 78,
+  "closed_trades": 77,
   "active_positions": [
     "SEI/USDT:USDT",
     "XLM/USDT:USDT",
     "BTC/USDT:USDT",
-    "BROCCOLI/USDT:USDT",
     "VIRTUAL/USDT:USDT"
   ],
   "max_active": 5,
