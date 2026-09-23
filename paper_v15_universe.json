@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-23T01:49:29.937992+00:00",
+  "updated_at": "2026-09-23T01:54:08.484687+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -17,8 +17,8 @@
     "BNB/USDT:USDT",
     "ATOM/USDT:USDT",
     "CRV/USDT:USDT",
-    "APT/USDT:USDT",
     "AVAX/USDT:USDT",
+    "APT/USDT:USDT",
     "TAO/USDT:USDT",
     "AAVE/USDT:USDT",
     "SUI/USDT:USDT",
@@ -62,9 +62,9 @@
     "GRASS/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "DRIFT/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "AGT/USDT:USDT",
     "HBAR/USDT:USDT",
-    "FOLKS/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "POL/USDT:USDT",
     "LIGHTER/USDT:USDT",
@@ -86,14 +86,14 @@
     "KITE/USDT:USDT",
     "MYX/USDT:USDT",
     "RIVER/USDT:USDT",
-    "WET/USDT:USDT",
     "ZK/USDT:USDT",
+    "WET/USDT:USDT",
     "GOAT/USDT:USDT",
     "BLESS/USDT:USDT",
     "ZORA/USDT:USDT",
     "AIO/USDT:USDT",
-    "AIN/USDT:USDT",
     "DOLO/USDT:USDT",
+    "AIN/USDT:USDT",
     "ALCH/USDT:USDT",
     "PIEVERSE/USDT:USDT",
     "COOKIE/USDT:USDT",
@@ -103,6 +103,6 @@
     "AIXBT/USDT:USDT",
     "ORCA/USDT:USDT",
     "CLANKER/USDT:USDT",
-    "PARTI/USDT:USDT"
+    "ZKP/USDT:USDT"
   ]
 }
