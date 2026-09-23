@@ -6478,6 +6478,186 @@
         "close": 86535.0,
         "reason": "1H+4H trend alignment"
       }
+    },
+    "AAVE/USDT:USDT": {
+      "coin": "AAVE/USDT:USDT",
+      "side": "LONG",
+      "entry": 151.14,
+      "sl": 147.81789923184803,
+      "tp": 155.29262596018992,
+      "risk_R": 1.0,
+      "risk_cash": 0.5601532679116666,
+      "opened_at": "2026-09-23T08:15:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 71.96161344969275,
+      "entry_diag": {
+        "timestamp": "2026-09-23T08:15:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": true,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": true,
+          "allowed_short": false,
+          "h1_bull": true,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-23T08:15:00+00:00",
+          "close": 86124.5,
+          "reason": "1H+4H trend alignment"
+        }
+      },
+      "entry_metrics": {
+        "close": 151.14,
+        "rsi": 54.45455342949392,
+        "h4_adx_pct": 0.845,
+        "h4_adx_delta": 3.4152281493136485,
+        "volr": 3.5093852347067442,
+        "vol_slope": 2.332522154403448,
+        "dist_ema20_atr": 0.41666446825505826,
+        "room_atr": 2.4887228560432213,
+        "body_atr": 0.7672002789306089,
+        "close_pos": 0.6758241758241728,
+        "atr": 1.603231951003031
+      },
+      "score_breakdown": {
+        "adx": 0.2249999999999997,
+        "delta": 1.0,
+        "room": 1.0,
+        "location": 0.6944407804250972,
+        "volume": 1.0,
+        "trigger": 0.9590003486632611
+      },
+      "signal_key": "AAVE/USDT:USDT|LONG|2026-09-23T08:15:00+00:00|V15_EARLY_RECLAIM_V1",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": true,
+        "allowed_short": false,
+        "h1_bull": true,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-23T08:15:00+00:00",
+        "close": 86124.5,
+        "reason": "1H+4H trend alignment"
+      }
+    },
+    "YFI/USDT:USDT": {
+      "coin": "YFI/USDT:USDT",
+      "side": "LONG",
+      "entry": 2409.0,
+      "sl": 2374.4759380008354,
+      "tp": 2452.1550774989555,
+      "risk_R": 1.0,
+      "risk_cash": 0.5601532679116666,
+      "opened_at": "2026-09-23T08:15:00+00:00",
+      "core": "V15_EARLY_RECLAIM_V1",
+      "status": "OPEN",
+      "entry_score": 54.84492832553715,
+      "entry_diag": {
+        "timestamp": "2026-09-23T08:15:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": true,
+          "allowed_short": false,
+          "h1_bull": true,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-23T08:15:00+00:00",
+          "close": 86124.5,
+          "reason": "1H+4H trend alignment"
+        }
+      },
+      "entry_metrics": {
+        "close": 2409.0,
+        "rsi": 55.80334133992048,
+        "h4_adx_pct": 0.695,
+        "h4_adx_delta": 4.30926826843687,
+        "volr": 1.2851287354943035,
+        "vol_slope": 0.29984403826768935,
+        "dist_ema20_atr": 0.5177271379775723,
+        "room_atr": 1.6357079648969732,
+        "body_atr": 0.8460558439122275,
+        "close_pos": 0.75,
+        "atr": 17.729326152560855
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.5238053099313155,
+        "location": 0.8628785632959539,
+        "volume": 0.6425643677471518,
+        "trigger": 1.0
+      },
+      "signal_key": "YFI/USDT:USDT|LONG|2026-09-23T08:15:00+00:00|V15_EARLY_RECLAIM_V1",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": true,
+        "allowed_short": false,
+        "h1_bull": true,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-23T08:15:00+00:00",
+        "close": 86124.5,
+        "reason": "1H+4H trend alignment"
+      }
     }
   }
 }

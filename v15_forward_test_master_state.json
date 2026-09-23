@@ -5,7 +5,9 @@
   "active_positions": [
     "SEI/USDT:USDT",
     "GIGGLE/USDT:USDT",
-    "DOLO/USDT:USDT"
+    "DOLO/USDT:USDT",
+    "AAVE/USDT:USDT",
+    "YFI/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
