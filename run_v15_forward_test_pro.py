@@ -247,7 +247,7 @@ def _dedupe_forward_state(engine):
         try:
             signal = datetime.fromisoformat(str(r.get(signal_field, '')).replace('Z', '+00:00'))
             closed = datetime.fromisoformat(str(r.get('closed_at', '')).replace('Z', '+00:00'))
-            return closed >= signal and str(r.get('result', '')).upper().strip() in {'TP', 'SL'}
+            result = str(r.get('result', '')).upper().strip()\n            return closed >= signal and result in {'TP', 'SL', 'TP HIT', 'SL HIT'}
         except Exception:
             return False
 
