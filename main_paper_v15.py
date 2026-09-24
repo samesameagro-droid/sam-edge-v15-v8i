@@ -43,6 +43,7 @@ STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
 JOURNAL_FILE = Path('paper_v15_trades.csv')
 SIGNAL_HISTORY = Path('paper_v15_signal_history.json')
 UNIVERSE_FILE = Path('paper_v15_universe.json')
+SHADOW_E_FILE = Path('v15_1_shadow_e_signals.csv')
 
 
 @dataclass
@@ -402,6 +403,57 @@ class PaperEngine:
         allowed = bool(ctx.get('allowed_long' if side == 'LONG' else 'allowed_short', False))
         return allowed, ctx
 
+    @staticmethod
+    def shadow_e_snapshot(x, i, side):
+        # V15.1-E is SHADOW ONLY: never changes V15 execution.
+        # Fresh pullback = EMA20 touch-zone on either of the 2 completed
+        # 15m candles immediately preceding the current signal candle.
+        if side == 'LONG':
+            touch = (x.low <= x.ema20 + 0.60*x.atr)
+        else:
+            touch = (x.high >= x.ema20 - 0.60*x.atr)
+        ages = []
+        for age in (1, 2):
+            k = i - age
+            if k >= 0 and bool(touch.iloc[k]):
+                ages.append(age)
+        touch_age = min(ages) if ages else None
+        adx_pct = float(x.h4_adx_pct.iloc[i])
+        adx_delta = float(x.h4_adx_delta.iloc[i])
+        volr = float(x.volr.iloc[i])
+        dist = float(x.dist_ema20_atr.iloc[i])
+        fresh = touch_age is not None
+        adx_ok = not (adx_pct >= 0.90 and adx_delta < 0)
+        vol_ok = volr >= 1.20
+        ema_ok = dist <= 0.80
+        return {
+            'fresh_pullback': fresh,
+            'touch_age': touch_age,
+            'adx_ok': adx_ok,
+            'adx_pct': adx_pct,
+            'adx_delta': adx_delta,
+            'vol_ok': vol_ok,
+            'volr': volr,
+            'ema_ok': ema_ok,
+            'ema_dist_atr': dist,
+            'e_pass': fresh and adx_ok and vol_ok and ema_ok,
+        }
+
+    def persist_shadow_e(self, p, shadow):
+        row = {
+            'signal_time': p.opened_at,
+            'coin': p.coin,
+            'side': p.side,
+            'core': p.core,
+            'entry': p.entry,
+            'sl': p.sl,
+            'tp': p.tp,
+            'entry_score': p.entry_score,
+            **shadow,
+        }
+        header = not SHADOW_E_FILE.exists()
+        pd.DataFrame([row]).to_csv(SHADOW_E_FILE, mode='a', header=header, index=False)
+
     def analyze_latest(self, symbol):
         df = self.fetch_df(symbol)
         if df is None:
@@ -500,6 +552,8 @@ class PaperEngine:
             entry_score=float(score), entry_diag=diag, entry_metrics=entry_metrics,
             score_breakdown=score_breakdown, signal_key=key, btc_context=btc_ctx,
         )
+        shadow_e = self.shadow_e_snapshot(x, i, side)
+        self.persist_shadow_e(p, shadow_e)
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
                            'timestamp': ts, 'entry': entry, 'sl': sl, 'tp': tp,
                            'entry_metrics': entry_metrics, 'score_breakdown': score_breakdown, 'btc_context': btc_ctx},
