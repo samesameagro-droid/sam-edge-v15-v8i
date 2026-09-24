@@ -57,7 +57,9 @@ jobs:
           git add v15_engine_compare_results.csv v15_engine_compare_trades.csv v15_engine_compare_diagnostics.csv v15_1_100trade_variant_summary.csv v15_1_100trade_variant_detail.csv v15_1_100trade_variant_report.json
           if ! git diff --cached --quiet; then
             git commit -m "research: persist V15.1 100-trade variant audit"
-            git push
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           else
             echo "No research files changed."
           fi
