@@ -532,7 +532,7 @@ class PaperEngine:
                 candle_ts = candle_ts.tz_localize("UTC")
             else:
                 candle_ts = candle_ts.tz_convert("UTC")
-            if candle_ts < opened_at:
+            if candle_ts <= opened_at:
                 continue
 
             h = float(r.high); l = float(r.low)
