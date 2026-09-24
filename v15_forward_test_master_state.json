@@ -1,10 +1,9 @@
 {
   "target": 100,
-  "next_trade_no": 100,
-  "closed_trades": 99,
+  "next_trade_no": 101,
+  "closed_trades": 100,
   "active_positions": [
-    "PENGU/USDT:USDT",
-    "BLESS/USDT:USDT"
+    "PENGU/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
