@@ -3,7 +3,7 @@ import time, json
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import ccxt, numpy as np, pandas as pd
-from core_engine_v15 import CORE_NAME, enrich, signal_mask, trade_levels
+from core_engine_v15 import enrich
 
 JOURNAL = Path("paper_v15_trading_journal.csv")
 EXCHANGE = ccxt.bingx({"enableRateLimit": True, "options": {"defaultType": "swap"}})
@@ -68,10 +68,7 @@ def main():
             i=int(z.idxmin()) if len(z) else -1
             if i<0 or z.iloc[i]>60: continue
         else: i=int(ix[0])
-        lm,sm=signal_mask(x,CORE_NAME)
-        base_side=bool(lm.iloc[i]) or bool(sm.iloc[i])
         side=tr.side
-        exact_side=bool(lm.iloc[i]) if side=="LONG" else bool(sm.iloc[i])
         # Fresh pullback: a touch of EMA20 zone must occur on one of the two
         # completed candles immediately preceding the reclaim/entry candle.
         touch_age=None
@@ -88,14 +85,16 @@ def main():
         adx_ok=not (adx_pct>=0.90 and adx_delta<0)
         vol_ok=float(x.volr.iloc[i])>=1.20
         ema_ok=float(x.dist_ema20_atr.iloc[i])<=0.80
-        exact_ok=base_side and exact_side
         flags={
-          "V15_BASELINE": exact_ok,
-          "V15.1-A_FRESH_PULLBACK": exact_ok and fresh,
-          "V15.1-B_FRESH_PLUS_ADX_DETERIORATION": exact_ok and fresh and adx_ok,
-          "V15.1-C_FRESH_PLUS_VOL120": exact_ok and fresh and vol_ok,
-          "V15.1-D_FRESH_PLUS_EMA080": exact_ok and fresh and ema_ok,
-          "V15.1-E_COMBINATION": exact_ok and fresh and adx_ok and vol_ok and ema_ok,
+          # The journal itself is the locked 100-trade holdout. Do not re-gate
+          # historical trades through the current signal_mask, because legacy
+          # core trades and later engine revisions would be incorrectly dropped.
+          "V15_BASELINE": True,
+          "V15.1-A_FRESH_PULLBACK": fresh,
+          "V15.1-B_FRESH_PLUS_ADX_DETERIORATION": fresh and adx_ok,
+          "V15.1-C_FRESH_PLUS_VOL120": fresh and vol_ok,
+          "V15.1-D_FRESH_PLUS_EMA080": fresh and ema_ok,
+          "V15.1-E_COMBINATION": fresh and adx_ok and vol_ok and ema_ok,
         }
         rec={"trade_no":n+1,"coin":tr.coin,"side":side,"signal_time":ts.isoformat(),"actual_result":tr.result,
              "R":float(tr.R),"touch_age":touch_age,"adx_pct":adx_pct,"adx_delta":adx_delta,
@@ -105,7 +104,6 @@ def main():
             if ok: kept[v].append({"R":float(tr.R),"result":tr.result})
         detail.append(rec)
     summary=[]
-    base_set=set(range(1,101))
     for v in variants:
         a=kept[v]
         m=metrics(a)
@@ -118,7 +116,7 @@ def main():
         summary.append(m)
     pd.DataFrame(summary).to_csv("v15_1_100trade_variant_summary.csv",index=False)
     pd.DataFrame(detail).to_csv("v15_1_100trade_variant_detail.csv",index=False)
-    report={"journal_rows":len(j),"symbols_loaded":len(cache),"symbols_total":int(j.coin.nunique()),
+    report={"journal_rows":len(j),"detail_rows":len(detail),"symbols_loaded":len(cache),"symbols_total":int(j.coin.nunique()),
              "variants":summary,
              "definition":{"fresh_pullback":"EMA20 touch zone on immediately preceding 1-2 completed 15m candles","adx_deterioration":"reject when 4H ADX percentile >= 0.90 and ADX delta < 0","volume":"volr >= 1.20","ema_distance":"dist_ema20_atr <= 0.80","E":"A+B+C+D"}}
     Path("v15_1_100trade_variant_report.json").write_text(json.dumps(report,indent=2,default=str))
