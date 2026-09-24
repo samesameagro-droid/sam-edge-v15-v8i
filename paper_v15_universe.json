@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24T05:16:04.301342+00:00",
+  "updated_at": "2026-09-24T05:20:17.629070+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -85,9 +85,9 @@
     "UAI/USDT:USDT",
     "GRASS/USDT:USDT",
     "EVAA/USDT:USDT",
+    "PENGU/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "ZK/USDT:USDT",
-    "PENGU/USDT:USDT",
     "RIVER/USDT:USDT",
     "KAITO/USDT:USDT",
     "BLESS/USDT:USDT",
@@ -98,11 +98,11 @@
     "PLUME/USDT:USDT",
     "WLFI/USDT:USDT",
     "BROCCOLI/USDT:USDT",
-    "XLM/USDT:USDT",
     "FF/USDT:USDT",
+    "XLM/USDT:USDT",
     "PI/USDT:USDT",
     "KERNEL/USDT:USDT",
     "W/USDT:USDT",
-    "STABLE/USDT:USDT"
+    "ORCA/USDT:USDT"
   ]
 }
