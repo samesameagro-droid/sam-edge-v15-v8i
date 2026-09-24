@@ -1,0 +1,865 @@
+{
+  "cohort": {
+    "trades": 100,
+    "wins": 51,
+    "losses": 49,
+    "net_R": 14.75,
+    "profit_factor": 1.301
+  },
+  "objective": "Find loss mechanisms before changing the core.",
+  "findings": {
+    "shield_v1": {
+      "losses_vetoed": 10,
+      "losses_removed_R": 10,
+      "prior_forensic_winner_cost": 6,
+      "prior_forensic_net_improvement_R": 2.5,
+      "note": "Trade-level counterfactual only; not a full portfolio replay."
+    },
+    "overextended_losses": 20,
+    "weak_volume_losses": 26,
+    "high_score_losses": 21,
+    "fast_failures_under_60m": 8,
+    "unexplained_by_current_shield": 4
+  },
+  "interpretation": [
+    "The strongest actionable pattern is stacked overextension plus weak participation, or overextension plus ADX exhaustion.",
+    "High score is not a reliable quality proxy in this cohort; many losses occur above 60.",
+    "Weak volume alone is too broad because winners also occur near the 1.0-1.2 range.",
+    "A loss cannot be declared convertible to a win from the journal alone. MFE/MAE from raw candles is required to test whether stop, entry timing, or exit logic could have saved it."
+  ],
+  "next_replay": {
+    "priority_1": "Replay all 49 losses with raw candles and calculate MAE/MFE before SL.",
+    "priority_2": "Test entry delay 1-3 bars only when the original setup remains valid.",
+    "priority_3": "Test structure stop / ATR stop variants against the same losses, with fixed RR and no look-ahead.",
+    "priority_4": "Test the 10 Shield losses as prevention, not conversion.",
+    "priority_5": "Freeze the original 100-trade cohort; use a separate cohort for validation of any new core."
+  },
+  "losses": [
+    {
+      "coin": "AIN/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-15T13:00:00+00:00",
+      "closed_at": "2026-09-16T01:15:00+00:00",
+      "duration_min": 735,
+      "entry_score": 0,
+      "ema20_dist_atr": 0,
+      "volume_ratio": 0,
+      "h4_adx_pct": 0,
+      "h4_adx_delta": 0,
+      "risk_pct": 19.155,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "VIRTUAL/USDT:USDT",
+      "side": "SHORT",
+      "signal_time": "2026-09-16T17:45:00+00:00",
+      "closed_at": "2026-09-16T18:05:00+00:00",
+      "duration_min": 20,
+      "entry_score": 0,
+      "ema20_dist_atr": 0,
+      "volume_ratio": 0,
+      "h4_adx_pct": 0,
+      "h4_adx_delta": 0,
+      "risk_pct": 2.167,
+      "tags": [
+        "WEAK_VOLUME",
+        "FAST_FAILURE"
+      ]
+    },
+    {
+      "coin": "SYN/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-16T20:15:00+00:00",
+      "closed_at": "2026-09-16T22:00:00+00:00",
+      "duration_min": 105,
+      "entry_score": 0,
+      "ema20_dist_atr": 0,
+      "volume_ratio": 0,
+      "h4_adx_pct": 0,
+      "h4_adx_delta": 0,
+      "risk_pct": 15.584,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "REZ/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-17T16:00:00+00:00",
+      "closed_at": "2026-09-17T17:00:00+00:00",
+      "duration_min": 60,
+      "entry_score": 32.50510393651519,
+      "ema20_dist_atr": 0.11834615722810002,
+      "volume_ratio": 1.0269433710713018,
+      "h4_adx_pct": 0.46,
+      "h4_adx_delta": 0.141974638355439,
+      "risk_pct": 4.538,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "REZ/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-18T08:00:00+00:00",
+      "closed_at": "2026-09-18T16:40:00+00:00",
+      "duration_min": 520,
+      "entry_score": 43.37338377175626,
+      "ema20_dist_atr": 0.5211656903980169,
+      "volume_ratio": 1.0050413107766396,
+      "h4_adx_pct": 0.505,
+      "h4_adx_delta": 1.611450675424983,
+      "risk_pct": 4.406,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "1000PEPE/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-18T17:45:00+00:00",
+      "closed_at": "2026-09-19T05:40:00+00:00",
+      "duration_min": 715,
+      "entry_score": 39.98917942993015,
+      "ema20_dist_atr": 0.9223914646599424,
+      "volume_ratio": 1.2245053675163038,
+      "h4_adx_pct": 0.68,
+      "h4_adx_delta": 5.777779279550586,
+      "risk_pct": 1.637,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "TIA/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-18T23:30:00+00:00",
+      "closed_at": "2026-09-19T06:25:00+00:00",
+      "duration_min": 415,
+      "entry_score": 37.52194928613995,
+      "ema20_dist_atr": 0.9663264970469387,
+      "volume_ratio": 12.99898810470897,
+      "h4_adx_pct": 0.79,
+      "h4_adx_delta": 6.174831065937912,
+      "risk_pct": 1.622,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "AIN/USDT:USDT",
+      "side": "SHORT",
+      "signal_time": "2026-09-19T11:00:00+00:00",
+      "closed_at": "2026-09-19T14:00:00+00:00",
+      "duration_min": 180,
+      "entry_score": 26.76247584127569,
+      "ema20_dist_atr": 0.9713994412874315,
+      "volume_ratio": 1.0135280146232002,
+      "h4_adx_pct": 0.695,
+      "h4_adx_delta": -1.3189298016050515,
+      "risk_pct": 3.415,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "TAO/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-19T13:45:00+00:00",
+      "closed_at": "2026-09-19T18:10:00+00:00",
+      "duration_min": 265,
+      "entry_score": 45.315800334927765,
+      "ema20_dist_atr": 1.0959633074079516,
+      "volume_ratio": 1.06964250688448,
+      "h4_adx_pct": 0.74,
+      "h4_adx_delta": 7.881771872587631,
+      "risk_pct": 2.03,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "OP/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-19T06:30:00+00:00",
+      "closed_at": "2026-09-19T21:15:00+00:00",
+      "duration_min": 885,
+      "entry_score": 67.01299136401981,
+      "ema20_dist_atr": 0.4805196545607924,
+      "volume_ratio": 2.1451163136926765,
+      "h4_adx_pct": 0.66,
+      "h4_adx_delta": 8.687925874508242,
+      "risk_pct": 3.422,
+      "tags": [
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "AAVE/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-19T06:30:00+00:00",
+      "closed_at": "2026-09-19T21:15:00+00:00",
+      "duration_min": 885,
+      "entry_score": 61.452485139149736,
+      "ema20_dist_atr": 0.7667726146051599,
+      "volume_ratio": 1.1243601008557458,
+      "h4_adx_pct": 0.66,
+      "h4_adx_delta": 6.72543336469662,
+      "risk_pct": 2.236,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "DYM/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-19T19:15:00+00:00",
+      "closed_at": "2026-09-19T21:20:00+00:00",
+      "duration_min": 125,
+      "entry_score": 60.84237547570767,
+      "ema20_dist_atr": 0.8828026547435308,
+      "volume_ratio": 8.961717909911311,
+      "h4_adx_pct": 0.905,
+      "h4_adx_delta": 6.7674290563516735,
+      "risk_pct": 2.373,
+      "tags": [
+        "OVEREXTENDED",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "IMX/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-19T21:45:00+00:00",
+      "closed_at": "2026-09-20T01:30:00+00:00",
+      "duration_min": 225,
+      "entry_score": 55.68833208999382,
+      "ema20_dist_atr": 0.35564810778354977,
+      "volume_ratio": 17.934090408215546,
+      "h4_adx_pct": 0.825,
+      "h4_adx_delta": 7.76169544927934,
+      "risk_pct": 2.24,
+      "tags": [
+        "UNEXPLAINED_BY_CURRENT_SHIELD"
+      ]
+    },
+    {
+      "coin": "SUI/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-20T00:30:00+00:00",
+      "closed_at": "2026-09-20T02:30:00+00:00",
+      "duration_min": 120,
+      "entry_score": 67.31875239234255,
+      "ema20_dist_atr": 1.1012992353263413,
+      "volume_ratio": 8.820756414446555,
+      "h4_adx_pct": 0.905,
+      "h4_adx_delta": 6.953085997755927,
+      "risk_pct": 2.393,
+      "tags": [
+        "OVEREXTENDED",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "BLUR/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-19T22:00:00+00:00",
+      "closed_at": "2026-09-20T02:45:00+00:00",
+      "duration_min": 285,
+      "entry_score": 46.043151035934585,
+      "ema20_dist_atr": 0.9229288705612267,
+      "volume_ratio": 14.716508966128014,
+      "h4_adx_pct": 0.54,
+      "h4_adx_delta": 4.283615826259258,
+      "risk_pct": 1.697,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "DRIFT/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-18T05:45:00+00:00",
+      "closed_at": "2026-09-20T08:55:00+00:00",
+      "duration_min": 3070,
+      "entry_score": 78.4412432910313,
+      "ema20_dist_atr": 0.9506578800108494,
+      "volume_ratio": 1.0915380582605094,
+      "h4_adx_pct": 0.945,
+      "h4_adx_delta": 9.369869982319038,
+      "risk_pct": 14.485,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "ZK/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-20T06:45:00+00:00",
+      "closed_at": "2026-09-20T11:55:00+00:00",
+      "duration_min": 310,
+      "entry_score": 57.76327011978599,
+      "ema20_dist_atr": 0.9412815877982511,
+      "volume_ratio": 1.3511707682754803,
+      "h4_adx_pct": 0.895,
+      "h4_adx_delta": 4.460941550939353,
+      "risk_pct": 3.486,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "POL/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-20T11:45:00+00:00",
+      "closed_at": "2026-09-20T12:35:00+00:00",
+      "duration_min": 50,
+      "entry_score": 28.569876318174853,
+      "ema20_dist_atr": 0.5717801500393999,
+      "volume_ratio": 1.1719857691331885,
+      "h4_adx_pct": 0.71,
+      "h4_adx_delta": 0.7947895908959097,
+      "risk_pct": 1.442,
+      "tags": [
+        "WEAK_VOLUME",
+        "FAST_FAILURE"
+      ]
+    },
+    {
+      "coin": "ARB/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-20T08:00:00+00:00",
+      "closed_at": "2026-09-20T14:10:00+00:00",
+      "duration_min": 370,
+      "entry_score": 55.30954096168868,
+      "ema20_dist_atr": 0.8678790564009314,
+      "volume_ratio": 1.3820267782458444,
+      "h4_adx_pct": 0.93,
+      "h4_adx_delta": -1.7012484363180462,
+      "risk_pct": 3.557,
+      "tags": [
+        "OVEREXTENDED",
+        "ADX_EXHAUSTION",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "DYDX/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-21T15:45:00+00:00",
+      "closed_at": "2026-09-21T19:10:00+00:00",
+      "duration_min": 205,
+      "entry_score": 46.559934138083584,
+      "ema20_dist_atr": 0.3113219700331157,
+      "volume_ratio": 2.131315859478997,
+      "h4_adx_pct": 0.85,
+      "h4_adx_delta": 0.11459679066818751,
+      "risk_pct": 2.524,
+      "tags": [
+        "UNEXPLAINED_BY_CURRENT_SHIELD"
+      ]
+    },
+    {
+      "coin": "BNB/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-21T18:00:00+00:00",
+      "closed_at": "2026-09-22T01:15:00+00:00",
+      "duration_min": 435,
+      "entry_score": 52.46133930401646,
+      "ema20_dist_atr": 0.8849934735927565,
+      "volume_ratio": 2.709235926983135,
+      "h4_adx_pct": 0.65,
+      "h4_adx_delta": 2.561226375057956,
+      "risk_pct": 1.224,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "CRV/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-21T23:45:00+00:00",
+      "closed_at": "2026-09-22T01:15:00+00:00",
+      "duration_min": 90,
+      "entry_score": 47.26523973623513,
+      "ema20_dist_atr": 0.8680845506130643,
+      "volume_ratio": 14.303612141452762,
+      "h4_adx_pct": 0.61,
+      "h4_adx_delta": 5.201484209100329,
+      "risk_pct": 2.374,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "PLUME/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T02:15:00+00:00",
+      "closed_at": "2026-09-22T04:55:00+00:00",
+      "duration_min": 160,
+      "entry_score": 20.72385745344864,
+      "ema20_dist_atr": 0.2452320955150862,
+      "volume_ratio": 1.0229613905122399,
+      "h4_adx_pct": 0.66,
+      "h4_adx_delta": -3.1852873748758412,
+      "risk_pct": 2.559,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "SOL/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-21T19:15:00+00:00",
+      "closed_at": "2026-09-22T05:00:00+00:00",
+      "duration_min": 585,
+      "entry_score": 53.8641292304569,
+      "ema20_dist_atr": 0.6646107954407044,
+      "volume_ratio": 1.3081682773498668,
+      "h4_adx_pct": 0.67,
+      "h4_adx_delta": 3.9188852763686484,
+      "risk_pct": 1.46,
+      "tags": [
+        "UNEXPLAINED_BY_CURRENT_SHIELD"
+      ]
+    },
+    {
+      "coin": "SEI/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T04:30:00+00:00",
+      "closed_at": "2026-09-22T05:15:00+00:00",
+      "duration_min": 45,
+      "entry_score": 57.79183178053313,
+      "ema20_dist_atr": 0.9228521892840351,
+      "volume_ratio": 1.068697875805688,
+      "h4_adx_pct": 0.93,
+      "h4_adx_delta": 7.0887148603046555,
+      "risk_pct": 2.99,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "FAST_FAILURE",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "XLM/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T03:15:00+00:00",
+      "closed_at": "2026-09-22T05:30:00+00:00",
+      "duration_min": 135,
+      "entry_score": 68.61683590833536,
+      "ema20_dist_atr": 0.4246734363334149,
+      "volume_ratio": 4.8868973772846775,
+      "h4_adx_pct": 0.82,
+      "h4_adx_delta": 6.047296188038281,
+      "risk_pct": 2.405,
+      "tags": [
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "TRX/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T08:30:00+00:00",
+      "closed_at": "2026-09-22T10:05:00+00:00",
+      "duration_min": 95,
+      "entry_score": 71.9987221877701,
+      "ema20_dist_atr": 0.8912890807794434,
+      "volume_ratio": 1.1759391815175002,
+      "h4_adx_pct": 1,
+      "h4_adx_delta": 6.4393354037962425,
+      "risk_pct": 0.344,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "ORDI/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T05:45:00+00:00",
+      "closed_at": "2026-09-22T10:20:00+00:00",
+      "duration_min": 275,
+      "entry_score": 69.94338129977606,
+      "ema20_dist_atr": 0.4700684231140705,
+      "volume_ratio": 1.078761711222855,
+      "h4_adx_pct": 0.93,
+      "h4_adx_delta": 4.73119091445848,
+      "risk_pct": 2.63,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "GRASS/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T11:00:00+00:00",
+      "closed_at": "2026-09-22T13:45:00+00:00",
+      "duration_min": 165,
+      "entry_score": 71.59768169093707,
+      "ema20_dist_atr": 0.03427521123373703,
+      "volume_ratio": 1.4434783664588153,
+      "h4_adx_pct": 1,
+      "h4_adx_delta": 8.514823609408303,
+      "risk_pct": 4.459,
+      "tags": [
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "TAO/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T13:45:00+00:00",
+      "closed_at": "2026-09-22T14:35:00+00:00",
+      "duration_min": 50,
+      "entry_score": 61.51056288808802,
+      "ema20_dist_atr": 0.6436007421581678,
+      "volume_ratio": 1.1568275149160663,
+      "h4_adx_pct": 0.905,
+      "h4_adx_delta": 6.181187224266758,
+      "risk_pct": 2.951,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS",
+        "FAST_FAILURE"
+      ]
+    },
+    {
+      "coin": "NEAR/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T16:15:00+00:00",
+      "closed_at": "2026-09-22T20:05:00+00:00",
+      "duration_min": 230,
+      "entry_score": 46.75856690728751,
+      "ema20_dist_atr": 0.25652947192862086,
+      "volume_ratio": 1.0310111675989775,
+      "h4_adx_pct": 0.885,
+      "h4_adx_delta": -0.44192946880482253,
+      "risk_pct": 4.018,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "BROCCOLI/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T00:00:00+00:00",
+      "closed_at": "2026-09-23T01:40:00+00:00",
+      "duration_min": 100,
+      "entry_score": 72.64937019572838,
+      "ema20_dist_atr": 0.6555754423911037,
+      "volume_ratio": 1.0539658775473135,
+      "h4_adx_pct": 0.98,
+      "h4_adx_delta": 9.366887581951843,
+      "risk_pct": 4.337,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "VIRTUAL/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T01:00:00+00:00",
+      "closed_at": "2026-09-23T01:50:00+00:00",
+      "duration_min": 50,
+      "entry_score": 71.8263290906451,
+      "ema20_dist_atr": 0.5036387690577124,
+      "volume_ratio": 1.7536003531927926,
+      "h4_adx_pct": 0.92,
+      "h4_adx_delta": 3.791534459633951,
+      "risk_pct": 1.297,
+      "tags": [
+        "HIGH_SCORE_LOSS",
+        "FAST_FAILURE"
+      ]
+    },
+    {
+      "coin": "DOLO/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T04:15:00+00:00",
+      "closed_at": "2026-09-23T05:10:00+00:00",
+      "duration_min": 55,
+      "entry_score": 86.15199421972133,
+      "ema20_dist_atr": 0.8310167282002375,
+      "volume_ratio": 1.0001687860822641,
+      "h4_adx_pct": 1,
+      "h4_adx_delta": 8.574747200008986,
+      "risk_pct": 2.014,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS",
+        "FAST_FAILURE",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "USELESS/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T03:30:00+00:00",
+      "closed_at": "2026-09-23T06:25:00+00:00",
+      "duration_min": 175,
+      "entry_score": 42.38700983464913,
+      "ema20_dist_atr": 1.0197138814136082,
+      "volume_ratio": 1.8223418803910811,
+      "h4_adx_pct": 0.435,
+      "h4_adx_delta": 3.708762333809201,
+      "risk_pct": 4.517,
+      "tags": [
+        "OVEREXTENDED"
+      ]
+    },
+    {
+      "coin": "TRB/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T02:45:00+00:00",
+      "closed_at": "2026-09-23T08:05:00+00:00",
+      "duration_min": 320,
+      "entry_score": 62.34930125037936,
+      "ema20_dist_atr": 0.7348511809698758,
+      "volume_ratio": 1.3578804812722807,
+      "h4_adx_pct": 0.84,
+      "h4_adx_delta": 4.308902290877228,
+      "risk_pct": 2.215,
+      "tags": [
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "BLESS/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T05:15:00+00:00",
+      "closed_at": "2026-09-23T08:05:00+00:00",
+      "duration_min": 170,
+      "entry_score": 22.396455765906914,
+      "ema20_dist_atr": 1.028045428977251,
+      "volume_ratio": 1.0047454776752147,
+      "h4_adx_pct": 0.755,
+      "h4_adx_delta": -0.19695944210874927,
+      "risk_pct": 1.664,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "GIGGLE/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T02:30:00+00:00",
+      "closed_at": "2026-09-23T08:50:00+00:00",
+      "duration_min": 380,
+      "entry_score": 62.79705366720214,
+      "ema20_dist_atr": 0.41689445563059513,
+      "volume_ratio": 1.0303284655514262,
+      "h4_adx_pct": 0.925,
+      "h4_adx_delta": 8.45750624736279,
+      "risk_pct": 2.13,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "AAVE/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T08:15:00+00:00",
+      "closed_at": "2026-09-23T10:20:00+00:00",
+      "duration_min": 125,
+      "entry_score": 71.96161344969275,
+      "ema20_dist_atr": 0.41666446825505826,
+      "volume_ratio": 3.5093852347067442,
+      "h4_adx_pct": 0.845,
+      "h4_adx_delta": 3.4152281493136485,
+      "risk_pct": 2.198,
+      "tags": [
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "POPCAT/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T11:00:00+00:00",
+      "closed_at": "2026-09-23T11:20:00+00:00",
+      "duration_min": 20,
+      "entry_score": 56.27156780180427,
+      "ema20_dist_atr": 0.2924646921043046,
+      "volume_ratio": 1.155998099124873,
+      "h4_adx_pct": 0.83,
+      "h4_adx_delta": 5.717195731866504,
+      "risk_pct": 2.317,
+      "tags": [
+        "WEAK_VOLUME",
+        "FAST_FAILURE"
+      ]
+    },
+    {
+      "coin": "YFI/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T08:15:00+00:00",
+      "closed_at": "2026-09-23T11:25:00+00:00",
+      "duration_min": 190,
+      "entry_score": 54.84492832553715,
+      "ema20_dist_atr": 0.5177271379775723,
+      "volume_ratio": 1.2851287354943035,
+      "h4_adx_pct": 0.695,
+      "h4_adx_delta": 4.30926826843687,
+      "risk_pct": 1.433,
+      "tags": [
+        "UNEXPLAINED_BY_CURRENT_SHIELD"
+      ]
+    },
+    {
+      "coin": "S/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T10:15:00+00:00",
+      "closed_at": "2026-09-23T12:00:00+00:00",
+      "duration_min": 105,
+      "entry_score": 42.137627385643,
+      "ema20_dist_atr": 0.3729997644884409,
+      "volume_ratio": 1.0128951879225971,
+      "h4_adx_pct": 0.935,
+      "h4_adx_delta": 0.26736853299128427,
+      "risk_pct": 2.635,
+      "tags": [
+        "WEAK_VOLUME"
+      ]
+    },
+    {
+      "coin": "BCH/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T11:00:00+00:00",
+      "closed_at": "2026-09-23T12:00:00+00:00",
+      "duration_min": 60,
+      "entry_score": 69.51548665933775,
+      "ema20_dist_atr": 0.27924196522346934,
+      "volume_ratio": 1.867076273975506,
+      "h4_adx_pct": 0.925,
+      "h4_adx_delta": 6.807807568068078,
+      "risk_pct": 3.744,
+      "tags": [
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "SEI/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-22T06:30:00+00:00",
+      "closed_at": "2026-09-23T14:10:00+00:00",
+      "duration_min": 1900,
+      "entry_score": 62.610274591436735,
+      "ema20_dist_atr": 0.9268488702181344,
+      "volume_ratio": 1.5822353136048568,
+      "h4_adx_pct": 0.93,
+      "h4_adx_delta": 7.08871487189726,
+      "risk_pct": 3.505,
+      "tags": [
+        "OVEREXTENDED",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "DOLO/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T06:30:00+00:00",
+      "closed_at": "2026-09-23T14:10:00+00:00",
+      "duration_min": 460,
+      "entry_score": 77.2669645833665,
+      "ema20_dist_atr": 0.568220675010594,
+      "volume_ratio": 1.0123436048140355,
+      "h4_adx_pct": 1,
+      "h4_adx_delta": 8.574747263022218,
+      "risk_pct": 1.968,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "NEAR/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T13:30:00+00:00",
+      "closed_at": "2026-09-23T14:10:00+00:00",
+      "duration_min": 40,
+      "entry_score": 16.589388650583064,
+      "ema20_dist_atr": 1.1450452100448425,
+      "volume_ratio": 1.1798642731798823,
+      "h4_adx_pct": 0.825,
+      "h4_adx_delta": -1.3493693404294902,
+      "risk_pct": 4.619,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "FAST_FAILURE",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "ALLO/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T11:15:00+00:00",
+      "closed_at": "2026-09-23T15:30:00+00:00",
+      "duration_min": 255,
+      "entry_score": 66.32573468738757,
+      "ema20_dist_atr": 1.0782577330089596,
+      "volume_ratio": 1.0049348349575495,
+      "h4_adx_pct": 1,
+      "h4_adx_delta": 2.4801791099758503,
+      "risk_pct": 6.519,
+      "tags": [
+        "OVEREXTENDED",
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS",
+        "SHIELD_V1"
+      ]
+    },
+    {
+      "coin": "GRASS/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-23T12:00:00+00:00",
+      "closed_at": "2026-09-23T15:30:00+00:00",
+      "duration_min": 210,
+      "entry_score": 83.81102891587885,
+      "ema20_dist_atr": 0.20840500225897876,
+      "volume_ratio": 1.0060967910076135,
+      "h4_adx_pct": 1,
+      "h4_adx_delta": 4.487458491846425,
+      "risk_pct": 3.431,
+      "tags": [
+        "WEAK_VOLUME",
+        "HIGH_SCORE_LOSS"
+      ]
+    },
+    {
+      "coin": "PENGU/USDT:USDT",
+      "side": "LONG",
+      "signal_time": "2026-09-24T07:00:00+00:00",
+      "closed_at": "2026-09-24T08:45:00+00:00",
+      "duration_min": 105,
+      "entry_score": 53.50795383899484,
+      "ema20_dist_atr": 0.6955735669868066,
+      "volume_ratio": 1.6255032848459303,
+      "h4_adx_pct": 0.905,
+      "h4_adx_delta": -3.41806888784744,
+      "risk_pct": 1.832,
+      "tags": [
+        "ADX_EXHAUSTION"
+      ]
+    }
+  ]
+}
