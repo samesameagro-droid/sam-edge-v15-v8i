@@ -19,13 +19,14 @@
     "weak_volume_losses": 26,
     "high_score_losses": 21,
     "fast_failures_under_60m": 8,
-    "unexplained_by_current_shield": 4
+    "unexplained_by_current_shield": 39
   },
   "interpretation": [
     "The strongest actionable pattern is stacked overextension plus weak participation, or overextension plus ADX exhaustion.",
     "High score is not a reliable quality proxy in this cohort; many losses occur above 60.",
     "Weak volume alone is too broad because winners also occur near the 1.0-1.2 range.",
-    "A loss cannot be declared convertible to a win from the journal alone. MFE/MAE from raw candles is required to test whether stop, entry timing, or exit logic could have saved it."
+    "A loss cannot be declared convertible to a win from the journal alone. MFE/MAE from raw candles is required to test whether stop, entry timing, or exit logic could have saved it.",
+    "39 of 49 losses are not caught by the current Shield pattern; these require MAE/MFE replay rather than another blind filter."
   ],
   "next_replay": {
     "priority_1": "Replay all 49 losses with raw candles and calculate MAE/MFE before SL.",
