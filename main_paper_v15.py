@@ -39,14 +39,14 @@ BTC_FILTER_MODE = os.getenv('BTC_FILTER_MODE', 'shadow').strip().lower()
 BTC_FILTER_FAIL_CLOSED = os.getenv('BTC_FILTER_FAIL_CLOSED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
 
 # Post-100-trade defensive optimization layer. Isolated from signal_mask().
-V15_DEFENSIVE_MODE = os.getenv('V15_DEFENSIVE_MODE', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
+V15_DEFENSIVE_MODE = os.getenv('V15_DEFENSIVE_MODE', '0').strip().lower() in {'1', 'true', 'yes', 'on'}
 V15_ENTRY_SCORE_MAX = float(os.getenv('V15_ENTRY_SCORE_MAX', '60'))
 V15_DIST_EMA_MAX_ATR = float(os.getenv('V15_DIST_EMA_MAX_ATR', '0.80'))
 V15_MIN_VOLUME_RATIO = float(os.getenv('V15_MIN_VOLUME_RATIO', '1.20'))
 V15_LOSS_STREAK_PAUSE = int(os.getenv('V15_LOSS_STREAK_PAUSE', '3'))
 V15_LOSS_PAUSE_MIN = int(os.getenv('V15_LOSS_PAUSE_MIN', '60'))
 V15_MAX_ACTIVE_PER_SIDE = int(os.getenv('V15_MAX_ACTIVE_PER_SIDE', '3'))
-V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'LOW_SCORE').strip().upper()
+V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper()
 
 STATE_FILE = Path('paper_v15_state.json')
 STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
