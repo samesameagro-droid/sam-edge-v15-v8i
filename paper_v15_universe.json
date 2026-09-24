@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24T04:00:57.604759+00:00",
+  "updated_at": "2026-09-24T04:07:32.464356+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -64,8 +64,8 @@
     "CRV/USDT:USDT",
     "TRUMPSOL/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "COMP/USDT:USDT",
     "ASTER/USDT:USDT",
+    "COMP/USDT:USDT",
     "MEW/USDT:USDT",
     "JASMY/USDT:USDT",
     "PEOPLE/USDT:USDT",
