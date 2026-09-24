@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24T01:14:26.452249+00:00",
+  "updated_at": "2026-09-24T01:19:31.374587+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -23,8 +23,8 @@
     "BNB/USDT:USDT",
     "INJ/USDT:USDT",
     "LTC/USDT:USDT",
-    "ADA/USDT:USDT",
     "ONDO/USDT:USDT",
+    "ADA/USDT:USDT",
     "WLD/USDT:USDT",
     "SEI/USDT:USDT",
     "APT/USDT:USDT",
@@ -40,11 +40,11 @@
     "LIGHTER/USDT:USDT",
     "DOT/USDT:USDT",
     "YFI/USDT:USDT",
-    "ICP/USDT:USDT",
     "FIL/USDT:USDT",
+    "ICP/USDT:USDT",
     "WIF/USDT:USDT",
-    "STX/USDT:USDT",
     "TAKE/USDT:USDT",
+    "STX/USDT:USDT",
     "RENDER/USDT:USDT",
     "NIL/USDT:USDT",
     "CFX/USDT:USDT",
@@ -83,8 +83,8 @@
     "XLM/USDT:USDT",
     "GRASS/USDT:USDT",
     "PENGU/USDT:USDT",
-    "FOLKS/USDT:USDT",
     "EVAA/USDT:USDT",
+    "FOLKS/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "ZK/USDT:USDT",
     "RIVER/USDT:USDT",
@@ -103,6 +103,6 @@
     "FF/USDT:USDT",
     "MYX/USDT:USDT",
     "ORCA/USDT:USDT",
-    "API3/USDT:USDT"
+    "DRIFT/USDT:USDT"
   ]
 }
