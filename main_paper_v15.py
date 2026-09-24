@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import signal
@@ -48,6 +49,18 @@ V15_LOSS_PAUSE_MIN = int(os.getenv('V15_LOSS_PAUSE_MIN', '60'))
 V15_MAX_ACTIVE_PER_SIDE = int(os.getenv('V15_MAX_ACTIVE_PER_SIDE', '3'))
 V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper()
 
+# Immutable fingerprint of the executable V15 gate/level configuration.
+# It is persisted with every new paper trade so audit records can be tied to
+# the exact rule set that generated them, preventing silent strategy drift.
+V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
+    CORE_NAME, RR, ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
+    EARLY_MOVE5_MAX_ATR, EARLY_DIST_EMA_MAX_ATR, EARLY_ROOM_MIN_ATR,
+    EARLY_PULLBACK_LOOKBACK, EARLY_PULLBACK_MAX_ATR, EARLY_RECLAIM_BUFFER_ATR,
+    EARLY_VOLUME_RATIO_MIN, EARLY_VOLUME_SLOPE_MIN,
+    STRUCTURE_STOP_LOOKBACK, STRUCTURE_STOP_ATR_BUFFER,
+    STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
+])).encode()).hexdigest()[:16]
+
 STATE_FILE = Path('paper_v15_state.json')
 STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
 JOURNAL_FILE = Path('paper_v15_trades.csv')
@@ -76,6 +89,7 @@ class Position:
     signal_key: str = ''
     # Persist BTC context for post-hoc analysis only.
     btc_context: dict = field(default_factory=dict)
+    strategy_fingerprint: str = V15_STRATEGY_FINGERPRINT
 
 
 class PaperEngine:
@@ -600,6 +614,7 @@ class PaperEngine:
             symbol, side, entry, sl, tp, 1.0, self.equity*RISK_PCT, ts,
             entry_score=float(score), entry_diag=diag, entry_metrics=entry_metrics,
             score_breakdown=score_breakdown, signal_key=key, btc_context=btc_ctx,
+            strategy_fingerprint=V15_STRATEGY_FINGERPRINT,
         )
         defense_ok, defense_reason = self._entry_defense(p)
         diag['defensive_gate'] = {'pass': defense_ok, 'reason': defense_reason}
