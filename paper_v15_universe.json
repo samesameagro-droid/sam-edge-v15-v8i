@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24T03:33:52.834316+00:00",
+  "updated_at": "2026-09-24T03:40:48.475601+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -32,8 +32,8 @@
     "ZRO/USDT:USDT",
     "JUP/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "PUMP/USDT:USDT",
     "ENA/USDT:USDT",
+    "PUMP/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "JTO/USDT:USDT",
     "OP/USDT:USDT",
