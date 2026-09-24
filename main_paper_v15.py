@@ -509,13 +509,38 @@ class PaperEngine:
         df = self.fetch_df(p.coin, TRACK_TIMEFRAME, 20)
         if df is None or len(df) < 3:
             return None
+        # IMPORTANT: only candles formed AFTER the position opened may close it.
+        # The previous implementation scanned the last 20 completed candles
+        # without filtering by opened_at. That allowed an old candle, formed
+        # before entry, to trigger an immediate historical TP/SL. BLESS #100
+        # exposed this exact bug: opened_at=07:45Z while the detected TP candle
+        # was 06:55Z. The result notification was sent, but the forward-state
+        # validator correctly rejected the impossible close and kept the master
+        # journal at 99.
+        try:
+            opened_at = pd.Timestamp(p.opened_at)
+            if opened_at.tzinfo is None:
+                opened_at = opened_at.tz_localize("UTC")
+            else:
+                opened_at = opened_at.tz_convert("UTC")
+        except Exception:
+            return None
+
         for _, r in df.iloc[:-1].iterrows():
+            candle_ts = pd.Timestamp(r.timestamp)
+            if candle_ts.tzinfo is None:
+                candle_ts = candle_ts.tz_localize("UTC")
+            else:
+                candle_ts = candle_ts.tz_convert("UTC")
+            if candle_ts < opened_at:
+                continue
+
             h = float(r.high); l = float(r.low)
             sl = l <= p.sl if p.side == 'LONG' else h >= p.sl
             tp = h >= p.tp if p.side == 'LONG' else l <= p.tp
-            if sl and tp: return ('SL', p.sl, r.timestamp.isoformat())
-            if sl: return ('SL', p.sl, r.timestamp.isoformat())
-            if tp: return ('TP', p.tp, r.timestamp.isoformat())
+            if sl and tp: return ('SL', p.sl, candle_ts.isoformat())
+            if sl: return ('SL', p.sl, candle_ts.isoformat())
+            if tp: return ('TP', p.tp, candle_ts.isoformat())
         return None
 
     def close(self, key, result, price, ts):
