@@ -381,8 +381,10 @@ def trade_levels(x: pd.DataFrame, i: int, side: int, stop_style: str = 'STRUCTUR
     return entry,float(sl),float(tp),float(risk)
 
 
-def backtest_core(x, core=CORE_NAME, rr=RR, stop_style='STRUCTURE'):
+def backtest_core(x, core=CORE_NAME, rr=RR, stop_style='STRUCTURE', failure_shield=False):
     long,short=signal_mask(x,core)
+    if failure_shield and core == CORE_NAME:
+        long,short=failure_shield_mask(x,long,short)
     idx=sorted([(int(i),1) for i in np.flatnonzero(long.to_numpy()) if i>=250]+[(int(i),-1) for i in np.flatnonzero(short.to_numpy()) if i>=250])
     H,L,T,C=x.high.to_numpy(),x.low.to_numpy(),x.timestamp.to_numpy(),x.close.to_numpy()
     out=[]; last=-1
@@ -405,10 +407,12 @@ def backtest_core(x, core=CORE_NAME, rr=RR, stop_style='STRUCTURE'):
     return pd.DataFrame(out)
 
 
-def latest_signal(x: pd.DataFrame):
+def latest_signal(x: pd.DataFrame, failure_shield=False):
     i=len(x)-2
     if i < 250: return None
     lm,sm=signal_mask(x,CORE_NAME)
+    if failure_shield:
+        lm,sm=failure_shield_mask(x,lm,sm)
     side='LONG' if bool(lm.iloc[i]) else ('SHORT' if bool(sm.iloc[i]) else None)
     if side is None: return None
     levels=trade_levels(x,i,1 if side=='LONG' else -1,'STRUCTURE')
