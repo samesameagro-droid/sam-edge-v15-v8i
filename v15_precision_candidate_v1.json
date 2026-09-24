@@ -1,0 +1,40 @@
+{
+  "version": "V15_PRECISION_CANDIDATE_V1",
+  "source_cohort": "frozen 100-trade V15 journal",
+  "baseline": {
+    "trades": 100,
+    "wins": 51,
+    "losses": 49,
+    "wr_pct": 51,
+    "net_R": 14.75,
+    "pf": 1.301,
+    "max_dd_R": -13.5
+  },
+  "candidate": {
+    "trades": 31,
+    "wins": 20,
+    "losses": 11,
+    "wr_pct": 64.5161,
+    "net_R": 14,
+    "pf": 2.2727,
+    "expectancy_R": 0.45161,
+    "max_dd_R": -4
+  },
+  "gates": {
+    "fresh_pullback": "EMA20 touch-zone on either of the immediately preceding 2 completed 15m candles",
+    "adx_deterioration": "reject if 4H ADX percentile >= 0.90 AND ADX delta < 0",
+    "volume_ratio": ">= 1.20",
+    "ema20_distance_atr": "<= 0.80"
+  },
+  "interpretation": {
+    "losses_avoided_from_original_100": 38,
+    "winners_removed_from_original_100": 31,
+    "remaining_losses": 11,
+    "note": "Historical counterfactual/selection study, not OOS validation. Portfolio slot replacement and intrabar MAE/MFE were not modeled."
+  },
+  "implementation": {
+    "commit": "25dfe8c06db1242ff07a7db92584abc186ea755f",
+    "mode": "V15_PRECISION_MODE",
+    "default_enabled": false
+  }
+}
