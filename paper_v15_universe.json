@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-24T06:10:10.337898+00:00",
+  "updated_at": "2026-09-24T06:14:21.684163+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -37,8 +37,8 @@
     "ENA/USDT:USDT",
     "KAS/USDT:USDT",
     "PUMP/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "DOT/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "JTO/USDT:USDT",
     "LIGHTER/USDT:USDT",
     "STRK/USDT:USDT",
@@ -46,9 +46,9 @@
     "RUNE/USDT:USDT",
     "STX/USDT:USDT",
     "FIL/USDT:USDT",
+    "TRX/USDT:USDT",
     "ICP/USDT:USDT",
     "YFI/USDT:USDT",
-    "TRX/USDT:USDT",
     "TAKE/USDT:USDT",
     "PENDLE/USDT:USDT",
     "ETC/USDT:USDT",
@@ -64,6 +64,7 @@
     "IMX/USDT:USDT",
     "1000BONK/USDT:USDT",
     "COMP/USDT:USDT",
+    "BLUR/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "ATOM/USDT:USDT",
@@ -77,7 +78,6 @@
     "DASH/USDT:USDT",
     "ALLO/USDT:USDT",
     "ORDI/USDT:USDT",
-    "BLUR/USDT:USDT",
     "XPL/USDT:USDT",
     "10000SATS/USDT:USDT",
     "BEAT/USDT:USDT",
@@ -93,8 +93,8 @@
     "BLESS/USDT:USDT",
     "BANK/USDT:USDT",
     "PENGU/USDT:USDT",
-    "MOODENG/USDT:USDT",
     "FLOCK/USDT:USDT",
+    "MOODENG/USDT:USDT",
     "ON/USDT:USDT",
     "PLUME/USDT:USDT",
     "WLFI/USDT:USDT",
@@ -103,6 +103,6 @@
     "0G/USDT:USDT",
     "KERNEL/USDT:USDT",
     "W/USDT:USDT",
-    "PI/USDT:USDT"
+    "ORCA/USDT:USDT"
   ]
 }
