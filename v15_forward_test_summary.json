@@ -1,16 +1,16 @@
 {
-  "updated_at": "2026-09-24T03:09:10.636116+00:00",
+  "updated_at": "2026-09-24T03:14:06.715575+00:00",
   "target_closed_trades": 100,
-  "closed_trades": 98,
-  "remaining": 2,
-  "wins": 50,
+  "closed_trades": 99,
+  "remaining": 1,
+  "wins": 51,
   "losses": 48,
-  "win_rate_pct": 51.02,
-  "net_R": 14.5,
-  "profit_factor": 1.3021,
+  "win_rate_pct": 51.52,
+  "net_R": 15.75,
+  "profit_factor": 1.3281,
   "drawdown_R": 13.75,
-  "equity": 107.35012255780553,
-  "active_positions": 1,
+  "equity": 108.02106082379181,
+  "active_positions": 0,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -19,11 +19,11 @@
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
-      "wins": 1,
-      "losses": 9,
-      "win_rate_pct": 10.0,
-      "net_R": -7.75,
-      "profit_factor": 0.1389
+      "wins": 2,
+      "losses": 8,
+      "win_rate_pct": 20.0,
+      "net_R": -5.5,
+      "profit_factor": 0.3125
     },
     "recent_20": {
       "trades": 20,
@@ -34,12 +34,12 @@
       "profit_factor": 0.4167
     },
     "all_closed": {
-      "trades": 98,
-      "wins": 50,
+      "trades": 99,
+      "wins": 51,
       "losses": 48,
-      "win_rate_pct": 51.02,
-      "net_R": 14.5,
-      "profit_factor": 1.3021
+      "win_rate_pct": 51.52,
+      "net_R": 15.75,
+      "profit_factor": 1.3281
     },
     "by_side": {
       "LONG": {
@@ -51,12 +51,12 @@
         "profit_factor": 1.3043
       },
       "SHORT": {
-        "trades": 4,
-        "wins": 2,
+        "trades": 5,
+        "wins": 3,
         "losses": 2,
-        "win_rate_pct": 50.0,
-        "net_R": 0.5,
-        "profit_factor": 1.25
+        "win_rate_pct": 60.0,
+        "net_R": 1.75,
+        "profit_factor": 1.875
       }
     },
     "by_core": {
@@ -69,12 +69,12 @@
         "profit_factor": 0.4167
       },
       "V15_EARLY_RECLAIM_V1": {
-        "trades": 94,
-        "wins": 49,
+        "trades": 95,
+        "wins": 50,
         "losses": 45,
-        "win_rate_pct": 52.13,
-        "net_R": 16.25,
-        "profit_factor": 1.3611
+        "win_rate_pct": 52.63,
+        "net_R": 17.5,
+        "profit_factor": 1.3889
       }
     },
     "current_loss_streak": 0,
