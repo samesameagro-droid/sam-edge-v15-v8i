@@ -1,7 +1,7 @@
 {
   "target": 100,
-  "next_trade_no": 101,
-  "closed_trades": 100,
+  "next_trade_no": 100,
+  "closed_trades": 99,
   "active_positions": [
     "PENGU/USDT:USDT"
   ],
