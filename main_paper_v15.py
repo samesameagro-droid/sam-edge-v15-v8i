@@ -15,7 +15,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from core_engine_v15 import (
-    CORE_NAME, RR, enrich, signal_mask, trade_levels,
+    CORE_NAME, RR, enrich, signal_mask, failure_shield_mask, failure_shield_snapshot, trade_levels,
     ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
     EARLY_MOVE5_MAX_ATR, EARLY_DIST_EMA_MAX_ATR, EARLY_ROOM_MIN_ATR,
     EARLY_PULLBACK_LOOKBACK, EARLY_PULLBACK_MAX_ATR, EARLY_RECLAIM_BUFFER_ATR,
@@ -52,6 +52,9 @@ V15_LOSS_PAUSE_MIN = int(os.getenv('V15_LOSS_PAUSE_MIN', '60'))
 V15_MAX_ACTIVE_PER_SIDE = int(os.getenv('V15_MAX_ACTIVE_PER_SIDE', '3'))
 V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper()
 
+# Failure-mode shield is a separate execution permission layer. It is OFF by default.
+V15_FAILURE_SHIELD_ENABLED = os.getenv('V15_FAILURE_SHIELD_ENABLED', '0').strip().lower() in {'1','true','yes','on'}
+
 # Immutable fingerprint of the executable V15 gate/level configuration.
 # It is persisted with every new paper trade so audit records can be tied to
 # the exact rule set that generated them, preventing silent strategy drift.
@@ -64,7 +67,7 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
     V15_DEFENSIVE_MODE, V15_ENTRY_SCORE_MAX, V15_DIST_EMA_MAX_ATR,
     V15_MIN_VOLUME_RATIO, V15_LOSS_STREAK_PAUSE, V15_LOSS_PAUSE_MIN,
-    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE,
+    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_FAILURE_SHIELD_ENABLED,
 ])).encode()).hexdigest()[:16]
 
 STATE_FILE = Path('paper_v15_state.json')
@@ -368,14 +371,14 @@ class PaperEngine:
             'trend': bool(bull.iloc[i]), 'ema': bool((bull & emaL).iloc[i]),
             'vwap': bool((bull & emaL & vwapL).iloc[i]), 'di': bool((bull & emaL & vwapL & diL).iloc[i]),
             'rsi': bool(structureL.iloc[i]), 'room': bool((structureL & roomL).iloc[i]),
-            'no_chase': bool((structureL & roomL & noChase).iloc[i]), 'adx': bool((structureL & roomL & noChase & volOk & touchL & (r.h4_adx_pct >= ADX_LONG_PCT) & (r.h4_adx_delta >= ADX_LONG_DELTA)).iloc[i]),
+            'no_chase': bool((structureL & roomL & noChase).iloc[i]), 'adx_context': bool((r.h4_adx_pct >= ADX_LONG_PCT).iloc[i] and (r.h4_adx_delta >= ADX_LONG_DELTA).iloc[i]),
             'early_reclaim': bool(finalL.iloc[i]),
         }
         short_steps = {
             'trend': bool(bear.iloc[i]), 'ema': bool((bear & emaS).iloc[i]),
             'vwap': bool((bear & emaS & vwapS).iloc[i]), 'di': bool((bear & emaS & vwapS & diS).iloc[i]),
             'rsi': bool(structureS.iloc[i]), 'room': bool((structureS & roomS).iloc[i]),
-            'no_chase': bool((structureS & roomS & noChase).iloc[i]), 'adx': bool((structureS & roomS & noChase & volOk & touchS & (r.h4_adx_pct >= ADX_SHORT_PCT) & (r.h4_adx_delta >= ADX_SHORT_DELTA)).iloc[i]),
+            'no_chase': bool((structureS & roomS & noChase).iloc[i]), 'adx_context': bool((r.h4_adx_pct >= ADX_SHORT_PCT).iloc[i] and (r.h4_adx_delta >= ADX_SHORT_DELTA).iloc[i]),
             'early_reclaim': bool(finalS.iloc[i]),
         }
         return {'timestamp': r.timestamp.iloc[i].isoformat(), 'long': long_steps, 'short': short_steps,
@@ -532,8 +535,25 @@ class PaperEngine:
             return None
         x = enrich(df)
         i = len(x) - 2
-        lm, sm = signal_mask(x, CORE_NAME)
+        base_lm, base_sm = signal_mask(x, CORE_NAME)
+        if V15_FAILURE_SHIELD_ENABLED:
+            lm, sm = failure_shield_mask(x, base_lm, base_sm)
+        else:
+            lm, sm = base_lm, base_sm
         diag = self.gate_snapshot(x, i)
+        side_for_shield = 'LONG' if bool(base_lm.iloc[i]) else ('SHORT' if bool(base_sm.iloc[i]) else None)
+        if side_for_shield:
+            diag = dict(diag)
+            diag['failure_shield'] = failure_shield_snapshot(x, i, side_for_shield)
+            diag['failure_shield']['enabled'] = V15_FAILURE_SHIELD_ENABLED
+            diag['execution_parity'] = {
+                'base_signal_mask': True,
+                'shield_applied': V15_FAILURE_SHIELD_ENABLED,
+                'base_long': bool(base_lm.iloc[i]),
+                'base_short': bool(base_sm.iloc[i]),
+                'final_long': bool(lm.iloc[i]),
+                'final_short': bool(sm.iloc[i]),
+            }
         side = 'LONG' if bool(lm.iloc[i]) else ('SHORT' if bool(sm.iloc[i]) else None)
         ts = x.timestamp.iloc[i].isoformat()
         if side is None:
@@ -731,6 +751,7 @@ class PaperEngine:
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
+        print(f'FAILURE SHIELD | enabled={V15_FAILURE_SHIELD_ENABLED} | stacked-veto only | core={CORE_NAME}')
         syms = self.discover_universe()
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
         self._btc_filter_context = None
@@ -754,8 +775,8 @@ class PaperEngine:
         candidates = []
         scanned = valid_data = request_errors = 0
         diag_total = {
-            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx','early_reclaim')},
-            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx','early_reclaim')},
+            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx_context','early_reclaim')},
+            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx_context','early_reclaim')},
             'final_long': 0, 'final_short': 0,
         }
         near_miss = []
