@@ -28,6 +28,14 @@ EARLY_RECLAIM_BUFFER_ATR = 0.05
 EARLY_VOLUME_RATIO_MIN = 1.00
 EARLY_VOLUME_SLOPE_MIN = -0.20
 
+# Failure-mode shield: deliberately conservative and opt-in. It only blocks
+# stacked failure symptoms; single weak symptoms are left to the base core.
+FAILURE_SHIELD_NAME = 'V15_FAILURE_SHIELD_V1'
+FAILURE_SHIELD_DIST_EMA_MAX_ATR = 0.80
+FAILURE_SHIELD_MIN_VOLUME_RATIO = 1.20
+FAILURE_SHIELD_ADX_EXHAUSTION_PCT = 0.90
+FAILURE_SHIELD_ADX_EXHAUSTION_DELTA = 0.00
+
 # Structure-aware stop: tighter than the old 20-bar swing + 1 ATR stop, but bounded.
 STRUCTURE_STOP_LOOKBACK = 8
 STRUCTURE_STOP_ATR_BUFFER = 0.65
@@ -259,6 +267,52 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     return x
+
+
+def failure_shield_snapshot(x: pd.DataFrame, i: int, side: str):
+    """Explain stacked failure-mode risk without changing the base signal."""
+    dist = float(x.dist_ema20_atr.iloc[i])
+    volr = float(x.volr.iloc[i])
+    adx_pct = float(x.h4_adx_pct.iloc[i])
+    adx_delta = float(x.h4_adx_delta.iloc[i])
+    overextended = np.isfinite(dist) and dist > FAILURE_SHIELD_DIST_EMA_MAX_ATR
+    weak_volume = (not np.isfinite(volr)) or volr < FAILURE_SHIELD_MIN_VOLUME_RATIO
+    adx_exhaustion = (
+        np.isfinite(adx_pct) and np.isfinite(adx_delta)
+        and adx_pct >= FAILURE_SHIELD_ADX_EXHAUSTION_PCT
+        and adx_delta < FAILURE_SHIELD_ADX_EXHAUSTION_DELTA
+    )
+    # Require two independent symptoms before vetoing. This is intentional:
+    # it avoids turning a useful trend core into a single-indicator filter.
+    stacked = (overextended and weak_volume) or (overextended and adx_exhaustion)
+    reasons = []
+    if overextended: reasons.append('overextended')
+    if weak_volume: reasons.append('weak_volume')
+    if adx_exhaustion: reasons.append('adx_exhaustion')
+    return {
+        'core': CORE_NAME,
+        'shield': FAILURE_SHIELD_NAME,
+        'side': side,
+        'pass': not stacked,
+        'veto': stacked,
+        'reasons': reasons,
+        'dist_ema20_atr': dist,
+        'volume_ratio': volr,
+        'h4_adx_pct': adx_pct,
+        'h4_adx_delta': adx_delta,
+    }
+
+
+def failure_shield_mask(x: pd.DataFrame, long_mask, short_mask):
+    """Return base signals with only stacked failure modes vetoed."""
+    long_out = long_mask.copy()
+    short_out = short_mask.copy()
+    for i in range(len(x)):
+        if bool(long_out.iloc[i]):
+            long_out.iloc[i] = not failure_shield_snapshot(x, i, 'LONG')['veto']
+        if bool(short_out.iloc[i]):
+            short_out.iloc[i] = not failure_shield_snapshot(x, i, 'SHORT')['veto']
+    return long_out.fillna(False), short_out.fillna(False)
 
 
 def signal_mask(x: pd.DataFrame, core: str = CORE_NAME):
