@@ -171,7 +171,7 @@ jobs:
                   payload[key] = summary.get(key)
           except Exception:
               pass
-          with open("v15_scan_health.json v15_1_shadow_e_signals.csv", "w", encoding="utf-8") as f:
+          with open("v15_scan_health.json", "w", encoding="utf-8") as f:
               json.dump(payload, f, indent=2, ensure_ascii=False)
           PY
           if [ "$RC" -ne 0 ]; then
