@@ -711,9 +711,6 @@ class PaperEngine:
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
         syms = self.discover_universe()
-        if V15_DEFENSIVE_MODE and self._loss_pause_active(datetime.now(timezone.utc).isoformat()):
-            print(f'PORTFOLIO CIRCUIT BREAKER | loss_streak={self._portfolio_loss_streak()} | pause={V15_LOSS_PAUSE_MIN}m')
-            self.save_state(); self.report(); return
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
         self._btc_filter_context = None
         self._btc_filter_timestamp = None
@@ -726,6 +723,12 @@ class PaperEngine:
                     self.close(key, *res)
             except Exception as e:
                 print(f'TRACK ERROR | {p.coin} | {e}')
+        if V15_DEFENSIVE_MODE and self._loss_pause_active(datetime.now(timezone.utc).isoformat()):
+            print(f'PORTFOLIO CIRCUIT BREAKER | loss_streak={self._portfolio_loss_streak()} | pause={V15_LOSS_PAUSE_MIN}m | new_entries=0')
+            self.save_state(); self.report()
+            print(f'SCAN COMPLETE | circuit-breaker active | universe={len(syms)}')
+            return
+
         free_slots = max(0, MAX_ACTIVE-len(self.positions))
         candidates = []
         scanned = valid_data = request_errors = 0
