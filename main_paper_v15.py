@@ -38,6 +38,16 @@ BTC_FILTER_ENABLED = os.getenv('BTC_FILTER_ENABLED', '1').strip().lower() in {'1
 BTC_FILTER_MODE = os.getenv('BTC_FILTER_MODE', 'shadow').strip().lower()
 BTC_FILTER_FAIL_CLOSED = os.getenv('BTC_FILTER_FAIL_CLOSED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
 
+# Post-100-trade defensive optimization layer. Isolated from signal_mask().
+V15_DEFENSIVE_MODE = os.getenv('V15_DEFENSIVE_MODE', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
+V15_ENTRY_SCORE_MAX = float(os.getenv('V15_ENTRY_SCORE_MAX', '60'))
+V15_DIST_EMA_MAX_ATR = float(os.getenv('V15_DIST_EMA_MAX_ATR', '0.80'))
+V15_MIN_VOLUME_RATIO = float(os.getenv('V15_MIN_VOLUME_RATIO', '1.20'))
+V15_LOSS_STREAK_PAUSE = int(os.getenv('V15_LOSS_STREAK_PAUSE', '3'))
+V15_LOSS_PAUSE_MIN = int(os.getenv('V15_LOSS_PAUSE_MIN', '60'))
+V15_MAX_ACTIVE_PER_SIDE = int(os.getenv('V15_MAX_ACTIVE_PER_SIDE', '3'))
+V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'LOW_SCORE').strip().upper()
+
 STATE_FILE = Path('paper_v15_state.json')
 STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
 JOURNAL_FILE = Path('paper_v15_trades.csv')
@@ -454,6 +464,45 @@ class PaperEngine:
         header = not SHADOW_E_FILE.exists()
         pd.DataFrame([row]).to_csv(SHADOW_E_FILE, mode='a', header=header, index=False)
 
+    def _portfolio_loss_streak(self):
+        streak = 0
+        for r in reversed(self.closed):
+            result = str(r.get('result', '')).upper().replace(' HIT', '').strip()
+            if result == 'SL':
+                streak += 1
+            elif result == 'TP':
+                break
+        return streak
+
+    def _loss_pause_active(self, signal_ts):
+        if not V15_DEFENSIVE_MODE or V15_LOSS_STREAK_PAUSE <= 0 or V15_LOSS_PAUSE_MIN <= 0:
+            return False
+        streak = self._portfolio_loss_streak()
+        if streak < V15_LOSS_STREAK_PAUSE or not self.closed:
+            return False
+        try:
+            last_closed = datetime.fromisoformat(str(self.closed[-1].get('closed_at','')).replace('Z','+00:00'))
+            now_dt = datetime.fromisoformat(str(signal_ts).replace('Z','+00:00'))
+            age = (now_dt-last_closed).total_seconds()/60.0
+            return 0 <= age < V15_LOSS_PAUSE_MIN
+        except Exception:
+            return False
+
+    def _entry_defense(self, position):
+        if not V15_DEFENSIVE_MODE:
+            return True, 'disabled'
+        m = position.entry_metrics or {}
+        score = float(position.entry_score)
+        dist = float(m.get('dist_ema20_atr', np.inf))
+        volr = float(m.get('volr', 0.0))
+        if not np.isfinite(score) or score > V15_ENTRY_SCORE_MAX:
+            return False, f'score>{V15_ENTRY_SCORE_MAX:g}'
+        if not np.isfinite(dist) or dist > V15_DIST_EMA_MAX_ATR:
+            return False, f'distEMA>{V15_DIST_EMA_MAX_ATR:g}ATR'
+        if not np.isfinite(volr) or volr < V15_MIN_VOLUME_RATIO:
+            return False, f'volr<{V15_MIN_VOLUME_RATIO:g}'
+        return True, 'pass'
+
     def analyze_latest(self, symbol):
         df = self.fetch_df(symbol)
         if df is None:
@@ -552,6 +601,12 @@ class PaperEngine:
             entry_score=float(score), entry_diag=diag, entry_metrics=entry_metrics,
             score_breakdown=score_breakdown, signal_key=key, btc_context=btc_ctx,
         )
+        defense_ok, defense_reason = self._entry_defense(p)
+        diag['defensive_gate'] = {'pass': defense_ok, 'reason': defense_reason}
+        if not defense_ok:
+            print(f'DEFENSIVE GATE | {symbol} | {side} | score={score:.1f} | dist={dist:.2f} | volr={float(x.volr.iloc[i]):.2f} | {defense_reason}')
+            return {'signal': None, 'timestamp': ts, 'diag': diag}
+
         shadow_e = self.shadow_e_snapshot(x, i, side)
         self.persist_shadow_e(p, shadow_e)
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
@@ -656,6 +711,9 @@ class PaperEngine:
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
         syms = self.discover_universe()
+        if V15_DEFENSIVE_MODE and self._loss_pause_active(datetime.now(timezone.utc).isoformat()):
+            print(f'PORTFOLIO CIRCUIT BREAKER | loss_streak={self._portfolio_loss_streak()} | pause={V15_LOSS_PAUSE_MIN}m')
+            self.save_state(); self.report(); return
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
         self._btc_filter_context = None
         self._btc_filter_timestamp = None
@@ -717,8 +775,25 @@ class PaperEngine:
         near_miss.sort(key=lambda z: (z[0],z[1]), reverse=True)
         for rank, (score_diag, sym, side, d) in enumerate(near_miss[:5],1):
             print(f'NEAR MISS #{rank} | {sym} | {side} | gates={score_diag}/9 | ts={d["timestamp"]}')
-        candidates.sort(key=lambda z: (z['score'], z['timestamp']), reverse=True)
-        selected = candidates[:free_slots]
+        if V15_DEFENSIVE_MODE and V15_SELECTION_MODE == 'LOW_SCORE':
+            candidates.sort(key=lambda z: (z['score'], z['timestamp']))
+        else:
+            candidates.sort(key=lambda z: (z['score'], z['timestamp']), reverse=True)
+
+        selected = []
+        active_long = sum(1 for p in self.positions.values() if p.side == 'LONG')
+        active_short = sum(1 for p in self.positions.values() if p.side == 'SHORT')
+        for c in candidates:
+            if len(selected) >= free_slots:
+                break
+            if V15_DEFENSIVE_MODE:
+                if c['side'] == 'LONG' and active_long >= V15_MAX_ACTIVE_PER_SIDE:
+                    continue
+                if c['side'] == 'SHORT' and active_short >= V15_MAX_ACTIVE_PER_SIDE:
+                    continue
+            selected.append(c)
+            if c['side'] == 'LONG': active_long += 1
+            else: active_short += 1
         print(f'SELECTION | candidates={len(candidates)} | free_slots={free_slots} | selected={len(selected)}')
         for rank, c in enumerate(candidates[:max(MAX_ACTIVE,10)],1):
             tag='SELECT' if c in selected else 'WAIT'
