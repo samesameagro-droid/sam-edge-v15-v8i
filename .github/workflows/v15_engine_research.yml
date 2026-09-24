@@ -6,6 +6,7 @@ on:
     paths:
       - 'core_engine_v15.py'
       - 'research_v15_compare.py'
+      - 'research_v15_1_100trade_variants.py'
       - '.github/workflows/v15_engine_research.yml'
   workflow_dispatch:
 
@@ -31,6 +32,9 @@ jobs:
       - name: Run 180-day legacy vs early comparison
         run: python research_v15_compare.py --days 180
 
+      - name: Run V15.1 100-trade counterfactual variants
+        run: python research_v15_1_100trade_variants.py
+
       - name: Upload research results and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -41,6 +45,9 @@ jobs:
             v15_engine_compare_results.csv
             v15_engine_compare_trades.csv
             v15_engine_compare_diagnostics.csv
+            v15_1_100trade_variant_summary.csv
+            v15_1_100trade_variant_detail.csv
+            v15_1_100trade_variant_report.json
 
       - name: Persist research results
         if: always()
