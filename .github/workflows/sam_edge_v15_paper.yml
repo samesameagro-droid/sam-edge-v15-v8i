@@ -171,7 +171,7 @@ jobs:
                   payload[key] = summary.get(key)
           except Exception:
               pass
-          with open("v15_scan_health.json", "w", encoding="utf-8") as f:
+          with open("v15_scan_health.json v15_1_shadow_e_signals.csv", "w", encoding="utf-8") as f:
               json.dump(payload, f, indent=2, ensure_ascii=False)
           PY
           if [ "$RC" -ne 0 ]; then
@@ -194,7 +194,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json"
+          STATE_FILES="paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv"
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
