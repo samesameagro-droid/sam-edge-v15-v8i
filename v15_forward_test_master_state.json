@@ -1,9 +1,12 @@
 {
-  "target": 100,
-  "next_trade_no": 1,
-  "closed_trades": 0,
+  "baseline_trade_no": 100,
+  "next_trade_no": 101,
+  "baseline_closed_trades": 100,
+  "cohort_closed_trades": 0,
   "active_positions": [],
   "max_active": 5,
+  "starting_equity": 100.0,
   "score_is_execution_threshold": false,
-  "validation": "9 V15 gates from signal_mask"
+  "validation": "9 V15 gates from signal_mask",
+  "cohort": "TRADE_101_PLUS"
 }
