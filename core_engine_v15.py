@@ -6,7 +6,11 @@ import numpy as np
 import pandas as pd
 
 LEGACY_CORE_NAME = 'V15_ADX4H_CANDLE2H'
-CORE_NAME = 'V15_EARLY_RECLAIM_V1'
+BASE_CORE_NAME = 'V15_EARLY_RECLAIM_V1'
+# Final executable core identity for the new forward-test cohort.
+# Precision V2 keeps the proven Early Reclaim trigger as its base signal and
+# adds the V2 execution gate in main_paper_v15.py.
+CORE_NAME = 'V15_PRECISION_V2_FINAL'
 RR = 1.25
 SWING_LOOKBACK = 20
 MAX_HOLD_BARS = 96
@@ -330,7 +334,7 @@ def signal_mask(x: pd.DataFrame, core: str = CORE_NAME):
         adxL=(r.h4_adx_pct>=ADX_LONG_PCT)&(r.h4_adx_delta>=ADX_LONG_DELTA)
         adxS=(r.h4_adx_pct>=ADX_SHORT_PCT)&(r.h4_adx_delta>=ADX_SHORT_DELTA)
         return (structureL&adxL&roomL&noex&r.c2h_bull_strict).fillna(False), (structureS&adxS&roomS&noex&r.c2h_bear_strict).fillna(False)
-    if core != CORE_NAME:
+    if core not in {CORE_NAME, BASE_CORE_NAME}:
         raise ValueError(f'Unsupported core: {core}')
 
     r=x
