@@ -52,7 +52,7 @@ V15_LOSS_PAUSE_MIN = int(os.getenv('V15_LOSS_PAUSE_MIN', '60'))
 V15_MAX_ACTIVE_PER_SIDE = int(os.getenv('V15_MAX_ACTIVE_PER_SIDE', '3'))
 V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper()
 
-# Precision execution gate: validated candidate from the frozen 100-trade forensic cohort. OFF by default so the historical V15 runner remains reproducible.
+# Precision V2 final execution gate. Enabled by default for the new forward-test cohort.
 V15_PRECISION_MODE = os.getenv('V15_PRECISION_MODE', '1').strip().lower() in {'1','true','yes','on'}
 V15_PRECISION_SCORE_MAX = float(os.getenv('V15_PRECISION_SCORE_MAX', '65'))
 
@@ -655,7 +655,7 @@ class PaperEngine:
         shadow_e = self.shadow_e_snapshot(x, i, side)
         diag['precision_gate'] = {
             'enabled': V15_PRECISION_MODE,
-            'pass': bool(shadow_e['e_pass']),
+            'pass': bool(shadow_e['e_pass'] and score < V15_PRECISION_SCORE_MAX),
             'fresh_pullback': bool(shadow_e['fresh_pullback']),
             'touch_age': shadow_e['touch_age'],
             'adx_ok': bool(shadow_e['adx_ok']),
