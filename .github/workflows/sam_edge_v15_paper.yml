@@ -109,10 +109,10 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           START_EQUITY: "100"
-          RISK_PCT: "0.005"
+          RISK_PCT: "0.01"
           HISTORY_15M: "3600"
           FETCH_CHUNK: "900"
-          MIN_VOLUME_USDT: "3000000"
+          MIN_VOLUME_USDT: "10000000"
           UNIVERSE_LIMIT: "100"
           MAX_ACTIVE_POSITIONS: "5"
           RUN_ONCE: "1"
