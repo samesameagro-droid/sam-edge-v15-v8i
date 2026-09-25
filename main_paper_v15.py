@@ -74,10 +74,10 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX, V15_FAILURE_SHIELD_ENABLED,
 ])).encode()).hexdigest()[:16]
 
-STATE_FILE = Path('paper_v15_state.json')
-STATE_BACKUP_FILE = Path('paper_v15_state.backup.json')
-JOURNAL_FILE = Path('paper_v15_trades.csv')
-SIGNAL_HISTORY = Path('paper_v15_signal_history.json')
+STATE_FILE = Path('paper_v15_state_v2.json')
+STATE_BACKUP_FILE = Path('paper_v15_state_v2.backup.json')
+JOURNAL_FILE = Path('paper_v15_trades_v2.csv')
+SIGNAL_HISTORY = Path('paper_v15_signal_history_v2.json')
 UNIVERSE_FILE = Path('paper_v15_universe.json')
 SHADOW_E_FILE = Path('v15_1_shadow_e_signals.csv')
 TELEGRAM_SIGNAL_ENABLED = os.getenv('TELEGRAM_SIGNAL_ENABLED', '1').strip().lower() in {'1','true','yes','on'}
