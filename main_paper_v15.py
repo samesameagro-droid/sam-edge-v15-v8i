@@ -80,6 +80,7 @@ JOURNAL_FILE = Path('paper_v15_trades.csv')
 SIGNAL_HISTORY = Path('paper_v15_signal_history.json')
 UNIVERSE_FILE = Path('paper_v15_universe.json')
 SHADOW_E_FILE = Path('v15_1_shadow_e_signals.csv')
+TELEGRAM_SIGNAL_ENABLED = os.getenv('TELEGRAM_SIGNAL_ENABLED', '1').strip().lower() in {'1','true','yes','on'}
 
 
 @dataclass
@@ -711,32 +712,38 @@ class PaperEngine:
             if tp: return ('TP', p.tp, candle_ts.isoformat())
         return None
 
+    def _upsert_trade_journal(self, rec):
+        """Keep one journal row per executable trade; OPEN is updated to TP/SL on close."""
+        path = JOURNAL_FILE
+        key = str(rec.get('signal_key', ''))
+        if path.exists() and key:
+            try:
+                rows = pd.read_csv(path, dtype=str).fillna('')
+                if 'signal_key' in rows.columns:
+                    mask = rows['signal_key'].astype(str) == key
+                    if bool(mask.any()):
+                        for col, val in rec.items():
+                            if col not in rows.columns:
+                                rows[col] = ''
+                            rows.loc[mask, col] = '' if val is None else str(val)
+                        rows.to_csv(path, index=False)
+                        return
+            except Exception as e:
+                print(f'JOURNAL UPSERT FALLBACK | {type(e).__name__}: {e}')
+        pd.DataFrame([rec]).to_csv(path, mode='a', header=not path.exists(), index=False)
+
     def close(self, key, result, price, ts):
-        # IMPORTANT: do not pop the position before persistence succeeds.
-        # The old order could silently delete a live trade if CSV/journal
-        # persistence raised an exception.
         p = self.positions[key]
         rr = RR if result == 'TP' else -1.0
         risk_now = self.equity * RISK_PCT
         new_equity = self.equity + risk_now * rr
         rec = asdict(p)
         rec.update({'closed_at': ts, 'exit': price, 'result': result, 'R': rr, 'equity_after': new_equity})
-
-        # Persist the result before removing the live position. If this fails,
-        # the position remains active and the next scan can retry.
-        pd.DataFrame([rec]).to_csv(
-            JOURNAL_FILE,
-            mode='a',
-            header=not JOURNAL_FILE.exists(),
-            index=False,
-        )
+        self._upsert_trade_journal(rec)
         self.closed.append(rec)
         self.equity = new_equity
         print(f'🎯 {result} | {p.coin} | {p.side} | R={rr:+.2f} | Equity=${self.equity:.2f}')
         try:
-            # Use the deterministic result-delivery guard so TP/SL notifications
-            # have their own RESULT identity, 5 delivery retries, and are always
-            # recoverable by reconcile_v15_results.py on the next workflow run.
             from telegram_result_guard import send_result as send_guarded_result
             sent = send_guarded_result(asdict(p), result, price, ts, self.equity)
             if sent:
@@ -744,11 +751,7 @@ class PaperEngine:
             else:
                 print(f'⚠️ TELEGRAM RESULT GUARDED NOT SENT | {p.coin} | {p.side} | {result} | queued_for_reconcile')
         except Exception as e:
-            # Notification failure must never break the trading/paper engine;
-            # the closed record remains in state and reconcile retries delivery.
             print(f'TELEGRAM RESULT GUARDED ERROR | {p.coin} | {result} | {type(e).__name__}: {e}')
-
-        # Only now is it safe to remove the live position.
         self.positions.pop(key, None)
     def report(self):
         if not self.closed:
@@ -765,7 +768,7 @@ class PaperEngine:
     def scan_once(self):
         t0 = time.perf_counter()
         print('\\n' + '='*100)
-        print(f'SAM EDGE V15 | BUILD={BUILD} | CORE={CORE_NAME}')
+        print(f'SAM EDGE V15 | BUILD={BUILD} | CORE={CORE_NAME} | TELEGRAM_SIGNAL={TELEGRAM_SIGNAL_ENABLED}')
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
@@ -863,28 +866,41 @@ class PaperEngine:
             tag='SELECT' if c in selected else 'WAIT'
             print(f'  #{rank:<2} {tag:<6} | {c["position"].coin:<24} | {c["side"]:<5} | score={c["score"]:.1f}')
         from notifiers import send_signal
-        # Telegram must contain ONLY executable entries. Candidates that lose
-        # active-slot selection stay in Actions logs as WAITLIST and are never
-        # journaled or sent to Telegram.
+        # Telegram is ON by default for the Precision V2 forward test.
+        # Only executable, slot-selected entries are delivered.
         for c in selected:
             p=c['position']; key=c['key']
             if key in self.signal_history:
                 continue
+
+            # Put the position into live state first and create one OPEN journal row.
+            self.positions[p.coin]=p
+            entry_rec=asdict(p)
+            entry_rec.update({
+                'closed_at': '',
+                'exit': '',
+                'result': 'OPEN',
+                'R': '',
+                'equity_after': self.equity,
+                'telegram_status': 'PENDING',
+            })
+            self._upsert_trade_journal(entry_rec)
+
             payload=asdict(p)
             payload['selection_score']=round(c['score'],2)
             payload['telegram_status']='EXECUTED'
-            sent=send_signal(payload,self.equity)
+            sent=False
+            if TELEGRAM_SIGNAL_ENABLED:
+                sent=send_signal(payload,self.equity)
+            else:
+                print(f'📵 TELEGRAM SIGNAL DISABLED | {p.coin} | {p.side}')
             if sent:
                 self.signal_history.add(key)
                 print(f'📨 TELEGRAM SIGNAL | {p.coin} | {p.side} | status=EXECUTED | score={c["score"]:.1f}')
-            else:
+            elif TELEGRAM_SIGNAL_ENABLED:
                 print(f'⚠️ TELEGRAM NOT SENT | {p.coin} | {p.side} | score={c["score"]:.1f}')
 
-            p=c['position']; key=c['key']
-            self.positions[p.coin]=p
-            print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g}')
-            # Persist each newly opened position immediately so a runner interruption
-            # cannot erase an entry created earlier in the same scan.
+            print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g} | JOURNAL=OPEN')
             self.save_state()
         if len(candidates)>len(selected):
             print(f'WAITLIST | {len(candidates)-len(selected)} valid V15 candidates not executed because active slots are full.')
