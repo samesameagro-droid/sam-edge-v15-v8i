@@ -896,9 +896,14 @@ class PaperEngine:
                 print(f'📵 TELEGRAM SIGNAL DISABLED | {p.coin} | {p.side}')
             if sent:
                 self.signal_history.add(key)
+                entry_rec['telegram_status'] = 'SENT'
                 print(f'📨 TELEGRAM SIGNAL | {p.coin} | {p.side} | status=EXECUTED | score={c["score"]:.1f}')
             elif TELEGRAM_SIGNAL_ENABLED:
+                entry_rec['telegram_status'] = 'NOT_SENT'
                 print(f'⚠️ TELEGRAM NOT SENT | {p.coin} | {p.side} | score={c["score"]:.1f}')
+            else:
+                entry_rec['telegram_status'] = 'DISABLED'
+            self._upsert_trade_journal(entry_rec)
 
             print(f'✅ SIGNAL | {p.coin} | {p.side} | score={c["score"]:.1f} | Entry={p.entry:.8g} SL={p.sl:.8g} TP={p.tp:.8g} | JOURNAL=OPEN')
             self.save_state()
