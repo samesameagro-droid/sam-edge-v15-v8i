@@ -25,7 +25,7 @@ from core_engine_v15 import (
 
 load_dotenv()
 
-BUILD = os.getenv('SAM_EDGE_BUILD', 'V15-PRECISION-CANDIDATE-V1')
+BUILD = os.getenv('SAM_EDGE_BUILD', 'V15-PRECISION-V2-FINAL')
 TIMEFRAME = '15m'
 TRACK_TIMEFRAME = '5m'
 START_EQUITY = float(os.getenv('START_EQUITY', '100'))
@@ -34,7 +34,7 @@ SCAN_SEC = int(os.getenv('SCAN_SEC', '300'))
 HISTORY_15M = int(os.getenv('HISTORY_15M', '3600'))
 FETCH_CHUNK = int(os.getenv('FETCH_CHUNK', '900'))
 REQUEST_TIMEOUT_MS = int(os.getenv('REQUEST_TIMEOUT_MS', '15000'))
-MIN_VOLUME_USDT = float(os.getenv('MIN_VOLUME_USDT', '3000000'))
+MIN_VOLUME_USDT = float(os.getenv('MIN_VOLUME_USDT', '10000000'))
 UNIVERSE_LIMIT = int(os.getenv('UNIVERSE_LIMIT', '100'))
 MAX_ACTIVE = int(os.getenv('MAX_ACTIVE_POSITIONS', '5'))
 BTC_FILTER_ENABLED = os.getenv('BTC_FILTER_ENABLED', '1').strip().lower() in {'1', 'true', 'yes', 'on'}
@@ -53,7 +53,8 @@ V15_MAX_ACTIVE_PER_SIDE = int(os.getenv('V15_MAX_ACTIVE_PER_SIDE', '3'))
 V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper()
 
 # Precision execution gate: validated candidate from the frozen 100-trade forensic cohort. OFF by default so the historical V15 runner remains reproducible.
-V15_PRECISION_MODE = os.getenv('V15_PRECISION_MODE', '0').strip().lower() in {'1','true','yes','on'}
+V15_PRECISION_MODE = os.getenv('V15_PRECISION_MODE', '1').strip().lower() in {'1','true','yes','on'}
+V15_PRECISION_SCORE_MAX = float(os.getenv('V15_PRECISION_SCORE_MAX', '65'))
 
 # Failure-mode shield is a separate execution permission layer. It is OFF by default.
 V15_FAILURE_SHIELD_ENABLED = os.getenv('V15_FAILURE_SHIELD_ENABLED', '0').strip().lower() in {'1','true','yes','on'}
@@ -70,7 +71,7 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
     V15_DEFENSIVE_MODE, V15_ENTRY_SCORE_MAX, V15_DIST_EMA_MAX_ATR,
     V15_MIN_VOLUME_RATIO, V15_LOSS_STREAK_PAUSE, V15_LOSS_PAUSE_MIN,
-    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_FAILURE_SHIELD_ENABLED,
+    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX, V15_FAILURE_SHIELD_ENABLED,
 ])).encode()).hexdigest()[:16]
 
 STATE_FILE = Path('paper_v15_state.json')
@@ -660,9 +661,11 @@ class PaperEngine:
             'adx_ok': bool(shadow_e['adx_ok']),
             'vol_ok': bool(shadow_e['vol_ok']),
             'ema_ok': bool(shadow_e['ema_ok']),
+            'score_ok': bool(score < V15_PRECISION_SCORE_MAX),
+            'score_max': V15_PRECISION_SCORE_MAX,
         }
-        if V15_PRECISION_MODE and not shadow_e['e_pass']:
-            print(f'PRECISION GATE | {symbol} | {side} | fresh={shadow_e["fresh_pullback"]} | adx_ok={shadow_e["adx_ok"]} | vol={shadow_e["volr"]:.2f} | dist={shadow_e["ema_dist_atr"]:.2f} | REJECT')
+        if V15_PRECISION_MODE and (not shadow_e['e_pass'] or score >= V15_PRECISION_SCORE_MAX):
+            print(f'PRECISION GATE | {symbol} | {side} | fresh={shadow_e["fresh_pullback"]} | adx_ok={shadow_e["adx_ok"]} | vol={shadow_e["volr"]:.2f} | dist={shadow_e["ema_dist_atr"]:.2f} | score={score:.1f}<{V15_PRECISION_SCORE_MAX:g} | REJECT')
             return {'signal': None, 'timestamp': ts, 'diag': diag}
         self.persist_shadow_e(p, shadow_e)
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
@@ -766,7 +769,7 @@ class PaperEngine:
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
-        print(f'PRECISION MODE | enabled={V15_PRECISION_MODE} | fresh_pullback(1-2) + ADX deterioration veto + vol>=1.20 + distEMA<=0.80')
+        print(f'PRECISION V2 FINAL | enabled={V15_PRECISION_MODE} | score<{V15_PRECISION_SCORE_MAX:g} + fresh_pullback(1-2) + ADX deterioration veto + vol>=1.20 + distEMA<=0.80')
         print(f'FAILURE SHIELD | enabled={V15_FAILURE_SHIELD_ENABLED} | stacked-veto only | core={CORE_NAME}')
         syms = self.discover_universe()
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
