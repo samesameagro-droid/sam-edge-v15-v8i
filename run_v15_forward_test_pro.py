@@ -17,7 +17,7 @@ ccxt.bingx.fetch_tickers = fetch_tickers
 ccxt.bingx.fetch_ohlcv = fetch_ohlcv
 
 import notifiers
-from run_v15_forward_test import ForwardPaperEngine, TARGET_TRADES
+from run_v15_forward_test import ForwardPaperEngine, TARGET_TRADES, BASELINE_TRADE_NO
 
 CHART_CANDLES = int(os.getenv("TELEGRAM_CHART_CANDLES", "80"))
 CHART_FILE = Path(tempfile.gettempdir()) / "sam_edge_v15_signal_chart.png"
@@ -300,12 +300,16 @@ def _dedupe_forward_state(engine):
 
 
 def _reconcile_master_from_state(engine):
-    """Authoritatively rebuild master artifacts from the persisted paper closed history."""
+    """Preserve baseline trades #1..#100 and append only the new cohort."""
+    baseline = list(engine.master_rows[:BASELINE_TRADE_NO])
+    baseline_keys = {
+        str(r.get('trade_key', '')) for r in baseline if r.get('trade_key')
+    }
     valid = []
-    seen = set()
+    seen = set(baseline_keys)
     for r in engine.closed:
         try:
-            key = f"{r.get('coin','')}|{r.get('side','')}|{r.get('opened_at','')}|{r.get('core','')}"
+            key = engine._trade_key_from_record(r)
             if key in seen:
                 continue
             if str(r.get('result','')).upper().strip() not in {'TP','SL'}:
@@ -317,14 +321,17 @@ def _reconcile_master_from_state(engine):
         except Exception:
             continue
     valid.sort(key=lambda r: str(r.get('closed_at') or r.get('opened_at') or ''))
-    engine.master_rows = []
+    engine.master_rows = baseline
     for r in valid:
         engine._append_closed_record(r, len(engine.master_rows) + 1)
     engine._refresh_summary_fields()
-    if engine.master_rows:
-        engine._write_master()
+    engine._write_master()
     engine._write_summary()
-    print(f"MASTER RECONCILED FROM PAPER STATE | closed={len(engine.master_rows)} | active={len(engine.positions)}")
+    print(
+        f"MASTER RECONCILED | baseline={len(baseline)} "
+        f"| new_closed={len(valid)} | total={len(engine.master_rows)} "
+        f"| active={len(engine.positions)}"
+    )
 
 
 def resend_active_professional(engine):
