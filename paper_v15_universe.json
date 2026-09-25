@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T10:04:50.848924+00:00",
+  "updated_at": "2026-09-25T10:09:19.550983+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -44,8 +44,8 @@
     "CRV/USDT:USDT",
     "JTO/USDT:USDT",
     "DYDX/USDT:USDT",
-    "ENS/USDT:USDT",
     "JUP/USDT:USDT",
+    "ENS/USDT:USDT",
     "ETHFI/USDT:USDT",
     "LDO/USDT:USDT",
     "STRK/USDT:USDT",
@@ -71,8 +71,8 @@
     "XPL/USDT:USDT",
     "1INCH/USDT:USDT",
     "BROCCOLI/USDT:USDT",
-    "TRB/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "TRB/USDT:USDT",
     "RUNE/USDT:USDT",
     "RENDER/USDT:USDT",
     "DYM/USDT:USDT"
