@@ -193,21 +193,18 @@ def _send_text(text: str, retries: int = 3, signal_key: str | None = None) -> bo
                 _queue_pending(text, signal_key)
                 return False
 
-            # 5xx is ambiguous: Telegram may have processed the message before
-            # returning the server error. DO NOT retry.
-            print(f'TELEGRAM HTTP {r.status_code} | AMBIGUOUS DELIVERY — NOT RETRIED')
-            _mark_delivered(signal_key)
-            _remove_pending(text, signal_key)
-            return True
+            # 5xx is ambiguous. Do not claim delivery; keep the alert queued
+            # for reconciliation on the next run.
+            print(f'TELEGRAM HTTP {r.status_code} | AMBIGUOUS DELIVERY — QUEUED')
+            _queue_pending(text, signal_key)
+            return False
 
         except Exception as e:
-            # Network timeout/connection reset is also ambiguous: the request may
-            # already have reached Telegram. Retrying is the duplicate-message
-            # failure mode we are explicitly eliminating.
-            print(f'TELEGRAM AMBIGUOUS TRANSPORT ERROR — NOT RETRIED | {type(e).__name__}: {e}')
-            _mark_delivered(signal_key)
-            _remove_pending(text, signal_key)
-            return True
+            # Transport timeout/reset is ambiguous. Keep the alert queued rather
+            # than falsely marking it delivered.
+            print(f'TELEGRAM AMBIGUOUS TRANSPORT ERROR — QUEUED | {type(e).__name__}: {e}')
+            _queue_pending(text, signal_key)
+            return False
 
     return False
 
