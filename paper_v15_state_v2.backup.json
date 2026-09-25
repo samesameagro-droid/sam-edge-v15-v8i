@@ -1,6 +1,139 @@
 {
-  "equity": 100.0,
-  "closed": [],
+  "equity": 101.25,
+  "closed": [
+    {
+      "coin": "ORDI/USDT:USDT",
+      "side": "LONG",
+      "entry": 4.678,
+      "sl": 4.626927334118747,
+      "tp": 4.741840832351566,
+      "risk_R": 1.0,
+      "risk_cash": 1.0,
+      "opened_at": "2026-09-25T22:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "status": "OPEN",
+      "entry_score": 35.41836473919407,
+      "entry_diag": {
+        "timestamp": "2026-09-25T22:00:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx_context": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx_context": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "failure_shield": {
+          "core": "V15_PRECISION_V2_FINAL",
+          "shield": "V15_FAILURE_SHIELD_V1",
+          "side": "LONG",
+          "pass": true,
+          "veto": false,
+          "reasons": [],
+          "dist_ema20_atr": 0.016734589567762633,
+          "volume_ratio": 3.9442942425842453,
+          "h4_adx_pct": 0.465,
+          "h4_adx_delta": -2.7495774967886035,
+          "enabled": false
+        },
+        "execution_parity": {
+          "base_signal_mask": true,
+          "shield_applied": false,
+          "base_long": true,
+          "base_short": false,
+          "final_long": true,
+          "final_short": false
+        },
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": false,
+          "allowed_short": false,
+          "h1_bull": false,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-25T22:00:00+00:00",
+          "close": 83892.4,
+          "reason": "1H+4H trend alignment"
+        },
+        "defensive_gate": {
+          "pass": true,
+          "reason": "disabled"
+        },
+        "precision_gate": {
+          "enabled": true,
+          "pass": true,
+          "fresh_pullback": true,
+          "touch_age": 1,
+          "adx_ok": true,
+          "vol_ok": true,
+          "ema_ok": true,
+          "score_ok": true,
+          "score_max": 65.0
+        }
+      },
+      "entry_metrics": {
+        "close": 4.678,
+        "rsi": 51.23547040651467,
+        "h4_adx_pct": 0.465,
+        "h4_adx_delta": -2.7495774967886035,
+        "volr": 3.9442942425842453,
+        "vol_slope": 3.74740054475032,
+        "dist_ema20_atr": 0.016734589567762633,
+        "room_atr": 2.7144168812018927,
+        "body_atr": 0.863678098564225,
+        "close_pos": 0.971428571428562,
+        "atr": 0.03241948597115832
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.0,
+        "room": 1.0,
+        "location": 0.027890982612937765,
+        "volume": 1.0,
+        "trigger": 1.0
+      },
+      "signal_key": "ORDI/USDT:USDT|LONG|2026-09-25T22:00:00+00:00|V15_PRECISION_V2_FINAL",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": false,
+        "allowed_short": false,
+        "h1_bull": false,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-25T22:00:00+00:00",
+        "close": 83892.4,
+        "reason": "1H+4H trend alignment"
+      },
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-09-25T22:35:00+00:00",
+      "exit": 4.741840832351566,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 101.25
+    }
+  ],
   "positions": {
     "RUNE/USDT:USDT": {
       "coin": "RUNE/USDT:USDT",
@@ -125,133 +258,6 @@
         "h4_bear": false,
         "timestamp": "2026-09-25T21:30:00+00:00",
         "close": 83774.0,
-        "reason": "1H+4H trend alignment"
-      },
-      "strategy_fingerprint": "a391f765bccd3f3d"
-    },
-    "ORDI/USDT:USDT": {
-      "coin": "ORDI/USDT:USDT",
-      "side": "LONG",
-      "entry": 4.678,
-      "sl": 4.626927334118747,
-      "tp": 4.741840832351566,
-      "risk_R": 1.0,
-      "risk_cash": 1.0,
-      "opened_at": "2026-09-25T22:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "status": "OPEN",
-      "entry_score": 35.41836473919407,
-      "entry_diag": {
-        "timestamp": "2026-09-25T22:00:00+00:00",
-        "long": {
-          "trend": true,
-          "ema": true,
-          "vwap": true,
-          "di": true,
-          "rsi": true,
-          "room": true,
-          "no_chase": true,
-          "adx_context": false,
-          "early_reclaim": true
-        },
-        "short": {
-          "trend": false,
-          "ema": false,
-          "vwap": false,
-          "di": false,
-          "rsi": false,
-          "room": false,
-          "no_chase": false,
-          "adx_context": false,
-          "early_reclaim": false
-        },
-        "final_long": true,
-        "final_short": false,
-        "failure_shield": {
-          "core": "V15_PRECISION_V2_FINAL",
-          "shield": "V15_FAILURE_SHIELD_V1",
-          "side": "LONG",
-          "pass": true,
-          "veto": false,
-          "reasons": [],
-          "dist_ema20_atr": 0.016734589567762633,
-          "volume_ratio": 3.9442942425842453,
-          "h4_adx_pct": 0.465,
-          "h4_adx_delta": -2.7495774967886035,
-          "enabled": false
-        },
-        "execution_parity": {
-          "base_signal_mask": true,
-          "shield_applied": false,
-          "base_long": true,
-          "base_short": false,
-          "final_long": true,
-          "final_short": false
-        },
-        "btc_filter_mode": "shadow",
-        "btc_filter_allowed": true,
-        "btc_context": {
-          "enabled": true,
-          "mode": "shadow",
-          "allowed_long": false,
-          "allowed_short": false,
-          "h1_bull": false,
-          "h4_bull": true,
-          "h1_bear": false,
-          "h4_bear": false,
-          "timestamp": "2026-09-25T22:00:00+00:00",
-          "close": 83892.4,
-          "reason": "1H+4H trend alignment"
-        },
-        "defensive_gate": {
-          "pass": true,
-          "reason": "disabled"
-        },
-        "precision_gate": {
-          "enabled": true,
-          "pass": true,
-          "fresh_pullback": true,
-          "touch_age": 1,
-          "adx_ok": true,
-          "vol_ok": true,
-          "ema_ok": true,
-          "score_ok": true,
-          "score_max": 65.0
-        }
-      },
-      "entry_metrics": {
-        "close": 4.678,
-        "rsi": 51.23547040651467,
-        "h4_adx_pct": 0.465,
-        "h4_adx_delta": -2.7495774967886035,
-        "volr": 3.9442942425842453,
-        "vol_slope": 3.74740054475032,
-        "dist_ema20_atr": 0.016734589567762633,
-        "room_atr": 2.7144168812018927,
-        "body_atr": 0.863678098564225,
-        "close_pos": 0.971428571428562,
-        "atr": 0.03241948597115832
-      },
-      "score_breakdown": {
-        "adx": 0.0,
-        "delta": 0.0,
-        "room": 1.0,
-        "location": 0.027890982612937765,
-        "volume": 1.0,
-        "trigger": 1.0
-      },
-      "signal_key": "ORDI/USDT:USDT|LONG|2026-09-25T22:00:00+00:00|V15_PRECISION_V2_FINAL",
-      "btc_context": {
-        "enabled": true,
-        "mode": "shadow",
-        "allowed_long": false,
-        "allowed_short": false,
-        "h1_bull": false,
-        "h4_bull": true,
-        "h1_bear": false,
-        "h4_bear": false,
-        "timestamp": "2026-09-25T22:00:00+00:00",
-        "close": 83892.4,
         "reason": "1H+4H trend alignment"
       },
       "strategy_fingerprint": "a391f765bccd3f3d"
