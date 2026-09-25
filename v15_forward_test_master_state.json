@@ -3,7 +3,10 @@
   "next_trade_no": 101,
   "closed_trades": 100,
   "active_positions": [
-    "RUNE/USDT:USDT"
+    "RUNE/USDT:USDT",
+    "ORDI/USDT:USDT",
+    "ARB/USDT:USDT",
+    "IMX/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
