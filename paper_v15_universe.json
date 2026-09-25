@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T16:38:42.932173+00:00",
+  "updated_at": "2026-09-25T16:43:13.847263+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -36,8 +36,8 @@
     "BANANA/USDT:USDT",
     "APE/USDT:USDT",
     "PEOPLE/USDT:USDT",
-    "ARB/USDT:USDT",
     "CFX/USDT:USDT",
+    "ARB/USDT:USDT",
     "RUNE/USDT:USDT",
     "WIF/USDT:USDT",
     "WLD/USDT:USDT",
