@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T21:28:38.691913+00:00",
+  "updated_at": "2026-09-25T21:33:18.841716+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -66,9 +66,9 @@
     "TRB/USDT:USDT",
     "CRV/USDT:USDT",
     "ENS/USDT:USDT",
+    "ORDI/USDT:USDT",
     "SEI/USDT:USDT",
     "XPL/USDT:USDT",
-    "ORDI/USDT:USDT",
     "COMP/USDT:USDT"
   ]
 }
