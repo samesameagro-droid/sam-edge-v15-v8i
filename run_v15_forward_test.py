@@ -453,8 +453,12 @@ class ForwardPaperEngine(base.PaperEngine):
         print(f"MASTER REPORT | closed={len(rs)}/{TARGET_TRADES} | W/L={wins}/{losses} | WR={wins/len(rs)*100:.2f}% | NetR={sum(rs):+.2f} | PF={pf:.3f} | DD_R={max_dd:.2f} | Equity=${self.equity:.2f}")
 
     def scan_once(self):
-        if len(self.master_rows) >= TARGET_TRADES and not self.positions:
-            print(f"FORWARD TEST COMPLETE | {len(self.master_rows)} closed trades reached.")
+        # Trades #1..#100 are the completed historical baseline. The new
+        # forward cohort is complete only after TARGET_TRADES additional
+        # closed trades (#101 onward).
+        cohort_closed = max(0, len(self.master_rows) - BASELINE_TRADE_NO)
+        if cohort_closed >= TARGET_TRADES and not self.positions:
+            print(f"FORWARD TEST COMPLETE | cohort_closed={cohort_closed} new trades reached.")
             self.running = False
             return
         super().scan_once()
@@ -462,8 +466,9 @@ class ForwardPaperEngine(base.PaperEngine):
         if self.master_rows:
             self._write_master()
         self._write_summary()
-        if len(self.master_rows) >= TARGET_TRADES and not self.positions:
-            print(f"FORWARD TEST COMPLETE | {len(self.master_rows)} closed trades reached.")
+        cohort_closed = max(0, len(self.master_rows) - BASELINE_TRADE_NO)
+        if cohort_closed >= TARGET_TRADES and not self.positions:
+            print(f"FORWARD TEST COMPLETE | cohort_closed={cohort_closed} new trades reached.")
             self.running = False
 
 
