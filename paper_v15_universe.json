@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T10:17:48.802038+00:00",
+  "updated_at": "2026-09-25T10:23:21.477826+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -62,8 +62,8 @@
     "YFI/USDT:USDT",
     "PUMP/USDT:USDT",
     "COMP/USDT:USDT",
-    "ETC/USDT:USDT",
     "DOT/USDT:USDT",
+    "ETC/USDT:USDT",
     "GALA/USDT:USDT",
     "NIL/USDT:USDT",
     "10000SATS/USDT:USDT",
@@ -73,6 +73,7 @@
     "FARTCOIN/USDT:USDT",
     "TRB/USDT:USDT",
     "RUNE/USDT:USDT",
+    "RENDER/USDT:USDT",
     "DYM/USDT:USDT"
   ]
 }
