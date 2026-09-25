@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T07:58:51.759791+00:00",
+  "updated_at": "2026-09-25T08:03:22.632060+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -72,6 +72,7 @@
     "TRB/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "DYM/USDT:USDT",
-    "XPL/USDT:USDT"
+    "XPL/USDT:USDT",
+    "JASMY/USDT:USDT"
   ]
 }
