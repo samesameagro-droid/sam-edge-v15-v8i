@@ -228,9 +228,9 @@ def professional_send_signal(p, equity):
         f"RISK   <b>{risk_pct:.2f}%</b>\n\n"
         f"<i>Live BingX 15M chart attached. Paper trading only.</i>"
     )
-    chart = _make_chart(p)
-    if chart and _send_photo(chart, caption, signal_key=signal_key):
-        return True
+    # Send the confirmed text alert first. This guarantees the user gets a
+    # directly auditable Telegram message when a signal is created. Chart
+    # generation remains available for diagnostics but cannot block delivery.
     return notifiers._send_text(
         "🏆 SAM EDGE V15 | NEW SIGNAL\n"
         f"{p['coin']} | {side}\nENTRY: {_fmt(p['entry'])}\nSL: {_fmt(p['sl'])}\nTP: {_fmt(p['tp'])}\n"
