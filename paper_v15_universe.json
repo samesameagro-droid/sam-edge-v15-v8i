@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T06:14:11.670210+00:00",
+  "updated_at": "2026-09-25T06:19:05.195557+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 3000000.0,
@@ -39,16 +39,16 @@
     "NOT/USDT:USDT",
     "ORDI/USDT:USDT",
     "JUP/USDT:USDT",
+    "ETHFI/USDT:USDT",
     "ENS/USDT:USDT",
     "CFX/USDT:USDT",
-    "ETHFI/USDT:USDT",
     "1000BONK/USDT:USDT",
     "DYDX/USDT:USDT",
     "IMX/USDT:USDT",
     "TURBO/USDT:USDT",
-    "TIA/USDT:USDT",
     "CRV/USDT:USDT",
     "LDO/USDT:USDT",
+    "TIA/USDT:USDT",
     "DOT/USDT:USDT",
     "JTO/USDT:USDT",
     "SEI/USDT:USDT",
@@ -83,7 +83,6 @@
     "RUNE/USDT:USDT",
     "JASMY/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "BLUR/USDT:USDT",
     "FET/USDT:USDT",
     "ASTER/USDT:USDT",
     "GRASS/USDT:USDT",
@@ -93,9 +92,9 @@
     "RIVER/USDT:USDT",
     "PLUME/USDT:USDT",
     "UAI/USDT:USDT",
-    "FLOKI/USDT:USDT",
     "GIGGLE/USDT:USDT",
     "ZK/USDT:USDT",
+    "FLOKI/USDT:USDT",
     "AKE/USDT:USDT",
     "ALLO/USDT:USDT",
     "MOODENG/USDT:USDT",
@@ -103,6 +102,7 @@
     "BLESS/USDT:USDT",
     "ORCA/USDT:USDT",
     "KAITO/USDT:USDT",
-    "BULLA/USDT:USDT"
+    "BULLA/USDT:USDT",
+    "POPCAT/USDT:USDT"
   ]
 }
