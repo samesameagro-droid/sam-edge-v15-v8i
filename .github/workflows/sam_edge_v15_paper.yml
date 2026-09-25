@@ -120,6 +120,8 @@ jobs:
           BTC_FILTER_ENABLED: "1"
           BTC_FILTER_MODE: "shadow"
           BTC_FILTER_FAIL_CLOSED: "1"
+          FORWARD_BASELINE_TRADE_NO: "100"
+          FORWARD_TARGET_NEW_TRADES: "100"
         run: |
           if [ "$GITHUB_EVENT_NAME" = "schedule" ] && [ -f v15_scan_health.json ]; then
             LAST_TS=$(python - <<'PY'
@@ -194,7 +196,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state.json paper_v15_state.backup.json paper_v15_signal_history.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trading_journal.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv"
+          STATE_FILES="paper_v15_state_v2.json paper_v15_state_v2.backup.json paper_v15_signal_history_v2.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trades_v2.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv"
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
