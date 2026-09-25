@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from pathlib import Path
 
 import main_paper_v15 as base
@@ -19,7 +20,8 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
-TARGET_TRADES = 100
+BASELINE_TRADE_NO = int(os.getenv('FORWARD_BASELINE_TRADE_NO', '100'))
+TARGET_TRADES = int(os.getenv('FORWARD_TARGET_NEW_TRADES', '100'))
 
 FIELDS = [
     "trade_no", "trade_key", "signal_time", "coin", "side", "core", "score",
@@ -37,12 +39,13 @@ class ForwardPaperEngine(base.PaperEngine):
         self.master_bootstrapped = False
         super().__init__()
         self._load_master()
+        self._start_new_cohort()
         self._migrate_legacy_active_positions()
         self._refresh_summary_fields()
         self._write_master() if self.master_rows else None
         self._write_summary()
         print(
-            f"FORWARD TEST | completed={len(self.master_rows)}/{TARGET_TRADES} "
+            f"FORWARD TEST | baseline={BASELINE_TRADE_NO} | cohort_closed={max(0, len(self.master_rows)-BASELINE_TRADE_NO)}/{TARGET_TRADES} "
             f"| active={len(self.positions)} | max_active={base.MAX_ACTIVE} "
             f"| policy=9_GATES_NO_SCORE_THRESHOLD"
         )
@@ -169,6 +172,51 @@ class ForwardPaperEngine(base.PaperEngine):
         elif self.master_rows:
             self.master_bootstrapped = True
             print(f"MASTER JOURNAL BOOTSTRAPPED | imported={len(self.master_rows)}")
+
+    def _start_new_cohort(self):
+        """Start a fresh forward cohort after the completed baseline trades.
+
+        Trades #1..#100 remain historical in the master journal. The paper
+        engine resets to the agreed $100 starting equity and carries only
+        cohort-new closed records/active positions, so the next closed trade
+        is #101.
+        """
+        if len(self.master_rows) < BASELINE_TRADE_NO:
+            print(
+                f"FORWARD COHORT WAIT | baseline_master={len(self.master_rows)} "
+                f"| required={BASELINE_TRADE_NO}"
+            )
+            return
+
+        baseline_rows = self.master_rows[:BASELINE_TRADE_NO]
+        baseline_keys = {str(r.get('trade_key', '')) for r in baseline_rows}
+        before = len(self.closed)
+        self.closed = [
+            r for r in self.closed
+            if self._trade_key_from_record(r) not in baseline_keys
+        ]
+
+        cutoff = max(
+            (str(r.get('closed_at') or r.get('signal_time') or '') for r in baseline_rows),
+            default='',
+        )
+        kept_positions = {}
+        for key, pos in self.positions.items():
+            if cutoff and str(pos.opened_at) <= cutoff:
+                continue
+            kept_positions[key] = pos
+        removed_positions = len(self.positions) - len(kept_positions)
+        self.positions = kept_positions
+        self.equity = float(os.getenv('START_EQUITY', '100'))
+
+        print(
+            f"FORWARD NEW COHORT | baseline_trades={BASELINE_TRADE_NO} "
+            f"| next_trade_no={BASELINE_TRADE_NO + 1} "
+            f"| equity=${self.equity:.2f} "
+            f"| old_closed_removed={before-len(self.closed)} "
+            f"| old_active_removed={removed_positions} "
+            f"| active_new={len(self.positions)}"
+        )
 
     def _migrate_legacy_active_positions(self):
         # Never delete active positions during migration. V15 is intentionally
