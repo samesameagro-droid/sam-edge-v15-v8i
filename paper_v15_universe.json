@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T19:22:48.833507+00:00",
+  "updated_at": "2026-09-25T19:27:58.805957+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -18,9 +18,9 @@
     "HYPE/USDT:USDT",
     "LTC/USDT:USDT",
     "1000PEPE/USDT:USDT",
+    "INJ/USDT:USDT",
     "DOGE/USDT:USDT",
     "IMX/USDT:USDT",
-    "INJ/USDT:USDT",
     "BNB/USDT:USDT",
     "LINK/USDT:USDT",
     "ENA/USDT:USDT",
@@ -30,12 +30,12 @@
     "APT/USDT:USDT",
     "ADA/USDT:USDT",
     "NOT/USDT:USDT",
-    "APE/USDT:USDT",
     "DYDX/USDT:USDT",
     "CFX/USDT:USDT",
-    "GALA/USDT:USDT",
     "BANANA/USDT:USDT",
     "RUNE/USDT:USDT",
+    "GALA/USDT:USDT",
+    "APE/USDT:USDT",
     "ZRO/USDT:USDT",
     "ARB/USDT:USDT",
     "DYM/USDT:USDT",
@@ -55,8 +55,8 @@
     "TIA/USDT:USDT",
     "JUP/USDT:USDT",
     "PUMP/USDT:USDT",
-    "10000SATS/USDT:USDT",
     "ATOM/USDT:USDT",
+    "10000SATS/USDT:USDT",
     "STX/USDT:USDT",
     "PENDLE/USDT:USDT",
     "AUCTION/USDT:USDT",
@@ -70,7 +70,6 @@
     "COMP/USDT:USDT",
     "CRV/USDT:USDT",
     "XPL/USDT:USDT",
-    "MEW/USDT:USDT",
-    "SEI/USDT:USDT"
+    "MEW/USDT:USDT"
   ]
 }
