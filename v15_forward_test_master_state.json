@@ -1,10 +1,9 @@
 {
   "target": 100,
-  "next_trade_no": 102,
-  "closed_trades": 101,
+  "next_trade_no": 103,
+  "closed_trades": 102,
   "active_positions": [
     "RUNE/USDT:USDT",
-    "ARB/USDT:USDT",
     "IMX/USDT:USDT"
   ],
   "max_active": 5,
