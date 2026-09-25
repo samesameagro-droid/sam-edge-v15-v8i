@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T17:03:30.250671+00:00",
+  "updated_at": "2026-09-25T17:08:33.556650+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -40,8 +40,8 @@
     "RUNE/USDT:USDT",
     "ARB/USDT:USDT",
     "WIF/USDT:USDT",
-    "WLD/USDT:USDT",
     "KAS/USDT:USDT",
+    "WLD/USDT:USDT",
     "1000BONK/USDT:USDT",
     "STRK/USDT:USDT",
     "OP/USDT:USDT",
