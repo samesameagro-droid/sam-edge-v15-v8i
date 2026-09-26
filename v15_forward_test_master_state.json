@@ -1,16 +1,15 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 107,
+  "next_trade_no": 108,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 106,
+  "cohort_closed_trades": 107,
   "active_positions": [
-    "TAO/USDT:USDT",
-    "STRK/USDT:USDT"
+    "TAO/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 107,
+      "trade_no": 108,
       "coin": "TAO/USDT:USDT",
       "side": "LONG",
       "opened_at": "2026-09-26T07:30:00+00:00",
@@ -18,17 +17,6 @@
       "entry": 313.36,
       "sl": 308.15048327057843,
       "tp": 319.87189591177696,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 108,
-      "coin": "STRK/USDT:USDT",
-      "side": "LONG",
-      "opened_at": "2026-09-26T09:45:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.04091,
-      "sl": 0.04040383846121282,
-      "tp": 0.04154270192348398,
       "status": "ONGOING"
     }
   ],
