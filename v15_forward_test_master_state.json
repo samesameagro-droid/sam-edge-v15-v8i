@@ -1,16 +1,15 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 109,
+  "next_trade_no": 110,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 108,
+  "cohort_closed_trades": 109,
   "active_positions": [
-    "LINK/USDT:USDT",
-    "LDO/USDT:USDT"
+    "LINK/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 109,
+      "trade_no": 110,
       "coin": "LINK/USDT:USDT",
       "side": "LONG",
       "opened_at": "2026-09-26T10:15:00+00:00",
@@ -18,17 +17,6 @@
       "entry": 14.098,
       "sl": 13.89597513271793,
       "tp": 14.350531084102588,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 110,
-      "coin": "LDO/USDT:USDT",
-      "side": "LONG",
-      "opened_at": "2026-09-26T12:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.4928,
-      "sl": 0.4876404650192937,
-      "tp": 0.4992494187258829,
       "status": "ONGOING"
     }
   ],
