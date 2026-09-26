@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T15:02:17.947941+00:00",
+  "updated_at": "2026-09-26T15:07:05.910773+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -34,14 +34,15 @@
     "YFI/USDT:USDT",
     "JTO/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "KAS/USDT:USDT",
     "BANANA/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "FIL/USDT:USDT",
     "LDO/USDT:USDT",
     "ZRO/USDT:USDT",
     "CFX/USDT:USDT",
+    "STRK/USDT:USDT",
     "SEI/USDT:USDT",
-    "STRK/USDT:USDT"
+    "OP/USDT:USDT"
   ]
 }
