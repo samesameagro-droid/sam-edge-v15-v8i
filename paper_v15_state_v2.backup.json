@@ -794,5 +794,133 @@
       "equity_after": 105.34413320892334
     }
   ],
-  "positions": {}
+  "positions": {
+    "TAO/USDT:USDT": {
+      "coin": "TAO/USDT:USDT",
+      "side": "LONG",
+      "entry": 313.36,
+      "sl": 308.15048327057843,
+      "tp": 319.87189591177696,
+      "risk_R": 1.0,
+      "risk_cash": 1.0534413320892333,
+      "opened_at": "2026-09-26T07:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "status": "OPEN",
+      "entry_score": 42.77592890149289,
+      "entry_diag": {
+        "timestamp": "2026-09-26T07:30:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx_context": false,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx_context": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "failure_shield": {
+          "core": "V15_PRECISION_V2_FINAL",
+          "shield": "V15_FAILURE_SHIELD_V1",
+          "side": "LONG",
+          "pass": true,
+          "veto": false,
+          "reasons": [],
+          "dist_ema20_atr": 0.7218297788876726,
+          "volume_ratio": 1.2022542338846096,
+          "h4_adx_pct": 0.615,
+          "h4_adx_delta": 1.9448097017953785,
+          "enabled": false
+        },
+        "execution_parity": {
+          "base_signal_mask": true,
+          "shield_applied": false,
+          "base_long": true,
+          "base_short": false,
+          "final_long": true,
+          "final_short": false
+        },
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": false,
+          "allowed_short": false,
+          "h1_bull": false,
+          "h4_bull": true,
+          "h1_bear": false,
+          "h4_bear": false,
+          "timestamp": "2026-09-26T07:30:00+00:00",
+          "close": 84001.7,
+          "reason": "1H+4H trend alignment"
+        },
+        "defensive_gate": {
+          "pass": true,
+          "reason": "disabled"
+        },
+        "precision_gate": {
+          "enabled": true,
+          "pass": true,
+          "fresh_pullback": true,
+          "touch_age": 1,
+          "adx_ok": true,
+          "vol_ok": true,
+          "ema_ok": true,
+          "score_ok": true,
+          "score_max": 65.0
+        }
+      },
+      "entry_metrics": {
+        "close": 313.36,
+        "rsi": 55.03422460560977,
+        "h4_adx_pct": 0.615,
+        "h4_adx_delta": 1.9448097017953785,
+        "volr": 1.2022542338846096,
+        "vol_slope": 0.1277344410157133,
+        "dist_ema20_atr": 0.7218297788876726,
+        "room_atr": 1.4396728889730903,
+        "body_atr": 0.8158146370847457,
+        "close_pos": 0.9153439153439316,
+        "atr": 2.083806691768629
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.5974048508976892,
+        "room": 0.39311525931539354,
+        "location": 0.7969503685205456,
+        "volume": 0.6011271169423048,
+        "trigger": 1.0
+      },
+      "signal_key": "TAO/USDT:USDT|LONG|2026-09-26T07:30:00+00:00|V15_PRECISION_V2_FINAL",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": false,
+        "allowed_short": false,
+        "h1_bull": false,
+        "h4_bull": true,
+        "h1_bear": false,
+        "h4_bear": false,
+        "timestamp": "2026-09-26T07:30:00+00:00",
+        "close": 84001.7,
+        "reason": "1H+4H trend alignment"
+      },
+      "strategy_fingerprint": "a391f765bccd3f3d"
+    }
+  }
 }
