@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T21:12:11.554532+00:00",
+  "updated_at": "2026-09-26T21:17:01.392574+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -38,7 +38,6 @@
     "BANANA/USDT:USDT",
     "APE/USDT:USDT",
     "LDO/USDT:USDT",
-    "ZRO/USDT:USDT",
-    "ETHFI/USDT:USDT"
+    "ZRO/USDT:USDT"
   ]
 }
