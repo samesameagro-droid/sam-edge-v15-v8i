@@ -1,11 +1,27 @@
 {
-  "target": 100,
-  "next_trade_no": 107,
-  "closed_trades": 106,
+  "baseline_trade_no": 100,
+  "next_trade_no": 108,
+  "target_new_closed_trades": 100,
+  "baseline_closed_trades": 100,
+  "cohort_closed_trades": 6,
   "active_positions": [
     "TAO/USDT:USDT"
   ],
+  "ongoing_trades": [
+    {
+      "trade_no": 107,
+      "coin": "TAO/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-09-26T07:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 313.36,
+      "sl": 308.15048327057843,
+      "tp": 319.87189591177696,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
-  "validation": "9 V15 gates from signal_mask"
+  "validation": "9 V15 gates from signal_mask",
+  "cohort": "TRADE_101_PLUS"
 }
