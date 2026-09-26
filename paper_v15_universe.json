@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T21:46:50.650578+00:00",
+  "updated_at": "2026-09-26T21:52:02.842955+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -37,7 +37,8 @@
     "KAS/USDT:USDT",
     "BANANA/USDT:USDT",
     "APE/USDT:USDT",
+    "ZRO/USDT:USDT",
     "STX/USDT:USDT",
-    "ZRO/USDT:USDT"
+    "BLUR/USDT:USDT"
   ]
 }
