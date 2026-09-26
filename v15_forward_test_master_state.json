@@ -5,7 +5,8 @@
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 109,
   "active_positions": [
-    "LINK/USDT:USDT"
+    "LINK/USDT:USDT",
+    "DOT/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -17,6 +18,17 @@
       "entry": 14.098,
       "sl": 13.89597513271793,
       "tp": 14.350531084102588,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 111,
+      "coin": "DOT/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-09-26T13:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 1.226,
+      "sl": 1.2123883675508902,
+      "tp": 1.2430145405613873,
       "status": "ONGOING"
     }
   ],
