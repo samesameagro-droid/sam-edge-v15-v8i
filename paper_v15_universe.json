@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T05:47:58.934721+00:00",
+  "updated_at": "2026-09-26T05:52:24.130288+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -27,10 +27,10 @@
     "ADA/USDT:USDT",
     "RUNE/USDT:USDT",
     "LINK/USDT:USDT",
-    "OP/USDT:USDT",
     "WLD/USDT:USDT",
     "DOT/USDT:USDT",
     "ARB/USDT:USDT",
+    "OP/USDT:USDT",
     "GALA/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "BCH/USDT:USDT",
