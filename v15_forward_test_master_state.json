@@ -1,9 +1,8 @@
 {
   "target": 100,
-  "next_trade_no": 103,
-  "closed_trades": 102,
+  "next_trade_no": 104,
+  "closed_trades": 103,
   "active_positions": [
-    "RUNE/USDT:USDT",
     "IMX/USDT:USDT",
     "TIA/USDT:USDT"
   ],
