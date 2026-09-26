@@ -336,7 +336,9 @@ class ForwardPaperEngine(base.PaperEngine):
         from datetime import datetime, timezone
         MASTER_SUMMARY.write_text(json.dumps({
             "updated_at": datetime.now(timezone.utc).isoformat(),
-            "target_closed_trades": TARGET_TRADES,
+            "baseline_trade_no": BASELINE_TRADE_NO,
+            "next_trade_no": len(self.master_rows) + 1,
+            "target_new_closed_trades": TARGET_TRADES,
             "closed_trades": len(rs),
             "remaining": max(0, TARGET_TRADES - len(rs)),
             "wins": wins,
@@ -351,12 +353,15 @@ class ForwardPaperEngine(base.PaperEngine):
             "score_is_execution_threshold": False,
             "validation": "9 V15 gates from signal_mask",
             "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
+            "cohort": "TRADE_101_PLUS",
             "performance_diagnostics": self._performance_diagnostics(),
         }, indent=2, ensure_ascii=False), encoding="utf-8")
         MASTER_STATE.write_text(json.dumps({
-            "target": TARGET_TRADES,
+            "baseline_trade_no": BASELINE_TRADE_NO,
             "next_trade_no": len(self.master_rows) + 1,
-            "closed_trades": len(self.master_rows),
+            "target_new_closed_trades": TARGET_TRADES,
+            "baseline_closed_trades": BASELINE_TRADE_NO,
+            "cohort_closed_trades": len(rs),
             "active_positions": list(self.positions),
             "max_active": base.MAX_ACTIVE,
             "score_is_execution_threshold": False,
