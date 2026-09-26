@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T05:37:56.402230+00:00",
+  "updated_at": "2026-09-26T05:43:04.604186+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -50,11 +50,11 @@
     "ICP/USDT:USDT",
     "DYM/USDT:USDT",
     "KAS/USDT:USDT",
-    "TIA/USDT:USDT",
+    "BLUR/USDT:USDT",
     "STX/USDT:USDT",
+    "TIA/USDT:USDT",
     "10000SATS/USDT:USDT",
     "ZRO/USDT:USDT",
-    "BLUR/USDT:USDT",
     "YFI/USDT:USDT",
     "BOME/USDT:USDT",
     "SEI/USDT:USDT",
@@ -64,7 +64,7 @@
     "APE/USDT:USDT",
     "ORDI/USDT:USDT",
     "CRV/USDT:USDT",
-    "XPL/USDT:USDT",
-    "WIF/USDT:USDT"
+    "WIF/USDT:USDT",
+    "XPL/USDT:USDT"
   ]
 }
