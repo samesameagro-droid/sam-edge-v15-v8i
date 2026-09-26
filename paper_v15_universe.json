@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T17:42:06.342312+00:00",
+  "updated_at": "2026-09-26T17:48:22.791574+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -40,7 +40,7 @@
     "ZRO/USDT:USDT",
     "JTO/USDT:USDT",
     "CFX/USDT:USDT",
-    "LDO/USDT:USDT",
-    "STRK/USDT:USDT"
+    "STRK/USDT:USDT",
+    "LDO/USDT:USDT"
   ]
 }
