@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T07:48:34.450555+00:00",
+  "updated_at": "2026-09-26T07:52:42.620062+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -45,7 +45,6 @@
     "APT/USDT:USDT",
     "DYDX/USDT:USDT",
     "DYM/USDT:USDT",
-    "NOT/USDT:USDT",
     "ATOM/USDT:USDT",
     "KAS/USDT:USDT",
     "TRX/USDT:USDT",
@@ -56,6 +55,7 @@
     "BOME/USDT:USDT",
     "PENDLE/USDT:USDT",
     "FIL/USDT:USDT",
+    "NOT/USDT:USDT",
     "SEI/USDT:USDT",
     "10000SATS/USDT:USDT",
     "ORDI/USDT:USDT",
