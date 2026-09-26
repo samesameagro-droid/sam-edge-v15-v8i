@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-09-26T14:52:07.165414+00:00",
+  "updated_at": "2026-09-26T14:57:14.034926+00:00",
   "baseline_trade_no": 100,
   "next_trade_no": 112,
   "target_new_closed_trades": 100,
-  "closed_trades": 110,
+  "closed_trades": 111,
   "remaining": 0,
-  "wins": 59,
+  "wins": 60,
   "losses": 51,
-  "win_rate_pct": 53.64,
-  "net_R": 22.75,
-  "profit_factor": 1.4461,
+  "win_rate_pct": 54.05,
+  "net_R": 24.0,
+  "profit_factor": 1.4706,
   "drawdown_R": 13.75,
-  "equity": 108.25068277679023,
-  "active_positions": 1,
+  "equity": 109.60381631150011,
+  "active_positions": 0,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -30,28 +30,28 @@
     },
     "recent_20": {
       "trades": 20,
-      "wins": 10,
-      "losses": 10,
-      "win_rate_pct": 50.0,
-      "net_R": 2.5,
-      "profit_factor": 1.25
+      "wins": 11,
+      "losses": 9,
+      "win_rate_pct": 55.0,
+      "net_R": 4.75,
+      "profit_factor": 1.5278
     },
     "all_closed": {
-      "trades": 110,
-      "wins": 59,
+      "trades": 111,
+      "wins": 60,
       "losses": 51,
-      "win_rate_pct": 53.64,
-      "net_R": 22.75,
-      "profit_factor": 1.4461
+      "win_rate_pct": 54.05,
+      "net_R": 24.0,
+      "profit_factor": 1.4706
     },
     "by_side": {
       "LONG": {
-        "trades": 105,
-        "wins": 56,
+        "trades": 106,
+        "wins": 57,
         "losses": 49,
-        "win_rate_pct": 53.33,
-        "net_R": 21.0,
-        "profit_factor": 1.4286
+        "win_rate_pct": 53.77,
+        "net_R": 22.25,
+        "profit_factor": 1.4541
       },
       "SHORT": {
         "trades": 5,
@@ -80,12 +80,12 @@
         "profit_factor": 1.3587
       },
       "V15_PRECISION_V2_FINAL": {
-        "trades": 10,
-        "wins": 8,
+        "trades": 11,
+        "wins": 9,
         "losses": 2,
-        "win_rate_pct": 80.0,
-        "net_R": 8.0,
-        "profit_factor": 5.0
+        "win_rate_pct": 81.82,
+        "net_R": 9.25,
+        "profit_factor": 5.625
       }
     },
     "current_loss_streak": 0,
