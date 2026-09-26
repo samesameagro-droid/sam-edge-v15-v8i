@@ -1,11 +1,15 @@
 {
-  "target": 100,
+  "baseline_trade_no": 100,
   "next_trade_no": 107,
-  "closed_trades": 106,
+  "target_new_closed_trades": 100,
+  "baseline_closed_trades": 100,
+  "cohort_closed_trades": 6,
   "active_positions": [
     "TAO/USDT:USDT"
   ],
   "max_active": 5,
+  "starting_equity": 100,
   "score_is_execution_threshold": false,
-  "validation": "9 V15 gates from signal_mask"
+  "validation": "9 V15 gates from signal_mask",
+  "cohort": "TRADE_101_PLUS"
 }
