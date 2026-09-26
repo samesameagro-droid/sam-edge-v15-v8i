@@ -19,6 +19,7 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
+ONGOING_JOURNAL = Path("v15_forward_test_ongoing.csv")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
 BASELINE_TRADE_NO = int(os.getenv('FORWARD_BASELINE_TRADE_NO', '100'))
 TARGET_TRADES = int(os.getenv('FORWARD_TARGET_NEW_TRADES', '100'))
@@ -337,7 +338,7 @@ class ForwardPaperEngine(base.PaperEngine):
         MASTER_SUMMARY.write_text(json.dumps({
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "baseline_trade_no": BASELINE_TRADE_NO,
-            "next_trade_no": len(self.master_rows) + 1,
+            "next_trade_no": BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + len(self.positions) + 1,
             "target_new_closed_trades": TARGET_TRADES,
             "closed_trades": len(rs),
             "remaining": max(0, TARGET_TRADES - len(rs)),
@@ -363,6 +364,7 @@ class ForwardPaperEngine(base.PaperEngine):
             "baseline_closed_trades": BASELINE_TRADE_NO,
             "cohort_closed_trades": len(rs),
             "active_positions": list(self.positions),
+            "ongoing_trades": [dict(trade_no=n, coin=p.coin, side=p.side, opened_at=p.opened_at, core=p.core, entry=p.entry, sl=p.sl, tp=p.tp, status="ONGOING") for n,p in sorted([(self._ongoing_trade_map().get(f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"), p) for p in self.positions.values()], key=lambda x: x[0])],
             "max_active": base.MAX_ACTIVE,
             "score_is_execution_threshold": False,
             "validation": "9 V15 gates from signal_mask",
@@ -377,6 +379,22 @@ class ForwardPaperEngine(base.PaperEngine):
                 "trade_key": candidate["key"],
             }
         return result
+
+    def _ongoing_trade_map(self):
+        """Assign stable trade numbers to currently open post-baseline positions."""
+        active = sorted(self.positions.values(), key=lambda p: str(p.opened_at))
+        return {f"{p.coin}|{p.side}|{p.opened_at}|{p.core}": BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + i + 1 for i, p in enumerate(active)}
+
+    def _write_ongoing_journal(self):
+        import csv
+        fields = ["trade_no","trade_key","opened_at","coin","side","core","entry","sl","tp","risk_R","risk_cash","entry_score","status"]
+        mapping = self._ongoing_trade_map()
+        with ONGOING_JOURNAL.open("w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            w.writeheader()
+            for p in sorted(self.positions.values(), key=lambda x: str(x.opened_at)):
+                key = f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"
+                w.writerow({"trade_no": mapping[key], "trade_key": key, "opened_at": p.opened_at, "coin": p.coin, "side": p.side, "core": p.core, "entry": p.entry, "sl": p.sl, "tp": p.tp, "risk_R": p.risk_R, "risk_cash": p.risk_cash, "entry_score": getattr(p, "entry_score", ""), "status": "ONGOING"})
 
     def _score_for_position(self, p):
         prefix = f"{p.coin}|{p.side}|"
@@ -398,10 +416,11 @@ class ForwardPaperEngine(base.PaperEngine):
             self.save_state()
             return
         score = self._score_for_position(p)
+        trade_no = self._ongoing_trade_map().get(trade_key, BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + 1)
         super().close(key, result, price, ts)
         rr = base.RR if result == 'TP' else -1.0
         row = {
-            'trade_no': str(len(self.master_rows) + 1),
+            'trade_no': str(trade_no),
             'trade_key': trade_key,
             'signal_time': p.opened_at,
             'coin': p.coin,
@@ -431,6 +450,7 @@ class ForwardPaperEngine(base.PaperEngine):
         self._refresh_summary_fields()
         self._write_master()
         self._write_summary()
+        self._write_ongoing_journal()
         # Persist immediately after a close. If the runner dies before the end
         # of the scan, the closed trade and equity still survive the restart.
         self.save_state()
@@ -468,6 +488,7 @@ class ForwardPaperEngine(base.PaperEngine):
             return
         super().scan_once()
         self._refresh_summary_fields()
+        self._write_ongoing_journal()
         if self.master_rows:
             self._write_master()
         self._write_summary()
