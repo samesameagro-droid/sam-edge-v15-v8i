@@ -3,7 +3,8 @@
   "next_trade_no": 105,
   "closed_trades": 104,
   "active_positions": [
-    "IMX/USDT:USDT"
+    "IMX/USDT:USDT",
+    "FIL/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
