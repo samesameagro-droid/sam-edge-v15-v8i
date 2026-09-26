@@ -4,7 +4,8 @@
   "closed_trades": 102,
   "active_positions": [
     "RUNE/USDT:USDT",
-    "IMX/USDT:USDT"
+    "IMX/USDT:USDT",
+    "TIA/USDT:USDT"
   ],
   "max_active": 5,
   "score_is_execution_threshold": false,
