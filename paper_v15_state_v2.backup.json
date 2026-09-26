@@ -1,5 +1,5 @@
 {
-  "equity": 106.66093487403488,
+  "equity": 107.99419655996032,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -924,10 +924,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 106.66093487403488
-    }
-  ],
-  "positions": {
-    "TAO/USDT:USDT": {
+    },
+    {
       "coin": "TAO/USDT:USDT",
       "side": "LONG",
       "entry": 313.36,
@@ -1052,8 +1050,15 @@
         "close": 84001.7,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
-    },
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-09-26T10:55:00+00:00",
+      "exit": 319.87189591177696,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 107.99419655996032
+    }
+  ],
+  "positions": {
     "LINK/USDT:USDT": {
       "coin": "LINK/USDT:USDT",
       "side": "LONG",
