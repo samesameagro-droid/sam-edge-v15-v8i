@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26T06:03:40.564225+00:00",
+  "updated_at": "2026-09-26T06:07:52.057340+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -57,12 +57,12 @@
     "ZRO/USDT:USDT",
     "YFI/USDT:USDT",
     "BOME/USDT:USDT",
-    "SEI/USDT:USDT",
     "PENDLE/USDT:USDT",
     "1000BONK/USDT:USDT",
     "FIL/USDT:USDT",
-    "APE/USDT:USDT",
+    "SEI/USDT:USDT",
     "ORDI/USDT:USDT",
+    "APE/USDT:USDT",
     "CRV/USDT:USDT",
     "WIF/USDT:USDT",
     "XPL/USDT:USDT"
