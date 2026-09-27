@@ -25,7 +25,7 @@ on:
     # Poll more frequently so a delayed/dropped scheduled event has more
     # opportunities to recover the next 10-minute scan. The cadence guard
     # below still prevents an actual scan more often than every 9 minutes.
-    - cron: '2-59/5 * * * *'
+    - cron: '*/5 * * * *'
 
 concurrency:
   # One writer/runner at a time. Never cancel an active scan or state-persistence run.
@@ -196,7 +196,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state_v2.json paper_v15_state_v2.backup.json paper_v15_signal_history_v2.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trades_v2.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv"
+          STATE_FILES="paper_v15_state_v2.json paper_v15_state_v2.backup.json paper_v15_signal_history_v2.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trades_v2.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_ongoing.csv v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv"
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
@@ -237,9 +237,14 @@ jobs:
             fi
 
             git commit -m "paper: V15 professional forward state"
-            if git push origin HEAD:main; then
-              echo "STATE PUSH OK"
-              exit 0
+            # Rebase the local state commit onto the newest main before pushing.
+            # This handles commits created by another completed run/workflow between
+            # fetch and push without discarding the scan's freshly generated state.
+            if git fetch origin main && git rebase origin/main; then
+              if git push origin HEAD:main; then
+                echo "STATE PUSH OK"
+                exit 0
+              fi
             fi
 
             echo "REMOTE MOVED DURING PUSH - retrying from latest main"
