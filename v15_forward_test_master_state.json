@@ -3,23 +3,11 @@
   "next_trade_no": 114,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 111,
+  "cohort_closed_trades": 112,
   "active_positions": [
-    "JUP/USDT:USDT",
     "AAVE/USDT:USDT"
   ],
   "ongoing_trades": [
-    {
-      "trade_no": 112,
-      "coin": "JUP/USDT:USDT",
-      "side": "LONG",
-      "opened_at": "2026-09-27T09:30:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.3438,
-      "sl": 0.3383542811703469,
-      "tp": 0.35060714853706637,
-      "status": "ONGOING"
-    },
     {
       "trade_no": 113,
       "coin": "AAVE/USDT:USDT",
