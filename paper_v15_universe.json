@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T15:56:43.397052+00:00",
+  "updated_at": "2026-09-27T16:02:22.909554+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -32,7 +32,6 @@
     "1000PEPE/USDT:USDT",
     "YFI/USDT:USDT",
     "ADA/USDT:USDT",
-    "DOT/USDT:USDT",
     "TRX/USDT:USDT",
     "STX/USDT:USDT"
   ]
