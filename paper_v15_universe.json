@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T01:21:34.430867+00:00",
+  "updated_at": "2026-09-27T01:26:40.809721+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -25,8 +25,8 @@
     "ADA/USDT:USDT",
     "BNB/USDT:USDT",
     "ARB/USDT:USDT",
-    "HYPE/USDT:USDT",
     "LINK/USDT:USDT",
+    "HYPE/USDT:USDT",
     "DOT/USDT:USDT",
     "PUMP/USDT:USDT",
     "JUP/USDT:USDT",
@@ -34,6 +34,7 @@
     "BCH/USDT:USDT",
     "FIL/USDT:USDT",
     "ZRO/USDT:USDT",
+    "QNT/USDT:USDT",
     "ETHFI/USDT:USDT"
   ]
 }
