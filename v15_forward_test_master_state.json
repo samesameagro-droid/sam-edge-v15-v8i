@@ -4,8 +4,34 @@
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 111,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "JUP/USDT:USDT",
+    "AAVE/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 112,
+      "coin": "JUP/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-09-27T09:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.3438,
+      "sl": 0.3383542811703469,
+      "tp": 0.35060714853706637,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 113,
+      "coin": "AAVE/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-09-27T09:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 156.12,
+      "sl": 154.32786147608348,
+      "tp": 158.36017315489565,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
