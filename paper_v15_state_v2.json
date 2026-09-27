@@ -1,5 +1,5 @@
 {
-  "equity": 108.50777814838511,
+  "equity": 107.42270036690127,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -1584,10 +1584,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 108.50777814838511
-    }
-  ],
-  "positions": {
-    "AAVE/USDT:USDT": {
+    },
+    {
       "coin": "AAVE/USDT:USDT",
       "side": "LONG",
       "entry": 156.12,
@@ -1712,7 +1710,13 @@
         "close": 84768.7,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-09-27T13:00:00+00:00",
+      "exit": 154.32786147608348,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 107.42270036690127
     }
-  }
+  ],
+  "positions": {}
 }
