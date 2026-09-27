@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T19:31:39.469722+00:00",
+  "updated_at": "2026-09-27T19:36:40.577994+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -22,15 +22,14 @@
     "DOGE/USDT:USDT",
     "ARB/USDT:USDT",
     "HYPE/USDT:USDT",
-    "INJ/USDT:USDT",
     "ONDO/USDT:USDT",
+    "INJ/USDT:USDT",
     "BNB/USDT:USDT",
     "LINK/USDT:USDT",
     "PUMP/USDT:USDT",
     "JUP/USDT:USDT",
     "YFI/USDT:USDT",
     "BCH/USDT:USDT",
-    "1000PEPE/USDT:USDT",
-    "STX/USDT:USDT"
+    "1000PEPE/USDT:USDT"
   ]
 }
