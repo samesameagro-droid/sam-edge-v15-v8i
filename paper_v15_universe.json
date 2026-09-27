@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T00:56:53.429287+00:00",
+  "updated_at": "2026-09-27T01:02:20.064614+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -15,8 +15,8 @@
     "ENA/USDT:USDT",
     "SUI/USDT:USDT",
     "UNI/USDT:USDT",
-    "LTC/USDT:USDT",
     "INJ/USDT:USDT",
+    "LTC/USDT:USDT",
     "TAO/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "DOGE/USDT:USDT",
@@ -34,7 +34,6 @@
     "BCH/USDT:USDT",
     "FIL/USDT:USDT",
     "TRX/USDT:USDT",
-    "ETHFI/USDT:USDT",
     "ZRO/USDT:USDT"
   ]
 }
