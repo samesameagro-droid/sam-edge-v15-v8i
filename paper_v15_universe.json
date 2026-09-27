@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T02:16:58.890418+00:00",
+  "updated_at": "2026-09-27T02:21:52.235115+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -33,7 +33,6 @@
     "YFI/USDT:USDT",
     "QNT/USDT:USDT",
     "BCH/USDT:USDT",
-    "FIL/USDT:USDT",
     "BANANA/USDT:USDT",
     "ETHFI/USDT:USDT"
   ]
