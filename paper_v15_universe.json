@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T03:41:48.660231+00:00",
+  "updated_at": "2026-09-27T03:46:55.267295+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -16,8 +16,8 @@
     "SUI/USDT:USDT",
     "UNI/USDT:USDT",
     "LTC/USDT:USDT",
-    "DOGE/USDT:USDT",
     "INJ/USDT:USDT",
+    "DOGE/USDT:USDT",
     "TAO/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "ONDO/USDT:USDT",
