@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T04:42:33.087175+00:00",
+  "updated_at": "2026-09-27T04:47:39.145627+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -31,8 +31,8 @@
     "QNT/USDT:USDT",
     "JUP/USDT:USDT",
     "YFI/USDT:USDT",
-    "DOT/USDT:USDT",
     "BCH/USDT:USDT",
+    "DOT/USDT:USDT",
     "ZRO/USDT:USDT"
   ]
 }
