@@ -359,7 +359,7 @@ class ForwardPaperEngine(base.PaperEngine):
         }, indent=2, ensure_ascii=False), encoding="utf-8")
         MASTER_STATE.write_text(json.dumps({
             "baseline_trade_no": BASELINE_TRADE_NO,
-            "next_trade_no": len(self.master_rows) + 1,
+            "next_trade_no": len(self.master_rows) + len(self.positions) + 1,
             "target_new_closed_trades": TARGET_TRADES,
             "baseline_closed_trades": BASELINE_TRADE_NO,
             "cohort_closed_trades": len(rs),
