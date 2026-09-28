@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T21:27:27.795240+00:00",
+  "updated_at": "2026-09-28T21:32:24.272317+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -41,8 +41,8 @@
     "CRV/USDT:USDT",
     "NOT/USDT:USDT",
     "SEI/USDT:USDT",
-    "BCH/USDT:USDT",
     "OP/USDT:USDT",
+    "BCH/USDT:USDT",
     "PENDLE/USDT:USDT"
   ]
 }
