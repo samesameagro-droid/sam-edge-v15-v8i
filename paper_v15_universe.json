@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T14:57:15.566475+00:00",
+  "updated_at": "2026-09-28T15:01:56.587580+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,8 +29,8 @@
     "INJ/USDT:USDT",
     "ADA/USDT:USDT",
     "LINK/USDT:USDT",
-    "JUP/USDT:USDT",
     "HBAR/USDT:USDT",
+    "JUP/USDT:USDT",
     "YFI/USDT:USDT",
     "BCH/USDT:USDT",
     "FARTCOIN/USDT:USDT",
