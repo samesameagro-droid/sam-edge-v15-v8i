@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T04:56:59.131416+00:00",
+  "updated_at": "2026-09-28T05:01:56.448371+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,9 +29,9 @@
     "INJ/USDT:USDT",
     "JUP/USDT:USDT",
     "ADA/USDT:USDT",
-    "LINK/USDT:USDT",
     "YFI/USDT:USDT",
     "BCH/USDT:USDT",
+    "LINK/USDT:USDT",
     "SOON/USDT:USDT"
   ]
 }
