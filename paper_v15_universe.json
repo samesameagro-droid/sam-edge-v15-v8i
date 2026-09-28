@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T22:47:25.426491+00:00",
+  "updated_at": "2026-09-28T22:52:08.085922+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -37,10 +37,11 @@
     "ETC/USDT:USDT",
     "YFI/USDT:USDT",
     "FARTCOIN/USDT:USDT",
-    "APT/USDT:USDT",
     "NOT/USDT:USDT",
+    "APT/USDT:USDT",
     "SEI/USDT:USDT",
     "BCH/USDT:USDT",
-    "OP/USDT:USDT"
+    "OP/USDT:USDT",
+    "PEOPLE/USDT:USDT"
   ]
 }
