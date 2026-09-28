@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T18:42:45.126874+00:00",
+  "updated_at": "2026-09-28T18:46:57.793853+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -37,6 +37,7 @@
     "VIRTUAL/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "CRV/USDT:USDT",
-    "NOT/USDT:USDT"
+    "NOT/USDT:USDT",
+    "ETHFI/USDT:USDT"
   ]
 }
