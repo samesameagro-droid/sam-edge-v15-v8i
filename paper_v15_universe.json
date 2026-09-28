@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T17:52:00.024227+00:00",
+  "updated_at": "2026-09-28T17:57:21.349050+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -37,7 +37,6 @@
     "VIRTUAL/USDT:USDT",
     "CRV/USDT:USDT",
     "NOT/USDT:USDT",
-    "ETHFI/USDT:USDT",
-    "BCH/USDT:USDT"
+    "ETHFI/USDT:USDT"
   ]
 }
