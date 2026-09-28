@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T17:02:00.429054+00:00",
+  "updated_at": "2026-09-28T17:06:39.772972+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -26,8 +26,8 @@
     "PUMP/USDT:USDT",
     "WLD/USDT:USDT",
     "1000PEPE/USDT:USDT",
-    "INJ/USDT:USDT",
     "LINK/USDT:USDT",
+    "INJ/USDT:USDT",
     "ADA/USDT:USDT",
     "HBAR/USDT:USDT",
     "JUP/USDT:USDT",
