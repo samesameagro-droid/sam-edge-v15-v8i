@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T19:17:01.327142+00:00",
+  "updated_at": "2026-09-28T19:21:59.551566+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -25,8 +25,8 @@
     "BNB/USDT:USDT",
     "PUMP/USDT:USDT",
     "INJ/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "LINK/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "WLD/USDT:USDT",
     "HBAR/USDT:USDT",
     "ADA/USDT:USDT",
@@ -38,6 +38,7 @@
     "ZRO/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "CRV/USDT:USDT",
-    "NOT/USDT:USDT"
+    "NOT/USDT:USDT",
+    "BCH/USDT:USDT"
   ]
 }
