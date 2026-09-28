@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-28T02:32:13.809637+00:00",
+  "updated_at": "2026-09-28T02:36:49.312602+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -20,8 +20,8 @@
     "TAO/USDT:USDT",
     "ONDO/USDT:USDT",
     "UNI/USDT:USDT",
-    "HYPE/USDT:USDT",
     "DOGE/USDT:USDT",
+    "HYPE/USDT:USDT",
     "ARB/USDT:USDT",
     "BNB/USDT:USDT",
     "PUMP/USDT:USDT",
