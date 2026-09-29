@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T19:27:00.237338+00:00",
+  "updated_at": "2026-09-29T19:32:08.459871+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -25,9 +25,9 @@
     "WLD/USDT:USDT",
     "ONDO/USDT:USDT",
     "BNB/USDT:USDT",
-    "ARB/USDT:USDT",
     "INJ/USDT:USDT",
     "ETHFI/USDT:USDT",
+    "ARB/USDT:USDT",
     "BCH/USDT:USDT",
     "ADA/USDT:USDT",
     "HBAR/USDT:USDT",
@@ -40,7 +40,6 @@
     "BOME/USDT:USDT",
     "1000BONK/USDT:USDT",
     "LDO/USDT:USDT",
-    "VIRTUAL/USDT:USDT",
-    "CRV/USDT:USDT"
+    "VIRTUAL/USDT:USDT"
   ]
 }
