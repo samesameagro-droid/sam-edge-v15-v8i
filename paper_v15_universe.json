@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T20:26:57.146769+00:00",
+  "updated_at": "2026-09-29T20:32:04.170453+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -22,8 +22,8 @@
     "LTC/USDT:USDT",
     "SUI/USDT:USDT",
     "DOGE/USDT:USDT",
-    "BNB/USDT:USDT",
     "WLD/USDT:USDT",
+    "BNB/USDT:USDT",
     "ONDO/USDT:USDT",
     "INJ/USDT:USDT",
     "ETHFI/USDT:USDT",
@@ -37,8 +37,8 @@
     "JUP/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "BOME/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "GRASS/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "APT/USDT:USDT"
   ]
 }
