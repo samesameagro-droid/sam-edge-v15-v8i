@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T15:47:14.722406+00:00",
+  "updated_at": "2026-09-29T15:52:13.490634+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -46,7 +46,6 @@
     "APT/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "CFX/USDT:USDT",
-    "CRV/USDT:USDT",
     "PENDLE/USDT:USDT",
     "TIA/USDT:USDT"
   ]
