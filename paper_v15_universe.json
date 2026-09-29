@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T06:02:39.213881+00:00",
+  "updated_at": "2026-09-29T06:07:23.113072+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -25,12 +25,12 @@
     "HBAR/USDT:USDT",
     "INJ/USDT:USDT",
     "PUMP/USDT:USDT",
-    "ENA/USDT:USDT",
     "BNB/USDT:USDT",
+    "ENA/USDT:USDT",
     "WLD/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "ADA/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "ETC/USDT:USDT",
     "ZRO/USDT:USDT",
     "VIRTUAL/USDT:USDT",
@@ -47,7 +47,6 @@
     "TIA/USDT:USDT",
     "BOME/USDT:USDT",
     "CFX/USDT:USDT",
-    "SEI/USDT:USDT",
     "STX/USDT:USDT"
   ]
 }
