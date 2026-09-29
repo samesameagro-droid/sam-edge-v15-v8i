@@ -374,12 +374,14 @@ class PaperEngine:
 
         # Diagnostic-only decomposition of the ACTUAL execution mask.
         # ADX remains context-only because signal_mask() does not use it.
-        volumeL = structureL & roomL & noChase & volOk
-        volumeS = structureS & roomS & noChase & volOk
-        pullbackL = volumeL & touchL
-        pullbackS = volumeS & touchS
-        reclaimL_exec = pullbackL & reclaimL
-        reclaimS_exec = pullbackS & reclaimS
+        # Independent blocker diagnostics: these are raw final-trigger components.
+        # Final execution remains the exact conjunction implemented by signal_mask().
+        volumeL = volOk
+        volumeS = volOk
+        pullbackL = touchL
+        pullbackS = touchS
+        reclaimL_exec = reclaimL
+        reclaimS_exec = reclaimS
         long_steps = {
             'trend': bool(bull.iloc[i]), 'ema': bool((bull & emaL).iloc[i]),
             'vwap': bool((bull & emaL & vwapL).iloc[i]), 'di': bool((bull & emaL & vwapL & diL).iloc[i]),
