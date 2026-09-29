@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T13:38:30.271017+00:00",
+  "updated_at": "2026-09-29T13:42:14.527735+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -39,9 +39,9 @@
     "YFI/USDT:USDT",
     "OP/USDT:USDT",
     "LDO/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "JUP/USDT:USDT",
     "NOT/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "GALA/USDT:USDT",
     "PENDLE/USDT:USDT",
     "BOME/USDT:USDT",
