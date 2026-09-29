@@ -103,6 +103,60 @@ jobs:
           print(f'TELEGRAM TEST SENT OK | message_id={r.json().get("result", {}).get("message_id")}')
           PY
 
+      - name: Scheduled trigger watchdog
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess, sys
+          from datetime import datetime, timezone, timedelta
+
+          repo = os.environ.get('GITHUB_REPOSITORY', '')
+          if not repo:
+              print('SCHEDULER WATCHDOG | repository context missing')
+              sys.exit(0)
+
+          try:
+              raw = subprocess.check_output(
+                  ['gh', 'api', f'repos/{repo}/actions/workflows/sam_edge_v15_paper.yml/runs?per_page=20'],
+                  text=True, timeout=20,
+              )
+              runs = json.loads(raw).get('workflow_runs', [])
+          except Exception as e:
+              print(f'SCHEDULER WATCHDOG | API check failed: {type(e).__name__}: {e}')
+              sys.exit(0)
+
+          now = datetime.now(timezone.utc)
+          recent_schedule = False
+          for run in runs:
+              if run.get('event') != 'schedule':
+                  continue
+              created = str(run.get('created_at', '')).replace('Z', '+00:00')
+              try:
+                  dt = datetime.fromisoformat(created)
+              except ValueError:
+                  continue
+              if dt.tzinfo is None:
+                  dt = dt.replace(tzinfo=timezone.utc)
+              if now - dt <= timedelta(minutes=7):
+                  recent_schedule = True
+                  break
+
+          if recent_schedule:
+              print('SCHEDULER WATCHDOG | recent schedule event detected | no fallback dispatch')
+              sys.exit(0)
+
+          print('SCHEDULER WATCHDOG | NO RECENT SCHEDULE | dispatching fallback run')
+          try:
+              subprocess.check_call(
+                  ['gh', 'workflow', 'run', 'SAM EDGE V15 - Paper Forward', '--repo', repo, '--ref', 'main'],
+                  timeout=30,
+              )
+              print('SCHEDULER WATCHDOG | FALLBACK DISPATCH OK')
+          except Exception as e:
+              print(f'SCHEDULER WATCHDOG | FALLBACK DISPATCH FAILED: {type(e).__name__}: {e}')
+          PY
       - name: Run V15 professional one-shot forward-test scan
         id: scan
         env:
