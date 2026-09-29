@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T01:06:56.170239+00:00",
+  "updated_at": "2026-09-29T01:12:13.147783+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -42,11 +42,11 @@
     "NOT/USDT:USDT",
     "SEI/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "PEOPLE/USDT:USDT",
     "TIA/USDT:USDT",
     "BCH/USDT:USDT",
+    "PEOPLE/USDT:USDT",
+    "CRV/USDT:USDT",
     "STX/USDT:USDT",
-    "BOME/USDT:USDT",
-    "CRV/USDT:USDT"
+    "BOME/USDT:USDT"
   ]
 }
