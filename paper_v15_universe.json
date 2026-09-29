@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T20:02:39.780309+00:00",
+  "updated_at": "2026-09-29T20:07:30.100184+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -14,8 +14,8 @@
     "UNI/USDT:USDT",
     "QNT/USDT:USDT",
     "AVAX/USDT:USDT",
-    "ENA/USDT:USDT",
     "HYPE/USDT:USDT",
+    "ENA/USDT:USDT",
     "PUMP/USDT:USDT",
     "LINK/USDT:USDT",
     "TAO/USDT:USDT",
@@ -40,6 +40,7 @@
     "BOME/USDT:USDT",
     "1000BONK/USDT:USDT",
     "LDO/USDT:USDT",
-    "VIRTUAL/USDT:USDT"
+    "VIRTUAL/USDT:USDT",
+    "GRASS/USDT:USDT"
   ]
 }
