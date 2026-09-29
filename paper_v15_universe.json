@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T14:07:13.629436+00:00",
+  "updated_at": "2026-09-29T14:12:43.768869+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -23,14 +23,14 @@
     "ETHFI/USDT:USDT",
     "SUI/USDT:USDT",
     "INJ/USDT:USDT",
+    "ONDO/USDT:USDT",
     "ARB/USDT:USDT",
     "WLD/USDT:USDT",
-    "ONDO/USDT:USDT",
     "ENA/USDT:USDT",
     "BNB/USDT:USDT",
+    "HBAR/USDT:USDT",
     "ADA/USDT:USDT",
     "BCH/USDT:USDT",
-    "HBAR/USDT:USDT",
     "ETC/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -45,8 +45,8 @@
     "GALA/USDT:USDT",
     "BOME/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "CFX/USDT:USDT",
     "APT/USDT:USDT",
+    "CFX/USDT:USDT",
     "TIA/USDT:USDT",
     "CRV/USDT:USDT"
   ]
