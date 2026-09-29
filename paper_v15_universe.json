@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T15:57:12.889453+00:00",
+  "updated_at": "2026-09-29T15:59:17.964542+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -25,8 +25,8 @@
     "DOGE/USDT:USDT",
     "INJ/USDT:USDT",
     "ONDO/USDT:USDT",
-    "ARB/USDT:USDT",
     "WLD/USDT:USDT",
+    "ARB/USDT:USDT",
     "BNB/USDT:USDT",
     "ADA/USDT:USDT",
     "BCH/USDT:USDT",
