@@ -372,19 +372,31 @@ class PaperEngine:
         finalL = signal_long.fillna(False)
         finalS = signal_short.fillna(False)
 
+        # Diagnostic-only decomposition of the ACTUAL execution mask.
+        # ADX remains context-only because signal_mask() does not use it.
+        volumeL = structureL & roomL & noChase & volOk
+        volumeS = structureS & roomS & noChase & volOk
+        pullbackL = volumeL & touchL
+        pullbackS = volumeS & touchS
+        reclaimL_exec = pullbackL & reclaimL
+        reclaimS_exec = pullbackS & reclaimS
         long_steps = {
             'trend': bool(bull.iloc[i]), 'ema': bool((bull & emaL).iloc[i]),
             'vwap': bool((bull & emaL & vwapL).iloc[i]), 'di': bool((bull & emaL & vwapL & diL).iloc[i]),
             'rsi': bool(structureL.iloc[i]), 'room': bool((structureL & roomL).iloc[i]),
-            'no_chase': bool((structureL & roomL & noChase).iloc[i]), 'adx_context': bool((r.h4_adx_pct >= ADX_LONG_PCT).iloc[i] and (r.h4_adx_delta >= ADX_LONG_DELTA).iloc[i]),
-            'early_reclaim': bool(finalL.iloc[i]),
+            'no_chase': bool((structureL & roomL & noChase).iloc[i]),
+            'adx_context': bool((r.h4_adx_pct >= ADX_LONG_PCT).iloc[i] and (r.h4_adx_delta >= ADX_LONG_DELTA).iloc[i]),
+            'volume': bool(volumeL.iloc[i]), 'pullback': bool(pullbackL.iloc[i]),
+            'reclaim': bool(reclaimL_exec.iloc[i]), 'early_reclaim': bool(finalL.iloc[i]),
         }
         short_steps = {
             'trend': bool(bear.iloc[i]), 'ema': bool((bear & emaS).iloc[i]),
             'vwap': bool((bear & emaS & vwapS).iloc[i]), 'di': bool((bear & emaS & vwapS & diS).iloc[i]),
             'rsi': bool(structureS.iloc[i]), 'room': bool((structureS & roomS).iloc[i]),
-            'no_chase': bool((structureS & roomS & noChase).iloc[i]), 'adx_context': bool((r.h4_adx_pct >= ADX_SHORT_PCT).iloc[i] and (r.h4_adx_delta >= ADX_SHORT_DELTA).iloc[i]),
-            'early_reclaim': bool(finalS.iloc[i]),
+            'no_chase': bool((structureS & roomS & noChase).iloc[i]),
+            'adx_context': bool((r.h4_adx_pct >= ADX_SHORT_PCT).iloc[i] and (r.h4_adx_delta >= ADX_SHORT_DELTA).iloc[i]),
+            'volume': bool(volumeS.iloc[i]), 'pullback': bool(pullbackS.iloc[i]),
+            'reclaim': bool(reclaimS_exec.iloc[i]), 'early_reclaim': bool(finalS.iloc[i]),
         }
         return {'timestamp': r.timestamp.iloc[i].isoformat(), 'long': long_steps, 'short': short_steps,
                 'final_long': bool(finalL.iloc[i]), 'final_short': bool(finalS.iloc[i])}
@@ -797,8 +809,8 @@ class PaperEngine:
         candidates = []
         scanned = valid_data = request_errors = 0
         diag_total = {
-            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx_context','early_reclaim')},
-            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx_context','early_reclaim')},
+            'LONG': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx_context','volume','pullback','reclaim','early_reclaim')},
+            'SHORT': {k: 0 for k in ('trend','ema','vwap','di','rsi','room','no_chase','adx_context','volume','pullback','reclaim','early_reclaim')},
             'final_long': 0, 'final_short': 0,
         }
         near_miss = []
@@ -820,8 +832,9 @@ class PaperEngine:
                                 if ok: diag_total[side_name][gate] += 1
                         if d['final_long']: diag_total['final_long'] += 1
                         if d['final_short']: diag_total['final_short'] += 1
-                        score_diag_long = sum(d['long'].values())
-                        score_diag_short = sum(d['short'].values())
+                        exec_keys = ('trend','ema','vwap','di','rsi','room','no_chase','volume','pullback','reclaim')
+                        score_diag_long = sum(bool(d['long'].get(k)) for k in exec_keys)
+                        score_diag_short = sum(bool(d['short'].get(k)) for k in exec_keys)
                         if score_diag_long or score_diag_short:
                             side = 'LONG' if score_diag_long >= score_diag_short else 'SHORT'
                             near_miss.append((max(score_diag_long, score_diag_short), sym, side, d))
@@ -841,7 +854,10 @@ class PaperEngine:
         print(f'FINAL {CORE_NAME} | LONG={diag_total["final_long"]} | SHORT={diag_total["final_short"]} | TOTAL={diag_total["final_long"]+diag_total["final_short"]}')
         near_miss.sort(key=lambda z: (z[0],z[1]), reverse=True)
         for rank, (score_diag, sym, side, d) in enumerate(near_miss[:5],1):
-            print(f'NEAR MISS #{rank} | {sym} | {side} | gates={score_diag}/9 | ts={d["timestamp"]}')
+            gd = d[side.lower()]
+            blockers = [k for k in ('volume','pullback','reclaim') if not gd.get(k)]
+            blocker_text = ','.join(blockers) if blockers else 'none'
+            print(f'NEAR MISS #{rank} | {sym} | {side} | exec_gates={score_diag}/10 | blockers={blocker_text} | adx_context={gd.get("adx_context")} | ts={d["timestamp"]}')
         if V15_DEFENSIVE_MODE and V15_SELECTION_MODE == 'LOW_SCORE':
             candidates.sort(key=lambda z: (z['score'], z['timestamp']))
         else:
