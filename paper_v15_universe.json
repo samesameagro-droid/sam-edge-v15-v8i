@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T16:02:29.926154+00:00",
+  "updated_at": "2026-09-29T16:07:46.682179+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -21,8 +21,8 @@
     "ETHFI/USDT:USDT",
     "LTC/USDT:USDT",
     "SUI/USDT:USDT",
-    "ENA/USDT:USDT",
     "DOGE/USDT:USDT",
+    "ENA/USDT:USDT",
     "INJ/USDT:USDT",
     "ONDO/USDT:USDT",
     "WLD/USDT:USDT",
