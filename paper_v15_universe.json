@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T10:02:27.100709+00:00",
+  "updated_at": "2026-09-29T10:07:55.373661+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -45,8 +45,9 @@
     "GALA/USDT:USDT",
     "BOME/USDT:USDT",
     "FARTCOIN/USDT:USDT",
-    "APT/USDT:USDT",
     "CFX/USDT:USDT",
-    "TIA/USDT:USDT"
+    "APT/USDT:USDT",
+    "TIA/USDT:USDT",
+    "ENS/USDT:USDT"
   ]
 }
