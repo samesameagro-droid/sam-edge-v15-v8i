@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T06:22:14.594995+00:00",
+  "updated_at": "2026-09-29T06:28:51.123669+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -35,10 +35,10 @@
     "ZRO/USDT:USDT",
     "VIRTUAL/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "JUP/USDT:USDT",
     "YFI/USDT:USDT",
     "NOT/USDT:USDT",
     "OP/USDT:USDT",
+    "JUP/USDT:USDT",
     "CRV/USDT:USDT",
     "BCH/USDT:USDT",
     "APT/USDT:USDT",
