@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T10:32:25.165764+00:00",
+  "updated_at": "2026-09-29T10:37:07.552169+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -23,8 +23,8 @@
     "ETHFI/USDT:USDT",
     "PUMP/USDT:USDT",
     "ARB/USDT:USDT",
-    "INJ/USDT:USDT",
     "BNB/USDT:USDT",
+    "INJ/USDT:USDT",
     "ONDO/USDT:USDT",
     "HBAR/USDT:USDT",
     "ENA/USDT:USDT",
