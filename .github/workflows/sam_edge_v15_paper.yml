@@ -104,60 +104,6 @@ jobs:
           print(f'TELEGRAM TEST SENT OK | message_id={r.json().get("result", {}).get("message_id")}')
           PY
 
-      - name: Scheduled trigger watchdog
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python - <<'PY'
-          import json, os, subprocess, sys
-          from datetime import datetime, timezone, timedelta
-
-          repo = os.environ.get('GITHUB_REPOSITORY', '')
-          if not repo:
-              print('SCHEDULER WATCHDOG | repository context missing')
-              sys.exit(0)
-
-          try:
-              raw = subprocess.check_output(
-                  ['gh', 'api', f'repos/{repo}/actions/workflows/sam_edge_v15_paper.yml/runs?per_page=20'],
-                  text=True, timeout=20,
-              )
-              runs = json.loads(raw).get('workflow_runs', [])
-          except Exception as e:
-              print(f'SCHEDULER WATCHDOG | API check failed: {type(e).__name__}: {e}')
-              sys.exit(0)
-
-          now = datetime.now(timezone.utc)
-          recent_schedule = False
-          for run in runs:
-              if run.get('event') != 'schedule':
-                  continue
-              created = str(run.get('created_at', '')).replace('Z', '+00:00')
-              try:
-                  dt = datetime.fromisoformat(created)
-              except ValueError:
-                  continue
-              if dt.tzinfo is None:
-                  dt = dt.replace(tzinfo=timezone.utc)
-              if now - dt <= timedelta(minutes=7):
-                  recent_schedule = True
-                  break
-
-          if recent_schedule:
-              print('SCHEDULER WATCHDOG | recent schedule event detected | no fallback dispatch')
-              sys.exit(0)
-
-          print('SCHEDULER WATCHDOG | NO RECENT SCHEDULE | dispatching fallback run')
-          try:
-              subprocess.check_call(
-                  ['gh', 'workflow', 'run', 'SAM EDGE V15 - Paper Forward', '--repo', repo, '--ref', 'main'],
-                  timeout=30,
-              )
-              print('SCHEDULER WATCHDOG | FALLBACK DISPATCH OK')
-          except Exception as e:
-              print(f'SCHEDULER WATCHDOG | FALLBACK DISPATCH FAILED: {type(e).__name__}: {e}')
-          PY
       - name: Run V15 professional one-shot forward-test scan
         id: scan
         env:
@@ -338,3 +284,62 @@ jobs:
           done
           echo "STATE PUSH FAILED AFTER 5 ATTEMPTS"
           exit 1
+
+      - name: Scheduler self-heal fallback
+        if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Give the normal 5-minute external/scheduled trigger time to appear.
+          # If neither schedule nor another dispatch has appeared, create one
+          # fallback run. This prevents a permanent stop without creating a
+          # dispatch storm while the normal dispatcher is healthy.
+          sleep 360
+          python - <<'PY'
+          import json, os, subprocess
+          from datetime import datetime, timezone, timedelta
+
+          repo = os.environ.get('GITHUB_REPOSITORY', '')
+          current_run = os.environ.get('GITHUB_RUN_ID', '')
+          try:
+              raw = subprocess.check_output(
+                  ['gh', 'api', f'repos/{repo}/actions/workflows/sam_edge_v15_paper.yml/runs?per_page=30'],
+                  text=True, timeout=20,
+              )
+              runs = json.loads(raw).get('workflow_runs', [])
+          except Exception as e:
+              print(f'SCHEDULER SELF-HEAL | API check failed: {type(e).__name__}: {e}')
+              raise SystemExit(0)
+
+          now = datetime.now(timezone.utc)
+          recent = []
+          for run in runs:
+              created = str(run.get('created_at', '')).replace('Z', '+00:00')
+              try:
+                  dt = datetime.fromisoformat(created)
+              except ValueError:
+                  continue
+              if dt.tzinfo is None:
+                  dt = dt.replace(tzinfo=timezone.utc)
+              if now - dt <= timedelta(minutes=7):
+                  recent.append(run)
+
+          recent_schedule = any(r.get('event') == 'schedule' for r in recent)
+          recent_other_dispatch = any(
+              r.get('event') == 'workflow_dispatch' and str(r.get('id')) != current_run
+              for r in recent
+          )
+          if recent_schedule or recent_other_dispatch:
+              print(f'SCHEDULER SELF-HEAL | healthy trigger present | schedule={recent_schedule} other_dispatch={recent_other_dispatch}')
+              raise SystemExit(0)
+
+          print('SCHEDULER SELF-HEAL | no recent trigger | dispatching fallback run')
+          try:
+              subprocess.check_call(
+                  ['gh', 'workflow', 'run', 'SAM EDGE V15 - Paper Forward', '--repo', repo, '--ref', 'main'],
+                  timeout=30,
+              )
+              print('SCHEDULER SELF-HEAL | FALLBACK DISPATCH OK')
+          except Exception as e:
+              print(f'SCHEDULER SELF-HEAL | FALLBACK DISPATCH FAILED: {type(e).__name__}: {e}')
+          PY
