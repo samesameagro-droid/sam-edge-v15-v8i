@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T01:17:09.664133+00:00",
+  "updated_at": "2026-09-29T01:22:01.053636+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -37,8 +37,8 @@
     "VIRTUAL/USDT:USDT",
     "APT/USDT:USDT",
     "YFI/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "OP/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "NOT/USDT:USDT",
     "SEI/USDT:USDT",
     "TIA/USDT:USDT",
