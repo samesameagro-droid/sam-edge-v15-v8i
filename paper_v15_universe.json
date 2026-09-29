@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T17:52:05.575427+00:00",
+  "updated_at": "2026-09-29T17:57:32.750575+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -16,9 +16,9 @@
     "QNT/USDT:USDT",
     "HYPE/USDT:USDT",
     "LINK/USDT:USDT",
-    "PUMP/USDT:USDT",
     "ENA/USDT:USDT",
     "TAO/USDT:USDT",
+    "PUMP/USDT:USDT",
     "ETHFI/USDT:USDT",
     "LTC/USDT:USDT",
     "SUI/USDT:USDT",
@@ -37,12 +37,12 @@
     "ZRO/USDT:USDT",
     "1000BONK/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "JUP/USDT:USDT",
     "APT/USDT:USDT",
+    "JUP/USDT:USDT",
     "BOME/USDT:USDT",
     "LDO/USDT:USDT",
-    "CFX/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "CFX/USDT:USDT",
     "CRV/USDT:USDT",
     "TIA/USDT:USDT"
   ]
