@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T08:27:24.189722+00:00",
+  "updated_at": "2026-09-29T08:32:36.541825+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -19,8 +19,8 @@
     "TAO/USDT:USDT",
     "LTC/USDT:USDT",
     "SUI/USDT:USDT",
-    "ARB/USDT:USDT",
     "DOGE/USDT:USDT",
+    "ARB/USDT:USDT",
     "HBAR/USDT:USDT",
     "INJ/USDT:USDT",
     "BNB/USDT:USDT",
@@ -43,8 +43,8 @@
     "FARTCOIN/USDT:USDT",
     "BOME/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "TIA/USDT:USDT",
     "APT/USDT:USDT",
+    "TIA/USDT:USDT",
     "CFX/USDT:USDT"
   ]
 }
