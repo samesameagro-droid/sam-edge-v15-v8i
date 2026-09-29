@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T03:02:12.939378+00:00",
+  "updated_at": "2026-09-29T03:07:14.214059+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,8 +29,8 @@
     "HBAR/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "WLD/USDT:USDT",
-    "ADA/USDT:USDT",
     "ETHFI/USDT:USDT",
+    "ADA/USDT:USDT",
     "JUP/USDT:USDT",
     "ETC/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -46,8 +46,8 @@
     "BCH/USDT:USDT",
     "PENDLE/USDT:USDT",
     "BOME/USDT:USDT",
-    "SEI/USDT:USDT",
     "PEOPLE/USDT:USDT",
+    "SEI/USDT:USDT",
     "STX/USDT:USDT",
     "CFX/USDT:USDT",
     "DASH/USDT:USDT"
