@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-29T20:22:00.721307+00:00",
+  "updated_at": "2026-09-29T20:26:57.146769+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -38,8 +38,7 @@
     "FARTCOIN/USDT:USDT",
     "BOME/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "LDO/USDT:USDT",
-    "APT/USDT:USDT",
-    "GRASS/USDT:USDT"
+    "GRASS/USDT:USDT",
+    "APT/USDT:USDT"
   ]
 }
