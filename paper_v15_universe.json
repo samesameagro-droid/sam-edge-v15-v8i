@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30T05:26:50.962523+00:00",
+  "updated_at": "2026-09-30T05:31:50.446003+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -34,8 +34,8 @@
     "HBAR/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "ASTER/USDT:USDT",
-    "GRASS/USDT:USDT",
     "SOON/USDT:USDT",
+    "GRASS/USDT:USDT",
     "1000PEPE/USDT:USDT"
   ]
 }
