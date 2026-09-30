@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30T17:57:21.703115+00:00",
+  "updated_at": "2026-09-30T18:02:02.494065+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -30,8 +30,8 @@
     "LTC/USDT:USDT",
     "ADA/USDT:USDT",
     "ASTER/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "YFI/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "GRASS/USDT:USDT",
     "LIGHTER/USDT:USDT"
