@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30T07:51:52.251765+00:00",
+  "updated_at": "2026-09-30T07:57:39.768559+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -28,8 +28,8 @@
     "SUI/USDT:USDT",
     "ETHFI/USDT:USDT",
     "ONDO/USDT:USDT",
-    "ADA/USDT:USDT",
     "BCH/USDT:USDT",
+    "ADA/USDT:USDT",
     "YFI/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "SOON/USDT:USDT",
