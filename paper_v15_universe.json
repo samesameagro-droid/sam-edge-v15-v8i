@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-30T01:11:58.177304+00:00",
+  "updated_at": "2026-09-30T01:16:51.191489+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -11,8 +11,8 @@
     "NEAR/USDT:USDT",
     "AAVE/USDT:USDT",
     "XRP/USDT:USDT",
-    "UNI/USDT:USDT",
     "QNT/USDT:USDT",
+    "UNI/USDT:USDT",
     "AVAX/USDT:USDT",
     "ENA/USDT:USDT",
     "PUMP/USDT:USDT",
@@ -35,7 +35,6 @@
     "1000PEPE/USDT:USDT",
     "GRASS/USDT:USDT",
     "SOON/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
-    "JUP/USDT:USDT"
+    "FARTCOIN/USDT:USDT"
   ]
 }
