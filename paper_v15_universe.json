@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T15:46:51.401154+00:00",
+  "updated_at": "2026-10-01T15:51:49.873566+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -31,7 +31,6 @@
     "YFI/USDT:USDT",
     "SOON/USDT:USDT",
     "ASTER/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
-    "LINK/USDT:USDT"
+    "FARTCOIN/USDT:USDT"
   ]
 }
