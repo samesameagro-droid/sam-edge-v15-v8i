@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T04:02:48.967682+00:00",
+  "updated_at": "2026-10-01T04:06:40.466072+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -32,7 +32,7 @@
     "MOVR/USDT:USDT",
     "YFI/USDT:USDT",
     "ASTER/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
-    "1000PEPE/USDT:USDT"
+    "1000PEPE/USDT:USDT",
+    "FARTCOIN/USDT:USDT"
   ]
 }
