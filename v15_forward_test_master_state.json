@@ -3,23 +3,9 @@
   "next_trade_no": 117,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 115,
-  "active_positions": [
-    "AAVE/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 116,
-      "coin": "AAVE/USDT:USDT",
-      "side": "LONG",
-      "opened_at": "2026-10-01T11:15:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 165.24,
-      "sl": 162.1166272851783,
-      "tp": 169.14421589352713,
-      "status": "ONGOING"
-    }
-  ],
+  "cohort_closed_trades": 116,
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
