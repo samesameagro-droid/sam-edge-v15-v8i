@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-01T20:51:42.742791+00:00",
+  "updated_at": "2026-10-01T20:56:30.983924+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -19,8 +19,8 @@
     "PUMP/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "WLD/USDT:USDT",
-    "MOVR/USDT:USDT",
     "TAO/USDT:USDT",
+    "MOVR/USDT:USDT",
     "ARB/USDT:USDT",
     "SUI/USDT:USDT",
     "BNB/USDT:USDT",
