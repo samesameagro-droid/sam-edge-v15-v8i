@@ -1,5 +1,5 @@
 {
-  "equity": 108.76548412148753,
+  "equity": 107.67782928027266,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -1854,10 +1854,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 108.76548412148753
-    }
-  ],
-  "positions": {
-    "WLD/USDT:USDT": {
+    },
+    {
       "coin": "WLD/USDT:USDT",
       "side": "LONG",
       "entry": 0.5373,
@@ -1988,7 +1986,13 @@
         "close": 83695.2,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-01T07:55:00+00:00",
+      "exit": 0.519591476088796,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 107.67782928027266
     }
-  }
+  ],
+  "positions": {}
 }
