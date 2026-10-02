@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T12:16:38.626859+00:00",
+  "updated_at": "2026-10-02T12:21:34.521806+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -21,8 +21,8 @@
     "ENA/USDT:USDT",
     "SUI/USDT:USDT",
     "BNB/USDT:USDT",
-    "INJ/USDT:USDT",
     "LTC/USDT:USDT",
+    "INJ/USDT:USDT",
     "WLD/USDT:USDT",
     "MOVR/USDT:USDT",
     "DOGE/USDT:USDT",
