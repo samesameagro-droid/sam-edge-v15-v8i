@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T23:26:45.905747+00:00",
+  "updated_at": "2026-10-02T23:31:37.631790+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -18,8 +18,8 @@
     "AVAX/USDT:USDT",
     "LTC/USDT:USDT",
     "QNT/USDT:USDT",
-    "ENA/USDT:USDT",
     "WLD/USDT:USDT",
+    "ENA/USDT:USDT",
     "TAO/USDT:USDT",
     "DOGE/USDT:USDT",
     "BNB/USDT:USDT",
@@ -33,7 +33,6 @@
     "FARTCOIN/USDT:USDT",
     "YFI/USDT:USDT",
     "ZRO/USDT:USDT",
-    "BCH/USDT:USDT",
-    "ADA/USDT:USDT"
+    "BCH/USDT:USDT"
   ]
 }
