@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T16:56:53.535835+00:00",
+  "updated_at": "2026-10-02T17:02:16.957958+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -17,8 +17,8 @@
     "HYPE/USDT:USDT",
     "AVAX/USDT:USDT",
     "QNT/USDT:USDT",
-    "TAO/USDT:USDT",
     "LTC/USDT:USDT",
+    "TAO/USDT:USDT",
     "ENA/USDT:USDT",
     "SUI/USDT:USDT",
     "BNB/USDT:USDT",
