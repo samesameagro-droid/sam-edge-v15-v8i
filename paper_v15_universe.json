@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-02T17:56:45.989593+00:00",
+  "updated_at": "2026-10-02T18:02:05.869224+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,10 +29,10 @@
     "ARB/USDT:USDT",
     "LINK/USDT:USDT",
     "ASTER/USDT:USDT",
-    "YFI/USDT:USDT",
     "ZRO/USDT:USDT",
-    "SAND/USDT:USDT",
+    "YFI/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "SAND/USDT:USDT",
     "MOVR/USDT:USDT",
     "BCH/USDT:USDT"
   ]
