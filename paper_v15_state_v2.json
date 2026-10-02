@@ -1,5 +1,5 @@
 {
-  "equity": 107.9335641248133,
+  "equity": 109.28273367637347,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -2268,10 +2268,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 107.9335641248133
-    }
-  ],
-  "positions": {
-    "ZRO/USDT:USDT": {
+    },
+    {
       "coin": "ZRO/USDT:USDT",
       "side": "LONG",
       "entry": 1.8614,
@@ -2402,7 +2400,13 @@
         "close": 86583.7,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-02T13:25:00+00:00",
+      "exit": 1.9160372026014354,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 109.28273367637347
     }
-  }
+  ],
+  "positions": {}
 }
