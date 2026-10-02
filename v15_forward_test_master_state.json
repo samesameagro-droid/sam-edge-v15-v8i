@@ -1,11 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 118,
+  "next_trade_no": 119,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 117,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "ZRO/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 118,
+      "coin": "ZRO/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-10-02T12:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 1.8614,
+      "sl": 1.8176902379188515,
+      "tp": 1.9160372026014354,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
