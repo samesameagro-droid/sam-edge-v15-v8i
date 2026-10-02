@@ -1,11 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 117,
+  "next_trade_no": 118,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 116,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "1000PEPE/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 117,
+      "coin": "1000PEPE/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-10-02T07:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.0045424,
+      "sl": 0.004465636150054947,
+      "tp": 0.004638354812431317,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
