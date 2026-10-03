@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-03T01:26:47.064954+00:00",
+  "updated_at": "2026-10-03T01:32:37.604587+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -11,15 +11,15 @@
     "XRP/USDT:USDT",
     "AAVE/USDT:USDT",
     "NEAR/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "UNI/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "HYPE/USDT:USDT",
     "PUMP/USDT:USDT",
     "AVAX/USDT:USDT",
     "LTC/USDT:USDT",
     "QNT/USDT:USDT",
-    "WLD/USDT:USDT",
     "ENA/USDT:USDT",
+    "WLD/USDT:USDT",
     "TAO/USDT:USDT",
     "DOGE/USDT:USDT",
     "BNB/USDT:USDT",
@@ -34,6 +34,7 @@
     "YFI/USDT:USDT",
     "ZRO/USDT:USDT",
     "BCH/USDT:USDT",
-    "ADA/USDT:USDT"
+    "ADA/USDT:USDT",
+    "APT/USDT:USDT"
   ]
 }
