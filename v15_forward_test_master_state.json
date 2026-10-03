@@ -1,11 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 119,
+  "next_trade_no": 120,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 118,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "SAND/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 119,
+      "coin": "SAND/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-10-03T09:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.07642,
+      "sl": 0.07086867730723921,
+      "tp": 0.08335915336595098,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
