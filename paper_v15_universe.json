@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-03T21:47:05.338410+00:00",
+  "updated_at": "2026-10-03T21:54:35.355103+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -17,8 +17,8 @@
     "NEAR/USDT:USDT",
     "QNT/USDT:USDT",
     "AVAX/USDT:USDT",
-    "SAND/USDT:USDT",
     "ENA/USDT:USDT",
+    "SAND/USDT:USDT",
     "BNB/USDT:USDT",
     "LTC/USDT:USDT",
     "INJ/USDT:USDT",
