@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-03T21:17:09.099892+00:00",
+  "updated_at": "2026-10-03T21:21:29.699025+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -13,8 +13,8 @@
     "WLD/USDT:USDT",
     "UNI/USDT:USDT",
     "HYPE/USDT:USDT",
-    "NEAR/USDT:USDT",
     "XRP/USDT:USDT",
+    "NEAR/USDT:USDT",
     "QNT/USDT:USDT",
     "AVAX/USDT:USDT",
     "SAND/USDT:USDT",
