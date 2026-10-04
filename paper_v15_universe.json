@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-10-04T06:21:45.984201+00:00",
+  "updated_at": "2026-10-04T06:26:32.105034+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
   "symbols": [
-    "SOL/USDT:USDT",
     "BTC/USDT:USDT",
+    "SOL/USDT:USDT",
     "ETH/USDT:USDT",
     "ZEC/USDT:USDT",
     "PUMP/USDT:USDT",
