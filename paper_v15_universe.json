@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-04T12:47:13.991853+00:00",
+  "updated_at": "2026-10-04T12:52:05.982772+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -24,8 +24,8 @@
     "INJ/USDT:USDT",
     "SAND/USDT:USDT",
     "AIN/USDT:USDT",
-    "YFI/USDT:USDT",
     "ZRO/USDT:USDT",
+    "YFI/USDT:USDT",
     "ONDO/USDT:USDT",
     "SUI/USDT:USDT"
   ]
