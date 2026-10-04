@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-04T07:07:10.436263+00:00",
+  "updated_at": "2026-10-04T07:12:06.747947+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -28,7 +28,7 @@
     "YFI/USDT:USDT",
     "AIN/USDT:USDT",
     "SUI/USDT:USDT",
-    "ARB/USDT:USDT",
-    "1000PEPE/USDT:USDT"
+    "1000PEPE/USDT:USDT",
+    "ARB/USDT:USDT"
   ]
 }
