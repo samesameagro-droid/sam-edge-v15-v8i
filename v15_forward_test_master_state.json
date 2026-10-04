@@ -1,11 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 123,
+  "next_trade_no": 124,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 122,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "SUI/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 123,
+      "coin": "SUI/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-10-04T22:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 1.2147,
+      "sl": 1.1908248469394955,
+      "tp": 1.2445439413256303,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
