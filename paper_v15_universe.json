@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-04T18:41:40.170094+00:00",
+  "updated_at": "2026-10-04T18:46:33.399947+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,6 +29,7 @@
     "AIN/USDT:USDT",
     "ZRO/USDT:USDT",
     "DOGE/USDT:USDT",
-    "STRK/USDT:USDT"
+    "STRK/USDT:USDT",
+    "VIRTUAL/USDT:USDT"
   ]
 }
