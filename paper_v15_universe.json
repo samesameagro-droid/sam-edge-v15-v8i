@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-05T04:56:44.911561+00:00",
+  "updated_at": "2026-10-05T05:02:35.792564+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,8 +29,8 @@
     "YFI/USDT:USDT",
     "ONDO/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "ARB/USDT:USDT",
     "1000PEPE/USDT:USDT",
+    "ARB/USDT:USDT",
     "SAND/USDT:USDT",
     "AIN/USDT:USDT",
     "ZRO/USDT:USDT",
