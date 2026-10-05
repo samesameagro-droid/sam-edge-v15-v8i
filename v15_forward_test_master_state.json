@@ -3,14 +3,13 @@
   "next_trade_no": 127,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 124,
+  "cohort_closed_trades": 125,
   "active_positions": [
-    "NEAR/USDT:USDT",
-    "XRP/USDT:USDT"
+    "NEAR/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 125,
+      "trade_no": 126,
       "coin": "NEAR/USDT:USDT",
       "side": "LONG",
       "opened_at": "2026-10-05T12:45:00+00:00",
@@ -18,17 +17,6 @@
       "entry": 5.027,
       "sl": 4.944358593104792,
       "tp": 5.1303017586190105,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 126,
-      "coin": "XRP/USDT:USDT",
-      "side": "LONG",
-      "opened_at": "2026-10-05T13:15:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 1.5153,
-      "sl": 1.5032009847121333,
-      "tp": 1.5304237691098337,
       "status": "ONGOING"
     }
   ],
