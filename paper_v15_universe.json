@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-05T15:56:36.413452+00:00",
+  "updated_at": "2026-10-05T16:01:57.700849+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -13,8 +13,8 @@
     "AAVE/USDT:USDT",
     "ENA/USDT:USDT",
     "ADA/USDT:USDT",
-    "AVAX/USDT:USDT",
     "UNI/USDT:USDT",
+    "AVAX/USDT:USDT",
     "HYPE/USDT:USDT",
     "PUMP/USDT:USDT",
     "DOGE/USDT:USDT",
