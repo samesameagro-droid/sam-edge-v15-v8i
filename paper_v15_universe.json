@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-05T05:21:54.561556+00:00",
+  "updated_at": "2026-10-05T05:26:50.258971+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -32,8 +32,8 @@
     "1000PEPE/USDT:USDT",
     "ARB/USDT:USDT",
     "SAND/USDT:USDT",
-    "AIN/USDT:USDT",
     "STRK/USDT:USDT",
+    "AIN/USDT:USDT",
     "ZRO/USDT:USDT"
   ]
 }
