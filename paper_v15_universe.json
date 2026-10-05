@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-05T19:52:42.687031+00:00",
+  "updated_at": "2026-10-05T20:07:03.071744+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -33,7 +33,6 @@
     "YFI/USDT:USDT",
     "ZRO/USDT:USDT",
     "VIRTUAL/USDT:USDT",
-    "RLC/USDT:USDT",
-    "FET/USDT:USDT"
+    "RLC/USDT:USDT"
   ]
 }
