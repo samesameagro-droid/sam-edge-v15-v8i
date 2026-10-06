@@ -149,6 +149,11 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
     x=df.copy()
     x['timestamp']=_normalize_timestamp(x['timestamp'])
     x=x.sort_values('timestamp').drop_duplicates('timestamp').reset_index(drop=True)
+    # Live BingX klines can arrive with object-typed numeric columns.
+    # Normalize explicitly before rolling/groupby-cumsum operations.
+    for c in ['open','high','low','close','volume']:
+        x[c]=pd.to_numeric(x[c],errors='coerce').astype('float64')
+    x=x.dropna(subset=['open','high','low','close','volume']).reset_index(drop=True)
 
     prev=x.close.shift(1)
     tr=pd.concat([(x.high-x.low),(x.high-prev).abs(),(x.low-prev).abs()],axis=1).max(axis=1)
