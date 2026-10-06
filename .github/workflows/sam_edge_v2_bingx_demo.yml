@@ -1,0 +1,39 @@
+name: SAM EDGE V2 - BingX Demo Auto
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+concurrency:
+  group: sam-edge-v2-bingx-demo
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Preflight
+        run: python -m py_compile core_engine_v15.py sam_edge_v2_bingx_executor.py
+      - name: Execute Precision V2 on BingX Demo
+        env:
+          BINGX_API_KEY: ${{ secrets.BINGX_API_KEY }}
+          BINGX_SECRET_KEY: ${{ secrets.BINGX_SECRET_KEY }}
+          SAM_EDGE_EXECUTION_ENABLED: "1"
+          RISK_PCT: "0.02"
+          LEVERAGE: "5"
+          MIN_VOLUME_USDT: "10000000"
+          UNIVERSE_LIMIT: "50"
+          HISTORY_15M: "3300"
+          MAX_NEW_TRADES: "1"
+        run: python -u sam_edge_v2_bingx_executor.py
+      - name: Persist executor state
+        if: ${{ always() }}
+        run: |
+          if [ -f bingx_v2_executor_state.json ]; then git config user.name "SAM EDGE V2 BOT"; git config user.email "sam-edge-v2-bot@users.noreply.github.com"; git add bingx_v2_executor_state.json; if ! git diff --cached --quiet; then git commit -m "executor: V2 BingX demo state"; git push; fi; fi
