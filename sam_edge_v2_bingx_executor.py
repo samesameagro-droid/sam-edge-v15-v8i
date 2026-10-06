@@ -20,14 +20,41 @@ def api(path,params=None,method="GET"):
     r.raise_for_status(); p=r.json()
     if p.get("code")!=0: raise RuntimeError(f"BingX {path}: {p.get('code')} {p.get('msg')}")
     return p.get("data")
+def _rows(value):
+    if isinstance(value, list):
+        return value
+    if isinstance(value, dict):
+        for k in ("balance", "balances", "data", "assets"):
+            v = value.get(k)
+            if isinstance(v, list):
+                return v
+            if isinstance(v, dict):
+                return [v]
+        return [value]
+    return []
+
 def equity():
-    d=api("/openApi/swap/v2/user/balance"); rows=d if isinstance(d,list) else [d]
+    d=api("/openApi/swap/v2/user/balance")
+    rows=_rows(d)
     for x in rows:
-        if isinstance(x,dict) and str(x.get("asset","")).upper()=="USDT":
-            for k in ("equity","balance","availableMargin"):
-                if x.get(k) is not None:return float(x[k])
-    raise RuntimeError("USDT equity not found")
+        if isinstance(x,dict):
+            asset=str(x.get("asset") or x.get("currency") or x.get("coin") or "").upper()
+            if asset in ("USDT","VST"):
+                for k in ("equity","totalEquity","balance","availableMargin","availableBalance","available"):
+                    if x.get(k) is not None:
+                        return float(x[k])
+    if isinstance(d,dict):
+        for k,v in d.items():
+            if isinstance(v,dict):
+                asset=str(v.get("asset") or v.get("currency") or v.get("coin") or "").upper()
+                if asset in ("USDT","VST"):
+                    for key in ("equity","totalEquity","balance","availableMargin","availableBalance","available"):
+                        if v.get(key) is not None:
+                            return float(v[key])
+    raise RuntimeError(f"USDT/VST equity not found; response_keys={list(d.keys()) if isinstance(d,dict) else type(d).__name__}")
+
 def positions():
+
     d=api("/openApi/swap/v2/user/positions"); rows=d if isinstance(d,list) else [d]; out=[]
     for p in rows:
         if isinstance(p,dict):
