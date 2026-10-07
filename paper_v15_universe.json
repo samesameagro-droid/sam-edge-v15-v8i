@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T05:37:03.305473+00:00",
+  "updated_at": "2026-10-07T05:41:58.047699+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -36,7 +36,7 @@
     "ORCA/USDT:USDT",
     "YFI/USDT:USDT",
     "FARTCOIN/USDT:USDT",
-    "DOT/USDT:USDT",
-    "BR/USDT:USDT"
+    "BR/USDT:USDT",
+    "DOT/USDT:USDT"
   ]
 }
