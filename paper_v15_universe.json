@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07T19:31:41.994100+00:00",
+  "updated_at": "2026-10-07T19:37:29.662523+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -24,8 +24,8 @@
     "QNT/USDT:USDT",
     "BNB/USDT:USDT",
     "ARB/USDT:USDT",
-    "1000PEPE/USDT:USDT",
     "ONDO/USDT:USDT",
+    "1000PEPE/USDT:USDT",
     "LTC/USDT:USDT",
     "LINK/USDT:USDT",
     "ASTER/USDT:USDT",
