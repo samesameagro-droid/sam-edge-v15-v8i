@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T06:36:45.436478+00:00",
+  "updated_at": "2026-10-08T06:41:54.163750+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -31,9 +31,9 @@
     "SAND/USDT:USDT",
     "LINK/USDT:USDT",
     "ASTER/USDT:USDT",
+    "JUP/USDT:USDT",
     "ORCA/USDT:USDT",
     "FARTCOIN/USDT:USDT",
-    "JUP/USDT:USDT",
     "ZRO/USDT:USDT"
   ]
 }
