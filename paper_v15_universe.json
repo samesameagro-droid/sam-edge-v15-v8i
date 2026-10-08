@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T14:27:37.158576+00:00",
+  "updated_at": "2026-10-08T14:32:17.796597+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -28,8 +28,8 @@
     "LTC/USDT:USDT",
     "LINK/USDT:USDT",
     "JUP/USDT:USDT",
-    "YFI/USDT:USDT",
     "ASTER/USDT:USDT",
+    "YFI/USDT:USDT",
     "WLD/USDT:USDT",
     "BCH/USDT:USDT",
     "SAND/USDT:USDT",
