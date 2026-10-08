@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T16:26:51.264522+00:00",
+  "updated_at": "2026-10-08T16:31:42.827100+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -34,7 +34,6 @@
     "FARTCOIN/USDT:USDT",
     "ASTER/USDT:USDT",
     "METEORA/USDT:USDT",
-    "ARB/USDT:USDT",
-    "ZRO/USDT:USDT"
+    "ARB/USDT:USDT"
   ]
 }
