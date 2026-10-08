@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T05:06:38.940038+00:00",
+  "updated_at": "2026-10-08T05:11:37.034872+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -7,8 +7,8 @@
     "BTC/USDT:USDT",
     "ETH/USDT:USDT",
     "SOL/USDT:USDT",
-    "ZEC/USDT:USDT",
     "NEAR/USDT:USDT",
+    "ZEC/USDT:USDT",
     "XRP/USDT:USDT",
     "AVAX/USDT:USDT",
     "UNI/USDT:USDT",
