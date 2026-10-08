@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T15:07:01.672740+00:00",
+  "updated_at": "2026-10-08T15:11:56.464275+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -34,6 +34,7 @@
     "BCH/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "SAND/USDT:USDT",
-    "METEORA/USDT:USDT"
+    "METEORA/USDT:USDT",
+    "ARB/USDT:USDT"
   ]
 }
