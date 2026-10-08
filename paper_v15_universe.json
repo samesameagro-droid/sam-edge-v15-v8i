@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-08T14:17:10.022189+00:00",
+  "updated_at": "2026-10-08T14:22:07.212488+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -24,8 +24,8 @@
     "ENA/USDT:USDT",
     "INJ/USDT:USDT",
     "ONDO/USDT:USDT",
-    "QNT/USDT:USDT",
     "LTC/USDT:USDT",
+    "QNT/USDT:USDT",
     "LINK/USDT:USDT",
     "JUP/USDT:USDT",
     "ASTER/USDT:USDT",
