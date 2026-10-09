@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-10-09T20:27:24.131892+00:00",
+  "updated_at": "2026-10-09T20:31:51.855706+00:00",
   "baseline_trade_no": 100,
   "next_trade_no": 129,
   "target_new_closed_trades": 100,
-  "closed_trades": 127,
+  "closed_trades": 128,
   "remaining": 0,
   "wins": 67,
-  "losses": 60,
-  "win_rate_pct": 52.76,
-  "net_R": 23.75,
-  "profit_factor": 1.3958,
+  "losses": 61,
+  "win_rate_pct": 52.34,
+  "net_R": 22.75,
+  "profit_factor": 1.373,
   "drawdown_R": 13.75,
-  "equity": 109.22137780287852,
-  "active_positions": 1,
+  "equity": 108.12916402484974,
+  "active_positions": 0,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -22,36 +22,36 @@
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
-      "wins": 5,
-      "losses": 5,
-      "win_rate_pct": 50.0,
-      "net_R": 1.25,
-      "profit_factor": 1.25
+      "wins": 4,
+      "losses": 6,
+      "win_rate_pct": 40.0,
+      "net_R": -1.0,
+      "profit_factor": 0.8333
     },
     "recent_20": {
       "trades": 20,
-      "wins": 10,
-      "losses": 10,
-      "win_rate_pct": 50.0,
-      "net_R": 2.5,
-      "profit_factor": 1.25
+      "wins": 9,
+      "losses": 11,
+      "win_rate_pct": 45.0,
+      "net_R": 0.25,
+      "profit_factor": 1.0227
     },
     "all_closed": {
-      "trades": 127,
+      "trades": 128,
       "wins": 67,
-      "losses": 60,
-      "win_rate_pct": 52.76,
-      "net_R": 23.75,
-      "profit_factor": 1.3958
+      "losses": 61,
+      "win_rate_pct": 52.34,
+      "net_R": 22.75,
+      "profit_factor": 1.373
     },
     "by_side": {
       "LONG": {
-        "trades": 122,
+        "trades": 123,
         "wins": 64,
-        "losses": 58,
-        "win_rate_pct": 52.46,
-        "net_R": 22.0,
-        "profit_factor": 1.3793
+        "losses": 59,
+        "win_rate_pct": 52.03,
+        "net_R": 21.0,
+        "profit_factor": 1.3559
       },
       "SHORT": {
         "trades": 5,
@@ -80,15 +80,15 @@
         "profit_factor": 1.3587
       },
       "V15_PRECISION_V2_FINAL": {
-        "trades": 27,
+        "trades": 28,
         "wins": 16,
-        "losses": 11,
-        "win_rate_pct": 59.26,
-        "net_R": 9.0,
-        "profit_factor": 1.8182
+        "losses": 12,
+        "win_rate_pct": 57.14,
+        "net_R": 8.0,
+        "profit_factor": 1.6667
       }
     },
-    "current_loss_streak": 0,
+    "current_loss_streak": 1,
     "max_loss_streak": 9
   }
 }
