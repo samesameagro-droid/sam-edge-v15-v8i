@@ -139,7 +139,7 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
             "score": score_value, "adx_pct": adx_pct, "adx_delta": adx_delta,
             "volr": volr, "dist_ema20_atr": dist, "fresh_pullback": fresh,
             "precision_pass": bool(precision_pass), "shield_pass": not bool(shield["veto"]),
-            "v3_adx_ok": not (adx_pct >= 0.90 and adx_delta < 0),
+            "v3_strict_adx_ok": (adx_pct >= 0.90 and adx_delta >= 1.00),
             "signal_index": i,
         })
     return x, rows
@@ -151,10 +151,10 @@ def replay(event_rows: list[dict], frames: dict[str, pd.DataFrame], variant: str
         candidates = [e for e in event_rows if e["precision_pass"]]
     elif variant == "V3_SHIELD":
         candidates = [e for e in event_rows if e["precision_pass"] and e["shield_pass"]]
-    elif variant == "V3_ADX":
-        candidates = [e for e in event_rows if e["precision_pass"] and e["v3_adx_ok"]]
-    elif variant == "V3_SHIELD_ADX":
-        candidates = [e for e in event_rows if e["precision_pass"] and e["shield_pass"] and e["v3_adx_ok"]]
+    elif variant == "V3_STRICT_ADX":
+        candidates = [e for e in event_rows if e["precision_pass"] and e["v3_strict_adx_ok"]]
+    elif variant == "V3_SHIELD_STRICT_ADX":
+        candidates = [e for e in event_rows if e["precision_pass"] and e["shield_pass"] and e["v3_strict_adx_ok"]]
     else:
         raise ValueError(variant)
     candidates.sort(key=lambda e: (e["entry_time"], e["coin"]))
@@ -253,7 +253,7 @@ def main():
         "cooldown_bars": args.cooldown_bars, "variants": {}
     }
     all_rows = []
-    for variant in ("V2_EXECUTABLE", "V3_SHIELD", "V3_ADX", "V3_SHIELD_ADX"):
+    for variant in ("V2_EXECUTABLE", "V3_SHIELD", "V3_STRICT_ADX", "V3_SHIELD_STRICT_ADX"):
         result = replay(events, frames, variant, args.max_active, args.cooldown_bars)
         closed = [r for r in result if r["result"] != "OPEN_AT_END"]
         all_rows.extend(result)
