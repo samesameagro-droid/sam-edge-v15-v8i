@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T19:02:25.798000+00:00",
+  "updated_at": "2026-10-09T19:06:48.662128+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,8 +29,8 @@
     "TAO/USDT:USDT",
     "YFI/USDT:USDT",
     "KAIA/USDT:USDT",
-    "WLD/USDT:USDT",
     "RLC/USDT:USDT",
+    "WLD/USDT:USDT",
     "ZRO/USDT:USDT"
   ]
 }
