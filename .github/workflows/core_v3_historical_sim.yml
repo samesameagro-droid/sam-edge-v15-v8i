@@ -37,7 +37,7 @@ jobs:
         run: python -m pip install --upgrade pip ccxt pandas numpy
 
       - name: Download read-only historical candles
-        run: python research/fetch_historical_ohlcv.py --bars 10000 --data data
+        run: python research/fetch_historical_ohlcv.py --bars 58000 --data data
 
       - name: Run event-driven portfolio replay
         run: python research/core_v3_historical_sim.py --data data --out research/results
@@ -60,6 +60,8 @@ jobs:
           git add research/results
           if ! git diff --cached --quiet; then
             git commit -m "research: persist Core V2 vs V3 historical replay"
+            git fetch origin research/core-v3-historical-sim
+            git rebase origin/research/core-v3-historical-sim
             git push origin HEAD:research/core-v3-historical-sim
           else
             echo "No result changes to persist."
