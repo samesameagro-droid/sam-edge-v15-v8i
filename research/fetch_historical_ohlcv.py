@@ -17,15 +17,27 @@ TF_MS = 15 * 60 * 1000
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--coins", default=",".join(DEFAULT_COINS), help="Comma-separated base coin symbols")
-    ap.add_argument("--bars", type=int, default=10000, help="Approximate number of 15m candles per coin (about 104 days)")
+    ap.add_argument("--bars", type=int, default=10000, help="Approximate number of 15m candles when dates are not supplied")
+    ap.add_argument("--start-date", default=None, help="UTC start date inclusive, YYYY-MM-DD")
+    ap.add_argument("--end-date", default=None, help="UTC end date inclusive, YYYY-MM-DD")
     ap.add_argument("--data", default="data", help="Output root folder")
     args = ap.parse_args()
     exchange = ccxt.bingx({"enableRateLimit": True, "timeout": 20000, "options": {"defaultType": "swap"}})
     markets = exchange.load_markets()
     now_ms = exchange.milliseconds()
     # Exclude the currently forming candle to prevent a partial candle entering replay.
-    end_ms = (now_ms // TF_MS) * TF_MS
-    start_ms = end_ms - args.bars * TF_MS
+    live_end_ms = (now_ms // TF_MS) * TF_MS
+    if args.start_date or args.end_date:
+        if not (args.start_date and args.end_date):
+            raise SystemExit("Pass both --start-date and --end-date, or neither.")
+        start_ms = int(pd.Timestamp(args.start_date, tz="UTC").timestamp() * 1000)
+        requested_end = int((pd.Timestamp(args.end_date, tz="UTC") + pd.Timedelta(days=1)).timestamp() * 1000)
+        end_ms = min(requested_end, live_end_ms)
+        if start_ms >= end_ms:
+            raise SystemExit("Invalid historical date range.")
+    else:
+        end_ms = live_end_ms
+        start_ms = end_ms - args.bars * TF_MS
     root = Path(args.data)
     root.mkdir(parents=True, exist_ok=True)
     report = []

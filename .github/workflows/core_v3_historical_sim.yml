@@ -37,7 +37,7 @@ jobs:
         run: python -m pip install --upgrade pip ccxt pandas numpy
 
       - name: Download read-only historical candles
-        run: python research/fetch_historical_ohlcv.py --bars 58000 --data data
+        run: python research/fetch_historical_ohlcv.py --start-date 2025-01-01 --end-date 2026-08-31 --data data
 
       - name: Run event-driven portfolio replay
         run: python research/core_v3_historical_sim.py --data data --out research/results
