@@ -60,17 +60,19 @@ def load_coin(root: Path, coin_dir: Path) -> pd.DataFrame:
          .sort_values("timestamp").reset_index(drop=True))
     return x
 
-def score_series(x: pd.DataFrame) -> pd.Series:
-    adx_pct = x["h4_adx_pct"]
-    adx_delta = x["h4_adx_delta"]
-    dist = x["dist_ema20_atr"]
-    room = np.where(x["close"] >= x["ema20"], x["dist_res_atr"], x["dist_sup_atr"])
-    adx_margin = ((adx_pct - 0.80) / (1 - 0.80)).clip(0, 1)
-    delta_margin = ((adx_delta - 0.75) / 2.0).clip(0, 1)
-    room_margin = ((room - 0.85) / 1.50).clip(0, 1)
-    location = (1 - (dist - 0.60).abs() / 0.60).clip(0, 1)
-    volume = (x["volr"] / 2.0).clip(0, 1)
-    trigger = (x["body_atr"] / 0.80).clip(0, 1)
+def score_at(x: pd.DataFrame, i: int, side: str) -> float:
+    adx_pct = float(x["h4_adx_pct"].iloc[i])
+    adx_delta = float(x["h4_adx_delta"].iloc[i])
+    adx_floor = 0.80 if side == "LONG" else 0.85
+    delta_floor = 0.75 if side == "LONG" else 0.90
+    room = float(x["dist_res_atr"].iloc[i] if side == "LONG" else x["dist_sup_atr"].iloc[i])
+    dist = float(x["dist_ema20_atr"].iloc[i])
+    adx_margin = float(np.clip((adx_pct - adx_floor) / (1 - adx_floor), 0, 1))
+    delta_margin = float(np.clip((adx_delta - delta_floor) / 2.0, 0, 1))
+    room_margin = float(np.clip((room - 0.85) / 1.50, 0, 1))
+    location = float(np.clip(1 - abs(dist - 0.60) / 0.60, 0, 1))
+    volume = float(np.clip(float(x["volr"].iloc[i]) / 2.0, 0, 1))
+    trigger = float(np.clip(float(x["body_atr"].iloc[i]) / 0.80, 0, 1))
     return 100 * (0.30*adx_margin + 0.20*delta_margin + 0.20*room_margin
                   + 0.15*location + 0.10*volume + 0.05*trigger)
 
@@ -79,7 +81,6 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
     if len(x) < 3300:
         return x, []
     long_mask, short_mask = signal_mask(x, CORE_NAME)
-    score = score_series(x)
     # Match the V15 Precision V2 entry permission as closely as possible.
     touch_long = x["low"] <= x["ema20"] + 0.60*x["atr"]
     touch_short = x["high"] >= x["ema20"] - 0.60*x["atr"]
@@ -88,6 +89,7 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
         side = "LONG" if bool(long_mask.iloc[i]) else ("SHORT" if bool(short_mask.iloc[i]) else None)
         if side is None:
             continue
+        score_value = score_at(x, i, side)
         # Current V2 precision gate: pullback touch within previous 1-2 completed
         # candles, volume >= 1.20, distance <= 0.80 ATR, ADX exhaustion veto,
         # score < 65. Current signal candle itself is not counted as the pullback.
@@ -97,7 +99,7 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
         adx_delta = float(x["h4_adx_delta"].iloc[i])
         volr = float(x["volr"].iloc[i])
         dist = float(x["dist_ema20_atr"].iloc[i])
-        precision_pass = (fresh and adx_pct < 0.90 or fresh and adx_delta >= 0) and volr >= 1.20 and dist <= 0.80 and float(score.iloc[i]) < 65
+        precision_pass = (fresh and adx_pct < 0.90 or fresh and adx_delta >= 0) and volr >= 1.20 and dist <= 0.80 and score_value < 65
         shield = failure_shield_snapshot(x, i, side)
         # One-bar-delay execution at next candle OPEN; do not use that candle
         # to decide whether the entry signal exists.
@@ -133,7 +135,7 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
             "coin": coin, "side": side, "signal_time": pd.Timestamp(x["timestamp"].iloc[i]).isoformat(),
             "entry_time": entry_ts.isoformat(), "entry_index": j, "entry": entry,
             "sl": float(sl), "tp": float(tp), "risk_price": float(risk),
-            "score": float(score.iloc[i]), "adx_pct": adx_pct, "adx_delta": adx_delta,
+            "score": score_value, "adx_pct": adx_pct, "adx_delta": adx_delta,
             "volr": volr, "dist_ema20_atr": dist, "fresh_pullback": fresh,
             "precision_pass": bool(precision_pass), "shield_pass": not bool(shield["veto"]),
             "v3_adx_ok": not (adx_pct >= 0.90 and adx_delta < 0),
