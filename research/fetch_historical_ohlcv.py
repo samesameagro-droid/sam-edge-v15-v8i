@@ -17,7 +17,7 @@ TF_MS = 15 * 60 * 1000
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--coins", default=",".join(DEFAULT_COINS), help="Comma-separated base coin symbols")
-    ap.add_argument("--bars", type=int, default=3600, help="Approximate number of 15m candles per coin")
+    ap.add_argument("--bars", type=int, default=10000, help="Approximate number of 15m candles per coin (about 104 days)")
     ap.add_argument("--data", default="data", help="Output root folder")
     args = ap.parse_args()
     exchange = ccxt.bingx({"enableRateLimit": True, "timeout": 20000, "options": {"defaultType": "swap"}})
