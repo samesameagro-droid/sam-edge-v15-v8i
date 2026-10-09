@@ -1,11 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 128,
+  "next_trade_no": 129,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 127,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "STRK/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 128,
+      "coin": "STRK/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-10-09T14:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.07334,
+      "sl": 0.06937266023841171,
+      "tp": 0.07829917470198537,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"

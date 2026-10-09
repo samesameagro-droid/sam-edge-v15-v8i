@@ -3650,5 +3650,139 @@
       "equity_after": 109.22137780287852
     }
   ],
-  "positions": {}
+  "positions": {
+    "STRK/USDT:USDT": {
+      "coin": "STRK/USDT:USDT",
+      "side": "LONG",
+      "entry": 0.07334,
+      "sl": 0.06937266023841171,
+      "tp": 0.07829917470198537,
+      "risk_R": 1.0,
+      "risk_cash": 1.0922137780287853,
+      "opened_at": "2026-10-09T14:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "status": "OPEN",
+      "entry_score": 50.97224204810637,
+      "entry_diag": {
+        "timestamp": "2026-10-09T14:30:00+00:00",
+        "long": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": true,
+          "early_reclaim": true
+        },
+        "short": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": false,
+          "early_reclaim": false
+        },
+        "final_long": true,
+        "final_short": false,
+        "failure_shield": {
+          "core": "V15_PRECISION_V2_FINAL",
+          "shield": "V15_FAILURE_SHIELD_V1",
+          "side": "LONG",
+          "pass": true,
+          "veto": false,
+          "reasons": [],
+          "dist_ema20_atr": 0.7179529714906043,
+          "volume_ratio": 1.606086321913953,
+          "h4_adx_pct": 0.675,
+          "h4_adx_delta": 7.15657631826182,
+          "enabled": false
+        },
+        "execution_parity": {
+          "base_signal_mask": true,
+          "shield_applied": false,
+          "base_long": true,
+          "base_short": false,
+          "final_long": true,
+          "final_short": false
+        },
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": false,
+          "allowed_short": false,
+          "h1_bull": false,
+          "h4_bull": false,
+          "h1_bear": true,
+          "h4_bear": false,
+          "timestamp": "2026-10-09T14:30:00+00:00",
+          "close": 83025.6,
+          "reason": "1H+4H trend alignment"
+        },
+        "defensive_gate": {
+          "pass": true,
+          "reason": "disabled"
+        },
+        "precision_gate": {
+          "enabled": true,
+          "pass": true,
+          "fresh_pullback": true,
+          "touch_age": 1,
+          "adx_ok": true,
+          "vol_ok": true,
+          "ema_ok": true,
+          "score_ok": true,
+          "score_max": 65.0
+        }
+      },
+      "entry_metrics": {
+        "close": 0.07334,
+        "rsi": 57.68249540408253,
+        "h4_adx_pct": 0.675,
+        "h4_adx_delta": 7.15657631826182,
+        "volr": 1.606086321913953,
+        "vol_slope": 0.7559050432203853,
+        "dist_ema20_atr": 0.7179529714906043,
+        "room_atr": 1.2917976044351276,
+        "body_atr": 0.9704235662585853,
+        "close_pos": 0.9338842975206636,
+        "atr": 0.0015869359046353183
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 0.29453173629008506,
+        "location": 0.803411714182326,
+        "volume": 0.8030431609569765,
+        "trigger": 1.0
+      },
+      "signal_key": "STRK/USDT:USDT|LONG|2026-10-09T14:30:00+00:00|V15_PRECISION_V2_FINAL",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": false,
+        "allowed_short": false,
+        "h1_bull": false,
+        "h4_bull": false,
+        "h1_bear": true,
+        "h4_bear": false,
+        "timestamp": "2026-10-09T14:30:00+00:00",
+        "close": 83025.6,
+        "reason": "1H+4H trend alignment"
+      },
+      "strategy_fingerprint": "a391f765bccd3f3d"
+    }
+  }
 }
