@@ -99,7 +99,8 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
         adx_delta = float(x["h4_adx_delta"].iloc[i])
         volr = float(x["volr"].iloc[i])
         dist = float(x["dist_ema20_atr"].iloc[i])
-        precision_pass = (fresh and adx_pct < 0.90 or fresh and adx_delta >= 0) and volr >= 1.20 and dist <= 0.80 and score_value < 65
+        adx_ok = not (adx_pct >= 0.90 and adx_delta < 0)
+        precision_pass = fresh and adx_ok and volr >= 1.20 and dist <= 0.80 and score_value < 65
         shield = failure_shield_snapshot(x, i, side)
         # One-bar-delay execution at next candle OPEN; do not use that candle
         # to decide whether the entry signal exists.
@@ -110,7 +111,7 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
         if not np.isfinite(atr) or atr <= 0:
             continue
         if side == "LONG":
-            anchor = float(x["low"].iloc[max(0, i-STRUCTURE_STOP_LOOKBACK+1):i+1].min())
+            anchor = float(x["low"].iloc[max(0, i-STRUCTURE_STOP_LOOKBACK):i].min())
             sl = anchor - STRUCTURE_STOP_ATR_BUFFER*atr
             risk = entry - sl
             if risk < STRUCTURE_STOP_MIN_ATR*atr:
@@ -120,7 +121,7 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
             risk = entry - sl
             tp = entry + RR*risk
         else:
-            anchor = float(x["high"].iloc[max(0, i-STRUCTURE_STOP_LOOKBACK+1):i+1].max())
+            anchor = float(x["high"].iloc[max(0, i-STRUCTURE_STOP_LOOKBACK):i].max())
             sl = anchor + STRUCTURE_STOP_ATR_BUFFER*atr
             risk = sl - entry
             if risk < STRUCTURE_STOP_MIN_ATR*atr:
