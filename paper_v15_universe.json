@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T10:06:46.236139+00:00",
+  "updated_at": "2026-10-09T10:12:39.295567+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -22,8 +22,8 @@
     "LTC/USDT:USDT",
     "TAO/USDT:USDT",
     "STRK/USDT:USDT",
-    "BNB/USDT:USDT",
     "LINK/USDT:USDT",
+    "BNB/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "QNT/USDT:USDT",
     "INJ/USDT:USDT",
@@ -36,7 +36,6 @@
     "BCH/USDT:USDT",
     "ZRO/USDT:USDT",
     "ASTER/USDT:USDT",
-    "TIA/USDT:USDT",
-    "ARB/USDT:USDT"
+    "TIA/USDT:USDT"
   ]
 }
