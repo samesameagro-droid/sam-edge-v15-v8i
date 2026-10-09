@@ -7,6 +7,7 @@ import argparse
 import io
 import time
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import requests
@@ -24,18 +25,21 @@ def fetch_binance_archive(base: str, start_ms: int, end_ms: int) -> pd.DataFrame
     start = pd.to_datetime(start_ms, unit="ms", utc=True)
     end = pd.to_datetime(end_ms - 1, unit="ms", utc=True)
     cur = start.replace(day=1)
-    pieces = []
-    session = requests.Session()
-    session.headers.update({"User-Agent": "SAM-EDGE-Core-V3-Historical-Research/1.0"})
+    months = []
     while cur <= end:
-        month = cur.strftime("%Y-%m")
+        months.append(cur.strftime("%Y-%m"))
+        cur = (cur + pd.offsets.MonthBegin(1)).normalize()
+
+    def fetch_month(month: str):
         symbol = f"{base}USDT"
         url = BINANCE_ARCHIVE.format(symbol=symbol, month=month)
         try:
-            response = session.get(url, timeout=60)
+            response = requests.get(
+                url, headers={"User-Agent": "SAM-EDGE-Core-V3-Historical-Research/1.0"},
+                timeout=20,
+            )
             if response.status_code == 404:
-                cur = (cur + pd.offsets.MonthBegin(1)).normalize()
-                continue
+                return None
             response.raise_for_status()
             with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
                 csv_names = [n for n in archive.namelist() if n.lower().endswith(".csv")]
@@ -54,11 +58,17 @@ def fetch_binance_archive(base: str, start_ms: int, end_ms: int) -> pd.DataFrame
                 "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
                 "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
             }).dropna()
-            pieces.append(piece)
-            print(f"ARCHIVE {symbol} {month}: {len(piece)} candles")
+            print(f"ARCHIVE {symbol} {month}: {len(piece)} candles", flush=True)
+            return piece
         except Exception as exc:
-            print(f"ARCHIVE ERROR {symbol} {month}: {type(exc).__name__}: {exc}")
-        cur = (cur + pd.offsets.MonthBegin(1)).normalize()
+            print(f"ARCHIVE ERROR {symbol} {month}: {type(exc).__name__}: {exc}", flush=True)
+            return None
+
+    pieces = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for piece in pool.map(fetch_month, months):
+            if piece is not None and not piece.empty:
+                pieces.append(piece)
     if not pieces:
         return pd.DataFrame(columns=["timestamp_ms", "open", "high", "low", "close", "volume"])
     out = pd.concat(pieces, ignore_index=True).drop_duplicates("timestamp_ms").sort_values("timestamp_ms")
