@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-09T19:21:28.306738+00:00",
+  "updated_at": "2026-10-09T19:26:38.738322+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -19,9 +19,9 @@
     "PUMP/USDT:USDT",
     "ENA/USDT:USDT",
     "ONDO/USDT:USDT",
-    "LTC/USDT:USDT",
     "BNB/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "LTC/USDT:USDT",
     "ADA/USDT:USDT",
     "QNT/USDT:USDT",
     "INJ/USDT:USDT",
