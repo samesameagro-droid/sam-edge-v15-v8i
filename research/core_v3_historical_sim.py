@@ -37,6 +37,15 @@ ADX_VARIANTS = {
     "V3_ADX_EXPANSION_070_050": (0.70, 0.50),
     "V3_ADX_EXPANSION_080_075": (0.80, 0.75),
 }
+SCORE_VARIANTS = {
+    "V3_SCORE_CAP_40": 40.0,
+    "V3_SCORE_CAP_45": 45.0,
+    "V3_SCORE_CAP_50": 50.0,
+    "V3_SCORE_CAP_55": 55.0,
+}
+COMBO_VARIANTS = {
+    "V3_SCORE40_ADX_RISING_050": (40.0, 0.50, 0.00),
+}
 
 def read_file(path: Path) -> pd.DataFrame:
     if path.suffix.lower() == ".zip":
@@ -169,6 +178,16 @@ def replay(event_rows: list[dict], frames: dict[str, pd.DataFrame], variant: str
             and e["adx_pct"] >= adx_floor
             and e["adx_delta"] >= delta_floor
         ]
+    elif variant in SCORE_VARIANTS:
+        score_cap = SCORE_VARIANTS[variant]
+        candidates = [e for e in event_rows if e["precision_pass"] and e["score"] < score_cap]
+    elif variant in COMBO_VARIANTS:
+        score_cap, adx_floor, delta_floor = COMBO_VARIANTS[variant]
+        candidates = [
+            e for e in event_rows
+            if e["precision_pass"] and e["score"] < score_cap
+            and e["adx_pct"] >= adx_floor and e["adx_delta"] >= delta_floor
+        ]
     else:
         raise ValueError(variant)
     candidates.sort(key=lambda e: (e["entry_time"], e["coin"]))
@@ -275,7 +294,7 @@ def main():
         "train": (pd.Timestamp("2025-01-01", tz="UTC"), pd.Timestamp("2026-04-01", tz="UTC")),
         "test": (pd.Timestamp("2026-04-01", tz="UTC"), pd.Timestamp("2026-09-01", tz="UTC")),
     }
-    variants = ["V2_EXECUTABLE", *ADX_VARIANTS.keys()]
+    variants = ["V2_EXECUTABLE", *ADX_VARIANTS.keys(), *SCORE_VARIANTS.keys(), *COMBO_VARIANTS.keys()]
     all_rows = []
     for variant in variants:
         report["variants"][variant] = {}
