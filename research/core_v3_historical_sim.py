@@ -26,6 +26,18 @@ from core_engine_v15 import (  # noqa: E402
     STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
 )
 
+# Small, pre-registered ADX grid. The V2 Precision gate already vetoes ADX
+# exhaustion; these candidates test ADX strength/expansion rather than duplicating it.
+ADX_VARIANTS = {
+    "V3_ADX_RISING_050": (0.50, 0.00),
+    "V3_ADX_RISING_060": (0.60, 0.00),
+    "V3_ADX_RISING_070": (0.70, 0.00),
+    "V3_ADX_EXPANSION_050_050": (0.50, 0.50),
+    "V3_ADX_EXPANSION_060_050": (0.60, 0.50),
+    "V3_ADX_EXPANSION_070_050": (0.70, 0.50),
+    "V3_ADX_EXPANSION_080_075": (0.80, 0.75),
+}
+
 def read_file(path: Path) -> pd.DataFrame:
     if path.suffix.lower() == ".zip":
         with zipfile.ZipFile(path) as z:
@@ -149,12 +161,14 @@ def replay(event_rows: list[dict], frames: dict[str, pd.DataFrame], variant: str
     """Event-driven portfolio replay. One position per coin; SL wins same-bar ties."""
     if variant == "V2_EXECUTABLE":
         candidates = [e for e in event_rows if e["precision_pass"]]
-    elif variant == "V3_SHIELD":
-        candidates = [e for e in event_rows if e["precision_pass"] and e["shield_pass"]]
-    elif variant == "V3_STRICT_ADX":
-        candidates = [e for e in event_rows if e["precision_pass"] and e["v3_strict_adx_ok"]]
-    elif variant == "V3_SHIELD_STRICT_ADX":
-        candidates = [e for e in event_rows if e["precision_pass"] and e["shield_pass"] and e["v3_strict_adx_ok"]]
+    elif variant in ADX_VARIANTS:
+        adx_floor, delta_floor = ADX_VARIANTS[variant]
+        candidates = [
+            e for e in event_rows
+            if e["precision_pass"]
+            and e["adx_pct"] >= adx_floor
+            and e["adx_delta"] >= delta_floor
+        ]
     else:
         raise ValueError(variant)
     candidates.sort(key=lambda e: (e["entry_time"], e["coin"]))
@@ -250,15 +264,41 @@ def main():
         "data_source": str(data_root), "coins": sorted(frames), "candidate_events": len(events),
         "entry_model": "next 15m candle OPEN; levels based on signal-close structure/ATR",
         "rr": RR, "same_bar_sl_tp_policy": "SL first", "max_active": args.max_active,
-        "cooldown_bars": args.cooldown_bars, "variants": {}
+        "cooldown_bars": args.cooldown_bars,
+        "train_window": "2025-01-01 through 2026-03-31",
+        "test_window": "2026-04-01 through 2026-08-31",
+        "note": "Research replay, gross R before fees/slippage; holdout after 2026-09-04 remains untouched.",
+        "variants": {}
     }
+    periods = {
+        "full": (None, None),
+        "train": (pd.Timestamp("2025-01-01", tz="UTC"), pd.Timestamp("2026-04-01", tz="UTC")),
+        "test": (pd.Timestamp("2026-04-01", tz="UTC"), pd.Timestamp("2026-09-01", tz="UTC")),
+    }
+    variants = ["V2_EXECUTABLE", *ADX_VARIANTS.keys()]
     all_rows = []
-    for variant in ("V2_EXECUTABLE", "V3_SHIELD", "V3_STRICT_ADX", "V3_SHIELD_STRICT_ADX"):
-        result = replay(events, frames, variant, args.max_active, args.cooldown_bars)
-        closed = [r for r in result if r["result"] != "OPEN_AT_END"]
-        all_rows.extend(result)
-        report["variants"][variant] = summarize(result)
-        pd.DataFrame(result).to_csv(out_root / f"{variant.lower()}_trades.csv", index=False)
+    for variant in variants:
+        report["variants"][variant] = {}
+        for period, (start, end) in periods.items():
+            period_events = events
+            period_frames = frames
+            if start is not None or end is not None:
+                period_events = [
+                    e for e in events
+                    if (start is None or pd.Timestamp(e["entry_time"]) >= start)
+                    and (end is None or pd.Timestamp(e["entry_time"]) < end)
+                ]
+                if end is not None:
+                    period_frames = {
+                        coin: df[df["timestamp"] < end].copy()
+                        for coin, df in frames.items()
+                    }
+            result = replay(period_events, period_frames, variant, args.max_active, args.cooldown_bars)
+            report["variants"][variant][period] = summarize(result)
+            pd.DataFrame(result).to_csv(out_root / f"{variant.lower()}_{period}_trades.csv", index=False)
+            if period == "full":
+                all_rows.extend(result)
+    pd.DataFrame(all_rows).to_csv(out_root / "all_variants_full_trades.csv", index=False)
     (out_root / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report, indent=2))
 
