@@ -1,0 +1,309 @@
+{
+  "data_source": "data",
+  "coins": [
+    "ADA",
+    "AVAX",
+    "BNB",
+    "BTC",
+    "CRV",
+    "DOGE",
+    "ETH",
+    "FET",
+    "LINK",
+    "SOL",
+    "SUI",
+    "UNI",
+    "XRP"
+  ],
+  "candidate_events": 1989,
+  "entry_model": "next 15m candle OPEN; levels based on signal-close structure/ATR",
+  "rr": 1.25,
+  "same_bar_sl_tp_policy": "SL first",
+  "max_active": 5,
+  "cooldown_bars": 4,
+  "train_window": "2025-01-01 through 2026-03-31",
+  "test_window": "2026-04-01 through 2026-08-31",
+  "note": "Research replay, gross R before fees/slippage; holdout after 2026-09-04 remains untouched.",
+  "variants": {
+    "V2_EXECUTABLE": {
+      "full": {
+        "closed": 546,
+        "wins": 248,
+        "losses": 298,
+        "win_rate_pct": 45.42,
+        "net_R": 12.0,
+        "expectancy_R": 0.022,
+        "profit_factor": 1.0403,
+        "max_drawdown_R": -32.5,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 403,
+        "wins": 186,
+        "losses": 217,
+        "win_rate_pct": 46.15,
+        "net_R": 15.5,
+        "expectancy_R": 0.0385,
+        "profit_factor": 1.0714,
+        "max_drawdown_R": -32.5,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 143,
+        "wins": 62,
+        "losses": 81,
+        "win_rate_pct": 43.36,
+        "net_R": -3.5,
+        "expectancy_R": -0.0245,
+        "profit_factor": 0.9568,
+        "max_drawdown_R": -14.5,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_RISING_050": {
+      "full": {
+        "closed": 171,
+        "wins": 77,
+        "losses": 94,
+        "win_rate_pct": 45.03,
+        "net_R": 2.25,
+        "expectancy_R": 0.0132,
+        "profit_factor": 1.0239,
+        "max_drawdown_R": -12.5,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 126,
+        "wins": 57,
+        "losses": 69,
+        "win_rate_pct": 45.24,
+        "net_R": 2.25,
+        "expectancy_R": 0.0179,
+        "profit_factor": 1.0326,
+        "max_drawdown_R": -10.5,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 45,
+        "wins": 20,
+        "losses": 25,
+        "win_rate_pct": 44.44,
+        "net_R": 0.0,
+        "expectancy_R": 0.0,
+        "profit_factor": 1.0,
+        "max_drawdown_R": -11.25,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_RISING_060": {
+      "full": {
+        "closed": 129,
+        "wins": 58,
+        "losses": 71,
+        "win_rate_pct": 44.96,
+        "net_R": 1.5,
+        "expectancy_R": 0.0116,
+        "profit_factor": 1.0211,
+        "max_drawdown_R": -12.75,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 96,
+        "wins": 40,
+        "losses": 56,
+        "win_rate_pct": 41.67,
+        "net_R": -6.0,
+        "expectancy_R": -0.0625,
+        "profit_factor": 0.8929,
+        "max_drawdown_R": -12.75,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 33,
+        "wins": 18,
+        "losses": 15,
+        "win_rate_pct": 54.55,
+        "net_R": 7.5,
+        "expectancy_R": 0.2273,
+        "profit_factor": 1.5,
+        "max_drawdown_R": -5.0,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_RISING_070": {
+      "full": {
+        "closed": 102,
+        "wins": 46,
+        "losses": 56,
+        "win_rate_pct": 45.1,
+        "net_R": 1.5,
+        "expectancy_R": 0.0147,
+        "profit_factor": 1.0268,
+        "max_drawdown_R": -9.75,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 78,
+        "wins": 34,
+        "losses": 44,
+        "win_rate_pct": 43.59,
+        "net_R": -1.5,
+        "expectancy_R": -0.0192,
+        "profit_factor": 0.9659,
+        "max_drawdown_R": -9.75,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 24,
+        "wins": 12,
+        "losses": 12,
+        "win_rate_pct": 50.0,
+        "net_R": 3.0,
+        "expectancy_R": 0.125,
+        "profit_factor": 1.25,
+        "max_drawdown_R": -5.0,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_EXPANSION_050_050": {
+      "full": {
+        "closed": 152,
+        "wins": 69,
+        "losses": 83,
+        "win_rate_pct": 45.39,
+        "net_R": 3.25,
+        "expectancy_R": 0.0214,
+        "profit_factor": 1.0392,
+        "max_drawdown_R": -12.0,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 114,
+        "wins": 51,
+        "losses": 63,
+        "win_rate_pct": 44.74,
+        "net_R": 0.75,
+        "expectancy_R": 0.0066,
+        "profit_factor": 1.0119,
+        "max_drawdown_R": -12.0,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 38,
+        "wins": 18,
+        "losses": 20,
+        "win_rate_pct": 47.37,
+        "net_R": 2.5,
+        "expectancy_R": 0.0658,
+        "profit_factor": 1.125,
+        "max_drawdown_R": -9.0,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_EXPANSION_060_050": {
+      "full": {
+        "closed": 115,
+        "wins": 52,
+        "losses": 63,
+        "win_rate_pct": 45.22,
+        "net_R": 2.0,
+        "expectancy_R": 0.0174,
+        "profit_factor": 1.0317,
+        "max_drawdown_R": -12.75,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 87,
+        "wins": 35,
+        "losses": 52,
+        "win_rate_pct": 40.23,
+        "net_R": -8.25,
+        "expectancy_R": -0.0948,
+        "profit_factor": 0.8413,
+        "max_drawdown_R": -12.75,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 28,
+        "wins": 17,
+        "losses": 11,
+        "win_rate_pct": 60.71,
+        "net_R": 10.25,
+        "expectancy_R": 0.3661,
+        "profit_factor": 1.9318,
+        "max_drawdown_R": -5.0,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_EXPANSION_070_050": {
+      "full": {
+        "closed": 90,
+        "wins": 41,
+        "losses": 49,
+        "win_rate_pct": 45.56,
+        "net_R": 2.25,
+        "expectancy_R": 0.025,
+        "profit_factor": 1.0459,
+        "max_drawdown_R": -9.0,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 71,
+        "wins": 30,
+        "losses": 41,
+        "win_rate_pct": 42.25,
+        "net_R": -3.5,
+        "expectancy_R": -0.0493,
+        "profit_factor": 0.9146,
+        "max_drawdown_R": -9.0,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 19,
+        "wins": 11,
+        "losses": 8,
+        "win_rate_pct": 57.89,
+        "net_R": 5.75,
+        "expectancy_R": 0.3026,
+        "profit_factor": 1.7188,
+        "max_drawdown_R": -5.0,
+        "open_at_end": 0
+      }
+    },
+    "V3_ADX_EXPANSION_080_075": {
+      "full": {
+        "closed": 45,
+        "wins": 18,
+        "losses": 27,
+        "win_rate_pct": 40.0,
+        "net_R": -4.5,
+        "expectancy_R": -0.1,
+        "profit_factor": 0.8333,
+        "max_drawdown_R": -9.75,
+        "open_at_end": 0
+      },
+      "train": {
+        "closed": 33,
+        "wins": 11,
+        "losses": 22,
+        "win_rate_pct": 33.33,
+        "net_R": -8.25,
+        "expectancy_R": -0.25,
+        "profit_factor": 0.625,
+        "max_drawdown_R": -9.75,
+        "open_at_end": 0
+      },
+      "test": {
+        "closed": 12,
+        "wins": 7,
+        "losses": 5,
+        "win_rate_pct": 58.33,
+        "net_R": 3.75,
+        "expectancy_R": 0.3125,
+        "profit_factor": 1.75,
+        "max_drawdown_R": -4.0,
+        "open_at_end": 0
+      }
+    }
+  }
+}
