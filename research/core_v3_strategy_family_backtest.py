@@ -75,10 +75,19 @@ def signals(x: pd.DataFrame, family: str) -> tuple[pd.Series, pd.Series]:
         touch_s = x["high"] >= x["ema20"] - 0.20*x["atr"]
         long = bull4 & bull1 & touch_l.shift(1).fillna(False) & (x["close"] > x["ema20"]) & (x["close"] > x["open"]) & (x["close_pos"] >= .60) & (x["volr"] >= 1.05) & (x["dist_ema20_atr"] <= 1.0) & (x["h4_adx_pct"] >= .35)
         short = bear4 & bear1 & touch_s.shift(1).fillna(False) & (x["close"] < x["ema20"]) & (x["close"] < x["open"]) & (x["close_pos"] <= .40) & (x["volr"] >= 1.05) & (x["dist_ema20_atr"] <= 1.0) & (x["h4_adx_pct"] >= .35)
-    elif family == "BREAKOUT"
-        # Confirmed close beyond prior 20-bar level, participation and expanding volatility.
-        long = bull4 & (x["close"] > x["swing_h"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] >= .70)
-        short = bear4 & (x["close"] < x["swing_l"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] <= .30)
+    elif family == "BREAKOUT":
+        # True breakout-retest: prior completed bar closes beyond its prior 20-bar level;
+        # current completed bar revisits that level and closes back in breakout direction.
+        prior_break_long = x["close"].shift(1) > x["swing_h"].shift(1)
+        prior_break_short = x["close"].shift(1) < x["swing_l"].shift(1)
+        long_level = x["swing_h"].shift(1)
+        short_level = x["swing_l"].shift(1)
+        long = (bull4 & prior_break_long & (x["low"] <= long_level + 0.15*x["atr"]) &
+                (x["close"] > long_level) & (x["volr"] >= 1.10) &
+                (x["atr_rank"] >= .40) & (x["close_pos"] >= .60))
+        short = (bear4 & prior_break_short & (x["high"] >= short_level - 0.15*x["atr"]) &
+                 (x["close"] < short_level) & (x["volr"] >= 1.10) &
+                 (x["atr_rank"] >= .40) & (x["close_pos"] <= .40))
     elif family == "SWEEP_RECLAIM":
         prev_low = x["swing_l"]
         prev_high = x["swing_h"]
@@ -102,24 +111,25 @@ def build_events(coin: str, x: pd.DataFrame, family: str) -> list[dict]:
         if not np.isfinite(atr) or atr <= 0: continue
         j=i+1
         entry=float(x["open"].iloc[j])
+        target_rr = 2.0 if family == "BREAKOUT" else RR
         if side=="LONG":
             anchor=float(x["low"].iloc[max(0,i-STRUCTURE_STOP_LOOKBACK):i+1].min())
             sl=anchor-STRUCTURE_STOP_ATR_BUFFER*atr
             risk=entry-sl
             if risk < .8*atr: sl=entry-.8*atr
             elif risk > 2.5*atr: sl=entry-2.5*atr
-            risk=entry-sl; tp=entry+RR*risk
+            risk=entry-sl; tp=entry+target_rr*risk
         else:
             anchor=float(x["high"].iloc[max(0,i-STRUCTURE_STOP_LOOKBACK):i+1].max())
             sl=anchor+STRUCTURE_STOP_ATR_BUFFER*atr
             risk=sl-entry
             if risk < .8*atr: sl=entry+.8*atr
             elif risk > 2.5*atr: sl=entry+2.5*atr
-            risk=sl-entry; tp=entry-RR*risk
+            risk=sl-entry; tp=entry-target_rr*risk
         if not np.isfinite(risk) or risk<=0: continue
         out.append({"coin":coin,"family":family,"side":side,"signal_index":i,"entry_index":j,
                     "signal_time":x.timestamp.iloc[i].isoformat(),"entry_time":x.timestamp.iloc[j].isoformat(),
-                    "entry":entry,"sl":sl,"tp":tp,"risk_price":risk})
+                    "entry":entry,"sl":sl,"tp":tp,"risk_price":risk,"target_rr":target_rr})
     return out
 
 def replay(events: list[dict], frames: dict[str,pd.DataFrame], start, end, fee_bps, slip_bps) -> list[dict]:
@@ -243,16 +253,26 @@ def main():
     for coin,x in frames.items():
         for f in families: all_events[f].extend(build_events(coin,x,f))
     periods={
-      "full":(None,"2026-10-01"),
+      "full":(None,"2026-10-10"),
       "train":("2025-01-01","2026-04-01"),
       "test":("2026-04-01","2026-09-01"),
-      "holdout":("2026-09-05","2026-10-01")}
-    report={"title":"SAM EDGE Core V3 strategy-family comparison","data_source":args.data,"coins":sorted(frames),
-      "timeframe":"15m execution; completed 1H/4H context","RR":RR,"max_hold_bars":MAX_HOLD_BARS,
+      "known_holdout_reference":("2026-09-05","2026-10-01"),
+      "recent_forward_validation":("2026-10-01","2026-10-10")}
+    source_counts={}
+    for folder in sorted(Path(args.data).iterdir()):
+      if not folder.is_dir(): continue
+      for file in list(folder.glob("*.csv")):
+        try:
+          src=pd.read_csv(file,usecols=["data_source"])["data_source"].value_counts().to_dict()
+          for k,v in src.items(): source_counts[k]=source_counts.get(k,0)+int(v)
+        except Exception: pass
+    report={"title":"SAM EDGE Core V3 strategy-family comparison — true breakout-retest RR2",
+      "data_source":args.data,"data_source_counts":source_counts,"coins":sorted(frames),
+      "timeframe":"15m execution; completed 1H/4H context","RR_default":RR,"RR_by_family":{"BREAKOUT":2.0,"TREND_PULLBACK":RR,"SWEEP_RECLAIM":RR,"RANGE_MEAN_REVERSION":RR},"max_hold_bars":MAX_HOLD_BARS,
       "max_active_positions":MAX_ACTIVE,"cooldown_bars":COOLDOWN_BARS,
       "execution":"next 15m open; conservative same-bar SL priority; stop gaps modeled using adverse open",
       "costs":{"fee_bps_per_side":args.fee_bps,"slippage_bps_per_side":args.slippage_bps,"funding":"excluded; not yet joined"},
-      "caution":"Exploratory screening, not live-ready. Entry candle is checked and period-end open marks are reported separately; funding and full marked-to-market portfolio drawdown are still not included.",
+      "caution":"Research only. BREAKOUT is a true breakout-retest and uses RR 2.0; other families use RR 1.5. recent_forward_validation is a short recent window, not a statistically sufficient holdout. Funding and full marked-to-market portfolio drawdown are not included.",
       "results":{}}
     out=Path(args.out); out.mkdir(parents=True,exist_ok=True)
     for f in families:
