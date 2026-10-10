@@ -5,7 +5,7 @@ on:
     branches:
       - research/core-v3-historical-sim
     paths:
-      - "research/core_v3_historical_sim.py"
+      - "research/core_v3_historical_sim.py"\n      - "research/core_v3_strategy_family_backtest.py"
       - "research/core_v3.py"
       - "research/fetch_historical_ohlcv.py"
       - ".github/workflows/core_v3_historical_sim.yml"
@@ -38,7 +38,7 @@ jobs:
         run: python -m pip install --upgrade pip ccxt pandas numpy
 
       - name: Compile research modules
-        run: python -m py_compile core_engine_v15.py research/core_v3.py research/core_v3_historical_sim.py research/fetch_historical_ohlcv.py
+        run: python -m py_compile core_engine_v15.py research/core_v3.py research/core_v3_historical_sim.py research/core_v3_strategy_family_backtest.py research/fetch_historical_ohlcv.py
 
       - name: Download read-only historical candles
         run: python research/fetch_historical_ohlcv.py --start-date 2025-01-01 --end-date 2026-09-30 --data data
@@ -46,7 +46,7 @@ jobs:
       - name: Run event-driven portfolio replay
         run: python research/core_v3_historical_sim.py --data data --out research/results
 
-      - name: Upload simulation outputs
+      - name: Run four strategy-family backtests with fee and slippage assumptions\n        run: python research/core_v3_strategy_family_backtest.py --data data --out research/results --fee-bps 5 --slippage-bps 2\n\n      - name: Upload simulation outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
