@@ -1,0 +1,172 @@
+{
+  "experiment": "public_indicator_concept_benchmark",
+  "RR": 2.0,
+  "stop_ATR": 1.5,
+  "max_hold_bars": 96,
+  "cooldown_bars": 4,
+  "fee_bps_per_side": 8.0,
+  "slippage_bps_per_side": 5.0,
+  "coins": [
+    "ADA",
+    "AVAX",
+    "BNB",
+    "BTC",
+    "CRV",
+    "DOGE",
+    "ETH",
+    "FET",
+    "LINK",
+    "SOL",
+    "SUI",
+    "UNI",
+    "XRP"
+  ],
+  "source_counts_by_coin": {
+    "ADA": {
+      "binance_futures_archive": 61248
+    },
+    "AVAX": {
+      "binance_futures_archive": 61248
+    },
+    "BNB": {
+      "binance_futures_archive": 61248
+    },
+    "BTC": {
+      "binance_futures_archive": 61248
+    },
+    "CRV": {
+      "binance_futures_archive": 61248
+    },
+    "DOGE": {
+      "binance_futures_archive": 61248
+    },
+    "ETH": {
+      "binance_futures_archive": 61248
+    },
+    "FET": {
+      "binance_futures_archive": 61248
+    },
+    "LINK": {
+      "binance_futures_archive": 61248
+    },
+    "SOL": {
+      "binance_futures_archive": 61248
+    },
+    "SUI": {
+      "binance_futures_archive": 61248
+    },
+    "UNI": {
+      "binance_futures_archive": 61248
+    },
+    "XRP": {
+      "binance_futures_archive": 61248
+    }
+  },
+  "families": {
+    "UT_BOT_EMA4H": {
+      "full": {
+        "trades": 22527,
+        "win_rate_pct": 34.16,
+        "net_R": -7896.348,
+        "expectancy_R": -0.35053,
+        "profit_factor": 0.6113,
+        "max_closed_equity_DD_R": -7904.883
+      },
+      "train_2025_to_2026Q1": {
+        "trades": 15772,
+        "win_rate_pct": 34.28,
+        "net_R": -4998.69,
+        "expectancy_R": -0.31693,
+        "profit_factor": 0.6399,
+        "max_closed_equity_DD_R": -4998.69
+      },
+      "test_Apr_Aug_2026": {
+        "trades": 5582,
+        "win_rate_pct": 33.84,
+        "net_R": -2509.217,
+        "expectancy_R": -0.44952,
+        "profit_factor": 0.5353,
+        "max_closed_equity_DD_R": -2540.326
+      },
+      "holdout_Sep05_30_2026": {
+        "trades": 1008,
+        "win_rate_pct": 34.23,
+        "net_R": -333.809,
+        "expectancy_R": -0.33116,
+        "profit_factor": 0.6258,
+        "max_closed_equity_DD_R": -355.632
+      }
+    },
+    "SSL_QQE_EMA4H": {
+      "full": {
+        "trades": 8469,
+        "win_rate_pct": 35.23,
+        "net_R": -2844.507,
+        "expectancy_R": -0.33587,
+        "profit_factor": 0.6269,
+        "max_closed_equity_DD_R": -2845.56
+      },
+      "train_2025_to_2026Q1": {
+        "trades": 5908,
+        "win_rate_pct": 35.39,
+        "net_R": -1777.355,
+        "expectancy_R": -0.30084,
+        "profit_factor": 0.6568,
+        "max_closed_equity_DD_R": -1782.32
+      },
+      "test_Apr_Aug_2026": {
+        "trades": 2099,
+        "win_rate_pct": 34.4,
+        "net_R": -942.16,
+        "expectancy_R": -0.44886,
+        "profit_factor": 0.5386,
+        "max_closed_equity_DD_R": -954.091
+      },
+      "holdout_Sep05_30_2026": {
+        "trades": 391,
+        "win_rate_pct": 37.6,
+        "net_R": -100.835,
+        "expectancy_R": -0.25789,
+        "profit_factor": 0.7029,
+        "max_closed_equity_DD_R": -116.219
+      }
+    },
+    "SUPERTREND_SSL_QQE": {
+      "full": {
+        "trades": 6344,
+        "win_rate_pct": 34.21,
+        "net_R": -2394.029,
+        "expectancy_R": -0.37737,
+        "profit_factor": 0.5909,
+        "max_closed_equity_DD_R": -2430.891
+      },
+      "train_2025_to_2026Q1": {
+        "trades": 4426,
+        "win_rate_pct": 34.39,
+        "net_R": -1503.664,
+        "expectancy_R": -0.33973,
+        "profit_factor": 0.6218,
+        "max_closed_equity_DD_R": -1538.606
+      },
+      "test_Apr_Aug_2026": {
+        "trades": 1563,
+        "win_rate_pct": 34.29,
+        "net_R": -727.449,
+        "expectancy_R": -0.46542,
+        "profit_factor": 0.5259,
+        "max_closed_equity_DD_R": -728.339
+      },
+      "holdout_Sep05_30_2026": {
+        "trades": 325,
+        "win_rate_pct": 33.54,
+        "net_R": -131.29,
+        "expectancy_R": -0.40397,
+        "profit_factor": 0.5685,
+        "max_closed_equity_DD_R": -143.551
+      }
+    }
+  },
+  "source_mix_total_candles": {
+    "binance_futures_archive": 796224
+  }
+}
