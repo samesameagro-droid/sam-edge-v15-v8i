@@ -1,0 +1,3392 @@
+[
+  {
+    "id": 1,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 22647,
+      "win_rate_pct": 39.48,
+      "net_R": -6791.935,
+      "expectancy_R": -0.2999,
+      "profit_factor": 0.6154,
+      "max_closed_equity_DD_R": -6797.509,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 7884,
+      "win_rate_pct": 40.28,
+      "net_R": -2968.866,
+      "expectancy_R": -0.37657,
+      "profit_factor": 0.5458,
+      "max_closed_equity_DD_R": -2971.675,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 2,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 14996,
+      "win_rate_pct": 39.46,
+      "net_R": -4255.385,
+      "expectancy_R": -0.28377,
+      "profit_factor": 0.6315,
+      "max_closed_equity_DD_R": -4263.519,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 5130,
+      "win_rate_pct": 38.97,
+      "net_R": -2038.629,
+      "expectancy_R": -0.39739,
+      "profit_factor": 0.5274,
+      "max_closed_equity_DD_R": -2040.472,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 3,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 10627,
+      "win_rate_pct": 39.75,
+      "net_R": -3190.684,
+      "expectancy_R": -0.30024,
+      "profit_factor": 0.6155,
+      "max_closed_equity_DD_R": -3192.794,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3859,
+      "win_rate_pct": 40.81,
+      "net_R": -1422.038,
+      "expectancy_R": -0.3685,
+      "profit_factor": 0.5533,
+      "max_closed_equity_DD_R": -1423.966,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 4,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6668,
+      "win_rate_pct": 39.28,
+      "net_R": -1961.328,
+      "expectancy_R": -0.29414,
+      "profit_factor": 0.621,
+      "max_closed_equity_DD_R": -1964.757,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2444,
+      "win_rate_pct": 40.51,
+      "net_R": -888.252,
+      "expectancy_R": -0.36344,
+      "profit_factor": 0.5584,
+      "max_closed_equity_DD_R": -890.289,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 5,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 21265,
+      "win_rate_pct": 33.16,
+      "net_R": -6229.803,
+      "expectancy_R": -0.29296,
+      "profit_factor": 0.6599,
+      "max_closed_equity_DD_R": -6233.449,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 7406,
+      "win_rate_pct": 33.84,
+      "net_R": -2741.197,
+      "expectancy_R": -0.37013,
+      "profit_factor": 0.5967,
+      "max_closed_equity_DD_R": -2747.921,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 6,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 14461,
+      "win_rate_pct": 33.12,
+      "net_R": -4018.781,
+      "expectancy_R": -0.2779,
+      "profit_factor": 0.6734,
+      "max_closed_equity_DD_R": -4024.915,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 4949,
+      "win_rate_pct": 32.69,
+      "net_R": -1942.637,
+      "expectancy_R": -0.39253,
+      "profit_factor": 0.5762,
+      "max_closed_equity_DD_R": -1946.4,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 7,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 10327,
+      "win_rate_pct": 33.13,
+      "net_R": -3109.73,
+      "expectancy_R": -0.30113,
+      "profit_factor": 0.6528,
+      "max_closed_equity_DD_R": -3110.913,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3741,
+      "win_rate_pct": 34.51,
+      "net_R": -1324.107,
+      "expectancy_R": -0.35394,
+      "profit_factor": 0.6119,
+      "max_closed_equity_DD_R": -1329.051,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 8,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6591,
+      "win_rate_pct": 32.83,
+      "net_R": -1926.484,
+      "expectancy_R": -0.29229,
+      "profit_factor": 0.6598,
+      "max_closed_equity_DD_R": -1928.912,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2396,
+      "win_rate_pct": 34.18,
+      "net_R": -838.902,
+      "expectancy_R": -0.35013,
+      "profit_factor": 0.6149,
+      "max_closed_equity_DD_R": -842.44,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 9,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 20060,
+      "win_rate_pct": 28.71,
+      "net_R": -5646.988,
+      "expectancy_R": -0.2815,
+      "profit_factor": 0.693,
+      "max_closed_equity_DD_R": -5651.967,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 6960,
+      "win_rate_pct": 28.99,
+      "net_R": -2573.235,
+      "expectancy_R": -0.36972,
+      "profit_factor": 0.6236,
+      "max_closed_equity_DD_R": -2582.621,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 10,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 13984,
+      "win_rate_pct": 28.74,
+      "net_R": -3717.867,
+      "expectancy_R": -0.26587,
+      "profit_factor": 0.7064,
+      "max_closed_equity_DD_R": -3724.834,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 4782,
+      "win_rate_pct": 28.04,
+      "net_R": -1877.062,
+      "expectancy_R": -0.39253,
+      "profit_factor": 0.6025,
+      "max_closed_equity_DD_R": -1882.14,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 11,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 10054,
+      "win_rate_pct": 28.46,
+      "net_R": -3006.97,
+      "expectancy_R": -0.29908,
+      "profit_factor": 0.6773,
+      "max_closed_equity_DD_R": -3010.152,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3616,
+      "win_rate_pct": 29.73,
+      "net_R": -1275.012,
+      "expectancy_R": -0.3526,
+      "profit_factor": 0.6396,
+      "max_closed_equity_DD_R": -1279.94,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 12,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6500,
+      "win_rate_pct": 28.34,
+      "net_R": -1853.21,
+      "expectancy_R": -0.28511,
+      "profit_factor": 0.6885,
+      "max_closed_equity_DD_R": -1857.138,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2345,
+      "win_rate_pct": 29.34,
+      "net_R": -827.805,
+      "expectancy_R": -0.35301,
+      "profit_factor": 0.638,
+      "max_closed_equity_DD_R": -830.595,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 13,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 17653,
+      "win_rate_pct": 40.51,
+      "net_R": -3080.181,
+      "expectancy_R": -0.17448,
+      "profit_factor": 0.7525,
+      "max_closed_equity_DD_R": -3086.764,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 6191,
+      "win_rate_pct": 40.64,
+      "net_R": -1466.772,
+      "expectancy_R": -0.23692,
+      "profit_factor": 0.6817,
+      "max_closed_equity_DD_R": -1471.891,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 14,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 12806,
+      "win_rate_pct": 40.54,
+      "net_R": -2127.926,
+      "expectancy_R": -0.16617,
+      "profit_factor": 0.7626,
+      "max_closed_equity_DD_R": -2135.722,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 4375,
+      "win_rate_pct": 39.38,
+      "net_R": -1154.125,
+      "expectancy_R": -0.2638,
+      "profit_factor": 0.6519,
+      "max_closed_equity_DD_R": -1157.957,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 15,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 9455,
+      "win_rate_pct": 40.12,
+      "net_R": -1825.453,
+      "expectancy_R": -0.19307,
+      "profit_factor": 0.7302,
+      "max_closed_equity_DD_R": -1828.193,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3411,
+      "win_rate_pct": 40.75,
+      "net_R": -816.833,
+      "expectancy_R": -0.23947,
+      "profit_factor": 0.6789,
+      "max_closed_equity_DD_R": -823.768,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 16,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6244,
+      "win_rate_pct": 39.73,
+      "net_R": -1192.459,
+      "expectancy_R": -0.19098,
+      "profit_factor": 0.7321,
+      "max_closed_equity_DD_R": -1196.411,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2259,
+      "win_rate_pct": 40.06,
+      "net_R": -564.017,
+      "expectancy_R": -0.24968,
+      "profit_factor": 0.6677,
+      "max_closed_equity_DD_R": -567.093,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 17,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 15772,
+      "win_rate_pct": 34.37,
+      "net_R": -2491.276,
+      "expectancy_R": -0.15796,
+      "profit_factor": 0.7964,
+      "max_closed_equity_DD_R": -2508.834,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 5582,
+      "win_rate_pct": 34.22,
+      "net_R": -1297.95,
+      "expectancy_R": -0.23252,
+      "profit_factor": 0.7174,
+      "max_closed_equity_DD_R": -1303.5,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 18,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 11952,
+      "win_rate_pct": 34.75,
+      "net_R": -1689.716,
+      "expectancy_R": -0.14138,
+      "profit_factor": 0.8157,
+      "max_closed_equity_DD_R": -1700.659,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 4112,
+      "win_rate_pct": 33.46,
+      "net_R": -1032.767,
+      "expectancy_R": -0.25116,
+      "profit_factor": 0.6973,
+      "max_closed_equity_DD_R": -1036.531,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 19,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 8929,
+      "win_rate_pct": 33.95,
+      "net_R": -1595.067,
+      "expectancy_R": -0.17864,
+      "profit_factor": 0.7734,
+      "max_closed_equity_DD_R": -1598.454,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3231,
+      "win_rate_pct": 34.2,
+      "net_R": -772.338,
+      "expectancy_R": -0.23904,
+      "profit_factor": 0.7114,
+      "max_closed_equity_DD_R": -777.765,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 20,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6053,
+      "win_rate_pct": 33.83,
+      "net_R": -1035.927,
+      "expectancy_R": -0.17114,
+      "profit_factor": 0.781,
+      "max_closed_equity_DD_R": -1040.144,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2179,
+      "win_rate_pct": 34.28,
+      "net_R": -502.239,
+      "expectancy_R": -0.23049,
+      "profit_factor": 0.7201,
+      "max_closed_equity_DD_R": -503.625,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 21,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 14313,
+      "win_rate_pct": 30.22,
+      "net_R": -1980.461,
+      "expectancy_R": -0.13837,
+      "profit_factor": 0.8319,
+      "max_closed_equity_DD_R": -1990.054,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 5092,
+      "win_rate_pct": 29.6,
+      "net_R": -1184.893,
+      "expectancy_R": -0.2327,
+      "profit_factor": 0.7355,
+      "max_closed_equity_DD_R": -1191.485,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 22,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 11168,
+      "win_rate_pct": 30.66,
+      "net_R": -1331.691,
+      "expectancy_R": -0.11924,
+      "profit_factor": 0.8535,
+      "max_closed_equity_DD_R": -1345.724,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3886,
+      "win_rate_pct": 28.87,
+      "net_R": -987.666,
+      "expectancy_R": -0.25416,
+      "profit_factor": 0.7131,
+      "max_closed_equity_DD_R": -991.972,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 23,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 8509,
+      "win_rate_pct": 29.97,
+      "net_R": -1296.533,
+      "expectancy_R": -0.15237,
+      "profit_factor": 0.8173,
+      "max_closed_equity_DD_R": -1301.92,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3056,
+      "win_rate_pct": 29.48,
+      "net_R": -733.127,
+      "expectancy_R": -0.2399,
+      "profit_factor": 0.7299,
+      "max_closed_equity_DD_R": -742.054,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 24,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5872,
+      "win_rate_pct": 30.11,
+      "net_R": -808.51,
+      "expectancy_R": -0.13769,
+      "profit_factor": 0.8328,
+      "max_closed_equity_DD_R": -817.107,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2107,
+      "win_rate_pct": 29.28,
+      "net_R": -515.721,
+      "expectancy_R": -0.24477,
+      "profit_factor": 0.724,
+      "max_closed_equity_DD_R": -519.55,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 25,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 13651,
+      "win_rate_pct": 40.59,
+      "net_R": -1723.409,
+      "expectancy_R": -0.12625,
+      "profit_factor": 0.812,
+      "max_closed_equity_DD_R": -1741.885,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 4782,
+      "win_rate_pct": 40.86,
+      "net_R": -817.373,
+      "expectancy_R": -0.17093,
+      "profit_factor": 0.7552,
+      "max_closed_equity_DD_R": -823.44,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 26,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 10828,
+      "win_rate_pct": 40.76,
+      "net_R": -1295.248,
+      "expectancy_R": -0.11962,
+      "profit_factor": 0.8208,
+      "max_closed_equity_DD_R": -1305.954,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3674,
+      "win_rate_pct": 41.07,
+      "net_R": -601.418,
+      "expectancy_R": -0.1637,
+      "profit_factor": 0.7641,
+      "max_closed_equity_DD_R": -605.296,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 27,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 8232,
+      "win_rate_pct": 39.97,
+      "net_R": -1227.797,
+      "expectancy_R": -0.14915,
+      "profit_factor": 0.7824,
+      "max_closed_equity_DD_R": -1232.087,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2961,
+      "win_rate_pct": 41.84,
+      "net_R": -449.488,
+      "expectancy_R": -0.1518,
+      "profit_factor": 0.7801,
+      "max_closed_equity_DD_R": -452.287,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 28,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5749,
+      "win_rate_pct": 40.15,
+      "net_R": -789.574,
+      "expectancy_R": -0.13734,
+      "profit_factor": 0.7974,
+      "max_closed_equity_DD_R": -793.754,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2054,
+      "win_rate_pct": 41.58,
+      "net_R": -315.746,
+      "expectancy_R": -0.15372,
+      "profit_factor": 0.7777,
+      "max_closed_equity_DD_R": -315.874,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 29,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 11954,
+      "win_rate_pct": 35.08,
+      "net_R": -1227.194,
+      "expectancy_R": -0.10266,
+      "profit_factor": 0.8595,
+      "max_closed_equity_DD_R": -1244.174,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 4185,
+      "win_rate_pct": 34.55,
+      "net_R": -707.288,
+      "expectancy_R": -0.16901,
+      "profit_factor": 0.7804,
+      "max_closed_equity_DD_R": -711.423,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 30,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 9804,
+      "win_rate_pct": 35.34,
+      "net_R": -911.677,
+      "expectancy_R": -0.09299,
+      "profit_factor": 0.8718,
+      "max_closed_equity_DD_R": -930.557,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3360,
+      "win_rate_pct": 34.49,
+      "net_R": -573.807,
+      "expectancy_R": -0.17078,
+      "profit_factor": 0.7777,
+      "max_closed_equity_DD_R": -577.859,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 31,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 7671,
+      "win_rate_pct": 34.86,
+      "net_R": -850.893,
+      "expectancy_R": -0.11092,
+      "profit_factor": 0.8501,
+      "max_closed_equity_DD_R": -866.392,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2746,
+      "win_rate_pct": 35.11,
+      "net_R": -433.022,
+      "expectancy_R": -0.15769,
+      "profit_factor": 0.7952,
+      "max_closed_equity_DD_R": -438.243,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 32,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5483,
+      "win_rate_pct": 35.11,
+      "net_R": -534.841,
+      "expectancy_R": -0.09755,
+      "profit_factor": 0.8665,
+      "max_closed_equity_DD_R": -553.265,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1959,
+      "win_rate_pct": 35.07,
+      "net_R": -316.371,
+      "expectancy_R": -0.1615,
+      "profit_factor": 0.7898,
+      "max_closed_equity_DD_R": -318.418,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 33,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 10813,
+      "win_rate_pct": 31.18,
+      "net_R": -1080.048,
+      "expectancy_R": -0.09988,
+      "profit_factor": 0.8708,
+      "max_closed_equity_DD_R": -1092.699,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3808,
+      "win_rate_pct": 30.62,
+      "net_R": -629.377,
+      "expectancy_R": -0.16528,
+      "profit_factor": 0.7966,
+      "max_closed_equity_DD_R": -632.301,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 34,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 9021,
+      "win_rate_pct": 31.57,
+      "net_R": -784.064,
+      "expectancy_R": -0.08692,
+      "profit_factor": 0.8865,
+      "max_closed_equity_DD_R": -811.556,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 3140,
+      "win_rate_pct": 30.86,
+      "net_R": -498.24,
+      "expectancy_R": -0.15868,
+      "profit_factor": 0.8039,
+      "max_closed_equity_DD_R": -506.356,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 35,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 7200,
+      "win_rate_pct": 30.96,
+      "net_R": -724.3,
+      "expectancy_R": -0.1006,
+      "profit_factor": 0.8715,
+      "max_closed_equity_DD_R": -744.566,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2544,
+      "win_rate_pct": 31.09,
+      "net_R": -390.327,
+      "expectancy_R": -0.15343,
+      "profit_factor": 0.8114,
+      "max_closed_equity_DD_R": -414.704,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 36,
+    "family": "UT_BOT_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5230,
+      "win_rate_pct": 31.22,
+      "net_R": -485.931,
+      "expectancy_R": -0.09291,
+      "profit_factor": 0.8798,
+      "max_closed_equity_DD_R": -513.82,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1867,
+      "win_rate_pct": 31.07,
+      "net_R": -301.399,
+      "expectancy_R": -0.16143,
+      "profit_factor": 0.8013,
+      "max_closed_equity_DD_R": -314.867,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 37,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 7146,
+      "win_rate_pct": 40.09,
+      "net_R": -2091.146,
+      "expectancy_R": -0.29263,
+      "profit_factor": 0.6224,
+      "max_closed_equity_DD_R": -2092.334,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2504,
+      "win_rate_pct": 40.18,
+      "net_R": -985.699,
+      "expectancy_R": -0.39365,
+      "profit_factor": 0.5308,
+      "max_closed_equity_DD_R": -986.828,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 38,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3231,
+      "win_rate_pct": 39.65,
+      "net_R": -897.484,
+      "expectancy_R": -0.27777,
+      "profit_factor": 0.6366,
+      "max_closed_equity_DD_R": -899.599,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1180,
+      "win_rate_pct": 41.86,
+      "net_R": -391.637,
+      "expectancy_R": -0.3319,
+      "profit_factor": 0.5869,
+      "max_closed_equity_DD_R": -395.609,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 39,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3167,
+      "win_rate_pct": 39.75,
+      "net_R": -978.876,
+      "expectancy_R": -0.30909,
+      "profit_factor": 0.6056,
+      "max_closed_equity_DD_R": -979.598,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1195,
+      "win_rate_pct": 40.08,
+      "net_R": -489.204,
+      "expectancy_R": -0.40938,
+      "profit_factor": 0.5197,
+      "max_closed_equity_DD_R": -489.204,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 40,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1273,
+      "win_rate_pct": 37.78,
+      "net_R": -430.431,
+      "expectancy_R": -0.33812,
+      "profit_factor": 0.5759,
+      "max_closed_equity_DD_R": -443.322,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 532,
+      "win_rate_pct": 41.54,
+      "net_R": -189.123,
+      "expectancy_R": -0.35549,
+      "profit_factor": 0.5678,
+      "max_closed_equity_DD_R": -189.535,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 41,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6947,
+      "win_rate_pct": 34.03,
+      "net_R": -1912.622,
+      "expectancy_R": -0.27532,
+      "profit_factor": 0.6775,
+      "max_closed_equity_DD_R": -1916.81,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2430,
+      "win_rate_pct": 33.54,
+      "net_R": -955.139,
+      "expectancy_R": -0.39306,
+      "profit_factor": 0.5779,
+      "max_closed_equity_DD_R": -956.768,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 42,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3163,
+      "win_rate_pct": 33.7,
+      "net_R": -815.608,
+      "expectancy_R": -0.25786,
+      "profit_factor": 0.6926,
+      "max_closed_equity_DD_R": -825.147,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1156,
+      "win_rate_pct": 35.55,
+      "net_R": -363.244,
+      "expectancy_R": -0.31423,
+      "profit_factor": 0.6471,
+      "max_closed_equity_DD_R": -367.378,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 43,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3135,
+      "win_rate_pct": 33.59,
+      "net_R": -926.567,
+      "expectancy_R": -0.29556,
+      "profit_factor": 0.6582,
+      "max_closed_equity_DD_R": -927.243,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1176,
+      "win_rate_pct": 33.76,
+      "net_R": -469.192,
+      "expectancy_R": -0.39897,
+      "profit_factor": 0.5758,
+      "max_closed_equity_DD_R": -469.492,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 44,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1267,
+      "win_rate_pct": 32.04,
+      "net_R": -406.943,
+      "expectancy_R": -0.32119,
+      "profit_factor": 0.6308,
+      "max_closed_equity_DD_R": -420.834,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 528,
+      "win_rate_pct": 35.98,
+      "net_R": -165.92,
+      "expectancy_R": -0.31424,
+      "profit_factor": 0.6509,
+      "max_closed_equity_DD_R": -167.901,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 45,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6736,
+      "win_rate_pct": 29.31,
+      "net_R": -1820.953,
+      "expectancy_R": -0.27033,
+      "profit_factor": 0.7046,
+      "max_closed_equity_DD_R": -1830.051,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2372,
+      "win_rate_pct": 28.54,
+      "net_R": -948.942,
+      "expectancy_R": -0.40006,
+      "profit_factor": 0.6002,
+      "max_closed_equity_DD_R": -951.071,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 46,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3108,
+      "win_rate_pct": 29.44,
+      "net_R": -739.305,
+      "expectancy_R": -0.23787,
+      "profit_factor": 0.7337,
+      "max_closed_equity_DD_R": -765.894,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1134,
+      "win_rate_pct": 30.16,
+      "net_R": -371.6,
+      "expectancy_R": -0.32769,
+      "profit_factor": 0.6605,
+      "max_closed_equity_DD_R": -376.289,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 47,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3092,
+      "win_rate_pct": 28.88,
+      "net_R": -905.707,
+      "expectancy_R": -0.29292,
+      "profit_factor": 0.6837,
+      "max_closed_equity_DD_R": -909.682,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1164,
+      "win_rate_pct": 28.87,
+      "net_R": -469.051,
+      "expectancy_R": -0.40296,
+      "profit_factor": 0.6019,
+      "max_closed_equity_DD_R": -471.408,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 48,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1263,
+      "win_rate_pct": 28.5,
+      "net_R": -359.799,
+      "expectancy_R": -0.28488,
+      "profit_factor": 0.689,
+      "max_closed_equity_DD_R": -389.99,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 526,
+      "win_rate_pct": 30.42,
+      "net_R": -176.055,
+      "expectancy_R": -0.33471,
+      "profit_factor": 0.6596,
+      "max_closed_equity_DD_R": -177.422,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 49,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 6258,
+      "win_rate_pct": 41.42,
+      "net_R": -1005.581,
+      "expectancy_R": -0.16069,
+      "profit_factor": 0.7704,
+      "max_closed_equity_DD_R": -1011.797,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2211,
+      "win_rate_pct": 41.34,
+      "net_R": -507.386,
+      "expectancy_R": -0.22948,
+      "profit_factor": 0.691,
+      "max_closed_equity_DD_R": -508.638,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 50,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3015,
+      "win_rate_pct": 41.59,
+      "net_R": -417.591,
+      "expectancy_R": -0.1385,
+      "profit_factor": 0.7984,
+      "max_closed_equity_DD_R": -425.168,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1100,
+      "win_rate_pct": 44.09,
+      "net_R": -167.61,
+      "expectancy_R": -0.15237,
+      "profit_factor": 0.7843,
+      "max_closed_equity_DD_R": -170.236,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 51,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3011,
+      "win_rate_pct": 41.38,
+      "net_R": -504.125,
+      "expectancy_R": -0.16743,
+      "profit_factor": 0.7622,
+      "max_closed_equity_DD_R": -508.454,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1132,
+      "win_rate_pct": 40.64,
+      "net_R": -291.525,
+      "expectancy_R": -0.25753,
+      "profit_factor": 0.6614,
+      "max_closed_equity_DD_R": -291.558,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 52,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1248,
+      "win_rate_pct": 40.54,
+      "net_R": -218.684,
+      "expectancy_R": -0.17523,
+      "profit_factor": 0.752,
+      "max_closed_equity_DD_R": -229.306,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 522,
+      "win_rate_pct": 43.49,
+      "net_R": -93.616,
+      "expectancy_R": -0.17934,
+      "profit_factor": 0.7525,
+      "max_closed_equity_DD_R": -95.057,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 53,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5908,
+      "win_rate_pct": 35.44,
+      "net_R": -790.117,
+      "expectancy_R": -0.13374,
+      "profit_factor": 0.8262,
+      "max_closed_equity_DD_R": -804.891,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 2099,
+      "win_rate_pct": 34.64,
+      "net_R": -470.806,
+      "expectancy_R": -0.2243,
+      "profit_factor": 0.7279,
+      "max_closed_equity_DD_R": -472.559,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 54,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2906,
+      "win_rate_pct": 35.38,
+      "net_R": -344.993,
+      "expectancy_R": -0.11872,
+      "profit_factor": 0.8436,
+      "max_closed_equity_DD_R": -367.501,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1058,
+      "win_rate_pct": 37.05,
+      "net_R": -151.514,
+      "expectancy_R": -0.14321,
+      "profit_factor": 0.8192,
+      "max_closed_equity_DD_R": -154.395,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 55,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2940,
+      "win_rate_pct": 35.31,
+      "net_R": -422.555,
+      "expectancy_R": -0.14373,
+      "profit_factor": 0.8148,
+      "max_closed_equity_DD_R": -428.097,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1102,
+      "win_rate_pct": 33.85,
+      "net_R": -285.149,
+      "expectancy_R": -0.25876,
+      "profit_factor": 0.6942,
+      "max_closed_equity_DD_R": -285.984,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 56,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1234,
+      "win_rate_pct": 34.52,
+      "net_R": -189.505,
+      "expectancy_R": -0.15357,
+      "profit_factor": 0.8022,
+      "max_closed_equity_DD_R": -211.671,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 515,
+      "win_rate_pct": 36.31,
+      "net_R": -92.533,
+      "expectancy_R": -0.17968,
+      "profit_factor": 0.7797,
+      "max_closed_equity_DD_R": -92.533,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 57,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5634,
+      "win_rate_pct": 30.94,
+      "net_R": -670.444,
+      "expectancy_R": -0.119,
+      "profit_factor": 0.8555,
+      "max_closed_equity_DD_R": -684.602,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1999,
+      "win_rate_pct": 29.76,
+      "net_R": -451.212,
+      "expectancy_R": -0.22572,
+      "profit_factor": 0.745,
+      "max_closed_equity_DD_R": -453.465,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 58,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2808,
+      "win_rate_pct": 31.13,
+      "net_R": -274.723,
+      "expectancy_R": -0.09784,
+      "profit_factor": 0.8791,
+      "max_closed_equity_DD_R": -297.934,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1019,
+      "win_rate_pct": 31.99,
+      "net_R": -143.141,
+      "expectancy_R": -0.14047,
+      "profit_factor": 0.8357,
+      "max_closed_equity_DD_R": -147.022,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 59,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2870,
+      "win_rate_pct": 30.63,
+      "net_R": -389.008,
+      "expectancy_R": -0.13554,
+      "profit_factor": 0.837,
+      "max_closed_equity_DD_R": -395.636,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1076,
+      "win_rate_pct": 28.81,
+      "net_R": -290.862,
+      "expectancy_R": -0.27032,
+      "profit_factor": 0.7033,
+      "max_closed_equity_DD_R": -291.894,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 60,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1220,
+      "win_rate_pct": 29.75,
+      "net_R": -187.485,
+      "expectancy_R": -0.15368,
+      "profit_factor": 0.8151,
+      "max_closed_equity_DD_R": -207.43,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 507,
+      "win_rate_pct": 30.97,
+      "net_R": -97.592,
+      "expectancy_R": -0.19249,
+      "profit_factor": 0.7819,
+      "max_closed_equity_DD_R": -97.592,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 61,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5451,
+      "win_rate_pct": 42.27,
+      "net_R": -498.714,
+      "expectancy_R": -0.09149,
+      "profit_factor": 0.861,
+      "max_closed_equity_DD_R": -513.658,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1936,
+      "win_rate_pct": 40.19,
+      "net_R": -364.994,
+      "expectancy_R": -0.18853,
+      "profit_factor": 0.7348,
+      "max_closed_equity_DD_R": -370.155,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 62,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2802,
+      "win_rate_pct": 41.72,
+      "net_R": -260.558,
+      "expectancy_R": -0.09299,
+      "profit_factor": 0.8584,
+      "max_closed_equity_DD_R": -279.733,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1023,
+      "win_rate_pct": 42.72,
+      "net_R": -122.611,
+      "expectancy_R": -0.11985,
+      "profit_factor": 0.824,
+      "max_closed_equity_DD_R": -124.772,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 63,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2816,
+      "win_rate_pct": 42.72,
+      "net_R": -237.444,
+      "expectancy_R": -0.08432,
+      "profit_factor": 0.8717,
+      "max_closed_equity_DD_R": -258.131,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1049,
+      "win_rate_pct": 40.04,
+      "net_R": -209.771,
+      "expectancy_R": -0.19997,
+      "profit_factor": 0.7225,
+      "max_closed_equity_DD_R": -210.029,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 64,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1210,
+      "win_rate_pct": 42.23,
+      "net_R": -105.804,
+      "expectancy_R": -0.08744,
+      "profit_factor": 0.8669,
+      "max_closed_equity_DD_R": -130.272,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 504,
+      "win_rate_pct": 42.46,
+      "net_R": -68.771,
+      "expectancy_R": -0.13645,
+      "profit_factor": 0.8034,
+      "max_closed_equity_DD_R": -68.771,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 65,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 5083,
+      "win_rate_pct": 35.73,
+      "net_R": -422.634,
+      "expectancy_R": -0.08315,
+      "profit_factor": 0.8862,
+      "max_closed_equity_DD_R": -445.724,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1821,
+      "win_rate_pct": 33.55,
+      "net_R": -350.26,
+      "expectancy_R": -0.19235,
+      "profit_factor": 0.756,
+      "max_closed_equity_DD_R": -354.125,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 66,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2674,
+      "win_rate_pct": 35.56,
+      "net_R": -210.407,
+      "expectancy_R": -0.07869,
+      "profit_factor": 0.8911,
+      "max_closed_equity_DD_R": -254.26,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 978,
+      "win_rate_pct": 35.38,
+      "net_R": -129.18,
+      "expectancy_R": -0.13209,
+      "profit_factor": 0.8276,
+      "max_closed_equity_DD_R": -129.341,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 67,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2717,
+      "win_rate_pct": 36.25,
+      "net_R": -188.221,
+      "expectancy_R": -0.06928,
+      "profit_factor": 0.9048,
+      "max_closed_equity_DD_R": -221.222,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1015,
+      "win_rate_pct": 33.3,
+      "net_R": -213.516,
+      "expectancy_R": -0.21036,
+      "profit_factor": 0.7375,
+      "max_closed_equity_DD_R": -214.165,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 68,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1188,
+      "win_rate_pct": 35.1,
+      "net_R": -113.526,
+      "expectancy_R": -0.09556,
+      "profit_factor": 0.8694,
+      "max_closed_equity_DD_R": -134.624,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 494,
+      "win_rate_pct": 36.03,
+      "net_R": -64.264,
+      "expectancy_R": -0.13009,
+      "profit_factor": 0.8312,
+      "max_closed_equity_DD_R": -65.364,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 69,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4800,
+      "win_rate_pct": 31.83,
+      "net_R": -309.772,
+      "expectancy_R": -0.06454,
+      "profit_factor": 0.9166,
+      "max_closed_equity_DD_R": -371.71,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1729,
+      "win_rate_pct": 28.8,
+      "net_R": -369.493,
+      "expectancy_R": -0.2137,
+      "profit_factor": 0.7465,
+      "max_closed_equity_DD_R": -373.233,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 70,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2578,
+      "win_rate_pct": 32.04,
+      "net_R": -132.92,
+      "expectancy_R": -0.05156,
+      "profit_factor": 0.9323,
+      "max_closed_equity_DD_R": -211.676,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 941,
+      "win_rate_pct": 30.92,
+      "net_R": -136.265,
+      "expectancy_R": -0.14481,
+      "profit_factor": 0.8231,
+      "max_closed_equity_DD_R": -140.926,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 71,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2650,
+      "win_rate_pct": 31.51,
+      "net_R": -189.691,
+      "expectancy_R": -0.07158,
+      "profit_factor": 0.9084,
+      "max_closed_equity_DD_R": -230.66,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 989,
+      "win_rate_pct": 28.51,
+      "net_R": -230.882,
+      "expectancy_R": -0.23345,
+      "profit_factor": 0.7273,
+      "max_closed_equity_DD_R": -232.032,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 72,
+    "family": "SSL_QQE_EMA4H",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1172,
+      "win_rate_pct": 30.8,
+      "net_R": -110.149,
+      "expectancy_R": -0.09398,
+      "profit_factor": 0.8795,
+      "max_closed_equity_DD_R": -135.483,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 486,
+      "win_rate_pct": 31.07,
+      "net_R": -80.291,
+      "expectancy_R": -0.16521,
+      "profit_factor": 0.8007,
+      "max_closed_equity_DD_R": -80.291,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 73,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4467,
+      "win_rate_pct": 39.89,
+      "net_R": -1350.909,
+      "expectancy_R": -0.30242,
+      "profit_factor": 0.613,
+      "max_closed_equity_DD_R": -1352.784,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1577,
+      "win_rate_pct": 40.9,
+      "net_R": -590.511,
+      "expectancy_R": -0.37445,
+      "profit_factor": 0.5473,
+      "max_closed_equity_DD_R": -590.832,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 74,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2082,
+      "win_rate_pct": 39.87,
+      "net_R": -587.927,
+      "expectancy_R": -0.28239,
+      "profit_factor": 0.6327,
+      "max_closed_equity_DD_R": -604.207,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 700,
+      "win_rate_pct": 41.43,
+      "net_R": -249.486,
+      "expectancy_R": -0.35641,
+      "profit_factor": 0.5659,
+      "max_closed_equity_DD_R": -250.685,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 75,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3315,
+      "win_rate_pct": 39.85,
+      "net_R": -1008.019,
+      "expectancy_R": -0.30408,
+      "profit_factor": 0.6106,
+      "max_closed_equity_DD_R": -1009.895,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1167,
+      "win_rate_pct": 42.25,
+      "net_R": -400.059,
+      "expectancy_R": -0.34281,
+      "profit_factor": 0.5754,
+      "max_closed_equity_DD_R": -402.146,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 76,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1484,
+      "win_rate_pct": 39.76,
+      "net_R": -423.768,
+      "expectancy_R": -0.28556,
+      "profit_factor": 0.6276,
+      "max_closed_equity_DD_R": -435.005,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 493,
+      "win_rate_pct": 41.99,
+      "net_R": -172.574,
+      "expectancy_R": -0.35005,
+      "profit_factor": 0.5719,
+      "max_closed_equity_DD_R": -172.574,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 77,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4463,
+      "win_rate_pct": 34.51,
+      "net_R": -1180.104,
+      "expectancy_R": -0.26442,
+      "profit_factor": 0.6892,
+      "max_closed_equity_DD_R": -1188.736,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1575,
+      "win_rate_pct": 34.48,
+      "net_R": -574.639,
+      "expectancy_R": -0.36485,
+      "profit_factor": 0.6024,
+      "max_closed_equity_DD_R": -576.46,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 78,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2082,
+      "win_rate_pct": 34.58,
+      "net_R": -504.927,
+      "expectancy_R": -0.24252,
+      "profit_factor": 0.7099,
+      "max_closed_equity_DD_R": -525.075,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 699,
+      "win_rate_pct": 35.62,
+      "net_R": -227.953,
+      "expectancy_R": -0.32611,
+      "profit_factor": 0.6385,
+      "max_closed_equity_DD_R": -229.651,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 79,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3314,
+      "win_rate_pct": 34.58,
+      "net_R": -871.607,
+      "expectancy_R": -0.26301,
+      "profit_factor": 0.6903,
+      "max_closed_equity_DD_R": -875.294,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1166,
+      "win_rate_pct": 35.16,
+      "net_R": -402.526,
+      "expectancy_R": -0.34522,
+      "profit_factor": 0.6193,
+      "max_closed_equity_DD_R": -405.612,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 80,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1484,
+      "win_rate_pct": 34.77,
+      "net_R": -353.268,
+      "expectancy_R": -0.23805,
+      "profit_factor": 0.7137,
+      "max_closed_equity_DD_R": -367.228,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 492,
+      "win_rate_pct": 35.57,
+      "net_R": -163.041,
+      "expectancy_R": -0.33138,
+      "profit_factor": 0.6336,
+      "max_closed_equity_DD_R": -163.041,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 81,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4459,
+      "win_rate_pct": 30.07,
+      "net_R": -1113.676,
+      "expectancy_R": -0.24976,
+      "profit_factor": 0.7252,
+      "max_closed_equity_DD_R": -1128.308,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1574,
+      "win_rate_pct": 30.81,
+      "net_R": -506.444,
+      "expectancy_R": -0.32176,
+      "profit_factor": 0.6681,
+      "max_closed_equity_DD_R": -509.765,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 82,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2080,
+      "win_rate_pct": 30.05,
+      "net_R": -480.386,
+      "expectancy_R": -0.23095,
+      "profit_factor": 0.7417,
+      "max_closed_equity_DD_R": -506.119,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 698,
+      "win_rate_pct": 32.23,
+      "net_R": -188.757,
+      "expectancy_R": -0.27043,
+      "profit_factor": 0.7154,
+      "max_closed_equity_DD_R": -190.956,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 83,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3312,
+      "win_rate_pct": 30.22,
+      "net_R": -809.805,
+      "expectancy_R": -0.24451,
+      "profit_factor": 0.7304,
+      "max_closed_equity_DD_R": -816.492,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1165,
+      "win_rate_pct": 31.33,
+      "net_R": -354.201,
+      "expectancy_R": -0.30404,
+      "profit_factor": 0.6836,
+      "max_closed_equity_DD_R": -358.288,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 84,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1483,
+      "win_rate_pct": 30.48,
+      "net_R": -318.724,
+      "expectancy_R": -0.21492,
+      "profit_factor": 0.7578,
+      "max_closed_equity_DD_R": -347.993,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 491,
+      "win_rate_pct": 32.18,
+      "net_R": -134.716,
+      "expectancy_R": -0.27437,
+      "profit_factor": 0.7113,
+      "max_closed_equity_DD_R": -134.716,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 85,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4454,
+      "win_rate_pct": 41.22,
+      "net_R": -750.294,
+      "expectancy_R": -0.16845,
+      "profit_factor": 0.7606,
+      "max_closed_equity_DD_R": -760.933,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1572,
+      "win_rate_pct": 41.35,
+      "net_R": -361.522,
+      "expectancy_R": -0.22998,
+      "profit_factor": 0.6895,
+      "max_closed_equity_DD_R": -365.07,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 86,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2080,
+      "win_rate_pct": 40.87,
+      "net_R": -338.559,
+      "expectancy_R": -0.16277,
+      "profit_factor": 0.7669,
+      "max_closed_equity_DD_R": -343.566,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 697,
+      "win_rate_pct": 44.19,
+      "net_R": -110.042,
+      "expectancy_R": -0.15788,
+      "profit_factor": 0.7761,
+      "max_closed_equity_DD_R": -111.46,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 87,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3310,
+      "win_rate_pct": 41.54,
+      "net_R": -536.675,
+      "expectancy_R": -0.16214,
+      "profit_factor": 0.7686,
+      "max_closed_equity_DD_R": -541.183,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1163,
+      "win_rate_pct": 42.82,
+      "net_R": -224.947,
+      "expectancy_R": -0.19342,
+      "profit_factor": 0.7316,
+      "max_closed_equity_DD_R": -229.913,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 88,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1483,
+      "win_rate_pct": 41.4,
+      "net_R": -224.55,
+      "expectancy_R": -0.15142,
+      "profit_factor": 0.7815,
+      "max_closed_equity_DD_R": -226.542,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 490,
+      "win_rate_pct": 45.71,
+      "net_R": -59.767,
+      "expectancy_R": -0.12197,
+      "profit_factor": 0.8221,
+      "max_closed_equity_DD_R": -62.823,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 89,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4426,
+      "win_rate_pct": 34.5,
+      "net_R": -740.031,
+      "expectancy_R": -0.1672,
+      "profit_factor": 0.787,
+      "max_closed_equity_DD_R": -751.086,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1563,
+      "win_rate_pct": 34.48,
+      "net_R": -366.15,
+      "expectancy_R": -0.23426,
+      "profit_factor": 0.7174,
+      "max_closed_equity_DD_R": -373.0,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 90,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2074,
+      "win_rate_pct": 34.04,
+      "net_R": -345.046,
+      "expectancy_R": -0.16637,
+      "profit_factor": 0.787,
+      "max_closed_equity_DD_R": -354.224,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 695,
+      "win_rate_pct": 36.69,
+      "net_R": -116.318,
+      "expectancy_R": -0.16736,
+      "profit_factor": 0.7901,
+      "max_closed_equity_DD_R": -119.8,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 91,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3294,
+      "win_rate_pct": 34.97,
+      "net_R": -503.156,
+      "expectancy_R": -0.15275,
+      "profit_factor": 0.804,
+      "max_closed_equity_DD_R": -509.497,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1155,
+      "win_rate_pct": 36.02,
+      "net_R": -220.431,
+      "expectancy_R": -0.19085,
+      "profit_factor": 0.7643,
+      "max_closed_equity_DD_R": -227.838,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 92,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1480,
+      "win_rate_pct": 34.73,
+      "net_R": -214.522,
+      "expectancy_R": -0.14495,
+      "profit_factor": 0.8124,
+      "max_closed_equity_DD_R": -227.136,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 488,
+      "win_rate_pct": 38.52,
+      "net_R": -56.813,
+      "expectancy_R": -0.11642,
+      "profit_factor": 0.8498,
+      "max_closed_equity_DD_R": -74.383,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "holdout_unseen_until_shortlist": {
+      "trades": 90,
+      "win_rate_pct": 40.0,
+      "net_R": 0.284,
+      "expectancy_R": 0.00316,
+      "profit_factor": 1.0044,
+      "max_closed_equity_DD_R": -13.184,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    },
+    "stress_validation": {
+      "trades": 488,
+      "win_rate_pct": 38.11,
+      "net_R": -169.48,
+      "expectancy_R": -0.34729,
+      "profit_factor": 0.6207,
+      "max_closed_equity_DD_R": -172.942,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "stress_holdout": {
+      "trades": 90,
+      "win_rate_pct": 40.0,
+      "net_R": -14.901,
+      "expectancy_R": -0.16557,
+      "profit_factor": 0.7982,
+      "max_closed_equity_DD_R": -18.485,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    }
+  },
+  {
+    "id": 93,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4378,
+      "win_rate_pct": 29.81,
+      "net_R": -717.66,
+      "expectancy_R": -0.16392,
+      "profit_factor": 0.8046,
+      "max_closed_equity_DD_R": -726.364,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1548,
+      "win_rate_pct": 29.65,
+      "net_R": -369.248,
+      "expectancy_R": -0.23853,
+      "profit_factor": 0.7322,
+      "max_closed_equity_DD_R": -373.985,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 94,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2065,
+      "win_rate_pct": 29.1,
+      "net_R": -364.902,
+      "expectancy_R": -0.17671,
+      "profit_factor": 0.7889,
+      "max_closed_equity_DD_R": -371.376,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 691,
+      "win_rate_pct": 31.98,
+      "net_R": -104.939,
+      "expectancy_R": -0.15187,
+      "profit_factor": 0.8225,
+      "max_closed_equity_DD_R": -107.239,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 95,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3269,
+      "win_rate_pct": 30.28,
+      "net_R": -474.655,
+      "expectancy_R": -0.1452,
+      "profit_factor": 0.8259,
+      "max_closed_equity_DD_R": -483.311,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1148,
+      "win_rate_pct": 30.75,
+      "net_R": -232.233,
+      "expectancy_R": -0.20229,
+      "profit_factor": 0.769,
+      "max_closed_equity_DD_R": -234.911,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 96,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1476,
+      "win_rate_pct": 29.67,
+      "net_R": -225.134,
+      "expectancy_R": -0.15253,
+      "profit_factor": 0.8163,
+      "max_closed_equity_DD_R": -238.516,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 487,
+      "win_rate_pct": 33.88,
+      "net_R": -43.963,
+      "expectancy_R": -0.09027,
+      "profit_factor": 0.8917,
+      "max_closed_equity_DD_R": -67.497,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "holdout_unseen_until_shortlist": {
+      "trades": 89,
+      "win_rate_pct": 33.71,
+      "net_R": -1.529,
+      "expectancy_R": -0.01718,
+      "profit_factor": 0.9784,
+      "max_closed_equity_DD_R": -17.647,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    },
+    "stress_validation": {
+      "trades": 487,
+      "win_rate_pct": 33.68,
+      "net_R": -156.46,
+      "expectancy_R": -0.32127,
+      "profit_factor": 0.6735,
+      "max_closed_equity_DD_R": -157.783,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "stress_holdout": {
+      "trades": 89,
+      "win_rate_pct": 33.71,
+      "net_R": -16.553,
+      "expectancy_R": -0.18599,
+      "profit_factor": 0.7951,
+      "max_closed_equity_DD_R": -24.272,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    }
+  },
+  {
+    "id": 97,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4370,
+      "win_rate_pct": 41.6,
+      "net_R": -487.128,
+      "expectancy_R": -0.11147,
+      "profit_factor": 0.8332,
+      "max_closed_equity_DD_R": -505.688,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1541,
+      "win_rate_pct": 40.88,
+      "net_R": -273.077,
+      "expectancy_R": -0.17721,
+      "profit_factor": 0.749,
+      "max_closed_equity_DD_R": -277.38,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 98,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2067,
+      "win_rate_pct": 41.51,
+      "net_R": -213.128,
+      "expectancy_R": -0.10311,
+      "profit_factor": 0.8441,
+      "max_closed_equity_DD_R": -225.262,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 692,
+      "win_rate_pct": 42.05,
+      "net_R": -102.941,
+      "expectancy_R": -0.14876,
+      "profit_factor": 0.7847,
+      "max_closed_equity_DD_R": -104.629,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 99,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3264,
+      "win_rate_pct": 42.16,
+      "net_R": -321.084,
+      "expectancy_R": -0.09837,
+      "profit_factor": 0.8516,
+      "max_closed_equity_DD_R": -331.188,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1144,
+      "win_rate_pct": 42.22,
+      "net_R": -165.773,
+      "expectancy_R": -0.14491,
+      "profit_factor": 0.7898,
+      "max_closed_equity_DD_R": -171.082,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 100,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1476,
+      "win_rate_pct": 42.28,
+      "net_R": -125.263,
+      "expectancy_R": -0.08487,
+      "profit_factor": 0.8701,
+      "max_closed_equity_DD_R": -143.703,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 487,
+      "win_rate_pct": 43.53,
+      "net_R": -55.371,
+      "expectancy_R": -0.1137,
+      "profit_factor": 0.831,
+      "max_closed_equity_DD_R": -59.423,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "holdout_unseen_until_shortlist": {
+      "trades": 90,
+      "win_rate_pct": 43.33,
+      "net_R": -5.787,
+      "expectancy_R": -0.0643,
+      "profit_factor": 0.9012,
+      "max_closed_equity_DD_R": -11.638,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    },
+    "stress_validation": {
+      "trades": 487,
+      "win_rate_pct": 43.12,
+      "net_R": -139.719,
+      "expectancy_R": -0.2869,
+      "profit_factor": 0.6271,
+      "max_closed_equity_DD_R": -141.962,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "stress_holdout": {
+      "trades": 90,
+      "win_rate_pct": 43.33,
+      "net_R": -17.176,
+      "expectancy_R": -0.19084,
+      "profit_factor": 0.7359,
+      "max_closed_equity_DD_R": -18.321,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    }
+  },
+  {
+    "id": 101,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4277,
+      "win_rate_pct": 35.4,
+      "net_R": -426.322,
+      "expectancy_R": -0.09968,
+      "profit_factor": 0.8647,
+      "max_closed_equity_DD_R": -452.81,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1509,
+      "win_rate_pct": 34.46,
+      "net_R": -267.332,
+      "expectancy_R": -0.17716,
+      "profit_factor": 0.7739,
+      "max_closed_equity_DD_R": -273.305,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 102,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2049,
+      "win_rate_pct": 35.09,
+      "net_R": -213.045,
+      "expectancy_R": -0.10398,
+      "profit_factor": 0.8579,
+      "max_closed_equity_DD_R": -226.392,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 685,
+      "win_rate_pct": 36.06,
+      "net_R": -87.372,
+      "expectancy_R": -0.12755,
+      "profit_factor": 0.8327,
+      "max_closed_equity_DD_R": -89.221,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 103,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3215,
+      "win_rate_pct": 36.02,
+      "net_R": -257.292,
+      "expectancy_R": -0.08003,
+      "profit_factor": 0.8905,
+      "max_closed_equity_DD_R": -284.721,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1132,
+      "win_rate_pct": 35.25,
+      "net_R": -175.508,
+      "expectancy_R": -0.15504,
+      "profit_factor": 0.7993,
+      "max_closed_equity_DD_R": -179.239,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 104,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1468,
+      "win_rate_pct": 35.56,
+      "net_R": -126.771,
+      "expectancy_R": -0.08636,
+      "profit_factor": 0.8812,
+      "max_closed_equity_DD_R": -146.395,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 486,
+      "win_rate_pct": 37.24,
+      "net_R": -47.042,
+      "expectancy_R": -0.09679,
+      "profit_factor": 0.8708,
+      "max_closed_equity_DD_R": -56.861,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "holdout_unseen_until_shortlist": {
+      "trades": 88,
+      "win_rate_pct": 38.64,
+      "net_R": 0.997,
+      "expectancy_R": 0.01133,
+      "profit_factor": 1.0161,
+      "max_closed_equity_DD_R": -9.881,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    },
+    "stress_validation": {
+      "trades": 486,
+      "win_rate_pct": 37.04,
+      "net_R": -131.262,
+      "expectancy_R": -0.27009,
+      "profit_factor": 0.6847,
+      "max_closed_equity_DD_R": -131.262,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "stress_holdout": {
+      "trades": 88,
+      "win_rate_pct": 38.64,
+      "net_R": -10.148,
+      "expectancy_R": -0.11532,
+      "profit_factor": 0.8524,
+      "max_closed_equity_DD_R": -14.091,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    }
+  },
+  {
+    "id": 105,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 4210,
+      "win_rate_pct": 31.26,
+      "net_R": -384.374,
+      "expectancy_R": -0.0913,
+      "profit_factor": 0.8833,
+      "max_closed_equity_DD_R": -415.737,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1480,
+      "win_rate_pct": 29.53,
+      "net_R": -296.89,
+      "expectancy_R": -0.2006,
+      "profit_factor": 0.762,
+      "max_closed_equity_DD_R": -298.972,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 106,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": false,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 2027,
+      "win_rate_pct": 31.03,
+      "net_R": -201.095,
+      "expectancy_R": -0.09921,
+      "profit_factor": 0.8721,
+      "max_closed_equity_DD_R": -231.931,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 680,
+      "win_rate_pct": 31.32,
+      "net_R": -90.99,
+      "expectancy_R": -0.13381,
+      "profit_factor": 0.8369,
+      "max_closed_equity_DD_R": -93.339,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 107,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 0,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 3169,
+      "win_rate_pct": 31.71,
+      "net_R": -231.771,
+      "expectancy_R": -0.07314,
+      "profit_factor": 0.906,
+      "max_closed_equity_DD_R": -270.298,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 1111,
+      "win_rate_pct": 30.33,
+      "net_R": -196.464,
+      "expectancy_R": -0.17684,
+      "profit_factor": 0.7876,
+      "max_closed_equity_DD_R": -196.464,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    }
+  },
+  {
+    "id": 108,
+    "family": "SUPERTREND_SSL_QQE",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "volume_gate": true,
+    "adx_gate": 20,
+    "cooldown": 4,
+    "max_hold": 96,
+    "train": {
+      "trades": 1456,
+      "win_rate_pct": 31.39,
+      "net_R": -124.464,
+      "expectancy_R": -0.08548,
+      "profit_factor": 0.8893,
+      "max_closed_equity_DD_R": -150.404,
+      "period_start": "2025-01-01",
+      "period_end_exclusive": "2026-04-01"
+    },
+    "validation": {
+      "trades": 484,
+      "win_rate_pct": 32.64,
+      "net_R": -45.499,
+      "expectancy_R": -0.09401,
+      "profit_factor": 0.8836,
+      "max_closed_equity_DD_R": -55.952,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "holdout_unseen_until_shortlist": {
+      "trades": 88,
+      "win_rate_pct": 35.23,
+      "net_R": 6.497,
+      "expectancy_R": 0.07383,
+      "profit_factor": 1.0992,
+      "max_closed_equity_DD_R": -8.881,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    },
+    "stress_validation": {
+      "trades": 484,
+      "win_rate_pct": 32.64,
+      "net_R": -129.445,
+      "expectancy_R": -0.26745,
+      "profit_factor": 0.7106,
+      "max_closed_equity_DD_R": -129.445,
+      "period_start": "2026-04-01",
+      "period_end_exclusive": "2026-09-01"
+    },
+    "stress_holdout": {
+      "trades": 88,
+      "win_rate_pct": 35.23,
+      "net_R": -4.648,
+      "expectancy_R": -0.05282,
+      "profit_factor": 0.9361,
+      "max_closed_equity_DD_R": -11.992,
+      "period_start": "2026-09-05",
+      "period_end_exclusive": "2026-10-01"
+    }
+  }
+]
