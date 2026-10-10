@@ -1,10 +1,301 @@
 {
-  "source": "Binance public archives with public Binance Futures REST attempt and BingX swap REST fallback; per-candle provenance included",
-  "source_caveat": "Binance Futures REST returned HTTP 451 in this runner. Candle source can be mixed when BingX backfills archive gaps; inspect source_coverage. This is research data, not exact BingX execution fills.",
-  "lookahead": "Only candles whose close_ms is strictly before each trade entry timestamp are used for context.",
+  "source": "Per-candle source recorded in source_coverage; observed current run uses BingX REST klines where available",
+  "source_caveat": "Binance Futures REST returned HTTP 451 in this runner; source_coverage is authoritative for candle provenance. Public exchange candles are not exact private execution fills.",
+  "lookahead": "Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.",
   "trade_count": 28,
   "validation_passed": true,
   "data_errors": [],
+  "path_replay_validation": {
+    "trades": 28,
+    "matches_recorded_outcome": 0,
+    "mismatches": 28,
+    "ambiguous_same_minute": 0,
+    "path_data_errors": 0,
+    "validation_passed": false
+  },
+  "path_replay_data_errors": [],
+  "path_sensitivity_scenarios": {
+    "recorded_entry_sl_tp_all_trades": {
+      "n": 28,
+      "TP": 0,
+      "SL": 0,
+      "TIMEOUT": 28,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 0.0
+    },
+    "score_max_54_recorded_entry": {
+      "n": 20,
+      "TP": 0,
+      "SL": 0,
+      "TIMEOUT": 20,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 0.0
+    },
+    "atr_distance_minus_10pct_all_trades": {
+      "n": 28,
+      "TP": 6,
+      "SL": 7,
+      "TIMEOUT": 15,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 0.5
+    },
+    "atr_distance_plus_10pct_all_trades": {
+      "n": 28,
+      "TP": 0,
+      "SL": 0,
+      "TIMEOUT": 28,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 0.0
+    },
+    "one_15m_bar_delay_all_trades": {
+      "n": 28,
+      "TP": 16,
+      "SL": 12,
+      "TIMEOUT": 0,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 8.0
+    },
+    "one_15m_bar_delay_score_max_54": {
+      "n": 20,
+      "TP": 14,
+      "SL": 6,
+      "TIMEOUT": 0,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 11.5
+    }
+  },
+  "leave_one_coin_out_score_max_54": {
+    "coin_omissions_tested": 24,
+    "min_SL_avoided": 5,
+    "max_SL_avoided": 6,
+    "min_TP_kept": 13,
+    "max_TP_kept": 14,
+    "target_at_least_5_SL_avoided_passes_all_single_coin_omissions": true,
+    "details": [
+      {
+        "left_out_coin": "1000PEPE/USDT:USDT",
+        "trades_kept": 20,
+        "TP_kept": 14,
+        "SL_kept": 6,
+        "SL_avoided": 5,
+        "TP_lost": 2,
+        "net_est_R": 8.9526
+      },
+      {
+        "left_out_coin": "AAVE/USDT:USDT",
+        "trades_kept": 18,
+        "TP_kept": 13,
+        "SL_kept": 5,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 8.8987
+      },
+      {
+        "left_out_coin": "ARB/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7708
+      },
+      {
+        "left_out_coin": "DOT/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.8287
+      },
+      {
+        "left_out_coin": "ETH/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 14,
+        "SL_kept": 5,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 10.6416
+      },
+      {
+        "left_out_coin": "FIL/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7844
+      },
+      {
+        "left_out_coin": "IMX/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7814
+      },
+      {
+        "left_out_coin": "INJ/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7778
+      },
+      {
+        "left_out_coin": "JUP/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 14,
+        "SL_kept": 5,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 10.041
+      },
+      {
+        "left_out_coin": "LDO/USDT:USDT",
+        "trades_kept": 20,
+        "TP_kept": 14,
+        "SL_kept": 6,
+        "SL_avoided": 5,
+        "TP_lost": 2,
+        "net_est_R": 8.9526
+      },
+      {
+        "left_out_coin": "LINK/USDT:USDT",
+        "trades_kept": 20,
+        "TP_kept": 14,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 1,
+        "net_est_R": 8.9526
+      },
+      {
+        "left_out_coin": "LTC/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.8575
+      },
+      {
+        "left_out_coin": "NEAR/USDT:USDT",
+        "trades_kept": 20,
+        "TP_kept": 14,
+        "SL_kept": 6,
+        "SL_avoided": 5,
+        "TP_lost": 2,
+        "net_est_R": 8.9526
+      },
+      {
+        "left_out_coin": "ORDI/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.8309
+      },
+      {
+        "left_out_coin": "QNT/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7271
+      },
+      {
+        "left_out_coin": "RUNE/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.79
+      },
+      {
+        "left_out_coin": "SAND/USDT:USDT",
+        "trades_kept": 20,
+        "TP_kept": 14,
+        "SL_kept": 6,
+        "SL_avoided": 5,
+        "TP_lost": 2,
+        "net_est_R": 8.9526
+      },
+      {
+        "left_out_coin": "STRK/USDT:USDT",
+        "trades_kept": 18,
+        "TP_kept": 13,
+        "SL_kept": 5,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 8.8417
+      },
+      {
+        "left_out_coin": "SUI/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 5,
+        "TP_lost": 1,
+        "net_est_R": 7.8984
+      },
+      {
+        "left_out_coin": "TAO/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7868
+      },
+      {
+        "left_out_coin": "TIA/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 14,
+        "SL_kept": 5,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 10.0478
+      },
+      {
+        "left_out_coin": "WLD/USDT:USDT",
+        "trades_kept": 20,
+        "TP_kept": 14,
+        "SL_kept": 6,
+        "SL_avoided": 5,
+        "TP_lost": 2,
+        "net_est_R": 8.9526
+      },
+      {
+        "left_out_coin": "XRP/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 14,
+        "SL_kept": 5,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 10.128
+      },
+      {
+        "left_out_coin": "ZRO/USDT:USDT",
+        "trades_kept": 19,
+        "TP_kept": 13,
+        "SL_kept": 6,
+        "SL_avoided": 6,
+        "TP_lost": 2,
+        "net_est_R": 7.7623
+      }
+    ]
+  },
   "source_coverage": [
     {
       "symbol": "1000PEPEUSDT",
@@ -1205,6 +1496,6 @@
     "excluded_SL": 6,
     "excluded_TP": 2
   },
-  "score_filter_caveat": "Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use.",
+  "score_filter_caveat": "Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.",
   "definition": "Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."
 }
