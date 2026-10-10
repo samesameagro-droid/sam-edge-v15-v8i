@@ -24,6 +24,14 @@
     },
     {
       "symbol": "1000PEPEUSDT",
+      "tf": "1m",
+      "candle_count": 251,
+      "source_counts": {
+        "bingx_rest": 251
+      }
+    },
+    {
+      "symbol": "1000PEPEUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -56,6 +64,14 @@
     },
     {
       "symbol": "AAVEUSDT",
+      "tf": "1m",
+      "candle_count": 6051,
+      "source_counts": {
+        "bingx_rest": 6051
+      }
+    },
+    {
+      "symbol": "AAVEUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -88,6 +104,14 @@
     },
     {
       "symbol": "ARBUSDT",
+      "tf": "1m",
+      "candle_count": 61,
+      "source_counts": {
+        "bingx_rest": 61
+      }
+    },
+    {
+      "symbol": "ARBUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -120,6 +144,14 @@
     },
     {
       "symbol": "DOTUSDT",
+      "tf": "1m",
+      "candle_count": 96,
+      "source_counts": {
+        "bingx_rest": 96
+      }
+    },
+    {
+      "symbol": "DOTUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -152,6 +184,14 @@
     },
     {
       "symbol": "ETHUSDT",
+      "tf": "1m",
+      "candle_count": 51,
+      "source_counts": {
+        "bingx_rest": 51
+      }
+    },
+    {
+      "symbol": "ETHUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -184,6 +224,14 @@
     },
     {
       "symbol": "FILUSDT",
+      "tf": "1m",
+      "candle_count": 151,
+      "source_counts": {
+        "bingx_rest": 151
+      }
+    },
+    {
+      "symbol": "FILUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -216,6 +264,14 @@
     },
     {
       "symbol": "IMXUSDT",
+      "tf": "1m",
+      "candle_count": 531,
+      "source_counts": {
+        "bingx_rest": 531
+      }
+    },
+    {
+      "symbol": "IMXUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -248,6 +304,14 @@
     },
     {
       "symbol": "INJUSDT",
+      "tf": "1m",
+      "candle_count": 176,
+      "source_counts": {
+        "bingx_rest": 176
+      }
+    },
+    {
+      "symbol": "INJUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -280,6 +344,14 @@
     },
     {
       "symbol": "JUPUSDT",
+      "tf": "1m",
+      "candle_count": 216,
+      "source_counts": {
+        "bingx_rest": 216
+      }
+    },
+    {
+      "symbol": "JUPUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -312,6 +384,14 @@
     },
     {
       "symbol": "LDOUSDT",
+      "tf": "1m",
+      "candle_count": 56,
+      "source_counts": {
+        "bingx_rest": 56
+      }
+    },
+    {
+      "symbol": "LDOUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -344,6 +424,14 @@
     },
     {
       "symbol": "LINKUSDT",
+      "tf": "1m",
+      "candle_count": 251,
+      "source_counts": {
+        "bingx_rest": 251
+      }
+    },
+    {
+      "symbol": "LINKUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -376,6 +464,14 @@
     },
     {
       "symbol": "LTCUSDT",
+      "tf": "1m",
+      "candle_count": 446,
+      "source_counts": {
+        "bingx_rest": 446
+      }
+    },
+    {
+      "symbol": "LTCUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -408,6 +504,14 @@
     },
     {
       "symbol": "NEARUSDT",
+      "tf": "1m",
+      "candle_count": 151,
+      "source_counts": {
+        "bingx_rest": 151
+      }
+    },
+    {
+      "symbol": "NEARUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -440,6 +544,14 @@
     },
     {
       "symbol": "ORDIUSDT",
+      "tf": "1m",
+      "candle_count": 51,
+      "source_counts": {
+        "bingx_rest": 51
+      }
+    },
+    {
+      "symbol": "ORDIUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -472,6 +584,14 @@
     },
     {
       "symbol": "QNTUSDT",
+      "tf": "1m",
+      "candle_count": 91,
+      "source_counts": {
+        "bingx_rest": 91
+      }
+    },
+    {
+      "symbol": "QNTUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -504,6 +624,14 @@
     },
     {
       "symbol": "RUNEUSDT",
+      "tf": "1m",
+      "candle_count": 301,
+      "source_counts": {
+        "bingx_rest": 301
+      }
+    },
+    {
+      "symbol": "RUNEUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -536,6 +664,14 @@
     },
     {
       "symbol": "SANDUSDT",
+      "tf": "1m",
+      "candle_count": 81,
+      "source_counts": {
+        "bingx_rest": 81
+      }
+    },
+    {
+      "symbol": "SANDUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -568,6 +704,14 @@
     },
     {
       "symbol": "STRKUSDT",
+      "tf": "1m",
+      "candle_count": 19376,
+      "source_counts": {
+        "bingx_rest": 19376
+      }
+    },
+    {
+      "symbol": "STRKUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -600,6 +744,14 @@
     },
     {
       "symbol": "SUIUSDT",
+      "tf": "1m",
+      "candle_count": 2466,
+      "source_counts": {
+        "bingx_rest": 2466
+      }
+    },
+    {
+      "symbol": "SUIUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -632,6 +784,14 @@
     },
     {
       "symbol": "TAOUSDT",
+      "tf": "1m",
+      "candle_count": 221,
+      "source_counts": {
+        "bingx_rest": 221
+      }
+    },
+    {
+      "symbol": "TAOUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -664,6 +824,14 @@
     },
     {
       "symbol": "TIAUSDT",
+      "tf": "1m",
+      "candle_count": 116,
+      "source_counts": {
+        "bingx_rest": 116
+      }
+    },
+    {
+      "symbol": "TIAUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -696,6 +864,14 @@
     },
     {
       "symbol": "WLDUSDT",
+      "tf": "1m",
+      "candle_count": 716,
+      "source_counts": {
+        "bingx_rest": 716
+      }
+    },
+    {
+      "symbol": "WLDUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -728,6 +904,14 @@
     },
     {
       "symbol": "XRPUSDT",
+      "tf": "1m",
+      "candle_count": 91,
+      "source_counts": {
+        "bingx_rest": 91
+      }
+    },
+    {
+      "symbol": "XRPUSDT",
       "tf": "30m",
       "candle_count": 1376,
       "source_counts": {
@@ -756,6 +940,14 @@
       "candle_count": 688,
       "source_counts": {
         "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "1m",
+      "candle_count": 86,
+      "source_counts": {
+        "bingx_rest": 86
       }
     },
     {
