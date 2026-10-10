@@ -28,7 +28,7 @@ MAX_ACTIVE_PER_SIDE = 3
 COOLDOWN_MS = 60 * 60_000
 FEE_BPS = 5.0
 SLIPPAGE_BPS = 2.0
-SCORE_THRESHOLDS = [40,45,48,50,52,54,56,58,60,62,65]
+SCORE_THRESHOLDS = [40,45,48,50,51,52,53,54,55,56,58,60,62,65]
 
 
 def c01(v):
@@ -133,6 +133,7 @@ def prepare(start_ms, end_ms):
                 "signal_bar_open_ms":int(x.timestamp.iloc[i].value//1_000_000),
                 "entry_time_ms":int(x.timestamp.iloc[i+1].value//1_000_000),
                 "entry":entry,"sl":float(sl),"tp":float(tp),"risk":float(risk),
+                "entry_close_proxy":float(close_entry),"stop_dist":float(stop_dist),"target_dist":float(target_dist),
                 "score":float(score),"precision_pass":bool(precision),
                 "quote_volume_24h":float(x.quote_volume_24h.iloc[i])})
             n_after += 1
@@ -142,8 +143,15 @@ def prepare(start_ms, end_ms):
     return data,coverage,errors,candidates
 
 
-def simulate(data,candidates,start_ms,end_ms,mode,force_close=False):
+def build_indices(data):
+    maps={s:{int(ts.value//1_000_000):i for i,ts in enumerate(x.timestamp)} for s,x in data.items()}
+    times=sorted({int(ts.value//1_000_000) for x in data.values() for ts in x.timestamp})
+    return maps,times
+
+
+def simulate(data,candidates,start_ms,end_ms,mode,force_close=False,entry_mode="next_open",distance_factor=1.0,exclude_symbol=None,fee_bps=FEE_BPS,slippage_bps=SLIPPAGE_BPS,bar_maps=None,global_times=None):
     def eligible(c):
+        if exclude_symbol is not None and c["symbol"] == exclude_symbol: return False
         if not (start_ms <= c["entry_time_ms"] < end_ms): return False
         if mode=="baseline": return True
         if mode=="precision65": return c["precision_pass"]
@@ -153,8 +161,10 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False):
     by_time={}
     for c in candidates:
         if eligible(c): by_time.setdefault(c["entry_time_ms"],[]).append(c)
-    maps={s:{int(ts.value//1_000_000):i for i,ts in enumerate(x.timestamp)} for s,x in data.items()}
-    times=sorted({int(ts.value//1_000_000) for x in data.values() for ts in x.timestamp if start_ms<=int(ts.value//1_000_000)<end_ms})
+    if bar_maps is None or global_times is None:
+        bar_maps, global_times = build_indices(data)
+    maps=bar_maps
+    times=[t for t in global_times if start_ms<=t<end_ms]
     active,closed,last_exit=[],[],{}
     equity=START_EQUITY
     curve=[equity]
@@ -166,7 +176,7 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False):
         elif result=="SL": gross=-1.0
         else: gross=(1.0 if p["side"]=="LONG" else -1.0)*(float(exit_price)-p["entry"])/p["risk"]
         stop_pct=p["risk"]/p["entry"] if p["entry"] else 0.0
-        cost=(2*(FEE_BPS+SLIPPAGE_BPS)/10000)/stop_pct if stop_pct>0 else 0.0
+        cost=(2*(fee_bps+slippage_bps)/10000)/stop_pct if stop_pct>0 else 0.0
         net=gross-cost
         pnl=p["risk_cash"]*net
         equity += pnl
@@ -209,7 +219,11 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False):
             if sum(p["side"]==c["side"] for p in active+new)>=MAX_ACTIVE_PER_SIDE: continue
             last=last_exit.get((c["symbol"],c["side"]))
             if last is not None and 0<=t-last<COOLDOWN_MS: continue
-            new.append({**c,"risk_cash":equity*RISK_PCT})
+            entry=float(c["entry"] if entry_mode=="next_open" else c["entry_close_proxy"])
+            stop_dist=float(c["stop_dist"])*distance_factor
+            target_dist=float(c["target_dist"])*distance_factor
+            sl,tp=(entry-stop_dist,entry+target_dist) if c["side"]=="LONG" else (entry+stop_dist,entry-target_dist)
+            new.append({**c,"entry":entry,"sl":sl,"tp":tp,"risk":stop_dist,"risk_cash":equity*RISK_PCT})
         active.extend(new)
         max_seen=max(max_seen,len(active))
         # Entry is at this bar's open, so test the newly opened position on this bar too.
@@ -304,11 +318,22 @@ def main():
     for row in coverage:
         for source,count in row["source_counts"].items(): source_totals[source]=source_totals.get(source,0)+int(count)
     period_days=(end-start).total_seconds()/86400.0
-    full_modes={"BASELINE_CORE":"baseline","PRECISION_V2_SCORE_LT65":"precision65",
-        "PRECISION_GATE_SCORE_LE54":"precision_score_54","PRECISION_GATE_SCORE_LE60":"precision_score_60"}
+    bar_maps,global_times=build_indices(data)
+    full_modes={
+        "BASELINE_CORE":("baseline",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_SCORE_LT65":("precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_GATE_SCORE_LE54":("precision_score_54",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_GATE_SCORE_LE60":("precision_score_60",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_DISTANCE_MINUS10":("precision65",0.9,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_DISTANCE_PLUS10":("precision65",1.1,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_SIGNAL_CLOSE_PROXY":("precision65",1.0,"signal_close",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_LOWER_COST":("precision65",1.0,"next_open",2.0,1.0),
+        "PRECISION_V2_ZERO_COST":("precision65",1.0,"next_open",0.0,0.0),
+    }
     full_results={}; full_rows=[]
-    for name,mode in full_modes.items():
-        sim=simulate(data,candidates,start_ms,end_ms,mode)
+    for name,spec in full_modes.items():
+        mode,factor,entry_mode,fee,slip=spec
+        sim=simulate(data,candidates,start_ms,end_ms,mode,distance_factor=factor,entry_mode=entry_mode,fee_bps=fee,slippage_bps=slip,bar_maps=bar_maps,global_times=global_times)
         full_results[name]=stats(sim,period_days)
         full_rows.extend({"variant":name,**t} for t in sim["closed_trades"])
         print(f"FULL_RESULT {name}: {json.dumps(full_results[name],sort_keys=True)}",flush=True)
@@ -316,24 +341,43 @@ def main():
     dev_days=(split-start).total_seconds()/86400.0
     sweep=[]
     for threshold in SCORE_THRESHOLDS:
-        sim=simulate(data,candidates,start_ms,split_ms,f"precision_score_{threshold}",force_close=True)
+        sim=simulate(data,candidates,start_ms,split_ms,f"precision_score_{threshold}",force_close=True,bar_maps=bar_maps,global_times=global_times)
         sweep.append({"score_ceiling":threshold,**stats(sim,dev_days)})
     eligible=[r for r in sweep if r["closed_trades"]>=10 and r["profit_factor_gross"] is not None]
     chosen=max(eligible,key=lambda r:(r["net_est_R"],r["profit_factor_gross"],-r["closed_trades"])) if eligible else None
     chosen_threshold=int(chosen["score_ceiling"]) if chosen else 65
     hold_days=(end-split).total_seconds()/86400.0
-    hold_modes={"BASELINE_CORE":"baseline","PRECISION_V2_SCORE_LT65":"precision65",
-        "WALK_FORWARD_SELECTED_SCORE":f"precision_score_{chosen_threshold}"}
+    hold_modes={
+        "BASELINE_CORE":("baseline",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_SCORE_LT65":("precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "WALK_FORWARD_SELECTED_SCORE":(f"precision_score_{chosen_threshold}",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_DISTANCE_MINUS10":("precision65",0.9,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_DISTANCE_PLUS10":("precision65",1.1,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_SIGNAL_CLOSE_PROXY":("precision65",1.0,"signal_close",FEE_BPS,SLIPPAGE_BPS),
+        "PRECISION_V2_LOWER_COST":("precision65",1.0,"next_open",2.0,1.0),
+    }
     hold_results={}; hold_rows=[]
-    for name,mode in hold_modes.items():
-        sim=simulate(data,candidates,split_ms,end_ms,mode)
+    for name,spec in hold_modes.items():
+        mode,factor,entry_mode,fee,slip=spec
+        sim=simulate(data,candidates,split_ms,end_ms,mode,distance_factor=factor,entry_mode=entry_mode,fee_bps=fee,slippage_bps=slip,bar_maps=bar_maps,global_times=global_times)
         hold_results[name]=stats(sim,hold_days)
         hold_rows.extend({"variant":name,**t} for t in sim["closed_trades"])
         print(f"HOLDOUT_RESULT {name}: {json.dumps(hold_results[name],sort_keys=True)}",flush=True)
 
+    # Parameter-neighbor sweep on the later period is diagnostic only; do not re-select a production threshold from it.
+    holdout_sweep=[]
+    for threshold in SCORE_THRESHOLDS:
+        sim=simulate(data,candidates,split_ms,end_ms,f"precision_score_{threshold}",bar_maps=bar_maps,global_times=global_times)
+        holdout_sweep.append({"score_ceiling":threshold,**stats(sim,hold_days)})
+    loo_rows=[]
+    for symbol in SYMBOLS:
+        sim=simulate(data,candidates,split_ms,end_ms,"precision65",exclude_symbol=symbol,bar_maps=bar_maps,global_times=global_times)
+        loo_rows.append({"excluded_symbol":symbol,**stats(sim,hold_days)})
     pd.DataFrame(full_rows).to_csv(dest/"full_period_portfolio_trades.csv",index=False)
     pd.DataFrame(hold_rows).to_csv(dest/"holdout_portfolio_trades.csv",index=False)
     pd.DataFrame(sweep).to_csv(dest/"walk_forward_development_sweep.csv",index=False)
+    pd.DataFrame(holdout_sweep).to_csv(dest/"holdout_score_neighbor_sweep_exploratory.csv",index=False)
+    pd.DataFrame(loo_rows).to_csv(dest/"holdout_leave_one_coin_out.csv",index=False)
     pd.DataFrame(coverage).to_csv(dest/"data_coverage.csv",index=False)
     summary={"source":"Binance USD-M Futures Vision archives / Binance REST only",
         "validation_passed":True,"data_errors":[],"start_utc":start.isoformat(),"end_utc":end.isoformat(),
@@ -353,8 +397,12 @@ def main():
         "full_period_variants":full_results,"walk_forward_development_sweep":sweep,
         "walk_forward_selection":{"rule":"Choose highest estimated net R using development period only among score ceilings with >=10 closed trades; holdout outcomes are not used for selection.",
             "selected_score_ceiling":chosen_threshold if chosen else None,"fallback_used":chosen is None},
-        "untouched_later_holdout":hold_results,
-        "interpretation":"The holdout period is later than threshold selection and is the primary generalization test. Small holdout trade counts imply high uncertainty."}
+        "walk_forward_holdout":hold_results,
+        "holdout_score_neighbor_sweep_exploratory":holdout_sweep,
+        "holdout_leave_one_coin_out_precision65":loo_rows,
+        "holdout_pristine":False,
+        "holdout_caveat":"The Aug-Oct 2026 evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The selected threshold itself was chosen only from the Apr-Aug development period, but this is not a fully untouched final holdout for the overall project. Collect a new post-2026-10-10 forward holdout before production approval.",
+        "interpretation":"The walk-forward score selection is development-only. Holdout parameter-neighbor and leave-one-coin-out tables are robustness diagnostics, not a basis for re-tuning on the same holdout. Small holdout samples imply uncertainty."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps({"validation_passed":True,"data_errors":[],"full_period_variants":full_results,
         "walk_forward_selection":summary["walk_forward_selection"],"untouched_later_holdout":hold_results},indent=2),flush=True)
