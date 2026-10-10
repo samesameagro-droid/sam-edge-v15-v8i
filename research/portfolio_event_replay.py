@@ -424,6 +424,12 @@ def main():
     pd.DataFrame(holdout_sweep).to_csv(dest/"holdout_score_neighbor_sweep_exploratory.csv",index=False)
     pd.DataFrame(loo_rows).to_csv(dest/"holdout_leave_one_coin_out.csv",index=False)
     pd.DataFrame(coverage).to_csv(dest/"data_coverage.csv",index=False)
+    pre_cohort_holdout = end <= pd.Timestamp("2026-09-25", tz="UTC")
+    holdout_caveat = (
+        "The fixed historical holdout ends before the Sep 25-Oct 6, 2026 28-trade cohort used to explore score ceilings. It is out-of-sample relative to that cohort, but cannot be claimed untouched relative to every earlier research experiment. Collect new forward data before production approval."
+        if pre_cohort_holdout else
+        "The later evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The walk-forward threshold was selected only from this run's earlier development segment, but this is not a fully untouched final holdout for the overall project. Collect new forward data before production approval."
+    )
     summary={"source":"Binance USD-M Futures Vision archives / Binance REST only",
         "validation_passed":True,"data_errors":[],"start_utc":start.isoformat(),"end_utc":end.isoformat(),
         "development_end_utc":split.isoformat(),"holdout_start_utc":split.isoformat(),
@@ -450,7 +456,8 @@ def main():
         "holdout_score_neighbor_sweep_exploratory":holdout_sweep,
         "holdout_leave_one_coin_out_precision65":loo_rows,
         "holdout_pristine":False,
-        "holdout_caveat":"The later evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The walk-forward threshold was chosen only from this run's earlier development segment, but this is not a fully untouched final holdout for the overall project. Collect a new post-2026-10-10 forward holdout before production approval.",
+        "holdout_excludes_score_selection_cohort":bool(pre_cohort_holdout),
+        "holdout_caveat":holdout_caveat,
         "interpretation":"The walk-forward score selection is development-only. Holdout parameter-neighbor and leave-one-coin-out tables are robustness diagnostics, not a basis for re-tuning on the same holdout. Small holdout samples imply uncertainty."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps({"validation_passed":True,"data_errors":[],"full_period_variants":full_results,
