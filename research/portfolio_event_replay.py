@@ -194,7 +194,7 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False,entry_mode="
         net=gross-cost
         pnl=p["risk_cash"]*net
         equity += pnl
-        closed.append({"symbol":p["symbol"],"side":p["side"],
+        closed.append({"symbol":p["symbol"],"core":p.get("core",CORE_NAME),"side":p["side"],
             "signal_time_utc":pd.to_datetime(p["signal_bar_open_ms"],unit="ms",utc=True).isoformat(),
             "entry_time_utc":pd.to_datetime(p["entry_time_ms"],unit="ms",utc=True).isoformat(),
             "exit_time_utc":pd.to_datetime(t+BAR_MS,unit="ms",utc=True).isoformat(),
@@ -271,7 +271,7 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False,entry_mode="
         x=data[p["symbol"]]
         b=x[x.timestamp < pd.to_datetime(end_ms,unit="ms",utc=True)].iloc[-1]
         sign=1.0 if p["side"]=="LONG" else -1.0
-        open_rows.append({"symbol":p["symbol"],"side":p["side"],
+        open_rows.append({"symbol":p["symbol"],"core":p.get("core",CORE_NAME),"side":p["side"],
             "entry_time_utc":pd.to_datetime(p["entry_time_ms"],unit="ms",utc=True).isoformat(),
             "entry":p["entry"],"sl":p["sl"],"tp":p["tp"],"entry_score":p["score"],
             "unrealized_R_mark_to_market":sign*(float(b.close)-p["entry"])/p["risk"]})
