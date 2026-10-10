@@ -15,7 +15,7 @@
     "UNI",
     "XRP"
   ],
-  "candidate_events": 1989,
+  "candidate_events": 2085,
   "entry_model": "next 15m candle OPEN; levels based on signal-close structure/ATR",
   "rr": 1.25,
   "same_bar_sl_tp_policy": "SL first",
@@ -23,7 +23,8 @@
   "cooldown_bars": 4,
   "train_window": "2025-01-01 through 2026-03-31",
   "test_window": "2026-04-01 through 2026-08-31",
-  "note": "Research replay, gross R before fees/slippage; holdout after 2026-09-04 remains untouched.",
+  "holdout_window": "2026-09-05 through 2026-09-30",
+  "note": "Research replay, gross R before fees/slippage. Holdout metrics are reported only for frozen V2 and V3 score-cap-40 candidate.",
   "variants": {
     "V2_EXECUTABLE": {
       "full": {
@@ -57,6 +58,17 @@
         "expectancy_R": -0.0245,
         "profit_factor": 0.9568,
         "max_drawdown_R": -14.5,
+        "open_at_end": 0
+      },
+      "holdout": {
+        "closed": 15,
+        "wins": 6,
+        "losses": 9,
+        "win_rate_pct": 40.0,
+        "net_R": -1.5,
+        "expectancy_R": -0.1,
+        "profit_factor": 0.8333,
+        "max_drawdown_R": -5.0,
         "open_at_end": 0
       }
     },
@@ -337,6 +349,17 @@
         "expectancy_R": 0.0312,
         "profit_factor": 1.0577,
         "max_drawdown_R": -9.75,
+        "open_at_end": 0
+      },
+      "holdout": {
+        "closed": 8,
+        "wins": 2,
+        "losses": 6,
+        "win_rate_pct": 25.0,
+        "net_R": -3.5,
+        "expectancy_R": -0.4375,
+        "profit_factor": 0.4167,
+        "max_drawdown_R": -6.0,
         "open_at_end": 0
       }
     },
