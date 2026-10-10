@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from core_engine_v15 import (
-    CORE_NAME, RR, MAX_HOLD_BARS, enrich, signal_mask, trade_levels,
+    CORE_NAME, LEGACY_CORE_NAME, RR, MAX_HOLD_BARS, enrich, signal_mask, trade_levels,
     ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
     EARLY_ROOM_MIN_ATR,
 )
@@ -104,42 +104,49 @@ def prepare(start_ms, end_ms):
             "first_open_utc":x.timestamp.iloc[0].isoformat(),
             "last_open_utc":x.timestamp.iloc[-1].isoformat(),
             "source_counts":raw.source.value_counts().to_dict(),"gap_count":gaps})
-        long_mask, short_mask = signal_mask(x, CORE_NAME)
-        n_before, n_after, n_volume_reject = int((long_mask|short_mask).sum()), 0, 0
-        for i in range(250,len(x)-1):
-            if not bool(long_mask.iloc[i]) and not bool(short_mask.iloc[i]):
-                continue
-            if pd.isna(x.quote_volume_24h.iloc[i]) or float(x.quote_volume_24h.iloc[i]) < MIN_24H_QUOTE_VOLUME:
-                n_volume_reject += 1
-                continue
-            side = "LONG" if bool(long_mask.iloc[i]) else "SHORT"
-            levels = trade_levels(x,i,1 if side=="LONG" else -1,"STRUCTURE")
-            if levels is None:
-                continue
-            close_entry, close_sl, close_tp, _ = levels
-            atr = float(x.atr.iloc[i])
-            if not np.isfinite(atr) or atr <= 0:
-                continue
-            score = score_at(x,i,side)
-            precision = precision_pass_at(x,i,side,score)
-            # No lookahead: confirm signal on bar i, then execute at bar i+1 open.
-            entry = float(x.open.iloc[i+1])
-            stop_dist, target_dist = abs(float(close_entry)-float(close_sl)), abs(float(close_tp)-float(close_entry))
-            sl, tp = (entry-stop_dist,entry+target_dist) if side=="LONG" else (entry+stop_dist,entry-target_dist)
-            risk = abs(entry-sl)
-            if not np.isfinite(risk) or risk <= 0:
-                continue
-            candidates.append({"symbol":symbol,"side":side,
-                "signal_bar_open_ms":int(x.timestamp.iloc[i].value//1_000_000),
-                "entry_time_ms":int(x.timestamp.iloc[i+1].value//1_000_000),
-                "entry":entry,"sl":float(sl),"tp":float(tp),"risk":float(risk),
-                "entry_close_proxy":float(close_entry),"stop_dist":float(stop_dist),"target_dist":float(target_dist),
-                "score":float(score),"precision_pass":bool(precision),
-                "quote_volume_24h":float(x.quote_volume_24h.iloc[i])})
-            n_after += 1
+        n_before, n_after, n_volume_reject = 0, 0, 0
+        signals_by_core = {}
+        for core_name in [CORE_NAME, LEGACY_CORE_NAME]:
+            long_mask, short_mask = signal_mask(x, core_name)
+            core_before, core_after = int((long_mask|short_mask).sum()), 0
+            n_before += core_before
+            for i in range(250,len(x)-1):
+                if not bool(long_mask.iloc[i]) and not bool(short_mask.iloc[i]):
+                    continue
+                if pd.isna(x.quote_volume_24h.iloc[i]) or float(x.quote_volume_24h.iloc[i]) < MIN_24H_QUOTE_VOLUME:
+                    n_volume_reject += 1
+                    continue
+                side = "LONG" if bool(long_mask.iloc[i]) else "SHORT"
+                levels = trade_levels(x,i,1 if side=="LONG" else -1,"STRUCTURE")
+                if levels is None:
+                    continue
+                close_entry, close_sl, close_tp, _ = levels
+                atr = float(x.atr.iloc[i])
+                if not np.isfinite(atr) or atr <= 0:
+                    continue
+                score = score_at(x,i,side)
+                precision = precision_pass_at(x,i,side,score)
+                # No lookahead: confirm signal on bar i, then execute at bar i+1 open.
+                entry = float(x.open.iloc[i+1])
+                stop_dist, target_dist = abs(float(close_entry)-float(close_sl)), abs(float(close_tp)-float(close_entry))
+                sl, tp = (entry-stop_dist,entry+target_dist) if side=="LONG" else (entry+stop_dist,entry-target_dist)
+                risk = abs(entry-sl)
+                if not np.isfinite(risk) or risk <= 0:
+                    continue
+                candidates.append({"symbol":symbol,"core":core_name,"side":side,
+                    "signal_bar_open_ms":int(x.timestamp.iloc[i].value//1_000_000),
+                    "entry_time_ms":int(x.timestamp.iloc[i+1].value//1_000_000),
+                    "entry":entry,"sl":float(sl),"tp":float(tp),"risk":float(risk),
+                    "entry_close_proxy":float(close_entry),"stop_dist":float(stop_dist),"target_dist":float(target_dist),
+                    "score":float(score),"precision_pass":bool(precision),
+                    "quote_volume_24h":float(x.quote_volume_24h.iloc[i])})
+                core_after += 1
+                n_after += 1
+            signals_by_core[core_name] = {"signals_before_volume_gate":core_before,"signals_after_volume_gate":core_after}
         coverage[-1].update({"signals_before_volume_gate":n_before,
-            "signals_after_volume_gate":n_after,"signals_rejected_by_volume_gate":n_volume_reject})
-        print(f"PORTFOLIO_DATA {symbol}: candles={len(x)} signals={n_after} gaps={gaps}",flush=True)
+            "signals_after_volume_gate":n_after,"signals_rejected_by_volume_gate":n_volume_reject,
+            "signals_by_core":signals_by_core})
+        print(f"PORTFOLIO_DATA {symbol}: candles={len(x)} candidates={n_after} gaps={gaps}",flush=True)
     return data,coverage,errors,candidates
 
 
@@ -153,10 +160,17 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False,entry_mode="
     def eligible(c):
         if exclude_symbol is not None and c["symbol"] == exclude_symbol: return False
         if not (start_ms <= c["entry_time_ms"] < end_ms): return False
-        if mode=="baseline": return True
-        if mode=="precision65": return c["precision_pass"]
+        core = c.get("core", CORE_NAME)
+        if mode=="baseline": return core==CORE_NAME
+        if mode=="precision65": return core==CORE_NAME and c["precision_pass"]
         if mode.startswith("precision_score_"):
-            return c["precision_pass"] and c["score"] <= float(mode.rsplit("_",1)[1])
+            return core==CORE_NAME and c["precision_pass"] and c["score"] <= float(mode.rsplit("_",1)[1])
+        if mode=="legacy_baseline": return core==LEGACY_CORE_NAME
+        if mode=="legacy_precision65": return core==LEGACY_CORE_NAME and c["precision_pass"]
+        if mode=="combined_baseline": return True
+        if mode=="combined_precision65": return c["precision_pass"]
+        if mode=="without_current_core": return core==LEGACY_CORE_NAME and c["precision_pass"]
+        if mode=="without_legacy_core": return core==CORE_NAME and c["precision_pass"]
         raise ValueError(mode)
     by_time={}
     for c in candidates:
@@ -329,6 +343,11 @@ def main():
         "PRECISION_V2_SIGNAL_CLOSE_PROXY":("precision65",1.0,"signal_close",FEE_BPS,SLIPPAGE_BPS),
         "PRECISION_V2_LOWER_COST":("precision65",1.0,"next_open",2.0,1.0),
         "PRECISION_V2_ZERO_COST":("precision65",1.0,"next_open",0.0,0.0),
+        "LEGACY_CORE_BASELINE":("legacy_baseline",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_PRECISION65":("legacy_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "COMBINED_CORE_PRECISION65":("combined_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "COMBINED_WITHOUT_CURRENT_CORE":("without_current_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "COMBINED_WITHOUT_LEGACY_CORE":("without_legacy_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
     }
     full_results={}; full_rows=[]
     for name,spec in full_modes.items():
@@ -355,6 +374,10 @@ def main():
         "PRECISION_V2_DISTANCE_PLUS10":("precision65",1.1,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "PRECISION_V2_SIGNAL_CLOSE_PROXY":("precision65",1.0,"signal_close",FEE_BPS,SLIPPAGE_BPS),
         "PRECISION_V2_LOWER_COST":("precision65",1.0,"next_open",2.0,1.0),
+        "LEGACY_CORE_PRECISION65":("legacy_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "COMBINED_CORE_PRECISION65":("combined_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "COMBINED_WITHOUT_CURRENT_CORE":("without_current_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "COMBINED_WITHOUT_LEGACY_CORE":("without_legacy_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
     }
     hold_results={}; hold_rows=[]
     for name,spec in hold_modes.items():
@@ -394,6 +417,7 @@ def main():
             "distance_sensitivity":"Stop and target distances scaled together by -10% and +10%; this is a distance robustness test, not a guarantee of ATR-optimal stops.",
             "volume_filter":"Approximate quote volume = rolling sum(close * volume) across 96 completed 15m bars; minimum $10M.",
             "BTC_filter":"Shadow-only; no directional veto. Defensive mode and failure shield are OFF. Precision V2 gate is modeled separately.",
+            "core_comparison":"Current V15_PRECISION_V2_FINAL and legacy V15_ADX4H_CANDLE2H are replayed separately and in a combined portfolio. Combined-without-one-core tests measure incremental contribution under the same generic precision gate; this is a research comparison, not a claim that legacy core is production-enabled.",
             "limitation":"Historical OHLC simulation, not a guarantee of live fills; 15m bars cannot reveal exact intrabar order beyond conservative SL-first ambiguity."},
         "full_period_variants":full_results,"walk_forward_development_sweep":sweep,
         "walk_forward_selection":{"rule":"Choose highest estimated net R using development period only among score ceilings with >=10 closed trades; holdout outcomes are not used for selection.",
