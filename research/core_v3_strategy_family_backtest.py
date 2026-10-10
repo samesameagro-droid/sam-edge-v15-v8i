@@ -75,7 +75,7 @@ def signals(x: pd.DataFrame, family: str) -> tuple[pd.Series, pd.Series]:
         touch_s = x["high"] >= x["ema20"] - 0.20*x["atr"]
         long = bull4 & bull1 & touch_l.shift(1).fillna(False) & (x["close"] > x["ema20"]) & (x["close"] > x["open"]) & (x["close_pos"] >= .60) & (x["volr"] >= 1.05) & (x["dist_ema20_atr"] <= 1.0) & (x["h4_adx_pct"] >= .35)
         short = bear4 & bear1 & touch_s.shift(1).fillna(False) & (x["close"] < x["ema20"]) & (x["close"] < x["open"]) & (x["close_pos"] <= .40) & (x["volr"] >= 1.05) & (x["dist_ema20_atr"] <= 1.0) & (x["h4_adx_pct"] >= .35)
-    elif family == "BREAKOUT_RETEST":
+    elif family == "BREAKOUT"
         # Confirmed close beyond prior 20-bar level, participation and expanding volatility.
         long = bull4 & (x["close"] > x["swing_h"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] >= .70)
         short = bear4 & (x["close"] < x["swing_l"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] <= .30)
@@ -169,7 +169,24 @@ def replay(events: list[dict], frames: dict[str,pd.DataFrame], start, end, fee_b
             if len(active)>=MAX_ACTIVE or any(p["coin"]==e["coin"] for p in active): continue
             idx=index_maps[e["coin"]].get(ts,e["entry_index"])
             if idx-last_exit.get(e["coin"],-10**9)<COOLDOWN_BARS: continue
-            active.append(dict(e,entry_index=idx))
+            # Entry is at this candle's OPEN; check the remainder of the entry candle.
+            bar=bar_maps.get(e["coin"],{}).get(ts)
+            if bar is None: continue
+            op,hi,lo,cl=bar
+            p=dict(e,entry_index=idx)
+            if (p["side"]=="LONG" and op<=p["sl"]) or (p["side"]=="SHORT" and op>=p["sl"]):
+                exit_px=op; result="SL"
+            elif (lo<=p["sl"] if p["side"]=="LONG" else hi>=p["sl"]):
+                exit_px=min(p["sl"],op) if p["side"]=="LONG" else max(p["sl"],op); result="SL"
+            elif (hi>=p["tp"] if p["side"]=="LONG" else lo<=p["tp"]):
+                exit_px=p["tp"]; result="TP"
+            else:
+                active.append(p); continue
+            direction=1 if p["side"]=="LONG" else -1
+            gross_r=direction*(exit_px-p["entry"])/p["risk_price"]
+            cost_r=((p["entry"]+exit_px)*(fee_bps+slip_bps)/10000.0)/p["risk_price"]
+            done.append(dict(p,closed_at=ts,exit=exit_px,result=result,gross_R=gross_r,cost_R=cost_r,R=gross_r-cost_r,hold_bars=0,entry_bar_exit=True))
+            last_exit[p["coin"]]=idx
     # Mark positions still open at the period end using last available close; do not drop them.
     for p in active:
         df=frames[p["coin"]]
@@ -184,27 +201,28 @@ def replay(events: list[dict], frames: dict[str,pd.DataFrame], start, end, fee_b
     return done
 
 def summarize(rows: list[dict]) -> dict:
-    closed=[r for r in rows if r["result"] in ("TP","SL","TIME","PERIOD_END_MARK")]
-    wins=sum(r["R"]>0 for r in closed); losses=sum(r["R"]<=0 for r in closed)
-    rs=np.array([float(r["R"]) for r in closed],dtype=float)
+    realized=[r for r in rows if r["result"] in ("TP","SL","TIME")]
+    period_marks=[r for r in rows if r["result"]=="PERIOD_END_MARK"]
+    rs=np.array([float(r["R"]) for r in realized],dtype=float)
+    wins=sum(r["R"]>0 for r in realized); losses=sum(r["R"]<=0 for r in realized)
     eq=np.cumsum(rs) if len(rs) else np.array([])
     peak=np.maximum.accumulate(np.r_[0.0,eq])[1:] if len(eq) else np.array([])
     dd=eq-peak if len(eq) else np.array([])
-    gross_win=sum(float(r["R"]) for r in closed if r["R"]>0)
-    gross_loss=-sum(float(r["R"]) for r in closed if r["R"]<0)
-    dates=[pd.Timestamp(r["entry_time"]).date() for r in closed]
+    gross_win=sum(float(r["R"]) for r in realized if r["R"]>0)
+    gross_loss=-sum(float(r["R"]) for r in realized if r["R"]<0)
+    dates=[pd.Timestamp(r["entry_time"]).date() for r in realized]
     active_days=(max(dates)-min(dates)).days+1 if dates else 0
-    return {"closed":len(closed),"wins_net_positive":wins,"losses_or_nonpositive":losses,
-      "win_rate_pct":round(100*wins/len(closed),2) if closed else 0,
-      "net_R_after_fee_and_slippage_assumption":round(float(rs.sum()),3) if len(rs) else 0,
-      "expectancy_R":round(float(rs.mean()),4) if len(rs) else 0,
-      "profit_factor":round(gross_win/gross_loss,4) if gross_loss>0 else None,
+    return {"realized_closed":len(realized),"wins_net_positive":wins,"losses_or_nonpositive":losses,
+      "win_rate_pct":round(100*wins/len(realized),2) if realized else 0,
+      "net_R_realized":round(float(rs.sum()),3) if len(rs) else 0,
+      "expectancy_R_realized":round(float(rs.mean()),4) if len(rs) else 0,
+      "profit_factor_realized":round(gross_win/gross_loss,4) if gross_loss>0 else None,
       "max_drawdown_realized_R":round(float(dd.min()),3) if len(dd) else 0,
-      "trades_per_calendar_day":round(len(closed)/active_days,3) if active_days else 0,
-      "time_exits":sum(r["result"]=="TIME" for r in closed),
-      "period_end_marked":sum(r["result"]=="PERIOD_END_MARK" for r in closed),
-      "assumptions":{"fee_bps_per_side":fee_bps_global,"slippage_bps_per_side":slippage_bps_global,
-      "funding":"not included; historical funding data not yet joined"}} 
+      "trades_per_calendar_day":round(len(realized)/active_days,3) if active_days else 0,
+      "time_exits":sum(r["result"]=="TIME" for r in realized),
+      "period_end_open_positions_marked":len(period_marks),
+      "period_end_marked_net_R":round(sum(float(r["R"]) for r in period_marks),3),
+      "funding":"not included; historical funding data not yet joined"}
 
 fee_bps_global=FEE_BPS_PER_SIDE
 slippage_bps_global=SLIPPAGE_BPS_PER_SIDE
@@ -220,7 +238,7 @@ def main():
     fee_bps_global=args.fee_bps; slippage_bps_global=args.slippage_bps
     frames=load_data(Path(args.data))
     if not frames: raise SystemExit("No sufficient OHLCV data found")
-    families=["TREND_PULLBACK","BREAKOUT_RETEST","SWEEP_RECLAIM","RANGE_MEAN_REVERSION"]
+    families=["TREND_PULLBACK","BREAKOUT","SWEEP_RECLAIM","RANGE_MEAN_REVERSION"]
     all_events={f:[] for f in families}
     for coin,x in frames.items():
         for f in families: all_events[f].extend(build_events(coin,x,f))
@@ -234,7 +252,7 @@ def main():
       "max_active_positions":MAX_ACTIVE,"cooldown_bars":COOLDOWN_BARS,
       "execution":"next 15m open; conservative same-bar SL priority; stop gaps modeled using adverse open",
       "costs":{"fee_bps_per_side":args.fee_bps,"slippage_bps_per_side":args.slippage_bps,"funding":"excluded; not yet joined"},
-      "caution":"Exploratory screening, not live-ready. Net R subtracts explicit fee/slippage assumptions but realized DD ignores intrabar unrealized portfolio equity and funding.",
+      "caution":"Exploratory screening, not live-ready. Entry candle is checked and period-end open marks are reported separately; funding and full marked-to-market portfolio drawdown are still not included.",
       "results":{}}
     out=Path(args.out); out.mkdir(parents=True,exist_ok=True)
     for f in families:
