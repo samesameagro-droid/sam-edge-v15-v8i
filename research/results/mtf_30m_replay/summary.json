@@ -64,7 +64,25 @@
       "ambiguous_same_minute": 0,
       "gross_R_timeout_assumed_zero": 5.75
     },
+    "atr_distance_minus_10pct_5m_all_trades": {
+      "n": 28,
+      "TP": 15,
+      "SL": 13,
+      "TIMEOUT": 0,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 5.75
+    },
     "atr_distance_plus_10pct_all_trades": {
+      "n": 28,
+      "TP": 10,
+      "SL": 7,
+      "TIMEOUT": 11,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 5.5
+    },
+    "atr_distance_plus_10pct_5m_all_trades": {
       "n": 28,
       "TP": 10,
       "SL": 7,
@@ -82,7 +100,25 @@
       "ambiguous_same_minute": 0,
       "gross_R_timeout_assumed_zero": 8.0
     },
+    "one_15m_bar_delay_5m_all_trades": {
+      "n": 28,
+      "TP": 16,
+      "SL": 12,
+      "TIMEOUT": 0,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 8.0
+    },
     "one_15m_bar_delay_score_max_54": {
+      "n": 20,
+      "TP": 14,
+      "SL": 6,
+      "TIMEOUT": 0,
+      "other_or_unresolved": 0,
+      "ambiguous_same_minute": 0,
+      "gross_R_timeout_assumed_zero": 11.5
+    },
+    "one_15m_bar_delay_score_max_54_5m": {
       "n": 20,
       "TP": 14,
       "SL": 6,
