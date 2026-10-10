@@ -510,9 +510,13 @@ def main():
         "recorded_entry_sl_tp_all_trades":outcome_stats("ohlc_path_result",allmask),
         "score_max_54_recorded_entry":outcome_stats("ohlc_path_result",score54_mask),
         "atr_distance_minus_10pct_all_trades":outcome_stats("atr_minus10_result",allmask),
+        "atr_distance_minus_10pct_5m_all_trades":outcome_stats("atr_minus10_5m_result",allmask),
         "atr_distance_plus_10pct_all_trades":outcome_stats("atr_plus10_result",allmask),
+        "atr_distance_plus_10pct_5m_all_trades":outcome_stats("atr_plus10_5m_result",allmask),
         "one_15m_bar_delay_all_trades":outcome_stats("one_bar_delay_result",allmask),
-        "one_15m_bar_delay_score_max_54":outcome_stats("one_bar_delay_result",score54_mask)
+        "one_15m_bar_delay_5m_all_trades":outcome_stats("one_bar_delay_5m_result",allmask),
+        "one_15m_bar_delay_score_max_54":outcome_stats("one_bar_delay_result",score54_mask),
+        "one_15m_bar_delay_score_max_54_5m":outcome_stats("one_bar_delay_5m_result",score54_mask)
     }
     loo=[]
     for coin in sorted(df.coin.unique()):
