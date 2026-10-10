@@ -7,6 +7,7 @@ on:
     paths:
       - "research/premium_indicator_benchmark.py"
       - "research/strategy_sweep.py"
+      - "research/structural_strategy_benchmark.py"
       - "research/fetch_historical_ohlcv.py"
       - ".github/workflows/premium_indicator_benchmark.yml"
   workflow_dispatch:
@@ -35,7 +36,7 @@ jobs:
       - name: Install research dependencies
         run: python -m pip install --upgrade pip ccxt requests pandas numpy
       - name: Compile research modules
-        run: python -m py_compile research/premium_indicator_benchmark.py research/fetch_historical_ohlcv.py research/strategy_sweep.py
+        run: python -m py_compile research/premium_indicator_benchmark.py research/fetch_historical_ohlcv.py research/strategy_sweep.py research/structural_strategy_benchmark.py
       - name: Download historical OHLCV (through 2026-09-30 UTC)
         run: python research/fetch_historical_ohlcv.py --start-date 2025-01-01 --end-date 2026-09-30 --data data
       - name: Run baseline-cost benchmark
@@ -44,7 +45,7 @@ jobs:
         run: python research/premium_indicator_benchmark.py --data data --out research/results/premium_indicator_stress --fee-bps 8 --slippage-bps 5
       - name: Run 108-configuration strategy sweep
         run: python research/strategy_sweep.py --data data --out research/results/strategy_sweep --fee-bps 5 --slippage-bps 2
-      - name: Upload results and source data
+      - name: Run structural strategy benchmark (27 configurations)\n        run: python research/structural_strategy_benchmark.py --data data --out research/results/structural_benchmark --fee-bps 5 --slippage-bps 2\n      - name: Upload results and source data
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -53,14 +54,14 @@ jobs:
           path: |
             research/results/premium_indicator_baseline/
             research/results/premium_indicator_stress/
-            research/results/strategy_sweep/
+            research/results/strategy_sweep/\n            research/results/structural_benchmark/
             data/*/*.csv
       - name: Persist results to research branch
         if: success()
         run: |
           git config user.name "SAM EDGE RESEARCH BOT"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research/results/premium_indicator_baseline research/results/premium_indicator_stress research/results/strategy_sweep
+          git add research/results/premium_indicator_baseline research/results/premium_indicator_stress research/results/strategy_sweep research/results/structural_benchmark
           if ! git diff --cached --quiet; then
             git commit -m "research: persist public indicator benchmark results"
             git fetch origin research/premium-indicator-benchmark
