@@ -309,9 +309,11 @@ def stats(sim,period_days):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--days",type=int,default=180)
+    ap.add_argument("--end-date",type=str,default=None,
+        help="Exclusive UTC end date YYYY-MM-DD; use a fixed date to preserve a historical holdout.")
     ap.add_argument("--out",type=Path,default=Path("research/results/portfolio_event_replay"))
     args=ap.parse_args()
-    end=pd.Timestamp.now(tz="UTC").floor("D")
+    end=(pd.Timestamp(args.end_date,tz="UTC") if args.end_date else pd.Timestamp.now(tz="UTC").floor("D"))
     end_ms=int(end.timestamp()*1000)
     start=end-pd.Timedelta(days=args.days)
     start_ms=int(start.timestamp()*1000)
