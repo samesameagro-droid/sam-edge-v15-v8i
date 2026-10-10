@@ -385,12 +385,13 @@ def main():
         "days":args.days,"symbols_expected":len(SYMBOLS),"symbols_loaded":len(data),
         "total_15m_candles":int(sum(len(x) for x in data.values())),
         "signal_candidates_after_volume_gate":len(candidates),"source_totals":source_totals,"coverage":coverage,
-        "portfolio_assumptions":{"execution":"Signal confirmed at closed 15m bar; enter at next 15m open; preserve stop/target distances derived at signal close.",
+        "portfolio_assumptions":{"execution":"Primary variant confirms a closed 15m signal and enters at next 15m open. Signal-close proxy is a comparison only; stop/target distances are derived from the signal bar.",
             "position_sizing":"1% of current equity per trade; starting equity $100; realized PnL compounded.",
             "limits":{"max_active_positions":MAX_ACTIVE,"max_active_per_side":MAX_ACTIVE_PER_SIDE,"same-symbol reentry_cooldown_minutes":60},
             "selection":"At each scan time, eligible signals ranked by entry score descending; symbol/side are deterministic tie-breakers.",
             "exit":f"SL first if SL and TP both touch in one 15m bar; timeout at {MAX_HOLD_BARS} bars; open positions at data end are marked to market and excluded from closed-trade metrics.",
-            "costs":{"fee_bps_per_side":FEE_BPS,"slippage_bps_per_side":SLIPPAGE_BPS,"model":"estimated round-trip cost converted to R using stop distance"},
+            "costs":{"base_fee_bps_per_side":FEE_BPS,"base_slippage_bps_per_side":SLIPPAGE_BPS,"sensitivity_cases":"zero cost and 2 bps fee + 1 bps slippage per side","model":"estimated round-trip cost converted to R using stop distance"},
+            "distance_sensitivity":"Stop and target distances scaled together by -10% and +10%; this is a distance robustness test, not a guarantee of ATR-optimal stops.",
             "volume_filter":"Approximate quote volume = rolling sum(close * volume) across 96 completed 15m bars; minimum $10M.",
             "BTC_filter":"Shadow-only; no directional veto. Defensive mode and failure shield are OFF. Precision V2 gate is modeled separately.",
             "limitation":"Historical OHLC simulation, not a guarantee of live fills; 15m bars cannot reveal exact intrabar order beyond conservative SL-first ambiguity."},
@@ -405,7 +406,7 @@ def main():
         "interpretation":"The walk-forward score selection is development-only. Holdout parameter-neighbor and leave-one-coin-out tables are robustness diagnostics, not a basis for re-tuning on the same holdout. Small holdout samples imply uncertainty."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps({"validation_passed":True,"data_errors":[],"full_period_variants":full_results,
-        "walk_forward_selection":summary["walk_forward_selection"],"untouched_later_holdout":hold_results},indent=2),flush=True)
+        "walk_forward_selection":summary["walk_forward_selection"],"walk_forward_holdout":hold_results},indent=2),flush=True)
 
 
 if __name__=="__main__":
