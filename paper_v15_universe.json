@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T06:11:53.204147+00:00",
+  "updated_at": "2026-10-10T06:17:28.582204+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -20,8 +20,8 @@
     "ONDO/USDT:USDT",
     "ENA/USDT:USDT",
     "ADA/USDT:USDT",
-    "BNB/USDT:USDT",
     "WLD/USDT:USDT",
+    "BNB/USDT:USDT",
     "INJ/USDT:USDT",
     "KAIA/USDT:USDT",
     "FARTCOIN/USDT:USDT",
