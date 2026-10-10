@@ -571,7 +571,25 @@ def main():
     for (sym,tf),series in sorted(cache.items()):
         counts=series["source"].value_counts().to_dict() if "source" in series.columns else {}
         source_coverage.append({"symbol":sym,"tf":tf,"candle_count":len(series),"source_counts":counts})
-    summary={"source":"Binance USD-M Futures only; each candle must be sourced from Binance REST or Binance Vision archive","source_caveat":"No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
+    outcome_reconciliation_errors = []
+    for row in out:
+        if not row.get("ohlc_path_matches_recorded", False) or not row.get("ohlc_path_5m_matches_recorded", False):
+            outcome_reconciliation_errors.append({
+                "symbol": row["coin"].split("/")[0] + "USDT",
+                "side": row["side"],
+                "entry_utc": row["opened_at"],
+                "recorded_result": row["result"],
+                "binance_1m_result": row.get("ohlc_path_result"),
+                "binance_5m_result": row.get("ohlc_path_5m_result"),
+                "reason": "Binance OHLC path does not reproduce the recorded paper outcome"
+            })
+    candle_validation_passed = not errors
+    outcome_reconciliation_passed = (
+        path_validation["validation_passed_1m"] and path_validation["validation_passed_5m"]
+        and not outcome_reconciliation_errors
+    )
+    overall_validation_passed = candle_validation_passed and outcome_reconciliation_passed
+    summary={"source":"Binance USD-M Futures only; each candle must be sourced from Binance REST or Binance Vision archive","source_caveat":"No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":overall_validation_passed,"candle_validation_passed":candle_validation_passed,"outcome_reconciliation_passed":outcome_reconciliation_passed,"data_errors":errors,"outcome_reconciliation_errors":outcome_reconciliation_errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they are exploratory diagnostics and must not be used for production until an independent full-event walk-forward/holdout validates them. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
     if errors:
