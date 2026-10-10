@@ -36,8 +36,6 @@ jobs:
         run: python -m pip install --upgrade pip pandas numpy requests
       - name: Compile replay scripts
         run: python -m py_compile research/mtf_30m_replay.py research/score_filter_trade_journal.py
-      - name: Download public candles and replay MTF gates
-        run: python research/mtf_30m_replay.py --state paper_v15_state_v2.json --out research/results/mtf_30m_replay --fee-bps 5 --slippage-bps 2
       - name: Fetch authoritative executed journal and score snapshots from main
         if: always()
         run: |
@@ -52,6 +50,15 @@ jobs:
             --state research/results/score_filter_trade_journal/inputs/paper_v15_state_v2.json \
             --first-trade 1 --last-trade 128 --score-max 54 \
             --out research/results/score_filter_trade_journal
+      - name: Upload score-54 backtest immediately
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-edge-score54-trades-1-128
+          if-no-files-found: warn
+          path: research/results/score_filter_trade_journal/
+      - name: Download public candles and replay MTF gates
+        run: python research/mtf_30m_replay.py --state paper_v15_state_v2.json --out research/results/mtf_30m_replay --fee-bps 5 --slippage-bps 2
       - name: Run full-event Binance portfolio replay and walk-forward holdout
         if: always()
         run: python research/portfolio_event_replay.py --days 365 --end-date 2026-09-25 --out research/results/portfolio_event_replay
