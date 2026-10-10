@@ -382,6 +382,16 @@ def main():
         bars1m=cache.get((sym,"1m"),pd.DataFrame())
         exit_ms=int(pd.Timestamp(t["closed_at"]).timestamp()*1000)
         base_path=simulate_path(bars1m,entry_ms,exit_ms,t["side"],float(t["sl"]),float(t["tp"]))
+        path_window=bars1m[(bars1m.open_ms>=entry_ms)&(bars1m.close_ms<exit_ms)] if not bars1m.empty else pd.DataFrame()
+        row["recorded_exit"]=t.get("exit")
+        row["path_window_min_low"]=float(path_window.low.min()) if not path_window.empty else None
+        row["path_window_max_high"]=float(path_window.high.max()) if not path_window.empty else None
+        row["path_window_first_open"]=float(path_window.iloc[0].open) if not path_window.empty else None
+        row["path_window_last_close"]=float(path_window.iloc[-1].close) if not path_window.empty else None
+        exit_minute=bars1m[bars1m.open_ms==exit_ms] if not bars1m.empty else pd.DataFrame()
+        row["exit_minute_open"]=float(exit_minute.iloc[0].open) if not exit_minute.empty else None
+        row["exit_minute_high"]=float(exit_minute.iloc[0].high) if not exit_minute.empty else None
+        row["exit_minute_low"]=float(exit_minute.iloc[0].low) if not exit_minute.empty else None
         row["ohlc_path_result"]=base_path["result"]
         row["ohlc_path_ambiguous"]=base_path["ambiguous"]
         row["ohlc_path_touch_utc"]=pd.to_datetime(base_path["touch_ms"],unit="ms",utc=True).isoformat() if base_path["touch_ms"] is not None else None
