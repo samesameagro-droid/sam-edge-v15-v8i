@@ -167,6 +167,10 @@ def simulate(data,candidates,start_ms,end_ms,mode,force_close=False,entry_mode="
             return core==CORE_NAME and c["precision_pass"] and c["score"] <= float(mode.rsplit("_",1)[1])
         if mode=="legacy_baseline": return core==LEGACY_CORE_NAME
         if mode=="legacy_precision65": return core==LEGACY_CORE_NAME and c["precision_pass"]
+        if mode.startswith("legacy_score_"):
+            return core==LEGACY_CORE_NAME and c["score"] <= float(mode.rsplit("_",1)[1])
+        if mode.startswith("legacy_precision_score_"):
+            return core==LEGACY_CORE_NAME and c["precision_pass"] and c["score"] <= float(mode.rsplit("_",1)[1])
         if mode=="combined_baseline": return True
         if mode=="combined_precision65": return c["precision_pass"]
         if mode=="without_current_core": return core==LEGACY_CORE_NAME and c["precision_pass"]
@@ -345,6 +349,9 @@ def main():
         "PRECISION_V2_ZERO_COST":("precision65",1.0,"next_open",0.0,0.0),
         "LEGACY_CORE_BASELINE":("legacy_baseline",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "LEGACY_CORE_PRECISION65":("legacy_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_SCORE_LE54":("legacy_score_54",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_SCORE_LE60":("legacy_score_60",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_SCORE_LE65":("legacy_score_65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "COMBINED_CORE_PRECISION65":("combined_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "COMBINED_WITHOUT_CURRENT_CORE":("without_current_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "COMBINED_WITHOUT_LEGACY_CORE":("without_legacy_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
@@ -365,6 +372,13 @@ def main():
     eligible=[r for r in sweep if r["closed_trades"]>=10 and r["profit_factor_gross"] is not None]
     chosen=max(eligible,key=lambda r:(r["net_est_R"],r["profit_factor_gross"],-r["closed_trades"])) if eligible else None
     chosen_threshold=int(chosen["score_ceiling"]) if chosen else 65
+    legacy_sweep=[]
+    for threshold in SCORE_THRESHOLDS:
+        sim=simulate(data,candidates,start_ms,split_ms,f"legacy_score_{threshold}",force_close=True,bar_maps=bar_maps,global_times=global_times)
+        legacy_sweep.append({"score_ceiling":threshold,**stats(sim,dev_days)})
+    eligible_legacy=[r for r in legacy_sweep if r["closed_trades"]>=10 and r["profit_factor_gross"] is not None]
+    chosen_legacy=max(eligible_legacy,key=lambda r:(r["net_est_R"],r["profit_factor_gross"],-r["closed_trades"])) if eligible_legacy else None
+    chosen_legacy_threshold=int(chosen_legacy["score_ceiling"]) if chosen_legacy else 65
     hold_days=(end-split).total_seconds()/86400.0
     hold_modes={
         "BASELINE_CORE":("baseline",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
@@ -375,6 +389,11 @@ def main():
         "PRECISION_V2_SIGNAL_CLOSE_PROXY":("precision65",1.0,"signal_close",FEE_BPS,SLIPPAGE_BPS),
         "PRECISION_V2_LOWER_COST":("precision65",1.0,"next_open",2.0,1.0),
         "LEGACY_CORE_PRECISION65":("legacy_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_BASELINE":("legacy_baseline",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_SCORE_LE54":("legacy_score_54",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_SCORE_LE60":("legacy_score_60",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_CORE_SCORE_LE65":("legacy_score_65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
+        "LEGACY_WALK_FORWARD_SELECTED_SCORE":(f"legacy_score_{chosen_legacy_threshold}",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "COMBINED_CORE_PRECISION65":("combined_precision65",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "COMBINED_WITHOUT_CURRENT_CORE":("without_current_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
         "COMBINED_WITHOUT_LEGACY_CORE":("without_legacy_core",1.0,"next_open",FEE_BPS,SLIPPAGE_BPS),
@@ -399,6 +418,7 @@ def main():
     pd.DataFrame(full_rows).to_csv(dest/"full_period_portfolio_trades.csv",index=False)
     pd.DataFrame(hold_rows).to_csv(dest/"holdout_portfolio_trades.csv",index=False)
     pd.DataFrame(sweep).to_csv(dest/"walk_forward_development_sweep.csv",index=False)
+    pd.DataFrame(legacy_sweep).to_csv(dest/"walk_forward_legacy_development_sweep.csv",index=False)
     pd.DataFrame(holdout_sweep).to_csv(dest/"holdout_score_neighbor_sweep_exploratory.csv",index=False)
     pd.DataFrame(loo_rows).to_csv(dest/"holdout_leave_one_coin_out.csv",index=False)
     pd.DataFrame(coverage).to_csv(dest/"data_coverage.csv",index=False)
@@ -420,6 +440,8 @@ def main():
             "core_comparison":"Current V15_PRECISION_V2_FINAL and legacy V15_ADX4H_CANDLE2H are replayed separately and in a combined portfolio. Combined-without-one-core tests measure incremental contribution under the same generic precision gate; this is a research comparison, not a claim that legacy core is production-enabled.",
             "limitation":"Historical OHLC simulation, not a guarantee of live fills; 15m bars cannot reveal exact intrabar order beyond conservative SL-first ambiguity."},
         "full_period_variants":full_results,"walk_forward_development_sweep":sweep,
+        "walk_forward_legacy_score_sweep":legacy_sweep,
+        "walk_forward_legacy_score_selection":{"rule":"Choose highest estimated net R in development only among legacy-core score ceilings with >=10 closed trades.","selected_score_ceiling":chosen_legacy_threshold if chosen_legacy else None,"fallback_used":chosen_legacy is None},
         "walk_forward_selection":{"rule":"Choose highest estimated net R using development period only among score ceilings with >=10 closed trades; holdout outcomes are not used for selection.",
             "selected_score_ceiling":chosen_threshold if chosen else None,"fallback_used":chosen is None},
         "walk_forward_holdout":hold_results,
