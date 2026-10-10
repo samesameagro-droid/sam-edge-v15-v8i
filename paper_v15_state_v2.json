@@ -1,5 +1,5 @@
 {
-  "equity": 108.12916402484974,
+  "equity": 107.04787238460125,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -3786,10 +3786,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 108.12916402484974
-    }
-  ],
-  "positions": {
-    "QNT/USDT:USDT": {
+    },
+    {
       "coin": "QNT/USDT:USDT",
       "side": "LONG",
       "entry": 249.57,
@@ -3920,7 +3918,13 @@
         "close": 82774.0,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-10T15:40:00+00:00",
+      "exit": 245.42748001681022,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 107.04787238460125
     }
-  }
+  ],
+  "positions": {}
 }

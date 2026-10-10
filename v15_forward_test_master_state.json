@@ -3,23 +3,9 @@
   "next_trade_no": 130,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 128,
-  "active_positions": [
-    "QNT/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 129,
-      "coin": "QNT/USDT:USDT",
-      "side": "LONG",
-      "opened_at": "2026-10-10T11:15:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 249.57,
-      "sl": 245.42748001681022,
-      "tp": 254.74814997898721,
-      "status": "ONGOING"
-    }
-  ],
+  "cohort_closed_trades": 129,
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
