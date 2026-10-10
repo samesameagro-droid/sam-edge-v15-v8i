@@ -171,14 +171,18 @@ def main():
     valid.sort(key=lambda r:int(r["trade_no"]))
     state_scores=load_state_scores(args.state)
     symbols=sorted({str(r["coin"]).split("/")[0].replace(":USDT","") for r in valid if r.get("coin")})
-    times=[parse_ts(r["signal_time"]) for r in valid]
-    if not times: raise SystemExit("No valid closed TP/SL trades in requested range.")
-    start_ms=int((min(times)-pd.Timedelta(days=50)).timestamp()*1000)
-    end_ms=int((max(times)+pd.Timedelta(minutes=15)).timestamp()*1000)
+    times_by_base=defaultdict(list)
+    for r in valid:
+        times_by_base[str(r["coin"]).split("/")[0]].append(parse_ts(r["signal_time"]))
+    if not valid: raise SystemExit("No valid closed TP/SL trades in requested range.")
     candle_data={}; fetch_errors=[]
     def get_one(base):
         symbol=f"{base}USDT"
         try:
+            # Fetch only the history window needed for this symbol's own trades,
+            # including 50 days of warm-up for rolling 4H ADX percentile features.
+            start_ms=int((min(times_by_base[base])-pd.Timedelta(days=50)).timestamp()*1000)
+            end_ms=int((max(times_by_base[base])+pd.Timedelta(minutes=15)).timestamp()*1000)
             df=fetch_klines(symbol,"15m",start_ms,end_ms)
             if df is None or df.empty:
                 return base,None,"NO_BINANCE_CANDLES"
