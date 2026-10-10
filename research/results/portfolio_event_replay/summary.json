@@ -10,7 +10,7 @@
   "symbols_expected": 24,
   "symbols_loaded": 24,
   "total_15m_candles": 414720,
-  "signal_candidates_after_volume_gate": 877,
+  "signal_candidates_after_volume_gate": 1525,
   "source_totals": {
     "binance_archive_monthly": 393984,
     "binance_archive_daily": 20736
@@ -26,9 +26,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 47,
-      "signals_after_volume_gate": 47,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 81,
+      "signals_after_volume_gate": 81,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 47,
+          "signals_after_volume_gate": 47
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 34,
+          "signals_after_volume_gate": 34
+        }
+      }
     },
     {
       "symbol": "AAVEUSDT",
@@ -40,9 +50,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 48,
-      "signals_after_volume_gate": 48,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 82,
+      "signals_after_volume_gate": 82,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 48,
+          "signals_after_volume_gate": 48
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 34,
+          "signals_after_volume_gate": 34
+        }
+      }
     },
     {
       "symbol": "ARBUSDT",
@@ -54,9 +74,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 40,
-      "signals_after_volume_gate": 38,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 80,
+      "signals_after_volume_gate": 78,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 40,
+          "signals_after_volume_gate": 38
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 40,
+          "signals_after_volume_gate": 40
+        }
+      }
     },
     {
       "symbol": "DOTUSDT",
@@ -68,9 +98,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 54,
-      "signals_after_volume_gate": 53,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 83,
+      "signals_after_volume_gate": 82,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 54,
+          "signals_after_volume_gate": 53
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 29,
+          "signals_after_volume_gate": 29
+        }
+      }
     },
     {
       "symbol": "ETHUSDT",
@@ -82,9 +122,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 50,
-      "signals_after_volume_gate": 49,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 81,
+      "signals_after_volume_gate": 80,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 50,
+          "signals_after_volume_gate": 49
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 31,
+          "signals_after_volume_gate": 31
+        }
+      }
     },
     {
       "symbol": "FILUSDT",
@@ -96,9 +146,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 52,
-      "signals_after_volume_gate": 50,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 69,
+      "signals_after_volume_gate": 67,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 52,
+          "signals_after_volume_gate": 50
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 17,
+          "signals_after_volume_gate": 17
+        }
+      }
     },
     {
       "symbol": "IMXUSDT",
@@ -110,9 +170,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 41,
+      "signals_before_volume_gate": 79,
       "signals_after_volume_gate": 1,
-      "signals_rejected_by_volume_gate": 40
+      "signals_rejected_by_volume_gate": 78,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 41,
+          "signals_after_volume_gate": 1
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 38,
+          "signals_after_volume_gate": 0
+        }
+      }
     },
     {
       "symbol": "INJUSDT",
@@ -124,9 +194,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 46,
-      "signals_after_volume_gate": 44,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 86,
+      "signals_after_volume_gate": 84,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 46,
+          "signals_after_volume_gate": 44
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 40,
+          "signals_after_volume_gate": 40
+        }
+      }
     },
     {
       "symbol": "JUPUSDT",
@@ -138,9 +218,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 50,
-      "signals_after_volume_gate": 31,
-      "signals_rejected_by_volume_gate": 17
+      "signals_before_volume_gate": 66,
+      "signals_after_volume_gate": 43,
+      "signals_rejected_by_volume_gate": 21,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 50,
+          "signals_after_volume_gate": 31
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 16,
+          "signals_after_volume_gate": 12
+        }
+      }
     },
     {
       "symbol": "LDOUSDT",
@@ -152,9 +242,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 57,
-      "signals_after_volume_gate": 44,
-      "signals_rejected_by_volume_gate": 12
+      "signals_before_volume_gate": 90,
+      "signals_after_volume_gate": 77,
+      "signals_rejected_by_volume_gate": 12,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 57,
+          "signals_after_volume_gate": 44
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 33,
+          "signals_after_volume_gate": 33
+        }
+      }
     },
     {
       "symbol": "LINKUSDT",
@@ -166,9 +266,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 37,
-      "signals_after_volume_gate": 37,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 79,
+      "signals_after_volume_gate": 79,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 37,
+          "signals_after_volume_gate": 37
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 42,
+          "signals_after_volume_gate": 42
+        }
+      }
     },
     {
       "symbol": "LTCUSDT",
@@ -180,9 +290,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 35,
-      "signals_after_volume_gate": 33,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 86,
+      "signals_after_volume_gate": 84,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 35,
+          "signals_after_volume_gate": 33
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 51,
+          "signals_after_volume_gate": 51
+        }
+      }
     },
     {
       "symbol": "NEARUSDT",
@@ -194,9 +314,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 50,
-      "signals_after_volume_gate": 49,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 104,
+      "signals_after_volume_gate": 103,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 50,
+          "signals_after_volume_gate": 49
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 54,
+          "signals_after_volume_gate": 54
+        }
+      }
     },
     {
       "symbol": "ORDIUSDT",
@@ -208,9 +338,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 49,
-      "signals_after_volume_gate": 37,
-      "signals_rejected_by_volume_gate": 11
+      "signals_before_volume_gate": 72,
+      "signals_after_volume_gate": 60,
+      "signals_rejected_by_volume_gate": 11,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 49,
+          "signals_after_volume_gate": 37
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 23,
+          "signals_after_volume_gate": 23
+        }
+      }
     },
     {
       "symbol": "QNTUSDT",
@@ -222,9 +362,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 64,
-      "signals_after_volume_gate": 11,
-      "signals_rejected_by_volume_gate": 52
+      "signals_before_volume_gate": 93,
+      "signals_after_volume_gate": 20,
+      "signals_rejected_by_volume_gate": 72,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 64,
+          "signals_after_volume_gate": 11
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 29,
+          "signals_after_volume_gate": 9
+        }
+      }
     },
     {
       "symbol": "RUNEUSDT",
@@ -236,9 +386,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 39,
-      "signals_after_volume_gate": 6,
-      "signals_rejected_by_volume_gate": 31
+      "signals_before_volume_gate": 58,
+      "signals_after_volume_gate": 15,
+      "signals_rejected_by_volume_gate": 41,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 39,
+          "signals_after_volume_gate": 6
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 19,
+          "signals_after_volume_gate": 9
+        }
+      }
     },
     {
       "symbol": "SANDUSDT",
@@ -250,9 +410,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 52,
-      "signals_after_volume_gate": 16,
-      "signals_rejected_by_volume_gate": 36
+      "signals_before_volume_gate": 73,
+      "signals_after_volume_gate": 37,
+      "signals_rejected_by_volume_gate": 36,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 52,
+          "signals_after_volume_gate": 16
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 21,
+          "signals_after_volume_gate": 21
+        }
+      }
     },
     {
       "symbol": "STRKUSDT",
@@ -264,9 +434,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 50,
-      "signals_after_volume_gate": 17,
-      "signals_rejected_by_volume_gate": 29
+      "signals_before_volume_gate": 75,
+      "signals_after_volume_gate": 30,
+      "signals_rejected_by_volume_gate": 41,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 50,
+          "signals_after_volume_gate": 17
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 25,
+          "signals_after_volume_gate": 13
+        }
+      }
     },
     {
       "symbol": "SUIUSDT",
@@ -278,9 +458,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 52,
-      "signals_after_volume_gate": 52,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 76,
+      "signals_after_volume_gate": 76,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 52,
+          "signals_after_volume_gate": 52
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 24,
+          "signals_after_volume_gate": 24
+        }
+      }
     },
     {
       "symbol": "TAOUSDT",
@@ -292,9 +482,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 48,
-      "signals_after_volume_gate": 47,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 68,
+      "signals_after_volume_gate": 67,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 48,
+          "signals_after_volume_gate": 47
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 20,
+          "signals_after_volume_gate": 20
+        }
+      }
     },
     {
       "symbol": "TIAUSDT",
@@ -306,9 +506,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 40,
-      "signals_after_volume_gate": 33,
-      "signals_rejected_by_volume_gate": 7
+      "signals_before_volume_gate": 72,
+      "signals_after_volume_gate": 63,
+      "signals_rejected_by_volume_gate": 9,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 40,
+          "signals_after_volume_gate": 33
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 32,
+          "signals_after_volume_gate": 30
+        }
+      }
     },
     {
       "symbol": "WLDUSDT",
@@ -320,9 +530,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 65,
-      "signals_after_volume_gate": 64,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 95,
+      "signals_after_volume_gate": 94,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 65,
+          "signals_after_volume_gate": 64
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 30,
+          "signals_after_volume_gate": 30
+        }
+      }
     },
     {
       "symbol": "XRPUSDT",
@@ -334,9 +554,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 49,
-      "signals_after_volume_gate": 46,
-      "signals_rejected_by_volume_gate": 0
+      "signals_before_volume_gate": 83,
+      "signals_after_volume_gate": 80,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 49,
+          "signals_after_volume_gate": 46
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 34,
+          "signals_after_volume_gate": 34
+        }
+      }
     },
     {
       "symbol": "ZROUSDT",
@@ -348,9 +578,19 @@
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 37,
-      "signals_after_volume_gate": 24,
-      "signals_rejected_by_volume_gate": 13
+      "signals_before_volume_gate": 56,
+      "signals_after_volume_gate": 42,
+      "signals_rejected_by_volume_gate": 14,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 37,
+          "signals_after_volume_gate": 24
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 19,
+          "signals_after_volume_gate": 18
+        }
+      }
     }
   ],
   "portfolio_assumptions": {
@@ -372,6 +612,7 @@
     "distance_sensitivity": "Stop and target distances scaled together by -10% and +10%; this is a distance robustness test, not a guarantee of ATR-optimal stops.",
     "volume_filter": "Approximate quote volume = rolling sum(close * volume) across 96 completed 15m bars; minimum $10M.",
     "BTC_filter": "Shadow-only; no directional veto. Defensive mode and failure shield are OFF. Precision V2 gate is modeled separately.",
+    "core_comparison": "Current V15_PRECISION_V2_FINAL and legacy V15_ADX4H_CANDLE2H are replayed separately and in a combined portfolio. Combined-without-one-core tests measure incremental contribution under the same generic precision gate; this is a research comparison, not a claim that legacy core is production-enabled.",
     "limitation": "Historical OHLC simulation, not a guarantee of live fills; 15m bars cannot reveal exact intrabar order beyond conservative SL-first ambiguity."
   },
   "full_period_variants": {
@@ -550,6 +791,106 @@
       "expectancy_net_R": 0.1159,
       "equity_end_closed_only_usd": 128.5005,
       "max_drawdown_pct": -12.318,
+      "average_trades_per_30d": 38.5,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 3
+    },
+    "LEGACY_CORE_BASELINE": {
+      "closed_trades": 168,
+      "TP": 83,
+      "SL": 84,
+      "TIMEOUT": 1,
+      "CUTOFF": 0,
+      "profitable_trades": 83,
+      "win_rate_closed_pct": 49.4,
+      "tp_rate_closed_pct": 49.4,
+      "gross_R": 19.384,
+      "net_est_R": 5.2617,
+      "profit_factor_gross": 1.2298,
+      "expectancy_net_R": 0.0313,
+      "equity_end_closed_only_usd": 103.7866,
+      "max_drawdown_pct": -16.994,
+      "average_trades_per_30d": 28.0,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 3
+    },
+    "LEGACY_CORE_PRECISION65": {
+      "closed_trades": 14,
+      "TP": 10,
+      "SL": 4,
+      "TIMEOUT": 0,
+      "CUTOFF": 0,
+      "profitable_trades": 10,
+      "win_rate_closed_pct": 71.43,
+      "tp_rate_closed_pct": 71.43,
+      "gross_R": 8.5,
+      "net_est_R": 7.2305,
+      "profit_factor_gross": 3.125,
+      "expectancy_net_R": 0.5165,
+      "equity_end_closed_only_usd": 107.3857,
+      "max_drawdown_pct": -1.12,
+      "average_trades_per_30d": 2.33,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 2
+    },
+    "COMBINED_CORE_PRECISION65": {
+      "closed_trades": 242,
+      "TP": 122,
+      "SL": 118,
+      "TIMEOUT": 2,
+      "CUTOFF": 0,
+      "profitable_trades": 122,
+      "win_rate_closed_pct": 50.41,
+      "tp_rate_closed_pct": 50.41,
+      "gross_R": 33.7746,
+      "net_est_R": 3.08,
+      "profit_factor_gross": 1.2845,
+      "expectancy_net_R": 0.0127,
+      "equity_end_closed_only_usd": 101.2805,
+      "max_drawdown_pct": -16.178,
+      "average_trades_per_30d": 40.33,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 3
+    },
+    "COMBINED_WITHOUT_CURRENT_CORE": {
+      "closed_trades": 14,
+      "TP": 10,
+      "SL": 4,
+      "TIMEOUT": 0,
+      "CUTOFF": 0,
+      "profitable_trades": 10,
+      "win_rate_closed_pct": 71.43,
+      "tp_rate_closed_pct": 71.43,
+      "gross_R": 8.5,
+      "net_est_R": 7.2305,
+      "profit_factor_gross": 3.125,
+      "expectancy_net_R": 0.5165,
+      "equity_end_closed_only_usd": 107.3857,
+      "max_drawdown_pct": -1.12,
+      "average_trades_per_30d": 2.33,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 2
+    },
+    "COMBINED_WITHOUT_LEGACY_CORE": {
+      "closed_trades": 231,
+      "TP": 114,
+      "SL": 115,
+      "TIMEOUT": 2,
+      "CUTOFF": 0,
+      "profitable_trades": 114,
+      "win_rate_closed_pct": 49.35,
+      "tp_rate_closed_pct": 49.35,
+      "gross_R": 26.7746,
+      "net_est_R": -2.9104,
+      "profit_factor_gross": 1.2314,
+      "expectancy_net_R": -0.0126,
+      "equity_end_closed_only_usd": 95.5008,
+      "max_drawdown_pct": -15.228,
       "average_trades_per_30d": 38.5,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
@@ -993,6 +1334,86 @@
       "expectancy_net_R": 0.0866,
       "equity_end_closed_only_usd": 106.7386,
       "max_drawdown_pct": -13.329,
+      "average_trades_per_30d": 41.5,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 3
+    },
+    "LEGACY_CORE_PRECISION65": {
+      "closed_trades": 7,
+      "TP": 5,
+      "SL": 2,
+      "TIMEOUT": 0,
+      "CUTOFF": 0,
+      "profitable_trades": 5,
+      "win_rate_closed_pct": 71.43,
+      "tp_rate_closed_pct": 71.43,
+      "gross_R": 4.25,
+      "net_est_R": 3.732,
+      "profit_factor_gross": 3.125,
+      "expectancy_net_R": 0.5331,
+      "equity_end_closed_only_usd": 103.7537,
+      "max_drawdown_pct": -1.114,
+      "average_trades_per_30d": 3.5,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 1
+    },
+    "COMBINED_CORE_PRECISION65": {
+      "closed_trades": 88,
+      "TP": 46,
+      "SL": 42,
+      "TIMEOUT": 0,
+      "CUTOFF": 0,
+      "profitable_trades": 46,
+      "win_rate_closed_pct": 52.27,
+      "tp_rate_closed_pct": 52.27,
+      "gross_R": 15.5,
+      "net_est_R": 5.1144,
+      "profit_factor_gross": 1.369,
+      "expectancy_net_R": 0.0581,
+      "equity_end_closed_only_usd": 104.4768,
+      "max_drawdown_pct": -13.634,
+      "average_trades_per_30d": 44.0,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 3
+    },
+    "COMBINED_WITHOUT_CURRENT_CORE": {
+      "closed_trades": 7,
+      "TP": 5,
+      "SL": 2,
+      "TIMEOUT": 0,
+      "CUTOFF": 0,
+      "profitable_trades": 5,
+      "win_rate_closed_pct": 71.43,
+      "tp_rate_closed_pct": 71.43,
+      "gross_R": 4.25,
+      "net_est_R": 3.732,
+      "profit_factor_gross": 3.125,
+      "expectancy_net_R": 0.5331,
+      "equity_end_closed_only_usd": 103.7537,
+      "max_drawdown_pct": -1.114,
+      "average_trades_per_30d": 3.5,
+      "open_positions": 0,
+      "open_unrealized_R_mark_to_market": 0,
+      "max_active_positions_seen": 1
+    },
+    "COMBINED_WITHOUT_LEGACY_CORE": {
+      "closed_trades": 83,
+      "TP": 42,
+      "SL": 41,
+      "TIMEOUT": 0,
+      "CUTOFF": 0,
+      "profitable_trades": 42,
+      "win_rate_closed_pct": 50.6,
+      "tp_rate_closed_pct": 50.6,
+      "gross_R": 11.5,
+      "net_est_R": 1.4378,
+      "profit_factor_gross": 1.2805,
+      "expectancy_net_R": 0.0173,
+      "equity_end_closed_only_usd": 100.7678,
+      "max_drawdown_pct": -14.661,
       "average_trades_per_30d": 41.5,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
