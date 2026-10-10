@@ -249,30 +249,28 @@ def main():
     start_ms=int(start.timestamp()*1000); end_ms=int(end.timestamp()*1000)
     symbols=sorted({t["coin"].split("/")[0].replace(":USDT","")+"USDT" for t in trades})
     cache={}; errors=[]
-    latest_entry_by_symbol = {
-        sym: max(int(pd.Timestamp(t["opened_at"]).timestamp() * 1000)
-                 for t in trades
-                 if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym)
-        for sym in symbols
-    }
     for sym in symbols:
         for tf in ("15m","30m","1h","4h"):
             cache[(sym,tf)]=fetch_klines(sym,tf,start_ms,end_ms)
             print(f"DATA {sym} {tf}: {len(cache[(sym,tf)])} candles",flush=True)
             interval_ms = INTERVALS[tf] * 60_000
-            # Require coverage only through the last cohort entry for this symbol.
-            last_entry_ms = latest_entry_by_symbol[sym]
-            expected_last_open = ((last_entry_ms - 1) // interval_ms) * interval_ms
             if cache[(sym,tf)].empty:
                 errors.append({"symbol":sym,"tf":tf,"error":"No archive or REST candles returned"})
-            else:
-                latest_open = int(cache[(sym,tf)].open_ms.max())
-                if latest_open < expected_last_open:
-                    errors.append({"symbol":sym,"tf":tf,"error":"Stale coverage before last cohort entry","latest_open_utc":pd.to_datetime(latest_open,unit="ms",utc=True).isoformat(),"required_latest_open_utc":pd.to_datetime(expected_last_open,unit="ms",utc=True).isoformat(),"last_entry_utc":pd.to_datetime(last_entry_ms,unit="ms",utc=True).isoformat()})
-                opens = cache[(sym,tf)].open_ms
-                gaps = int((opens.diff().dropna() > interval_ms * 1.5).sum())
-                if gaps:
-                    errors.append({"symbol":sym,"tf":tf,"error":"Internal candle gaps","gap_count":gaps})
+                continue
+            opens = set(cache[(sym,tf)].open_ms.astype("int64").tolist())
+            gaps = int((cache[(sym,tf)].open_ms.diff().dropna() > interval_ms * 1.5).sum())
+            if gaps:
+                errors.append({"symbol":sym,"tf":tf,"error":"Internal candle gaps","gap_count":gaps})
+            # Validate the exact last fully closed candle available before every cohort entry.
+            for trade in [t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]:
+                entry_ms = int(pd.Timestamp(trade["opened_at"]).timestamp() * 1000)
+                required_open = ((entry_ms - interval_ms) // interval_ms) * interval_ms
+                if required_open not in opens:
+                    errors.append({
+                        "symbol":sym,"tf":tf,"error":"Missing exact last closed candle before entry",
+                        "entry_utc":pd.to_datetime(entry_ms,unit="ms",utc=True).isoformat(),
+                        "required_candle_open_utc":pd.to_datetime(required_open,unit="ms",utc=True).isoformat()
+                    })
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
@@ -281,6 +279,15 @@ def main():
         for tf in ("4h","1h","30m","15m"):
             z=classify(cache.get((sym,tf),pd.DataFrame()),entry_ms)
             row[tf+"_state"]=z["state"]; row[tf+"_close"]=z.get("close"); row[tf+"_ema20"]=z.get("ema20"); row[tf+"_ema50"]=z.get("ema50"); row[tf+"_slope4"]=z.get("ema20_slope4"); row[tf+"_bars"]=z.get("bars")
+            if z["state"] in ("NO_DATA","INSUFFICIENT"):
+                errors.append({"symbol":sym,"tf":tf,"error":"Insufficient closed candles for classification","entry_utc":t["opened_at"],"state":z["state"],"bars":z.get("bars")})
+        # Catch obvious stale/wrong-contract contexts without treating normal volatility as an error.
+        context_close = row.get("15m_close")
+        if context_close and t.get("entry") and float(t["entry"]) > 0:
+            deviation_pct = abs(float(context_close) - float(t["entry"])) / float(t["entry"]) * 100
+            row["entry_vs_15m_context_close_pct"] = round(deviation_pct, 3)
+            if deviation_pct > 20:
+                errors.append({"symbol":sym,"tf":"15m","error":"Extreme entry/context price mismatch","entry_utc":t["opened_at"],"entry_price":float(t["entry"]),"last_closed_15m_close":float(context_close),"deviation_pct":round(deviation_pct,3)})
         stop_pct=abs(float(t["entry"])-float(t["sl"]))/float(t["entry"])
         cost_R=(2*(args.fee_bps+args.slippage_bps)/10000)/stop_pct if stop_pct>0 else None
         row["estimated_cost_R"]=cost_R
