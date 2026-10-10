@@ -7,6 +7,7 @@ on:
     paths:
       - "research/mtf_30m_replay.py"
       - "research/portfolio_event_replay.py"
+      - "research/score_filter_trade_journal.py"
       - ".github/workflows/mtf_30m_replay.yml"
       - "paper_v15_state_v2.json"
   workflow_dispatch:
@@ -32,11 +33,25 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: python -m pip install --upgrade pip pandas requests
-      - name: Compile replay script
-        run: python -m py_compile research/mtf_30m_replay.py
+        run: python -m pip install --upgrade pip pandas numpy requests
+      - name: Compile replay scripts
+        run: python -m py_compile research/mtf_30m_replay.py research/score_filter_trade_journal.py
       - name: Download public candles and replay MTF gates
         run: python research/mtf_30m_replay.py --state paper_v15_state_v2.json --out research/results/mtf_30m_replay --fee-bps 5 --slippage-bps 2
+      - name: Fetch authoritative executed journal and score snapshots from main
+        if: always()
+        run: |
+          mkdir -p research/results/score_filter_trade_journal/inputs
+          curl -fsSL --retry 3 https://raw.githubusercontent.com/samesameagro-droid/sam-edge-v15-v8i/main/v15_forward_test_master_journal.csv -o research/results/score_filter_trade_journal/inputs/v15_forward_test_master_journal.csv
+          curl -fsSL --retry 3 https://raw.githubusercontent.com/samesameagro-droid/sam-edge-v15-v8i/main/paper_v15_state_v2.json -o research/results/score_filter_trade_journal/inputs/paper_v15_state_v2.json
+      - name: Backtest score maximum 54 on executed closed trades 1-128
+        if: always()
+        run: |
+          python research/score_filter_trade_journal.py \
+            --journal research/results/score_filter_trade_journal/inputs/v15_forward_test_master_journal.csv \
+            --state research/results/score_filter_trade_journal/inputs/paper_v15_state_v2.json \
+            --first-trade 1 --last-trade 128 --score-max 54 \
+            --out research/results/score_filter_trade_journal
       - name: Run full-event Binance portfolio replay and walk-forward holdout
         if: always()
         run: python research/portfolio_event_replay.py --days 365 --end-date 2026-09-25 --out research/results/portfolio_event_replay
@@ -49,6 +64,7 @@ jobs:
           path: |
             research/results/mtf_30m_replay/
             research/results/portfolio_event_replay/
+            research/results/score_filter_trade_journal/
       - name: Persist research outputs only
         if: success()
         run: |
