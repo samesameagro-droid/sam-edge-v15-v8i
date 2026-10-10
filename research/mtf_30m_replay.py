@@ -8,7 +8,7 @@ import requests
 import pandas as pd
 
 ARCHIVE = "https://data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}"
-INTERVALS = {"15m":15,"30m":30,"1h":60,"4h":240}
+INTERVALS = {"1m":1,"15m":15,"30m":30,"1h":60,"4h":240}
 HEADERS = {"User-Agent":"SAM-EDGE-MTF-Research/1.0"}
 
 def fetch_one_archive(symbol, interval, kind, period):
@@ -209,12 +209,16 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
 
     # Do not silently trust a partial archive: fill/replace with the REST series when
     # its latest candle is stale or the archive contains internal timestamp gaps.
-    if archive_stale or archive_gappy:
+    if interval == "1m" or archive_stale or archive_gappy:
         api = fetch_klines_api(symbol, interval, start_ms, target_end)
         if not api.empty:
-            archive = (pd.concat([archive, api], ignore_index=True)
-                       .drop_duplicates("open_ms", keep="last")
-                       .sort_values("open_ms").reset_index(drop=True))
+            if interval == "1m":
+                # Intrabar path replay prefers a single REST source for the entire window.
+                archive = api.sort_values("open_ms").drop_duplicates("open_ms").reset_index(drop=True)
+            else:
+                archive = (pd.concat([archive, api], ignore_index=True)
+                           .drop_duplicates("open_ms", keep="last")
+                           .sort_values("open_ms").reset_index(drop=True))
 
     return archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True)
 
@@ -230,6 +234,46 @@ def classify(df, entry_ms):
     else: state="MIXED"
     slope=float(last.ema20/x.iloc[-5].ema20-1) if len(x)>=5 and x.iloc[-5].ema20 else 0.0
     return {"state":state,"close":float(last.close),"ema20":float(last.ema20),"ema50":float(last.ema50),"ema20_slope4":slope,"bars":len(x),"bar_open_utc":pd.to_datetime(last.open_ms,unit="ms",utc=True).isoformat()}
+
+def atr_at(df, timestamp_ms, period=14):
+    """SMA ATR from candles fully closed strictly before timestamp_ms."""
+    if df.empty:
+        return None
+    x=df[df.close_ms < timestamp_ms].sort_values("open_ms").copy()
+    if len(x) < period + 1:
+        return None
+    prev=x.close.shift(1)
+    tr=pd.concat([
+        x.high-x.low,
+        (x.high-prev).abs(),
+        (x.low-prev).abs()
+    ],axis=1).max(axis=1)
+    value=tr.rolling(period).mean().iloc[-1]
+    return float(value) if pd.notna(value) and value>0 else None
+
+
+def simulate_path(df, start_ms, end_ms, side, sl, tp):
+    """Minute-OHLC path until end_ms; ambiguous same-bar stop/target is conservatively SL."""
+    if df.empty:
+        return {"result":"NO_DATA","touch_ms":None,"ambiguous":False,"bars":0}
+    x=df[(df.open_ms >= start_ms) & (df.close_ms < end_ms)].sort_values("open_ms")
+    if x.empty:
+        return {"result":"NO_BARS","touch_ms":None,"ambiguous":False,"bars":0}
+    for r in x.itertuples():
+        if side=="LONG":
+            stop_hit=float(r.low)<=float(sl)
+            target_hit=float(r.high)>=float(tp)
+        else:
+            stop_hit=float(r.high)>=float(sl)
+            target_hit=float(r.low)<=float(tp)
+        if stop_hit and target_hit:
+            return {"result":"SL","touch_ms":int(r.open_ms),"ambiguous":True,"bars":len(x)}
+        if stop_hit:
+            return {"result":"SL","touch_ms":int(r.open_ms),"ambiguous":False,"bars":len(x)}
+        if target_hit:
+            return {"result":"TP","touch_ms":int(r.open_ms),"ambiguous":False,"bars":len(x)}
+    return {"result":"TIMEOUT","touch_ms":None,"ambiguous":False,"bars":len(x)}
+
 
 def main():
     ap=argparse.ArgumentParser()
