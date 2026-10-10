@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T22:03:51.734262+00:00",
+  "updated_at": "2026-10-10T22:06:27.247743+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -14,8 +14,8 @@
     "AVAX/USDT:USDT",
     "WLD/USDT:USDT",
     "UNI/USDT:USDT",
-    "PUMP/USDT:USDT",
     "SUI/USDT:USDT",
+    "PUMP/USDT:USDT",
     "MAGIC/USDT:USDT",
     "XRP/USDT:USDT",
     "ONDO/USDT:USDT",
@@ -28,6 +28,7 @@
     "YFI/USDT:USDT",
     "QNT/USDT:USDT",
     "KAIA/USDT:USDT",
-    "ADA/USDT:USDT"
+    "ADA/USDT:USDT",
+    "FARTCOIN/USDT:USDT"
   ]
 }
