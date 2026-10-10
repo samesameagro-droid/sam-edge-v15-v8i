@@ -189,10 +189,23 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
     # This avoids treating an unpublished/missing monthly aggregate as no historical data.
     missing_months = [period for (kind, period), result in fetched.items()
                       if kind == "monthly" and (result is None or result.empty)]
+    # Daily fallback is intended for recent or interior archive gaps, not months
+    # before a newly listed contract existed. Otherwise long lookbacks can issue
+    # hundreds of pointless 404 requests for every new symbol.
+    successful_months = sorted(period for (kind, period), result in fetched.items()
+                               if kind == "monthly" and result is not None and not result.empty)
+    if successful_months:
+        latest_success = max(successful_months)
+        fallback_months = [m for m in missing_months
+                           if m >= latest_success or (min(successful_months) < m < latest_success)]
+    else:
+        recent_cutoff = (now.normalize().replace(day=1) - pd.offsets.MonthBegin(2)).strftime("%Y-%m")
+        fallback_months = [m for m in missing_months if m >= recent_cutoff]
     if missing_months:
-        print(f"ARCHIVE_MONTHLY_MISSING {symbol} {interval}: {','.join(missing_months)}; trying daily ZIPs", flush=True)
+        skipped = sorted(set(missing_months) - set(fallback_months))
+        print(f"ARCHIVE_MONTHLY_MISSING {symbol} {interval}: {','.join(missing_months)}; daily fallback={','.join(fallback_months) or 'none'}; skipped pre-listing/old months={','.join(skipped) or 'none'}", flush=True)
     daily_fallback = []
-    for month_text in missing_months:
+    for month_text in fallback_months:
         month_start = pd.Timestamp(month_text + "-01", tz="UTC")
         month_end = (month_start + pd.offsets.MonthBegin(1)).normalize() - pd.Timedelta(days=1)
         day = max(first_day, month_start)
