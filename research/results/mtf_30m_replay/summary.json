@@ -1,10 +1,780 @@
 {
-  "source": "Binance USD-M Futures public archive plus official Binance Futures REST host fallback",
-  "source_caveat": "Binance proxy, not exact BingX candles/fills; coverage is validated against each symbol's latest cohort entry.",
-  "lookahead": "Only candles whose close_ms is strictly before entry timestamp are used for context.",
+  "source": "Binance public archives with public Binance Futures REST attempt and BingX swap REST fallback; per-candle provenance included",
+  "source_caveat": "Binance Futures REST returned HTTP 451 in this runner. Candle source can be mixed when BingX backfills archive gaps; inspect source_coverage. This is research data, not exact BingX execution fills.",
+  "lookahead": "Only candles whose close_ms is strictly before each trade entry timestamp are used for context.",
   "trade_count": 28,
   "validation_passed": true,
   "data_errors": [],
+  "source_coverage": [
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "15m",
+      "candle_count": 2751,
+      "source_counts": {
+        "bingx_rest": 2751
+      }
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "1h",
+      "candle_count": 688,
+      "source_counts": {
+        "bingx_rest": 688
+      }
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "30m",
+      "candle_count": 1376,
+      "source_counts": {
+        "bingx_rest": 1376
+      }
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "4h",
+      "candle_count": 172,
+      "source_counts": {
+        "bingx_rest": 172
+      }
+    }
+  ],
   "baseline": {
     "n": 28,
     "wins": 16,
@@ -49,5 +819,200 @@
     "excluded_SL": 0,
     "excluded_TP": 0
   },
+  "score_filter_sweep_in_sample": [
+    {
+      "max_entry_score": 40,
+      "n": 13,
+      "wins": 9,
+      "losses": 4,
+      "win_rate_pct": 69.23,
+      "gross_R": 7.25,
+      "net_est_R": 5.2427,
+      "profit_factor_gross": 2.8125,
+      "excluded_SL": 8,
+      "excluded_TP": 7
+    },
+    {
+      "max_entry_score": 45,
+      "n": 17,
+      "wins": 12,
+      "losses": 5,
+      "win_rate_pct": 70.59,
+      "gross_R": 10.0,
+      "net_est_R": 7.6642,
+      "profit_factor_gross": 3.0,
+      "excluded_SL": 7,
+      "excluded_TP": 4
+    },
+    {
+      "max_entry_score": 48,
+      "n": 18,
+      "wins": 13,
+      "losses": 5,
+      "win_rate_pct": 72.22,
+      "gross_R": 11.25,
+      "net_est_R": 8.7881,
+      "profit_factor_gross": 3.25,
+      "excluded_SL": 7,
+      "excluded_TP": 3
+    },
+    {
+      "max_entry_score": 50,
+      "n": 18,
+      "wins": 13,
+      "losses": 5,
+      "win_rate_pct": 72.22,
+      "gross_R": 11.25,
+      "net_est_R": 8.7881,
+      "profit_factor_gross": 3.25,
+      "excluded_SL": 7,
+      "excluded_TP": 3
+    },
+    {
+      "max_entry_score": 51,
+      "n": 19,
+      "wins": 13,
+      "losses": 6,
+      "win_rate_pct": 68.42,
+      "gross_R": 10.25,
+      "net_est_R": 7.7623,
+      "profit_factor_gross": 2.7083,
+      "excluded_SL": 6,
+      "excluded_TP": 3
+    },
+    {
+      "max_entry_score": 52,
+      "n": 19,
+      "wins": 13,
+      "losses": 6,
+      "win_rate_pct": 68.42,
+      "gross_R": 10.25,
+      "net_est_R": 7.7623,
+      "profit_factor_gross": 2.7083,
+      "excluded_SL": 6,
+      "excluded_TP": 3
+    },
+    {
+      "max_entry_score": 53,
+      "n": 19,
+      "wins": 13,
+      "losses": 6,
+      "win_rate_pct": 68.42,
+      "gross_R": 10.25,
+      "net_est_R": 7.7623,
+      "profit_factor_gross": 2.7083,
+      "excluded_SL": 6,
+      "excluded_TP": 3
+    },
+    {
+      "max_entry_score": 54,
+      "n": 20,
+      "wins": 14,
+      "losses": 6,
+      "win_rate_pct": 70.0,
+      "gross_R": 11.5,
+      "net_est_R": 8.9526,
+      "profit_factor_gross": 2.9167,
+      "excluded_SL": 6,
+      "excluded_TP": 2
+    },
+    {
+      "max_entry_score": 54.5,
+      "n": 21,
+      "wins": 14,
+      "losses": 7,
+      "win_rate_pct": 66.67,
+      "gross_R": 10.5,
+      "net_est_R": 7.8452,
+      "profit_factor_gross": 2.5,
+      "excluded_SL": 5,
+      "excluded_TP": 2
+    },
+    {
+      "max_entry_score": 55,
+      "n": 22,
+      "wins": 14,
+      "losses": 8,
+      "win_rate_pct": 63.64,
+      "gross_R": 9.5,
+      "net_est_R": 6.8027,
+      "profit_factor_gross": 2.1875,
+      "excluded_SL": 4,
+      "excluded_TP": 2
+    },
+    {
+      "max_entry_score": 56,
+      "n": 23,
+      "wins": 14,
+      "losses": 9,
+      "win_rate_pct": 60.87,
+      "gross_R": 8.5,
+      "net_est_R": 5.669,
+      "profit_factor_gross": 1.9444,
+      "excluded_SL": 3,
+      "excluded_TP": 2
+    },
+    {
+      "max_entry_score": 58,
+      "n": 25,
+      "wins": 15,
+      "losses": 10,
+      "win_rate_pct": 60.0,
+      "gross_R": 8.75,
+      "net_est_R": 5.7361,
+      "profit_factor_gross": 1.875,
+      "excluded_SL": 2,
+      "excluded_TP": 1
+    },
+    {
+      "max_entry_score": 60,
+      "n": 26,
+      "wins": 15,
+      "losses": 11,
+      "win_rate_pct": 57.69,
+      "gross_R": 7.75,
+      "net_est_R": 4.6533,
+      "profit_factor_gross": 1.7045,
+      "excluded_SL": 1,
+      "excluded_TP": 1
+    },
+    {
+      "max_entry_score": 62,
+      "n": 27,
+      "wins": 16,
+      "losses": 11,
+      "win_rate_pct": 59.26,
+      "gross_R": 9.0,
+      "net_est_R": 5.8321,
+      "profit_factor_gross": 1.8182,
+      "excluded_SL": 1,
+      "excluded_TP": 0
+    },
+    {
+      "max_entry_score": 65,
+      "n": 28,
+      "wins": 16,
+      "losses": 12,
+      "win_rate_pct": 57.14,
+      "gross_R": 8.0,
+      "net_est_R": 4.8128,
+      "profit_factor_gross": 1.6667,
+      "excluded_SL": 0,
+      "excluded_TP": 0
+    }
+  ],
+  "best_score_filter_meeting_5_SL_target_in_sample": {
+    "max_entry_score": 54,
+    "n": 20,
+    "wins": 14,
+    "losses": 6,
+    "win_rate_pct": 70.0,
+    "gross_R": 11.5,
+    "net_est_R": 8.9526,
+    "profit_factor_gross": 2.9167,
+    "excluded_SL": 6,
+    "excluded_TP": 2
+  },
+  "score_filter_caveat": "Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use.",
   "definition": "Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."
 }
