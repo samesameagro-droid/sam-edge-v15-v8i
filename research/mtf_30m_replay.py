@@ -155,7 +155,7 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
     last_month = last_day.replace(day=1)
     while month <= last_month:
         next_month = (month + pd.offsets.MonthBegin(1)).normalize()
-        if month < now.replace(day=1):
+        if month < now.normalize().replace(day=1):
             periods.append(("monthly", month.strftime("%Y-%m")))
         else:
             day = max(first_day, month)
