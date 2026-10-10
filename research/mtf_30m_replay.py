@@ -452,11 +452,55 @@ def main():
     best_score_filter=(sorted(eligible,key=lambda item:(
         item.get("wins",0),item.get("excluded_SL",0),item.get("net_est_R",0),
         -item.get("excluded_TP",0)),reverse=True)[0] if eligible else None)
+    def outcome_stats(column, mask):
+        z=df[mask].copy()
+        outcomes=z[column].fillna("NO_DATA")
+        tp_count=int((outcomes=="TP").sum())
+        sl_count=int((outcomes=="SL").sum())
+        timeout_count=int((outcomes=="TIMEOUT").sum())
+        other_count=int((~outcomes.isin(["TP","SL","TIMEOUT"])).sum())
+        target_r=(z.tp.astype(float)-z.entry.astype(float)).abs()/(z.entry.astype(float)-z.sl.astype(float)).abs()
+        gross=float(target_r[outcomes=="TP"].sum()-sl_count)
+        return {"n":len(z),"TP":tp_count,"SL":sl_count,"TIMEOUT":timeout_count,
+                "other_or_unresolved":other_count,"ambiguous_same_minute":int(z.get(column.replace("_result","_ambiguous"),pd.Series(False,index=z.index)).fillna(False).sum()),
+                "gross_R_timeout_assumed_zero":round(gross,4)}
+    score54_mask=df.entry_score<=54
+    path_matches=int(df.ohlc_path_matches_recorded.sum())
+    path_validation={"trades":len(df),"matches_recorded_outcome":path_matches,
+                     "mismatches":int(len(df)-path_matches),
+                     "ambiguous_same_minute":int(df.ohlc_path_ambiguous.fillna(False).sum()),
+                     "path_data_errors":len(path_errors),
+                     "validation_passed":path_matches==len(df) and not path_errors}
+    path_scenarios={
+        "recorded_entry_sl_tp_all_trades":outcome_stats("ohlc_path_result",allmask),
+        "score_max_54_recorded_entry":outcome_stats("ohlc_path_result",score54_mask),
+        "atr_distance_minus_10pct_all_trades":outcome_stats("atr_minus10_result",allmask),
+        "atr_distance_plus_10pct_all_trades":outcome_stats("atr_plus10_result",allmask),
+        "one_15m_bar_delay_all_trades":outcome_stats("one_bar_delay_result",allmask),
+        "one_15m_bar_delay_score_max_54":outcome_stats("one_bar_delay_result",score54_mask)
+    }
+    loo=[]
+    for coin in sorted(df.coin.unique()):
+        z=df[df.coin!=coin]
+        keep=z.entry_score<=54
+        kept=z[keep]
+        loo.append({"left_out_coin":coin,"trades_kept":len(kept),
+                    "TP_kept":int((kept.R_gross>0).sum()),"SL_kept":int((kept.R_gross<0).sum()),
+                    "SL_avoided":int(((~keep)&(z.R_gross<0)).sum()),
+                    "TP_lost":int(((~keep)&(z.R_gross>0)).sum()),
+                    "net_est_R":round(float(kept.R_net_est.sum()),4)})
+    loo_summary={"coin_omissions_tested":len(loo),
+                 "min_SL_avoided":min((x["SL_avoided"] for x in loo),default=0),
+                 "max_SL_avoided":max((x["SL_avoided"] for x in loo),default=0),
+                 "min_TP_kept":min((x["TP_kept"] for x in loo),default=0),
+                 "max_TP_kept":max((x["TP_kept"] for x in loo),default=0),
+                 "target_at_least_5_SL_avoided_passes_all_single_coin_omissions":all(x["SL_avoided"]>=5 for x in loo),
+                 "details":loo}
     source_coverage=[]
     for (sym,tf),series in sorted(cache.items()):
         counts=series["source"].value_counts().to_dict() if "source" in series.columns else {}
         source_coverage.append({"symbol":sym,"tf":tf,"candle_count":len(series),"source_counts":counts})
-    summary={"source":"Binance public archives with public Binance Futures REST attempt and BingX swap REST fallback; per-candle provenance included","source_caveat":"Binance Futures REST returned HTTP 451 in this runner. Candle source can be mixed when BingX backfills archive gaps; inspect source_coverage. This is research data, not exact BingX execution fills.","lookahead":"Only candles whose close_ms is strictly before each trade entry timestamp are used for context.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
+    summary={"source":"Per-candle source recorded in source_coverage; observed current run uses BingX REST klines where available","source_caveat":"Binance Futures REST returned HTTP 451 in this runner; source_coverage is authoritative for candle provenance. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
     if errors:
