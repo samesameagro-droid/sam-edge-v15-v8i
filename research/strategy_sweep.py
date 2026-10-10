@@ -42,6 +42,8 @@ def run_one(data, combo, fee, slip):
 
 def stats(trades, start, end):
     t=[z for z in trades if start <= pd.Timestamp(z["entry_time"]) < end]
+    # Combined closed-equity statistics must follow exit chronology, not coin-by-coin append order.
+    t.sort(key=lambda z: (pd.Timestamp(z["exit_time"]), pd.Timestamp(z["entry_time"]), z["coin"]))
     s=base.stat(t)
     s["period_start"]=str(start.date()); s["period_end_exclusive"]=str(end.date())
     return s
