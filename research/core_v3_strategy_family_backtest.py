@@ -77,8 +77,8 @@ def signals(x: pd.DataFrame, family: str) -> tuple[pd.Series, pd.Series]:
         short = bear4 & bear1 & touch_s.shift(1).fillna(False) & (x["close"] < x["ema20"]) & (x["close"] < x["open"]) & (x["close_pos"] <= .40) & (x["volr"] >= 1.05) & (x["dist_ema20_atr"] <= 1.0) & (x["h4_adx_pct"] >= .35)
     elif family == "BREAKOUT_RETEST":
         # Confirmed close beyond prior 20-bar level, participation and expanding volatility.
-        long = bull4 & (x["close"] > x["swing_h"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] >= .70) & (x["dist_res_atr"] >= 0)
-        short = bear4 & (x["close"] < x["swing_l"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] <= .30) & (x["dist_sup_atr"] >= 0)
+        long = bull4 & (x["close"] > x["swing_h"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] >= .70)
+        short = bear4 & (x["close"] < x["swing_l"]) & (x["volr"] >= 1.20) & (x["atr_rank"] >= .45) & (x["close_pos"] <= .30)
     elif family == "SWEEP_RECLAIM":
         prev_low = x["swing_l"]
         prev_high = x["swing_h"]
