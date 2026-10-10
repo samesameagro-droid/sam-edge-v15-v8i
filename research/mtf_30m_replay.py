@@ -330,7 +330,7 @@ def main():
     for sym in symbols:
         sym_trades=[t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]
         path_start=int(min(pd.Timestamp(t["opened_at"]).timestamp()*1000 for t in sym_trades))-60_000
-        path_end=int(max(pd.Timestamp(t["closed_at"]).timestamp()*1000 for t in sym_trades))+15*60_000
+        path_end=int(max(pd.Timestamp(t["closed_at"]).timestamp()*1000 for t in sym_trades))+20*60_000
         path_ranges[sym]=(path_start,path_end)
     with ThreadPoolExecutor(max_workers=8) as pool:
         path_futures={pool.submit(fetch_klines,sym,tf,path_ranges[sym][0],path_ranges[sym][1]):(sym,tf)
@@ -344,25 +344,27 @@ def main():
                 path_errors.append({"symbol":sym,"tf":tf,"error":"Path candle fetch exception","detail":f"{type(e).__name__}: {e}"})
             print(f"DATA {sym} {tf} path: {len(cache[key])} candles",flush=True)
     for sym in symbols:
-        series=cache[(sym,"1m")]
-        if series.empty:
-            path_errors.append({"symbol":sym,"tf":"1m","error":"No minute candles for trade-path replay"})
-            continue
-        opens=set(series.open_ms.astype("int64").tolist())
-        interval_ms=60_000
-        for trade in [t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]:
-            entry_ms=int(pd.Timestamp(trade["opened_at"]).timestamp()*1000)
-            exit_ms=int(pd.Timestamp(trade["closed_at"]).timestamp()*1000)
-            entry_open=(entry_ms//interval_ms)*interval_ms
-            last_open=((exit_ms-1)//interval_ms)*interval_ms
-            if entry_open not in opens:
-                path_errors.append({"symbol":sym,"tf":"1m","error":"Missing entry minute candle","entry_utc":trade["opened_at"]})
-            if last_open not in opens:
-                path_errors.append({"symbol":sym,"tf":"1m","error":"Missing last complete minute before recorded exit","exit_utc":trade["closed_at"]})
-            segment=series[(series.open_ms>=entry_open)&(series.open_ms<exit_ms)]
-            gaps=int((segment.open_ms.diff().dropna()>interval_ms*1.5).sum())
-            if gaps:
-                path_errors.append({"symbol":sym,"tf":"1m","error":"Minute gaps inside trade window","entry_utc":trade["opened_at"],"exit_utc":trade["closed_at"],"gap_count":gaps})
+        for tf in ("1m","5m"):
+            series=cache[(sym,tf)]
+            if series.empty:
+                path_errors.append({"symbol":sym,"tf":tf,"error":"No path candles"})
+                continue
+            interval_ms=INTERVALS[tf]*60_000
+            opens=set(series.open_ms.astype("int64").tolist())
+            for trade in [t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]:
+                entry_ms=int(pd.Timestamp(trade["opened_at"]).timestamp()*1000)
+                exit_ms=int(pd.Timestamp(trade["closed_at"]).timestamp()*1000)
+                first_open=((entry_ms//interval_ms)*interval_ms)+interval_ms
+                horizon_end=exit_ms+5*60_000
+                last_open=((horizon_end-1)//interval_ms)*interval_ms
+                if first_open not in opens:
+                    path_errors.append({"symbol":sym,"tf":tf,"error":"Missing first tracking candle after entry","entry_utc":trade["opened_at"],"required_open_utc":pd.to_datetime(first_open,unit="ms",utc=True).isoformat()})
+                if last_open not in opens:
+                    path_errors.append({"symbol":sym,"tf":tf,"error":"Missing exit tracking candle","exit_utc":trade["closed_at"],"required_open_utc":pd.to_datetime(last_open,unit="ms",utc=True).isoformat()})
+                segment=series[(series.open_ms>=first_open)&(series.open_ms<=last_open)]
+                gaps=int((segment.open_ms.diff().dropna()>interval_ms*1.5).sum())
+                if gaps:
+                    path_errors.append({"symbol":sym,"tf":tf,"error":"Timestamp gaps inside tracking window","entry_utc":trade["opened_at"],"exit_utc":trade["closed_at"],"gap_count":gaps})
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
@@ -383,8 +385,8 @@ def main():
         # Minute-OHLC replay: same recorded entry/SL/TP, conservative SL-first on same-bar ambiguity.
         bars1m=cache.get((sym,"1m"),pd.DataFrame())
         exit_ms=int(pd.Timestamp(t["closed_at"]).timestamp()*1000)
-        base_path=simulate_path(bars1m,entry_ms,exit_ms,t["side"],float(t["sl"]),float(t["tp"]))
-        path_window=bars1m[(bars1m.open_ms>=entry_ms)&(bars1m.close_ms<exit_ms)] if not bars1m.empty else pd.DataFrame()
+        base_path=simulate_path(bars1m,entry_ms+1,exit_ms+5*60_000,t["side"],float(t["sl"]),float(t["tp"]))
+        path_window=bars1m[(bars1m.open_ms>entry_ms)&(bars1m.open_ms<exit_ms+5*60_000)] if not bars1m.empty else pd.DataFrame()
         row["recorded_exit"]=t.get("exit")
         row["path_window_min_low"]=float(path_window.low.min()) if not path_window.empty else None
         row["path_window_max_high"]=float(path_window.high.max()) if not path_window.empty else None
@@ -400,11 +402,11 @@ def main():
         row["ohlc_path_bars"]=base_path["bars"]
         row["ohlc_path_matches_recorded"]=(base_path["result"]==t["result"] and not base_path["ambiguous"])
         bars5m=cache.get((sym,"5m"),pd.DataFrame())
-        path5=simulate_path(bars5m,entry_ms,exit_ms,t["side"],float(t["sl"]),float(t["tp"]))
+        path5=simulate_path(bars5m,entry_ms+1,exit_ms+5*60_000,t["side"],float(t["sl"]),float(t["tp"]))
         row["ohlc_path_5m_result"]=path5["result"]
         row["ohlc_path_5m_ambiguous"]=path5["ambiguous"]
         row["ohlc_path_5m_matches_recorded"]=(path5["result"]==t["result"] and not path5["ambiguous"])
-        window5=bars5m[(bars5m.open_ms>=entry_ms)&(bars5m.close_ms<exit_ms)] if not bars5m.empty else pd.DataFrame()
+        window5=bars5m[(bars5m.open_ms>entry_ms)&(bars5m.open_ms<exit_ms+5*60_000)] if not bars5m.empty else pd.DataFrame()
         row["path_5m_min_low"]=float(window5.low.min()) if not window5.empty else None
         row["path_5m_max_high"]=float(window5.high.max()) if not window5.empty else None
         if base_path["result"] in ("NO_DATA","NO_BARS"):
@@ -418,9 +420,12 @@ def main():
                 scenario_sl,scenario_tp=entry-stop_dist,entry+target_dist
             else:
                 scenario_sl,scenario_tp=entry+stop_dist,entry-target_dist
-            scenario=simulate_path(bars1m,entry_ms,exit_ms,t["side"],scenario_sl,scenario_tp)
+            scenario=simulate_path(bars1m,entry_ms+1,exit_ms+5*60_000,t["side"],scenario_sl,scenario_tp)
             row[label+"_result"]=scenario["result"]
             row[label+"_ambiguous"]=scenario["ambiguous"]
+            scenario5=simulate_path(bars5m,entry_ms+1,exit_ms+5*60_000,t["side"],scenario_sl,scenario_tp)
+            row[label+"_5m_result"]=scenario5["result"]
+            row[label+"_5m_ambiguous"]=scenario5["ambiguous"]
         # One 15m-bar delay: enter at next 15m open and preserve the original ATR multiples.
         delayed_ms=entry_ms+15*60_000
         duration_ms=exit_ms-entry_ms
@@ -445,9 +450,12 @@ def main():
                     delayed_sl,delayed_tp=delayed_entry-stop_dist,delayed_entry+target_dist
                 else:
                     delayed_sl,delayed_tp=delayed_entry+stop_dist,delayed_entry-target_dist
-                delayed=simulate_path(bars1m,delayed_ms,delayed_ms+duration_ms,t["side"],delayed_sl,delayed_tp)
+                delayed=simulate_path(bars1m,delayed_ms+1,delayed_ms+duration_ms+5*60_000,t["side"],delayed_sl,delayed_tp)
                 row["one_bar_delay_result"]=delayed["result"]
                 row["one_bar_delay_ambiguous"]=delayed["ambiguous"]
+                delayed5=simulate_path(bars5m,delayed_ms+1,delayed_ms+duration_ms+5*60_000,t["side"],delayed_sl,delayed_tp)
+                row["one_bar_delay_5m_result"]=delayed5["result"]
+                row["one_bar_delay_5m_ambiguous"]=delayed5["ambiguous"]
         stop_pct=abs(float(t["entry"])-float(t["sl"]))/float(t["entry"])
         cost_R=(2*(args.fee_bps+args.slippage_bps)/10000)/stop_pct if stop_pct>0 else None
         row["estimated_cost_R"]=cost_R
