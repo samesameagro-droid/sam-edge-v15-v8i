@@ -5,7 +5,8 @@ on:
     branches:
       - research/core-v3-historical-sim
     paths:
-      - "research/core_v3_historical_sim.py"\n      - "research/core_v3_strategy_family_backtest.py"
+      - "research/core_v3_historical_sim.py"
+      - "research/core_v3_strategy_family_backtest.py"
       - "research/core_v3.py"
       - "research/fetch_historical_ohlcv.py"
       - ".github/workflows/core_v3_historical_sim.yml"
@@ -46,7 +47,10 @@ jobs:
       - name: Run event-driven portfolio replay
         run: python research/core_v3_historical_sim.py --data data --out research/results
 
-      - name: Run four strategy-family backtests with fee and slippage assumptions\n        run: python research/core_v3_strategy_family_backtest.py --data data --out research/results --fee-bps 5 --slippage-bps 2\n\n      - name: Upload simulation outputs
+      - name: Run four strategy-family backtests with fee and slippage assumptions
+        run: python research/core_v3_strategy_family_backtest.py --data data --out research/results --fee-bps 5 --slippage-bps 2
+
+      - name: Upload simulation outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
