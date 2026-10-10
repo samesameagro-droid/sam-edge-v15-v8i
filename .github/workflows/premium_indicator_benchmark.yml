@@ -6,6 +6,7 @@ on:
       - research/premium-indicator-benchmark
     paths:
       - "research/premium_indicator_benchmark.py"
+      - "research/strategy_sweep.py"
       - "research/fetch_historical_ohlcv.py"
       - ".github/workflows/premium_indicator_benchmark.yml"
   workflow_dispatch:
