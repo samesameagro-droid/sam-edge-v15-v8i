@@ -16,7 +16,8 @@ def fetch_one_archive(symbol, interval, kind, period):
     url=ARCHIVE.format(kind=kind,symbol=symbol,interval=interval,filename=filename)
     try:
         r=requests.get(url,headers=HEADERS,timeout=35)
-        if r.status_code == 404: return None
+        if r.status_code == 404:
+            return None
         r.raise_for_status()
         with zipfile.ZipFile(io.BytesIO(r.content)) as z:
             names=[n for n in z.namelist() if n.lower().endswith(".csv")]
@@ -45,39 +46,51 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
     interval_ms = INTERVALS[interval] * 60_000
     cursor = start_ms
     pieces = []
-    endpoint = "https://fapi.binance.com/fapi/v1/klines"
+    # Try alternate official USD-M Futures hosts when a hostname is geo-blocked.
+    endpoints = [
+        "https://fapi.binance.com/fapi/v1/klines",
+        "https://fapi1.binance.com/fapi/v1/klines",
+        "https://fapi2.binance.com/fapi/v1/klines",
+        "https://fapi3.binance.com/fapi/v1/klines",
+    ]
     while cursor < end_ms:
-        try:
-            r = requests.get(endpoint, params={
-                "symbol": symbol, "interval": interval,
-                "startTime": cursor, "endTime": end_ms - 1, "limit": 1500
-            }, headers=HEADERS, timeout=25)
-            r.raise_for_status()
-            rows = r.json()
-            if not rows:
+        rows = None
+        host_errors = []
+        for endpoint in endpoints:
+            try:
+                r = requests.get(endpoint, params={
+                    "symbol": symbol, "interval": interval,
+                    "startTime": cursor, "endTime": end_ms - 1, "limit": 1500
+                }, headers=HEADERS, timeout=20)
+                r.raise_for_status()
+                rows = r.json()
                 break
-            raw = pd.DataFrame(rows)
-            x = pd.DataFrame({
-                "open_ms": pd.to_numeric(raw.iloc[:, 0], errors="coerce"),
-                "open": pd.to_numeric(raw.iloc[:, 1], errors="coerce"),
-                "high": pd.to_numeric(raw.iloc[:, 2], errors="coerce"),
-                "low": pd.to_numeric(raw.iloc[:, 3], errors="coerce"),
-                "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
-                "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
-            }).dropna()
-            if x.empty:
-                break
-            x["open_ms"] = x["open_ms"].astype("int64")
-            x["close_ms"] = x["open_ms"] + interval_ms - 1
-            pieces.append(x)
-            next_cursor = int(x["open_ms"].max()) + interval_ms
-            if next_cursor <= cursor:
-                break
-            cursor = next_cursor
-            if len(rows) < 1500:
-                break
-        except Exception as e:
-            print(f"REST_FALLBACK_ERROR {symbol} {interval}: {type(e).__name__}: {e}", flush=True)
+            except Exception as e:
+                host_errors.append(f"{endpoint.split('/')[2]}={type(e).__name__}:{e}")
+        if rows is None:
+            print(f"REST_FALLBACK_ERROR {symbol} {interval}: " + " | ".join(host_errors), flush=True)
+            break
+        if not rows:
+            break
+        raw = pd.DataFrame(rows)
+        x = pd.DataFrame({
+            "open_ms": pd.to_numeric(raw.iloc[:, 0], errors="coerce"),
+            "open": pd.to_numeric(raw.iloc[:, 1], errors="coerce"),
+            "high": pd.to_numeric(raw.iloc[:, 2], errors="coerce"),
+            "low": pd.to_numeric(raw.iloc[:, 3], errors="coerce"),
+            "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
+            "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
+        }).dropna()
+        if x.empty:
+            break
+        x["open_ms"] = x["open_ms"].astype("int64")
+        x["close_ms"] = x["open_ms"] + interval_ms - 1
+        pieces.append(x)
+        next_cursor = int(x["open_ms"].max()) + interval_ms
+        if next_cursor <= cursor:
+            break
+        cursor = next_cursor
+        if len(rows) < 1500:
             break
     if not pieces:
         return pd.DataFrame()
@@ -163,20 +176,28 @@ def main():
     start_ms=int(start.timestamp()*1000); end_ms=int(end.timestamp()*1000)
     symbols=sorted({t["coin"].split("/")[0].replace(":USDT","")+"USDT" for t in trades})
     cache={}; errors=[]
+    latest_entry_by_symbol = {
+        sym: max(int(pd.Timestamp(t["opened_at"]).timestamp() * 1000)
+                 for t in trades
+                 if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym)
+        for sym in symbols
+    }
     for sym in symbols:
         for tf in ("15m","30m","1h","4h"):
             cache[(sym,tf)]=fetch_klines(sym,tf,start_ms,end_ms)
             print(f"DATA {sym} {tf}: {len(cache[(sym,tf)])} candles",flush=True)
+            interval_ms = INTERVALS[tf] * 60_000
+            # Require coverage only through the last cohort entry for this symbol.
+            last_entry_ms = latest_entry_by_symbol[sym]
+            expected_last_open = ((last_entry_ms - 1) // interval_ms) * interval_ms
             if cache[(sym,tf)].empty:
                 errors.append({"symbol":sym,"tf":tf,"error":"No archive or REST candles returned"})
             else:
-                interval_ms = INTERVALS[tf] * 60_000
-                target_end = min(end_ms, int(pd.Timestamp.now(tz="UTC").timestamp() * 1000))
-                expected_last_open = ((target_end - 1) // interval_ms) * interval_ms
                 latest_open = int(cache[(sym,tf)].open_ms.max())
-                if latest_open < expected_last_open - interval_ms:
-                    errors.append({"symbol":sym,"tf":tf,"error":"Stale coverage","latest_open_utc":pd.to_datetime(latest_open,unit="ms",utc=True).isoformat(),"expected_latest_open_utc":pd.to_datetime(expected_last_open,unit="ms",utc=True).isoformat()})
-                gaps = int((cache[(sym,tf)].open_ms.diff().dropna() > interval_ms * 1.5).sum())
+                if latest_open < expected_last_open:
+                    errors.append({"symbol":sym,"tf":tf,"error":"Stale coverage before last cohort entry","latest_open_utc":pd.to_datetime(latest_open,unit="ms",utc=True).isoformat(),"required_latest_open_utc":pd.to_datetime(expected_last_open,unit="ms",utc=True).isoformat(),"last_entry_utc":pd.to_datetime(last_entry_ms,unit="ms",utc=True).isoformat()})
+                opens = cache[(sym,tf)].open_ms
+                gaps = int((opens.diff().dropna() > interval_ms * 1.5).sum())
                 if gaps:
                     errors.append({"symbol":sym,"tf":tf,"error":"Internal candle gaps","gap_count":gaps})
     out=[]
@@ -204,7 +225,9 @@ def main():
         pos=float(z.loc[z.R_gross>0,"R_gross"].sum()); neg=float(-z.loc[z.R_gross<0,"R_gross"].sum())
         return {"n":len(z),"wins":wins,"losses":losses,"win_rate_pct":round(100*wins/len(z),2),"gross_R":round(float(z.R_gross.sum()),4),"net_est_R":round(float(z.R_net_est.sum()),4),"profit_factor_gross":round(pos/neg,4) if neg else None,"excluded_SL":int(((~mask)&(df.R_gross<0)).sum()),"excluded_TP":int(((~mask)&(df.R_gross>0)).sum())}
     allmask=pd.Series(True,index=df.index)
-    summary={"source":"Binance USD-M Futures public archive (data.binance.vision)","source_caveat":"Binance proxy, not exact BingX candles/fills; data availability is reported per symbol/timeframe.","lookahead":"Only candles whose close_ms is strictly before entry timestamp are used for context.","trade_count":len(df),"data_errors":errors,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R."}
+    summary={"source":"Binance USD-M Futures public archive plus official Binance Futures REST host fallback","source_caveat":"Binance proxy, not exact BingX candles/fills; coverage is validated against each symbol's latest cohort entry.","lookahead":"Only candles whose close_ms is strictly before entry timestamp are used for context.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
+    if errors:
+        raise SystemExit(f"REPLAY_INVALID: {len(errors)} data coverage/gap errors; do not use gate metrics.")
 if __name__=="__main__": main()
