@@ -42,60 +42,133 @@ def fetch_one_archive(symbol, interval, kind, period):
         return None
 
 def fetch_klines_api(symbol, interval, start_ms, end_ms):
-    """Fallback to Binance USD-M Futures REST when archive files are missing."""
+    """Try public Binance Futures endpoints, then public BingX swap klines."""
     interval_ms = INTERVALS[interval] * 60_000
-    cursor = start_ms
-    pieces = []
-    # Try alternate official USD-M Futures hosts when a hostname is geo-blocked.
+
+    def normalize_rows(rows, source):
+        if not rows:
+            return pd.DataFrame()
+        raw = pd.DataFrame(rows)
+        try:
+            if source == "bingx" and isinstance(rows[0], dict):
+                time_col = next((c for c in ("time", "timestamp", "openTime", "open_time") if c in raw.columns), None)
+                if time_col is None:
+                    raise ValueError(f"No timestamp field in BingX response: {list(raw.columns)}")
+                x = pd.DataFrame({
+                    "open_ms": pd.to_numeric(raw[time_col], errors="coerce"),
+                    "open": pd.to_numeric(raw["open"], errors="coerce"),
+                    "high": pd.to_numeric(raw["high"], errors="coerce"),
+                    "low": pd.to_numeric(raw["low"], errors="coerce"),
+                    "close": pd.to_numeric(raw["close"], errors="coerce"),
+                    "volume": pd.to_numeric(raw["volume"], errors="coerce"),
+                }).dropna()
+            else:
+                x = pd.DataFrame({
+                    "open_ms": pd.to_numeric(raw.iloc[:, 0], errors="coerce"),
+                    "open": pd.to_numeric(raw.iloc[:, 1], errors="coerce"),
+                    "high": pd.to_numeric(raw.iloc[:, 2], errors="coerce"),
+                    "low": pd.to_numeric(raw.iloc[:, 3], errors="coerce"),
+                    "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
+                    "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
+                }).dropna()
+            # BingX timestamps are milliseconds; reject any unexpected seconds scale.
+            x["open_ms"] = x["open_ms"].astype("int64")
+            if not x.empty and int(x.open_ms.max()) < 100_000_000_000:
+                x["open_ms"] = x["open_ms"] * 1000
+            x["close_ms"] = x["open_ms"] + interval_ms - 1
+            return x[(x.open_ms >= start_ms) & (x.open_ms < end_ms)].copy()
+        except Exception as e:
+            print(f"PARSE_ERROR {source} {symbol} {interval}: {type(e).__name__}: {e}", flush=True)
+            return pd.DataFrame()
+
+    # First try official Binance USD-M Futures REST hosts.
     endpoints = [
         "https://fapi.binance.com/fapi/v1/klines",
         "https://fapi1.binance.com/fapi/v1/klines",
         "https://fapi2.binance.com/fapi/v1/klines",
         "https://fapi3.binance.com/fapi/v1/klines",
     ]
+    cursor = start_ms
+    pieces = []
+    binance_failed = False
     while cursor < end_ms:
         rows = None
         host_errors = []
+        chunk_end = min(end_ms - 1, cursor + interval_ms * 1499)
         for endpoint in endpoints:
             try:
                 r = requests.get(endpoint, params={
                     "symbol": symbol, "interval": interval,
-                    "startTime": cursor, "endTime": end_ms - 1, "limit": 1500
-                }, headers=HEADERS, timeout=20)
+                    "startTime": cursor, "endTime": chunk_end, "limit": 1500
+                }, headers=HEADERS, timeout=15)
                 r.raise_for_status()
                 rows = r.json()
                 break
             except Exception as e:
                 host_errors.append(f"{endpoint.split('/')[2]}={type(e).__name__}:{e}")
         if rows is None:
-            print(f"REST_FALLBACK_ERROR {symbol} {interval}: " + " | ".join(host_errors), flush=True)
+            print(f"BINANCE_API_UNAVAILABLE {symbol} {interval}: " + " | ".join(host_errors), flush=True)
+            binance_failed = True
             break
         if not rows:
             break
-        raw = pd.DataFrame(rows)
-        x = pd.DataFrame({
-            "open_ms": pd.to_numeric(raw.iloc[:, 0], errors="coerce"),
-            "open": pd.to_numeric(raw.iloc[:, 1], errors="coerce"),
-            "high": pd.to_numeric(raw.iloc[:, 2], errors="coerce"),
-            "low": pd.to_numeric(raw.iloc[:, 3], errors="coerce"),
-            "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
-            "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
-        }).dropna()
+        x = normalize_rows(rows, "binance")
         if x.empty:
             break
-        x["open_ms"] = x["open_ms"].astype("int64")
-        x["close_ms"] = x["open_ms"] + interval_ms - 1
         pieces.append(x)
-        next_cursor = int(x["open_ms"].max()) + interval_ms
+        next_cursor = int(x.open_ms.max()) + interval_ms
         if next_cursor <= cursor:
             break
         cursor = next_cursor
         if len(rows) < 1500:
             break
-    if not pieces:
-        return pd.DataFrame()
-    return (pd.concat(pieces, ignore_index=True)
-            .drop_duplicates("open_ms").sort_values("open_ms").reset_index(drop=True))
+
+    # If Binance REST is blocked or incomplete, query BingX's public perpetual-kline API.
+    combined = (pd.concat(pieces, ignore_index=True).drop_duplicates("open_ms")
+                .sort_values("open_ms").reset_index(drop=True)) if pieces else pd.DataFrame()
+    need_bingx = (combined.empty or int(combined.open_ms.max()) < end_ms - interval_ms * 2
+                  or bool((combined.open_ms.diff().dropna() > interval_ms * 1.5).any()))
+    if need_bingx:
+        bingx_symbol = symbol[:-4] + "-USDT" if symbol.endswith("USDT") else symbol
+        cursor = start_ms
+        bx_pieces = []
+        endpoint = "https://open-api.bingx.com/openApi/swap/v3/quote/klines"
+        while cursor < end_ms:
+            chunk_end = min(end_ms - 1, cursor + interval_ms * 999)
+            try:
+                r = requests.get(endpoint, params={
+                    "symbol": bingx_symbol, "interval": interval,
+                    "startTime": cursor, "endTime": chunk_end, "limit": 1000
+                }, headers=HEADERS, timeout=20)
+                r.raise_for_status()
+                payload = r.json()
+                if payload.get("code") not in (None, 0, "0"):
+                    raise ValueError(f"BingX API code={payload.get('code')} msg={payload.get('msg')}")
+                rows = payload.get("data", [])
+                if not rows:
+                    break
+                x = normalize_rows(rows, "bingx")
+                if x.empty:
+                    break
+                bx_pieces.append(x)
+                next_cursor = int(x.open_ms.max()) + interval_ms
+                if next_cursor <= cursor:
+                    break
+                cursor = next_cursor
+            except Exception as e:
+                print(f"BINGX_API_ERROR {symbol} {interval}: {type(e).__name__}: {e}", flush=True)
+                break
+        if bx_pieces:
+            bx = (pd.concat(bx_pieces, ignore_index=True).drop_duplicates("open_ms")
+                  .sort_values("open_ms").reset_index(drop=True))
+            # Prefer exact BingX candles if they cover the requested period.
+            if combined.empty or int(bx.open_ms.max()) > int(combined.open_ms.max()):
+                combined = bx
+            elif not bx.empty:
+                combined = (pd.concat([combined, bx], ignore_index=True)
+                            .drop_duplicates("open_ms", keep="last")
+                            .sort_values("open_ms").reset_index(drop=True))
+    return combined[(combined.open_ms >= start_ms) & (combined.open_ms < end_ms)].reset_index(drop=True) if not combined.empty else pd.DataFrame()
 
 
 def fetch_klines(symbol, interval, start_ms, end_ms):
