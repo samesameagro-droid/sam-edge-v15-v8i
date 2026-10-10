@@ -605,6 +605,15 @@ def main():
     summary={"source":"Binance USD-M Futures only; each candle must be sourced from Binance REST or Binance Vision archive","source_caveat":"No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":overall_validation_passed,"candle_validation_passed":candle_validation_passed,"outcome_reconciliation_passed":outcome_reconciliation_passed,"data_errors":errors,"outcome_reconciliation_errors":outcome_reconciliation_errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they are exploratory diagnostics and must not be used for production until an independent full-event walk-forward/holdout validates them. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
-    if errors:
-        raise SystemExit(f"REPLAY_INVALID: {len(errors)} data coverage/gap errors; do not use gate metrics.")
+    # Fail closed: clean candle downloads are not sufficient when recorded trade
+    # outcomes cannot be reconciled against Binance OHLC paths. Keep the summary
+    # and CSV for diagnosis, but make GitHub Actions fail unless all validation
+    # gates pass. Research branch only; no production/order changes.
+    if not overall_validation_passed:
+        raise SystemExit(
+            "REPLAY_INVALID: validation_passed=false; "
+            f"candle_errors={len(errors)}, path_data_errors={len(path_errors)}, "
+            f"outcome_mismatches={len(outcome_reconciliation_errors)}. "
+            "Do not use gate metrics."
+        )
 if __name__=="__main__": main()
