@@ -45,7 +45,9 @@ jobs:
         run: python research/premium_indicator_benchmark.py --data data --out research/results/premium_indicator_stress --fee-bps 8 --slippage-bps 5
       - name: Run 108-configuration strategy sweep
         run: python research/strategy_sweep.py --data data --out research/results/strategy_sweep --fee-bps 5 --slippage-bps 2
-      - name: Run structural strategy benchmark (27 configurations)\n        run: python research/structural_strategy_benchmark.py --data data --out research/results/structural_benchmark --fee-bps 5 --slippage-bps 2\n      - name: Upload results and source data
+      - name: Run structural strategy benchmark (27 configurations)
+        run: python research/structural_strategy_benchmark.py --data data --out research/results/structural_benchmark --fee-bps 5 --slippage-bps 2
+      - name: Upload results and source data
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -54,7 +56,8 @@ jobs:
           path: |
             research/results/premium_indicator_baseline/
             research/results/premium_indicator_stress/
-            research/results/strategy_sweep/\n            research/results/structural_benchmark/
+            research/results/strategy_sweep/
+            research/results/structural_benchmark/
             data/*/*.csv
       - name: Persist results to research branch
         if: success()
