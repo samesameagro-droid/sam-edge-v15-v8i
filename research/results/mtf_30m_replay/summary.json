@@ -3,8 +3,30 @@
   "source_caveat": "No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.",
   "lookahead": "Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.",
   "trade_count": 28,
-  "validation_passed": true,
+  "validation_passed": false,
+  "candle_validation_passed": true,
+  "outcome_reconciliation_passed": false,
   "data_errors": [],
+  "outcome_reconciliation_errors": [
+    {
+      "symbol": "IMXUSDT",
+      "side": "LONG",
+      "entry_utc": "2026-09-25T22:00:00+00:00",
+      "recorded_result": "TP",
+      "binance_1m_result": "TIMEOUT",
+      "binance_5m_result": "TIMEOUT",
+      "reason": "Binance OHLC path does not reproduce the recorded paper outcome"
+    },
+    {
+      "symbol": "INJUSDT",
+      "side": "LONG",
+      "entry_utc": "2026-10-06T17:30:00+00:00",
+      "recorded_result": "TP",
+      "binance_1m_result": "TIMEOUT",
+      "binance_5m_result": "TIMEOUT",
+      "reason": "Binance OHLC path does not reproduce the recorded paper outcome"
+    }
+  ],
   "path_replay_validation": {
     "trades": 28,
     "matches_recorded_outcome_1m": 26,
@@ -1848,6 +1870,6 @@
     "excluded_SL": 6,
     "excluded_TP": 2
   },
-  "score_filter_caveat": "Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.",
+  "score_filter_caveat": "Thresholds are selected on the same 28-trade cohort and are exploratory only; they are exploratory diagnostics and must not be used for production until an independent full-event walk-forward/holdout validates them. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.",
   "definition": "Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."
 }
