@@ -40,30 +40,100 @@ def fetch_one_archive(symbol, interval, kind, period):
         print(f"ARCHIVE_ERROR {symbol} {interval} {period}: {type(e).__name__}: {e}",flush=True)
         return None
 
+def fetch_klines_api(symbol, interval, start_ms, end_ms):
+    """Fallback to Binance USD-M Futures REST when archive files are missing."""
+    interval_ms = INTERVALS[interval] * 60_000
+    cursor = start_ms
+    pieces = []
+    endpoint = "https://fapi.binance.com/fapi/v1/klines"
+    while cursor < end_ms:
+        try:
+            r = requests.get(endpoint, params={
+                "symbol": symbol, "interval": interval,
+                "startTime": cursor, "endTime": end_ms - 1, "limit": 1500
+            }, headers=HEADERS, timeout=25)
+            r.raise_for_status()
+            rows = r.json()
+            if not rows:
+                break
+            raw = pd.DataFrame(rows)
+            x = pd.DataFrame({
+                "open_ms": pd.to_numeric(raw.iloc[:, 0], errors="coerce"),
+                "open": pd.to_numeric(raw.iloc[:, 1], errors="coerce"),
+                "high": pd.to_numeric(raw.iloc[:, 2], errors="coerce"),
+                "low": pd.to_numeric(raw.iloc[:, 3], errors="coerce"),
+                "close": pd.to_numeric(raw.iloc[:, 4], errors="coerce"),
+                "volume": pd.to_numeric(raw.iloc[:, 5], errors="coerce"),
+            }).dropna()
+            if x.empty:
+                break
+            x["open_ms"] = x["open_ms"].astype("int64")
+            x["close_ms"] = x["open_ms"] + interval_ms - 1
+            pieces.append(x)
+            next_cursor = int(x["open_ms"].max()) + interval_ms
+            if next_cursor <= cursor:
+                break
+            cursor = next_cursor
+            if len(rows) < 1500:
+                break
+        except Exception as e:
+            print(f"REST_FALLBACK_ERROR {symbol} {interval}: {type(e).__name__}: {e}", flush=True)
+            break
+    if not pieces:
+        return pd.DataFrame()
+    return (pd.concat(pieces, ignore_index=True)
+            .drop_duplicates("open_ms").sort_values("open_ms").reset_index(drop=True))
+
+
 def fetch_klines(symbol, interval, start_ms, end_ms):
-    start=pd.to_datetime(start_ms,unit="ms",utc=True)
-    end=pd.to_datetime(end_ms-1,unit="ms",utc=True)
-    periods=[]; month=start.replace(day=1); last_month=end.replace(day=1)
-    now=pd.Timestamp.now(tz="UTC")
-    while month<=last_month:
-        next_month=(month+pd.offsets.MonthBegin(1)).normalize()
+    start = pd.to_datetime(start_ms, unit="ms", utc=True)
+    end = pd.to_datetime(end_ms - 1, unit="ms", utc=True)
+    periods = []
+    month = start.replace(day=1)
+    last_month = end.replace(day=1)
+    now = pd.Timestamp.now(tz="UTC")
+    while month <= last_month:
+        next_month = (month + pd.offsets.MonthBegin(1)).normalize()
         if month < now.replace(day=1):
-            periods.append(("monthly",month.strftime("%Y-%m")))
+            periods.append(("monthly", month.strftime("%Y-%m")))
         else:
-            day=max(start.normalize(),month)
-            while day<=end.normalize():
-                periods.append(("daily",day.strftime("%Y-%m-%d")))
-                day=day+pd.Timedelta(days=1)
-        month=next_month
-    pieces=[]
+            day = max(start.normalize(), month)
+            while day <= end.normalize():
+                periods.append(("daily", day.strftime("%Y-%m-%d")))
+                day = day + pd.Timedelta(days=1)
+        month = next_month
+
+    pieces = []
     with ThreadPoolExecutor(max_workers=8) as pool:
-        futures=[pool.submit(fetch_one_archive,symbol,interval,kind,period) for kind,period in periods]
+        futures = [pool.submit(fetch_one_archive, symbol, interval, kind, period)
+                   for kind, period in periods]
         for fut in futures:
-            piece=fut.result()
-            if piece is not None and not piece.empty: pieces.append(piece)
-    if not pieces: return pd.DataFrame()
-    x=pd.concat(pieces,ignore_index=True).drop_duplicates("open_ms").sort_values("open_ms")
-    return x[(x.open_ms>=start_ms)&(x.open_ms<end_ms)].reset_index(drop=True)
+            piece = fut.result()
+            if piece is not None and not piece.empty:
+                pieces.append(piece)
+
+    archive = pd.DataFrame()
+    if pieces:
+        archive = (pd.concat(pieces, ignore_index=True)
+                   .drop_duplicates("open_ms").sort_values("open_ms").reset_index(drop=True))
+        archive = archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True)
+
+    interval_ms = INTERVALS[interval] * 60_000
+    target_end = min(end_ms, int(pd.Timestamp.now(tz="UTC").timestamp() * 1000))
+    expected_last_open = ((target_end - 1) // interval_ms) * interval_ms
+    archive_stale = (archive.empty or int(archive.open_ms.max()) < expected_last_open - interval_ms)
+    archive_gappy = (not archive.empty and bool((archive.open_ms.diff().dropna() > interval_ms * 1.5).any()))
+
+    # Do not silently trust a partial archive: fill/replace with the REST series when
+    # its latest candle is stale or the archive contains internal timestamp gaps.
+    if archive_stale or archive_gappy:
+        api = fetch_klines_api(symbol, interval, start_ms, target_end)
+        if not api.empty:
+            archive = (pd.concat([archive, api], ignore_index=True)
+                       .drop_duplicates("open_ms", keep="last")
+                       .sort_values("open_ms").reset_index(drop=True))
+
+    return archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True)
 
 def classify(df, entry_ms):
     if df.empty: return {"state":"NO_DATA","close":None,"ema20":None,"ema50":None}
@@ -97,7 +167,18 @@ def main():
         for tf in ("15m","30m","1h","4h"):
             cache[(sym,tf)]=fetch_klines(sym,tf,start_ms,end_ms)
             print(f"DATA {sym} {tf}: {len(cache[(sym,tf)])} candles",flush=True)
-            if cache[(sym,tf)].empty: errors.append({"symbol":sym,"tf":tf,"error":"No archive candles returned"})
+            if cache[(sym,tf)].empty:
+                errors.append({"symbol":sym,"tf":tf,"error":"No archive or REST candles returned"})
+            else:
+                interval_ms = INTERVALS[tf] * 60_000
+                target_end = min(end_ms, int(pd.Timestamp.now(tz="UTC").timestamp() * 1000))
+                expected_last_open = ((target_end - 1) // interval_ms) * interval_ms
+                latest_open = int(cache[(sym,tf)].open_ms.max())
+                if latest_open < expected_last_open - interval_ms:
+                    errors.append({"symbol":sym,"tf":tf,"error":"Stale coverage","latest_open_utc":pd.to_datetime(latest_open,unit="ms",utc=True).isoformat(),"expected_latest_open_utc":pd.to_datetime(expected_last_open,unit="ms",utc=True).isoformat()})
+                gaps = int((cache[(sym,tf)].open_ms.diff().dropna() > interval_ms * 1.5).sum())
+                if gaps:
+                    errors.append({"symbol":sym,"tf":tf,"error":"Internal candle gaps","gap_count":gaps})
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
