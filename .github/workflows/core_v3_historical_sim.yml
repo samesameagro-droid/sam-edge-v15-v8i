@@ -1,15 +1,6 @@
 name: Core V2 vs V3 Historical Replay
 
 on:
-  push:
-    branches:
-      - research/core-v3-historical-sim
-    paths:
-      - "research/core_v3_historical_sim.py"
-      - "research/core_v3_strategy_family_backtest.py"
-      - "research/core_v3.py"
-      - "research/fetch_historical_ohlcv.py"
-      - ".github/workflows/core_v3_historical_sim.yml"
   workflow_dispatch:
 
 permissions:
@@ -28,28 +19,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: research/core-v3-historical-sim
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
-
       - name: Install research dependencies
         run: python -m pip install --upgrade pip ccxt pandas numpy
-
       - name: Compile research modules
         run: python -m py_compile core_engine_v15.py research/core_v3.py research/core_v3_historical_sim.py research/core_v3_strategy_family_backtest.py research/fetch_historical_ohlcv.py
-
       - name: Download read-only historical candles
         run: python research/fetch_historical_ohlcv.py --start-date 2025-01-01 --end-date 2026-09-30 --data data
-
       - name: Run event-driven portfolio replay
         run: python research/core_v3_historical_sim.py --data data --out research/results
-
       - name: Run four strategy-family backtests with fee and slippage assumptions
         run: python research/core_v3_strategy_family_backtest.py --data data --out research/results --fee-bps 5 --slippage-bps 2
-
       - name: Upload simulation outputs
         if: always()
         uses: actions/upload-artifact@v4
@@ -59,7 +43,6 @@ jobs:
           path: |
             research/results/
             data/*/*.csv
-
       - name: Persist results to research branch
         if: success()
         run: |
