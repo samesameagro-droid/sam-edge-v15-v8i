@@ -323,6 +323,44 @@ def main():
                     "entry_utc":pd.to_datetime(entry_ms,unit="ms",utc=True).isoformat(),
                     "required_candle_open_utc":pd.to_datetime(required_open,unit="ms",utc=True).isoformat()
                 })
+    # Fetch 1m candles only around each symbol's observed trade windows for
+    # independent OHLC path validation and sensitivity tests.
+    path_errors=[]
+    path_ranges={}
+    for sym in symbols:
+        sym_trades=[t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]
+        path_start=int(min(pd.Timestamp(t["opened_at"]).timestamp()*1000 for t in sym_trades))-60_000
+        path_end=int(max(pd.Timestamp(t["closed_at"]).timestamp()*1000 for t in sym_trades))+15*60_000
+        path_ranges[sym]=(path_start,path_end)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        path_futures={pool.submit(fetch_klines,sym,"1m",path_ranges[sym][0],path_ranges[sym][1]):sym for sym in symbols}
+        for future,sym in path_futures.items():
+            try:
+                cache[(sym,"1m")]=future.result()
+            except Exception as e:
+                cache[(sym,"1m")]=pd.DataFrame()
+                path_errors.append({"symbol":sym,"tf":"1m","error":"Minute candle fetch exception","detail":f"{type(e).__name__}: {e}"})
+            print(f"DATA {sym} 1m path: {len(cache[(sym,'1m')])} candles",flush=True)
+    for sym in symbols:
+        series=cache[(sym,"1m")]
+        if series.empty:
+            path_errors.append({"symbol":sym,"tf":"1m","error":"No minute candles for trade-path replay"})
+            continue
+        opens=set(series.open_ms.astype("int64").tolist())
+        interval_ms=60_000
+        for trade in [t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]:
+            entry_ms=int(pd.Timestamp(trade["opened_at"]).timestamp()*1000)
+            exit_ms=int(pd.Timestamp(trade["closed_at"]).timestamp()*1000)
+            entry_open=(entry_ms//interval_ms)*interval_ms
+            last_open=((exit_ms-1)//interval_ms)*interval_ms
+            if entry_open not in opens:
+                path_errors.append({"symbol":sym,"tf":"1m","error":"Missing entry minute candle","entry_utc":trade["opened_at"]})
+            if last_open not in opens:
+                path_errors.append({"symbol":sym,"tf":"1m","error":"Missing last complete minute before recorded exit","exit_utc":trade["closed_at"]})
+            segment=series[(series.open_ms>=entry_open)&(series.open_ms<exit_ms)]
+            gaps=int((segment.open_ms.diff().dropna()>interval_ms*1.5).sum())
+            if gaps:
+                path_errors.append({"symbol":sym,"tf":"1m","error":"Minute gaps inside trade window","entry_utc":trade["opened_at"],"exit_utc":trade["closed_at"],"gap_count":gaps})
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
@@ -340,6 +378,56 @@ def main():
             row["entry_vs_15m_context_close_pct"] = round(deviation_pct, 3)
             if deviation_pct > 20:
                 errors.append({"symbol":sym,"tf":"15m","error":"Extreme entry/context price mismatch","entry_utc":t["opened_at"],"entry_price":float(t["entry"]),"last_closed_15m_close":float(context_close),"deviation_pct":round(deviation_pct,3)})
+        # Minute-OHLC replay: same recorded entry/SL/TP, conservative SL-first on same-bar ambiguity.
+        bars1m=cache.get((sym,"1m"),pd.DataFrame())
+        exit_ms=int(pd.Timestamp(t["closed_at"]).timestamp()*1000)
+        base_path=simulate_path(bars1m,entry_ms,exit_ms,t["side"],float(t["sl"]),float(t["tp"]))
+        row["ohlc_path_result"]=base_path["result"]
+        row["ohlc_path_ambiguous"]=base_path["ambiguous"]
+        row["ohlc_path_touch_utc"]=pd.to_datetime(base_path["touch_ms"],unit="ms",utc=True).isoformat() if base_path["touch_ms"] is not None else None
+        row["ohlc_path_bars"]=base_path["bars"]
+        row["ohlc_path_matches_recorded"]=(base_path["result"]==t["result"] and not base_path["ambiguous"])
+        if base_path["result"] in ("NO_DATA","NO_BARS"):
+            path_errors.append({"symbol":sym,"tf":"1m","error":"No path bars for recorded trade","entry_utc":t["opened_at"],"exit_utc":t["closed_at"],"result":base_path["result"]})
+        # ATR-distance sensitivity: scale original stop/target distances by +/-10%.
+        entry=float(t["entry"]); original_sl=float(t["sl"]); original_tp=float(t["tp"])
+        for label,factor in (("atr_minus10",0.9),("atr_plus10",1.1)):
+            stop_dist=abs(entry-original_sl)*factor
+            target_dist=abs(original_tp-entry)*factor
+            if t["side"]=="LONG":
+                scenario_sl,scenario_tp=entry-stop_dist,entry+target_dist
+            else:
+                scenario_sl,scenario_tp=entry+stop_dist,entry-target_dist
+            scenario=simulate_path(bars1m,entry_ms,exit_ms,t["side"],scenario_sl,scenario_tp)
+            row[label+"_result"]=scenario["result"]
+            row[label+"_ambiguous"]=scenario["ambiguous"]
+        # One 15m-bar delay: enter at next 15m open and preserve the original ATR multiples.
+        delayed_ms=entry_ms+15*60_000
+        duration_ms=exit_ms-entry_ms
+        if duration_ms<=15*60_000:
+            row["one_bar_delay_result"]="MISSED_BEFORE_DELAY"
+            row["one_bar_delay_ambiguous"]=False
+        else:
+            df15=cache.get((sym,"15m"),pd.DataFrame())
+            delayed_candle=df15[df15.open_ms==delayed_ms]
+            atr_original=t.get("entry_metrics",{}).get("atr") or atr_at(df15,entry_ms)
+            atr_delayed=atr_at(df15,delayed_ms)
+            if delayed_candle.empty or not atr_original or not atr_delayed:
+                row["one_bar_delay_result"]="NO_ATR_OR_ENTRY_BAR"
+                row["one_bar_delay_ambiguous"]=False
+            else:
+                delayed_entry=float(delayed_candle.iloc[0].open)
+                stop_mult=abs(entry-original_sl)/float(atr_original)
+                target_mult=abs(original_tp-entry)/float(atr_original)
+                stop_dist=stop_mult*atr_delayed
+                target_dist=target_mult*atr_delayed
+                if t["side"]=="LONG":
+                    delayed_sl,delayed_tp=delayed_entry-stop_dist,delayed_entry+target_dist
+                else:
+                    delayed_sl,delayed_tp=delayed_entry+stop_dist,delayed_entry-target_dist
+                delayed=simulate_path(bars1m,delayed_ms,delayed_ms+duration_ms,t["side"],delayed_sl,delayed_tp)
+                row["one_bar_delay_result"]=delayed["result"]
+                row["one_bar_delay_ambiguous"]=delayed["ambiguous"]
         stop_pct=abs(float(t["entry"])-float(t["sl"]))/float(t["entry"])
         cost_R=(2*(args.fee_bps+args.slippage_bps)/10000)/stop_pct if stop_pct>0 else None
         row["estimated_cost_R"]=cost_R
