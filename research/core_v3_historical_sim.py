@@ -166,80 +166,158 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
     return x, rows
 
 def replay(event_rows: list[dict], frames: dict[str, pd.DataFrame], variant: str,
-           max_active: int = 5, cooldown_bars: int = 4) -> list[dict]:
-    """Event-driven portfolio replay. One position per coin; SL wins same-bar ties."""
+           max_active: int = 5, cooldown_bars: int = 4,
+           fee_bps_per_side: float = 5.0, slippage_bps_per_side: float = 2.0) -> list[dict]:
+    """Audited event replay: entry candle is checked, stop gaps are adverse, costs are deducted.
+    Portfolio drawdown is marked-to-market at each candle close in R units.
+    """
     if variant == "V2_EXECUTABLE":
         candidates = [e for e in event_rows if e["precision_pass"]]
     elif variant in ADX_VARIANTS:
         adx_floor, delta_floor = ADX_VARIANTS[variant]
-        candidates = [
-            e for e in event_rows
-            if e["precision_pass"]
-            and e["adx_pct"] >= adx_floor
-            and e["adx_delta"] >= delta_floor
-        ]
+        candidates = [e for e in event_rows if e["precision_pass"] and e["adx_pct"] >= adx_floor and e["adx_delta"] >= delta_floor]
     elif variant in SCORE_VARIANTS:
         score_cap = SCORE_VARIANTS[variant]
         candidates = [e for e in event_rows if e["precision_pass"] and e["score"] < score_cap]
     elif variant in COMBO_VARIANTS:
         score_cap, adx_floor, delta_floor = COMBO_VARIANTS[variant]
-        candidates = [
-            e for e in event_rows
-            if e["precision_pass"] and e["score"] < score_cap
-            and e["adx_pct"] >= adx_floor and e["adx_delta"] >= delta_floor
-        ]
+        candidates = [e for e in event_rows if e["precision_pass"] and e["score"] < score_cap and e["adx_pct"] >= adx_floor and e["adx_delta"] >= delta_floor]
     else:
         raise ValueError(variant)
+
     candidates.sort(key=lambda e: (e["entry_time"], e["coin"]))
     by_time: dict[str, list[dict]] = {}
     for e in candidates:
         by_time.setdefault(e["entry_time"], []).append(e)
-    bar_maps = {}
-    for coin, df in frames.items():
-        bar_maps[coin] = {pd.Timestamp(r.timestamp).isoformat(): (float(r.high), float(r.low))
-                          for r in df.itertuples(index=False)}
+    bar_maps = {
+        coin: {pd.Timestamp(r.timestamp).isoformat(): (float(r.open), float(r.high), float(r.low), float(r.close))
+               for r in df.itertuples(index=False)}
+        for coin, df in frames.items()
+    }
+    index_by_coin = {coin: {pd.Timestamp(t).isoformat(): i for i, t in enumerate(df["timestamp"])}
+                     for coin, df in frames.items()}
     timeline = sorted(set(by_time) | {t for bm in bar_maps.values() for t in bm})
     active: list[dict] = []
     closed: list[dict] = []
     last_exit_index: dict[str, int] = {}
-    index_by_coin = {coin: {pd.Timestamp(t).isoformat(): i for i, t in enumerate(df["timestamp"])}
-                     for coin, df in frames.items()}
+    realized_r = 0.0
+    equity_peak = 0.0
+    portfolio_max_dd = 0.0
+    round_trip_bps = 2.0 * (fee_bps_per_side + slippage_bps_per_side)
+
+    def settle(p: dict, ts: str, exit_px: float, result: str, idx: int, age: int) -> dict:
+        direction = 1 if p["side"] == "LONG" else -1
+        gross_r = direction * (exit_px - p["entry"]) / p["risk_price"]
+        cost_r = ((p["entry"] + exit_px) * round_trip_bps / 10000.0) / p["risk_price"]
+        return dict(p, closed_at=ts, exit=float(exit_px), result=result,
+                    gross_R=float(gross_r), cost_R=float(cost_r), R=float(gross_r-cost_r),
+                    hold_bars=int(age), exit_model="adverse_stop_gap; SL-first intrabar")
+
     for ts in timeline:
-        # First manage positions using this bar; positions entered at this same
-        # timestamp are added only after this close pass.
+        # Existing positions are managed against this bar's OHLC.
         still = []
         for p in active:
             bar = bar_maps.get(p["coin"], {}).get(ts)
             if bar is None or ts <= p["entry_time"]:
-                still.append(p); continue
-            high, low = bar
-            hit_sl = low <= p["sl"] if p["side"] == "LONG" else high >= p["sl"]
-            hit_tp = high >= p["tp"] if p["side"] == "LONG" else low <= p["tp"]
-            if hit_sl or hit_tp:
-                result = "SL" if hit_sl else "TP"
-                rr = -1.0 if result == "SL" else RR
-                rec = dict(p, closed_at=ts, result=result, R=rr)
-                closed.append(rec)
-                last_exit_index[p["coin"]] = index_by_coin[p["coin"]].get(ts, 0)
+                still.append(p)
+                continue
+            op, high, low, close = bar
+            idx = index_by_coin[p["coin"]].get(ts, p["entry_index"])
+            age = idx - p["entry_index"]
+            if p["side"] == "LONG":
+                gap_stop = op <= p["sl"]
+                hit_sl, hit_tp = (low <= p["sl"]), (high >= p["tp"])
+                exit_px = min(op, p["sl"]) if gap_stop else p["sl"]
+            else:
+                gap_stop = op >= p["sl"]
+                hit_sl, hit_tp = (high >= p["sl"]), (low <= p["tp"])
+                exit_px = max(op, p["sl"]) if gap_stop else p["sl"]
+            if hit_sl:
+                rec = settle(p, ts, exit_px, "SL", idx, age)
+            elif hit_tp:
+                rec = settle(p, ts, p["tp"], "TP", idx, age)
             else:
                 still.append(p)
+                continue
+            closed.append(rec)
+            realized_r += rec["R"]
+            last_exit_index[p["coin"]] = idx
         active = still
+
+        # New entries occur at this candle's OPEN. Inspect the remainder of the
+        # entry candle immediately; if both levels are touched, conservatively count SL.
         for e in by_time.get(ts, []):
             if len(active) >= max_active or any(p["coin"] == e["coin"] for p in active):
                 continue
-            idx = index_by_coin[e["coin"]].get(ts, 0)
+            idx = index_by_coin[e["coin"]].get(ts, e["entry_index"])
             if idx - last_exit_index.get(e["coin"], -10**9) < cooldown_bars:
                 continue
-            active.append(dict(e, variant=variant, entry_time=ts))
-    # Do not count unresolved positions as wins/losses; report them separately.
+            p = dict(e, variant=variant, entry_time=ts, entry_index=idx)
+            bar = bar_maps.get(e["coin"], {}).get(ts)
+            if bar is None:
+                continue
+            op, high, low, close = bar
+            # If opening price is already beyond stop, model an immediate adverse stop.
+            if (p["side"] == "LONG" and op <= p["sl"]) or (p["side"] == "SHORT" and op >= p["sl"]):
+                rec = settle(p, ts, op, "SL", idx, 0)
+                closed.append(rec)
+                realized_r += rec["R"]
+                last_exit_index[p["coin"]] = idx
+                continue
+            hit_sl = low <= p["sl"] if p["side"] == "LONG" else high >= p["sl"]
+            hit_tp = high >= p["tp"] if p["side"] == "LONG" else low <= p["tp"]
+            if hit_sl:
+                rec = settle(p, ts, p["sl"], "SL", idx, 0)
+                closed.append(rec)
+                realized_r += rec["R"]
+                last_exit_index[p["coin"]] = idx
+            elif hit_tp:
+                rec = settle(p, ts, p["tp"], "TP", idx, 0)
+                closed.append(rec)
+                realized_r += rec["R"]
+                last_exit_index[p["coin"]] = idx
+            else:
+                active.append(p)
+
+        # Mark-to-market portfolio equity at every available timestamp.
+        unrealized_r = 0.0
+        for p in active:
+            bar = bar_maps.get(p["coin"], {}).get(ts)
+            if bar is None:
+                continue
+            close = bar[3]
+            direction = 1 if p["side"] == "LONG" else -1
+            gross_mark = direction * (close - p["entry"]) / p["risk_price"]
+            mark_cost = ((p["entry"] + close) * round_trip_bps / 10000.0) / p["risk_price"]
+            unrealized_r += gross_mark - mark_cost
+        equity = realized_r + unrealized_r
+        equity_peak = max(equity_peak, equity)
+        portfolio_max_dd = min(portfolio_max_dd, equity - equity_peak)
+
+    # Keep unresolved positions distinct. Their final mark is reported separately,
+    # not classified as a TP/SL and not included in closed-trade win rate.
     for p in active:
-        closed.append(dict(p, result="OPEN_AT_END", R=0.0))
+        df = frames[p["coin"]]
+        sub = df[df["timestamp"] <= pd.Timestamp(timeline[-1])] if timeline else df.iloc[0:0]
+        if sub.empty:
+            mark_r = 0.0
+            close_ts = p["entry_time"]
+        else:
+            last = sub.iloc[-1]
+            mark_r = (1 if p["side"] == "LONG" else -1) * (float(last["close"]) - p["entry"]) / p["risk_price"]
+            mark_r -= ((p["entry"] + float(last["close"])) * round_trip_bps / 10000.0) / p["risk_price"]
+            close_ts = pd.Timestamp(last["timestamp"]).isoformat()
+        closed.append(dict(p, closed_at=close_ts, result="OPEN_AT_END", R=0.0, mark_R=float(mark_r)))
+    for rec in closed:
+        rec["portfolio_max_drawdown_R"] = float(portfolio_max_dd)
     return closed
+
 
 def summarize(rows: list[dict]) -> dict:
     closed = [r for r in rows if r["result"] in ("TP", "SL")]
-    wins = sum(r["result"] == "TP" for r in closed)
-    losses = sum(r["result"] == "SL" for r in closed)
+    open_rows = [r for r in rows if r["result"] == "OPEN_AT_END"]
+    wins = sum(float(r["R"]) > 0 for r in closed)
+    losses = sum(float(r["R"]) <= 0 for r in closed)
     rs = [float(r["R"]) for r in closed]
     gross_win = sum(r for r in rs if r > 0)
     gross_loss = -sum(r for r in rs if r < 0)
@@ -247,13 +325,16 @@ def summarize(rows: list[dict]) -> dict:
     peak = np.maximum.accumulate(np.r_[0.0, eq])[1:] if len(eq) else np.array([])
     dd = (eq - peak) if len(eq) else np.array([])
     return {
-        "closed": len(closed), "wins": wins, "losses": losses,
+        "closed_trades": len(closed), "wins_net_positive": wins, "losses_or_nonpositive": losses,
         "win_rate_pct": round(100*wins/len(closed), 2) if closed else 0.0,
-        "net_R": round(sum(rs), 3),
-        "expectancy_R": round(sum(rs)/len(rs), 4) if rs else 0.0,
+        "net_R_closed_trades": round(sum(rs), 3),
+        "expectancy_R_per_closed_trade": round(sum(rs)/len(rs), 4) if rs else 0.0,
         "profit_factor": round(gross_win/gross_loss, 4) if gross_loss else None,
-        "max_drawdown_R": round(float(dd.min()), 3) if len(dd) else 0.0,
-        "open_at_end": sum(r["result"] == "OPEN_AT_END" for r in rows),
+        "max_drawdown_realized_R": round(float(dd.min()), 3) if len(dd) else 0.0,
+        "max_drawdown_portfolio_marked_R": round(float(rows[0].get("portfolio_max_drawdown_R", 0.0)), 3) if rows else 0.0,
+        "open_at_end": len(open_rows),
+        "open_marked_R_sum": round(sum(float(r.get("mark_R", 0.0)) for r in open_rows), 3),
+        "costs": "round-trip fees and slippage deducted per trade; funding not included",
     }
 
 def main():
@@ -262,6 +343,8 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "research" / "results"), help="Output folder")
     ap.add_argument("--max-active", type=int, default=5)
     ap.add_argument("--cooldown-bars", type=int, default=4)
+    ap.add_argument("--fee-bps-per-side", type=float, default=5.0, help="Fee assumption in basis points per side")
+    ap.add_argument("--slippage-bps-per-side", type=float, default=2.0, help="Slippage assumption in basis points per side")
     args = ap.parse_args()
     data_root, out_root = Path(args.data), Path(args.out)
     if not data_root.exists():
@@ -287,7 +370,8 @@ def main():
         "train_window": "2025-01-01 through 2026-03-31",
         "test_window": "2026-04-01 through 2026-08-31",
         "holdout_window": "2026-09-05 through 2026-09-30",
-        "note": "Research replay, gross R before fees/slippage. Holdout metrics are reported only for frozen V2 and V3 score-cap-40 candidate.",
+        "cost_assumptions": {"fee_bps_per_side": args.fee_bps_per_side, "slippage_bps_per_side": args.slippage_bps_per_side, "funding": "excluded"},
+        "note": "Audited replay: entry candle checked; stop gaps adverse; fees/slippage deducted; portfolio drawdown marked-to-market. Research only.",
         "variants": {}
     }
     periods = {
@@ -316,7 +400,7 @@ def main():
                         coin: df[df["timestamp"] < end].copy()
                         for coin, df in frames.items()
                     }
-            result = replay(period_events, period_frames, variant, args.max_active, args.cooldown_bars)
+            result = replay(period_events, period_frames, variant, args.max_active, args.cooldown_bars, args.fee_bps_per_side, args.slippage_bps_per_side)
             report["variants"][variant][period] = summarize(result)
             pd.DataFrame(result).to_csv(out_root / f"{variant.lower()}_{period}_trades.csv", index=False)
             if period == "full":
