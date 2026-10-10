@@ -14,13 +14,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: sam-edge-mtf-30m-replay
+  group: sam-edge-mtf-30m-replay-fast
   cancel-in-progress: false
 
 jobs:
   replay:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - name: Checkout research branch only
         uses: actions/checkout@v4
