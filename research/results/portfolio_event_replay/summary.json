@@ -2,253 +2,349 @@
   "source": "Binance USD-M Futures Vision archives / Binance REST only",
   "validation_passed": true,
   "data_errors": [],
-  "start_utc": "2026-04-13T00:00:00+00:00",
+  "start_utc": "2025-10-10T00:00:00+00:00",
   "end_utc": "2026-10-10T00:00:00+00:00",
   "development_end_utc": "2026-08-11T00:00:00+00:00",
   "holdout_start_utc": "2026-08-11T00:00:00+00:00",
-  "days": 180,
+  "days": 365,
   "symbols_expected": 24,
   "symbols_loaded": 24,
-  "total_15m_candles": 414720,
-  "signal_candidates_after_volume_gate": 1525,
+  "total_15m_candles": 840960,
+  "signal_candidates_after_volume_gate": 3146,
   "source_totals": {
-    "binance_archive_monthly": 393984,
+    "binance_archive_monthly": 820224,
     "binance_archive_daily": 20736
   },
   "coverage": [
     {
       "symbol": "1000PEPEUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 81,
-      "signals_after_volume_gate": 81,
+      "signals_before_volume_gate": 158,
+      "signals_after_volume_gate": 158,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 47,
-          "signals_after_volume_gate": 47
+          "signals_before_volume_gate": 97,
+          "signals_after_volume_gate": 97
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 34,
-          "signals_after_volume_gate": 34
+          "signals_before_volume_gate": 61,
+          "signals_after_volume_gate": 61
         }
       }
     },
     {
       "symbol": "AAVEUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 82,
-      "signals_after_volume_gate": 82,
+      "signals_before_volume_gate": 143,
+      "signals_after_volume_gate": 143,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 48,
-          "signals_after_volume_gate": 48
+          "signals_before_volume_gate": 98,
+          "signals_after_volume_gate": 98
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 34,
-          "signals_after_volume_gate": 34
+          "signals_before_volume_gate": 45,
+          "signals_after_volume_gate": 45
         }
       }
     },
     {
       "symbol": "ARBUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 80,
-      "signals_after_volume_gate": 78,
+      "signals_before_volume_gate": 170,
+      "signals_after_volume_gate": 170,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 40,
-          "signals_after_volume_gate": 38
+          "signals_before_volume_gate": 89,
+          "signals_after_volume_gate": 89
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 40,
-          "signals_after_volume_gate": 40
+          "signals_before_volume_gate": 81,
+          "signals_after_volume_gate": 81
         }
       }
     },
     {
       "symbol": "DOTUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 83,
-      "signals_after_volume_gate": 82,
+      "signals_before_volume_gate": 139,
+      "signals_after_volume_gate": 139,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 54,
-          "signals_after_volume_gate": 53
+          "signals_before_volume_gate": 101,
+          "signals_after_volume_gate": 101
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 29,
-          "signals_after_volume_gate": 29
+          "signals_before_volume_gate": 38,
+          "signals_after_volume_gate": 38
         }
       }
     },
     {
       "symbol": "ETHUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 81,
-      "signals_after_volume_gate": 80,
+      "signals_before_volume_gate": 154,
+      "signals_after_volume_gate": 154,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 50,
-          "signals_after_volume_gate": 49
+          "signals_before_volume_gate": 106,
+          "signals_after_volume_gate": 106
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 31,
-          "signals_after_volume_gate": 31
+          "signals_before_volume_gate": 48,
+          "signals_after_volume_gate": 48
         }
       }
     },
     {
       "symbol": "FILUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 69,
-      "signals_after_volume_gate": 67,
+      "signals_before_volume_gate": 169,
+      "signals_after_volume_gate": 169,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 52,
-          "signals_after_volume_gate": 50
+          "signals_before_volume_gate": 119,
+          "signals_after_volume_gate": 119
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 17,
-          "signals_after_volume_gate": 17
+          "signals_before_volume_gate": 50,
+          "signals_after_volume_gate": 50
         }
       }
     },
     {
       "symbol": "IMXUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 79,
-      "signals_after_volume_gate": 1,
-      "signals_rejected_by_volume_gate": 78,
+      "signals_before_volume_gate": 158,
+      "signals_after_volume_gate": 28,
+      "signals_rejected_by_volume_gate": 128,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 41,
-          "signals_after_volume_gate": 1
+          "signals_before_volume_gate": 102,
+          "signals_after_volume_gate": 27
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 38,
-          "signals_after_volume_gate": 0
+          "signals_before_volume_gate": 56,
+          "signals_after_volume_gate": 1
         }
       }
     },
     {
       "symbol": "INJUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 86,
-      "signals_after_volume_gate": 84,
-      "signals_rejected_by_volume_gate": 0,
+      "signals_before_volume_gate": 164,
+      "signals_after_volume_gate": 161,
+      "signals_rejected_by_volume_gate": 1,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 46,
-          "signals_after_volume_gate": 44
+          "signals_before_volume_gate": 101,
+          "signals_after_volume_gate": 98
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 40,
-          "signals_after_volume_gate": 40
+          "signals_before_volume_gate": 63,
+          "signals_after_volume_gate": 63
         }
       }
     },
     {
       "symbol": "JUPUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 66,
-      "signals_after_volume_gate": 43,
-      "signals_rejected_by_volume_gate": 21,
+      "signals_before_volume_gate": 163,
+      "signals_after_volume_gate": 115,
+      "signals_rejected_by_volume_gate": 47,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 50,
-          "signals_after_volume_gate": 31
+          "signals_before_volume_gate": 98,
+          "signals_after_volume_gate": 69
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 16,
-          "signals_after_volume_gate": 12
+          "signals_before_volume_gate": 65,
+          "signals_after_volume_gate": 46
         }
       }
     },
     {
       "symbol": "LDOUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 90,
-      "signals_after_volume_gate": 77,
-      "signals_rejected_by_volume_gate": 12,
+      "signals_before_volume_gate": 147,
+      "signals_after_volume_gate": 124,
+      "signals_rejected_by_volume_gate": 23,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 57,
-          "signals_after_volume_gate": 44
+          "signals_before_volume_gate": 93,
+          "signals_after_volume_gate": 77
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 54,
+          "signals_after_volume_gate": 47
+        }
+      }
+    },
+    {
+      "symbol": "LINKUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 153,
+      "signals_after_volume_gate": 153,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 92,
+          "signals_after_volume_gate": 92
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 61,
+          "signals_after_volume_gate": 61
+        }
+      }
+    },
+    {
+      "symbol": "LTCUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 141,
+      "signals_after_volume_gate": 140,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 73,
+          "signals_after_volume_gate": 72
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 68,
+          "signals_after_volume_gate": 68
+        }
+      }
+    },
+    {
+      "symbol": "NEARUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 182,
+      "signals_after_volume_gate": 182,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 109,
+          "signals_after_volume_gate": 109
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 73,
+          "signals_after_volume_gate": 73
+        }
+      }
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 126,
+      "signals_after_volume_gate": 100,
+      "signals_rejected_by_volume_gate": 24,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 93,
+          "signals_after_volume_gate": 67
         },
         "V15_ADX4H_CANDLE2H": {
           "signals_before_volume_gate": 33,
@@ -257,338 +353,242 @@
       }
     },
     {
-      "symbol": "LINKUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 79,
-      "signals_after_volume_gate": 79,
-      "signals_rejected_by_volume_gate": 0,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 37,
-          "signals_after_volume_gate": 37
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 42,
-          "signals_after_volume_gate": 42
-        }
-      }
-    },
-    {
-      "symbol": "LTCUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 86,
-      "signals_after_volume_gate": 84,
-      "signals_rejected_by_volume_gate": 0,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 35,
-          "signals_after_volume_gate": 33
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 51,
-          "signals_after_volume_gate": 51
-        }
-      }
-    },
-    {
-      "symbol": "NEARUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 104,
-      "signals_after_volume_gate": 103,
-      "signals_rejected_by_volume_gate": 0,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 50,
-          "signals_after_volume_gate": 49
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 54,
-          "signals_after_volume_gate": 54
-        }
-      }
-    },
-    {
-      "symbol": "ORDIUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 72,
-      "signals_after_volume_gate": 60,
-      "signals_rejected_by_volume_gate": 11,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 49,
-          "signals_after_volume_gate": 37
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 23,
-          "signals_after_volume_gate": 23
-        }
-      }
-    },
-    {
       "symbol": "QNTUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 93,
-      "signals_after_volume_gate": 20,
-      "signals_rejected_by_volume_gate": 72,
+      "signals_before_volume_gate": 195,
+      "signals_after_volume_gate": 54,
+      "signals_rejected_by_volume_gate": 141,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 64,
-          "signals_after_volume_gate": 11
+          "signals_before_volume_gate": 125,
+          "signals_after_volume_gate": 23
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 29,
-          "signals_after_volume_gate": 9
+          "signals_before_volume_gate": 70,
+          "signals_after_volume_gate": 31
         }
       }
     },
     {
       "symbol": "RUNEUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 58,
-      "signals_after_volume_gate": 15,
-      "signals_rejected_by_volume_gate": 41,
+      "signals_before_volume_gate": 147,
+      "signals_after_volume_gate": 35,
+      "signals_rejected_by_volume_gate": 111,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 39,
-          "signals_after_volume_gate": 6
+          "signals_before_volume_gate": 99,
+          "signals_after_volume_gate": 15
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 19,
-          "signals_after_volume_gate": 9
-        }
-      }
-    },
-    {
-      "symbol": "SANDUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 73,
-      "signals_after_volume_gate": 37,
-      "signals_rejected_by_volume_gate": 36,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 52,
-          "signals_after_volume_gate": 16
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 21,
-          "signals_after_volume_gate": 21
-        }
-      }
-    },
-    {
-      "symbol": "STRKUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 75,
-      "signals_after_volume_gate": 30,
-      "signals_rejected_by_volume_gate": 41,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 50,
-          "signals_after_volume_gate": 17
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 25,
-          "signals_after_volume_gate": 13
-        }
-      }
-    },
-    {
-      "symbol": "SUIUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 76,
-      "signals_after_volume_gate": 76,
-      "signals_rejected_by_volume_gate": 0,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 52,
-          "signals_after_volume_gate": 52
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 24,
-          "signals_after_volume_gate": 24
-        }
-      }
-    },
-    {
-      "symbol": "TAOUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
-      "last_open_utc": "2026-10-09T23:45:00+00:00",
-      "source_counts": {
-        "binance_archive_monthly": 16416,
-        "binance_archive_daily": 864
-      },
-      "gap_count": 0,
-      "signals_before_volume_gate": 68,
-      "signals_after_volume_gate": 67,
-      "signals_rejected_by_volume_gate": 0,
-      "signals_by_core": {
-        "V15_PRECISION_V2_FINAL": {
           "signals_before_volume_gate": 48,
-          "signals_after_volume_gate": 47
-        },
-        "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 20,
           "signals_after_volume_gate": 20
         }
       }
     },
     {
-      "symbol": "TIAUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "symbol": "SANDUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 72,
-      "signals_after_volume_gate": 63,
-      "signals_rejected_by_volume_gate": 9,
+      "signals_before_volume_gate": 149,
+      "signals_after_volume_gate": 85,
+      "signals_rejected_by_volume_gate": 63,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 40,
-          "signals_after_volume_gate": 33
+          "signals_before_volume_gate": 104,
+          "signals_after_volume_gate": 50
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 32,
-          "signals_after_volume_gate": 30
+          "signals_before_volume_gate": 45,
+          "signals_after_volume_gate": 35
+        }
+      }
+    },
+    {
+      "symbol": "STRKUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 162,
+      "signals_after_volume_gate": 99,
+      "signals_rejected_by_volume_gate": 63,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 117,
+          "signals_after_volume_gate": 66
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 45,
+          "signals_after_volume_gate": 33
+        }
+      }
+    },
+    {
+      "symbol": "SUIUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 162,
+      "signals_after_volume_gate": 162,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 100,
+          "signals_after_volume_gate": 100
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 62,
+          "signals_after_volume_gate": 62
+        }
+      }
+    },
+    {
+      "symbol": "TAOUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 180,
+      "signals_after_volume_gate": 180,
+      "signals_rejected_by_volume_gate": 0,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 115,
+          "signals_after_volume_gate": 115
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 65,
+          "signals_after_volume_gate": 65
+        }
+      }
+    },
+    {
+      "symbol": "TIAUSDT",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
+      "last_open_utc": "2026-10-09T23:45:00+00:00",
+      "source_counts": {
+        "binance_archive_monthly": 34176,
+        "binance_archive_daily": 864
+      },
+      "gap_count": 0,
+      "signals_before_volume_gate": 162,
+      "signals_after_volume_gate": 151,
+      "signals_rejected_by_volume_gate": 11,
+      "signals_by_core": {
+        "V15_PRECISION_V2_FINAL": {
+          "signals_before_volume_gate": 90,
+          "signals_after_volume_gate": 81
+        },
+        "V15_ADX4H_CANDLE2H": {
+          "signals_before_volume_gate": 72,
+          "signals_after_volume_gate": 70
         }
       }
     },
     {
       "symbol": "WLDUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 95,
-      "signals_after_volume_gate": 94,
+      "signals_before_volume_gate": 162,
+      "signals_after_volume_gate": 160,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 65,
-          "signals_after_volume_gate": 64
+          "signals_before_volume_gate": 124,
+          "signals_after_volume_gate": 122
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 30,
-          "signals_after_volume_gate": 30
+          "signals_before_volume_gate": 38,
+          "signals_after_volume_gate": 38
         }
       }
     },
     {
       "symbol": "XRPUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 83,
-      "signals_after_volume_gate": 80,
+      "signals_before_volume_gate": 162,
+      "signals_after_volume_gate": 162,
       "signals_rejected_by_volume_gate": 0,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 49,
-          "signals_after_volume_gate": 46
+          "signals_before_volume_gate": 101,
+          "signals_after_volume_gate": 101
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 34,
-          "signals_after_volume_gate": 34
+          "signals_before_volume_gate": 61,
+          "signals_after_volume_gate": 61
         }
       }
     },
     {
       "symbol": "ZROUSDT",
-      "candles": 17280,
-      "first_open_utc": "2026-04-13T00:00:00+00:00",
+      "candles": 35040,
+      "first_open_utc": "2025-10-10T00:00:00+00:00",
       "last_open_utc": "2026-10-09T23:45:00+00:00",
       "source_counts": {
-        "binance_archive_monthly": 16416,
+        "binance_archive_monthly": 34176,
         "binance_archive_daily": 864
       },
       "gap_count": 0,
-      "signals_before_volume_gate": 56,
-      "signals_after_volume_gate": 42,
-      "signals_rejected_by_volume_gate": 14,
+      "signals_before_volume_gate": 148,
+      "signals_after_volume_gate": 122,
+      "signals_rejected_by_volume_gate": 26,
       "signals_by_core": {
         "V15_PRECISION_V2_FINAL": {
-          "signals_before_volume_gate": 37,
-          "signals_after_volume_gate": 24
+          "signals_before_volume_gate": 82,
+          "signals_after_volume_gate": 57
         },
         "V15_ADX4H_CANDLE2H": {
-          "signals_before_volume_gate": 19,
-          "signals_after_volume_gate": 18
+          "signals_before_volume_gate": 66,
+          "signals_after_volume_gate": 65
         }
       }
     }
@@ -617,281 +617,281 @@
   },
   "full_period_variants": {
     "BASELINE_CORE": {
-      "closed_trades": 643,
-      "TP": 285,
-      "SL": 353,
-      "TIMEOUT": 5,
+      "closed_trades": 1292,
+      "TP": 565,
+      "SL": 711,
+      "TIMEOUT": 16,
       "CUTOFF": 0,
-      "profitable_trades": 287,
-      "win_rate_closed_pct": 44.63,
-      "tp_rate_closed_pct": 44.32,
-      "gross_R": 3.563,
-      "net_est_R": -73.6966,
-      "profit_factor_gross": 1.0101,
-      "expectancy_net_R": -0.1146,
-      "equity_end_closed_only_usd": 45.4394,
-      "max_drawdown_pct": -57.812,
-      "average_trades_per_30d": 107.17,
+      "profitable_trades": 574,
+      "win_rate_closed_pct": 44.43,
+      "tp_rate_closed_pct": 43.73,
+      "gross_R": -3.4196,
+      "net_est_R": -151.4826,
+      "profit_factor_gross": 0.9952,
+      "expectancy_net_R": -0.1172,
+      "equity_end_closed_only_usd": 19.4698,
+      "max_drawdown_pct": -81.425,
+      "average_trades_per_30d": 106.19,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 5
     },
     "PRECISION_V2_SCORE_LT65": {
-      "closed_trades": 231,
-      "TP": 114,
-      "SL": 115,
-      "TIMEOUT": 2,
+      "closed_trades": 502,
+      "TP": 232,
+      "SL": 265,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 114,
-      "win_rate_closed_pct": 49.35,
-      "tp_rate_closed_pct": 49.35,
-      "gross_R": 26.7746,
-      "net_est_R": -2.9104,
-      "profit_factor_gross": 1.2314,
-      "expectancy_net_R": -0.0126,
-      "equity_end_closed_only_usd": 95.5008,
-      "max_drawdown_pct": -15.228,
-      "average_trades_per_30d": 38.5,
+      "profitable_trades": 234,
+      "win_rate_closed_pct": 46.61,
+      "tp_rate_closed_pct": 46.22,
+      "gross_R": 25.7044,
+      "net_est_R": -36.5938,
+      "profit_factor_gross": 1.0966,
+      "expectancy_net_R": -0.0729,
+      "equity_end_closed_only_usd": 66.5675,
+      "max_drawdown_pct": -36.021,
+      "average_trades_per_30d": 41.26,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_GATE_SCORE_LE54": {
-      "closed_trades": 184,
-      "TP": 91,
-      "SL": 91,
-      "TIMEOUT": 2,
+      "closed_trades": 422,
+      "TP": 200,
+      "SL": 217,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 91,
-      "win_rate_closed_pct": 49.46,
-      "tp_rate_closed_pct": 49.46,
-      "gross_R": 22.0246,
-      "net_est_R": -2.8821,
-      "profit_factor_gross": 1.2401,
-      "expectancy_net_R": -0.0157,
-      "equity_end_closed_only_usd": 95.9539,
-      "max_drawdown_pct": -19.179,
-      "average_trades_per_30d": 30.67,
+      "profitable_trades": 202,
+      "win_rate_closed_pct": 47.87,
+      "tp_rate_closed_pct": 47.39,
+      "gross_R": 33.7044,
+      "net_est_R": -20.8811,
+      "profit_factor_gross": 1.1546,
+      "expectancy_net_R": -0.0495,
+      "equity_end_closed_only_usd": 78.4659,
+      "max_drawdown_pct": -26.3,
+      "average_trades_per_30d": 34.68,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_GATE_SCORE_LE60": {
-      "closed_trades": 208,
-      "TP": 100,
-      "SL": 106,
-      "TIMEOUT": 2,
+      "closed_trades": 465,
+      "TP": 212,
+      "SL": 248,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 100,
-      "win_rate_closed_pct": 48.08,
-      "tp_rate_closed_pct": 48.08,
-      "gross_R": 18.2746,
-      "net_est_R": -9.2276,
-      "profit_factor_gross": 1.1712,
-      "expectancy_net_R": -0.0444,
-      "equity_end_closed_only_usd": 89.8933,
-      "max_drawdown_pct": -23.407,
-      "average_trades_per_30d": 34.67,
+      "profitable_trades": 214,
+      "win_rate_closed_pct": 46.02,
+      "tp_rate_closed_pct": 45.59,
+      "gross_R": 17.7044,
+      "net_est_R": -40.9731,
+      "profit_factor_gross": 1.0711,
+      "expectancy_net_R": -0.0881,
+      "equity_end_closed_only_usd": 63.9433,
+      "max_drawdown_pct": -37.751,
+      "average_trades_per_30d": 38.22,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_V2_DISTANCE_MINUS10": {
-      "closed_trades": 236,
-      "TP": 123,
-      "SL": 113,
-      "TIMEOUT": 0,
+      "closed_trades": 513,
+      "TP": 246,
+      "SL": 265,
+      "TIMEOUT": 2,
       "CUTOFF": 0,
-      "profitable_trades": 123,
-      "win_rate_closed_pct": 52.12,
-      "tp_rate_closed_pct": 52.12,
-      "gross_R": 40.75,
-      "net_est_R": 7.0795,
-      "profit_factor_gross": 1.3606,
-      "expectancy_net_R": 0.03,
-      "equity_end_closed_only_usd": 105.4618,
-      "max_drawdown_pct": -14.917,
-      "average_trades_per_30d": 39.33,
+      "profitable_trades": 248,
+      "win_rate_closed_pct": 48.34,
+      "tp_rate_closed_pct": 47.95,
+      "gross_R": 44.4196,
+      "net_est_R": -26.573,
+      "profit_factor_gross": 1.1676,
+      "expectancy_net_R": -0.0518,
+      "equity_end_closed_only_usd": 73.3983,
+      "max_drawdown_pct": -33.363,
+      "average_trades_per_30d": 42.16,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_V2_DISTANCE_PLUS10": {
-      "closed_trades": 229,
-      "TP": 115,
-      "SL": 112,
-      "TIMEOUT": 2,
+      "closed_trades": 494,
+      "TP": 223,
+      "SL": 264,
+      "TIMEOUT": 7,
       "CUTOFF": 0,
-      "profitable_trades": 115,
-      "win_rate_closed_pct": 50.22,
-      "tp_rate_closed_pct": 50.22,
-      "gross_R": 31.0905,
-      "net_est_R": 4.2723,
-      "profit_factor_gross": 1.276,
-      "expectancy_net_R": 0.0187,
-      "equity_end_closed_only_usd": 102.6114,
-      "max_drawdown_pct": -15.27,
-      "average_trades_per_30d": 38.17,
+      "profitable_trades": 226,
+      "win_rate_closed_pct": 45.75,
+      "tp_rate_closed_pct": 45.14,
+      "gross_R": 15.8847,
+      "net_est_R": -39.8218,
+      "profit_factor_gross": 1.0599,
+      "expectancy_net_R": -0.0806,
+      "equity_end_closed_only_usd": 64.346,
+      "max_drawdown_pct": -40.865,
+      "average_trades_per_30d": 40.6,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_V2_SIGNAL_CLOSE_PROXY": {
-      "closed_trades": 231,
-      "TP": 115,
-      "SL": 114,
-      "TIMEOUT": 2,
+      "closed_trades": 502,
+      "TP": 233,
+      "SL": 264,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 115,
-      "win_rate_closed_pct": 49.78,
-      "tp_rate_closed_pct": 49.78,
-      "gross_R": 29.0627,
-      "net_est_R": -0.6223,
-      "profit_factor_gross": 1.2534,
-      "expectancy_net_R": -0.0027,
-      "equity_end_closed_only_usd": 97.6816,
-      "max_drawdown_pct": -15.196,
-      "average_trades_per_30d": 38.5,
+      "profitable_trades": 235,
+      "win_rate_closed_pct": 46.81,
+      "tp_rate_closed_pct": 46.41,
+      "gross_R": 27.9767,
+      "net_est_R": -34.4094,
+      "profit_factor_gross": 1.1056,
+      "expectancy_net_R": -0.0685,
+      "equity_end_closed_only_usd": 68.018,
+      "max_drawdown_pct": -34.643,
+      "average_trades_per_30d": 41.26,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_V2_LOWER_COST": {
-      "closed_trades": 231,
-      "TP": 114,
-      "SL": 115,
-      "TIMEOUT": 2,
+      "closed_trades": 502,
+      "TP": 232,
+      "SL": 265,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 114,
-      "win_rate_closed_pct": 49.35,
-      "tp_rate_closed_pct": 49.35,
-      "gross_R": 26.7746,
-      "net_est_R": 14.0524,
-      "profit_factor_gross": 1.2314,
-      "expectancy_net_R": 0.0608,
-      "equity_end_closed_only_usd": 113.1624,
-      "max_drawdown_pct": -13.329,
-      "average_trades_per_30d": 38.5,
+      "profitable_trades": 234,
+      "win_rate_closed_pct": 46.61,
+      "tp_rate_closed_pct": 46.22,
+      "gross_R": 25.7044,
+      "net_est_R": -0.9948,
+      "profit_factor_gross": 1.0966,
+      "expectancy_net_R": -0.002,
+      "equity_end_closed_only_usd": 95.0407,
+      "max_drawdown_pct": -21.728,
+      "average_trades_per_30d": 41.26,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "PRECISION_V2_ZERO_COST": {
-      "closed_trades": 231,
-      "TP": 114,
-      "SL": 115,
-      "TIMEOUT": 2,
+      "closed_trades": 502,
+      "TP": 232,
+      "SL": 265,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 114,
-      "win_rate_closed_pct": 49.35,
-      "tp_rate_closed_pct": 49.35,
-      "gross_R": 26.7746,
-      "net_est_R": 26.7746,
-      "profit_factor_gross": 1.2314,
-      "expectancy_net_R": 0.1159,
-      "equity_end_closed_only_usd": 128.5005,
-      "max_drawdown_pct": -12.318,
-      "average_trades_per_30d": 38.5,
+      "profitable_trades": 234,
+      "win_rate_closed_pct": 46.61,
+      "tp_rate_closed_pct": 46.22,
+      "gross_R": 25.7044,
+      "net_est_R": 25.7044,
+      "profit_factor_gross": 1.0966,
+      "expectancy_net_R": 0.0512,
+      "equity_end_closed_only_usd": 124.0929,
+      "max_drawdown_pct": -18.455,
+      "average_trades_per_30d": 41.26,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "LEGACY_CORE_BASELINE": {
-      "closed_trades": 168,
-      "TP": 83,
-      "SL": 84,
-      "TIMEOUT": 1,
+      "closed_trades": 328,
+      "TP": 158,
+      "SL": 166,
+      "TIMEOUT": 4,
       "CUTOFF": 0,
-      "profitable_trades": 83,
-      "win_rate_closed_pct": 49.4,
-      "tp_rate_closed_pct": 49.4,
-      "gross_R": 19.384,
-      "net_est_R": 5.2617,
-      "profit_factor_gross": 1.2298,
-      "expectancy_net_R": 0.0313,
-      "equity_end_closed_only_usd": 103.7866,
-      "max_drawdown_pct": -16.994,
-      "average_trades_per_30d": 28.0,
+      "profitable_trades": 159,
+      "win_rate_closed_pct": 48.48,
+      "tp_rate_closed_pct": 48.17,
+      "gross_R": 31.0709,
+      "net_est_R": 3.1884,
+      "profit_factor_gross": 1.186,
+      "expectancy_net_R": 0.0097,
+      "equity_end_closed_only_usd": 100.0163,
+      "max_drawdown_pct": -16.081,
+      "average_trades_per_30d": 26.96,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "LEGACY_CORE_PRECISION65": {
-      "closed_trades": 14,
-      "TP": 10,
-      "SL": 4,
+      "closed_trades": 29,
+      "TP": 20,
+      "SL": 9,
       "TIMEOUT": 0,
       "CUTOFF": 0,
-      "profitable_trades": 10,
-      "win_rate_closed_pct": 71.43,
-      "tp_rate_closed_pct": 71.43,
-      "gross_R": 8.5,
-      "net_est_R": 7.2305,
-      "profit_factor_gross": 3.125,
-      "expectancy_net_R": 0.5165,
-      "equity_end_closed_only_usd": 107.3857,
-      "max_drawdown_pct": -1.12,
-      "average_trades_per_30d": 2.33,
+      "profitable_trades": 20,
+      "win_rate_closed_pct": 68.97,
+      "tp_rate_closed_pct": 68.97,
+      "gross_R": 16.0,
+      "net_est_R": 13.0659,
+      "profit_factor_gross": 2.7778,
+      "expectancy_net_R": 0.4505,
+      "equity_end_closed_only_usd": 113.6812,
+      "max_drawdown_pct": -2.255,
+      "average_trades_per_30d": 2.38,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
-      "max_active_positions_seen": 2
+      "max_active_positions_seen": 3
     },
     "COMBINED_CORE_PRECISION65": {
-      "closed_trades": 242,
-      "TP": 122,
-      "SL": 118,
-      "TIMEOUT": 2,
+      "closed_trades": 523,
+      "TP": 246,
+      "SL": 272,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 122,
-      "win_rate_closed_pct": 50.41,
-      "tp_rate_closed_pct": 50.41,
-      "gross_R": 33.7746,
-      "net_est_R": 3.08,
-      "profit_factor_gross": 1.2845,
-      "expectancy_net_R": 0.0127,
-      "equity_end_closed_only_usd": 101.2805,
-      "max_drawdown_pct": -16.178,
-      "average_trades_per_30d": 40.33,
+      "profitable_trades": 248,
+      "win_rate_closed_pct": 47.42,
+      "tp_rate_closed_pct": 47.04,
+      "gross_R": 36.2044,
+      "net_est_R": -28.4949,
+      "profit_factor_gross": 1.1326,
+      "expectancy_net_R": -0.0545,
+      "equity_end_closed_only_usd": 72.0548,
+      "max_drawdown_pct": -33.308,
+      "average_trades_per_30d": 42.99,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     "COMBINED_WITHOUT_CURRENT_CORE": {
-      "closed_trades": 14,
-      "TP": 10,
-      "SL": 4,
+      "closed_trades": 29,
+      "TP": 20,
+      "SL": 9,
       "TIMEOUT": 0,
       "CUTOFF": 0,
-      "profitable_trades": 10,
-      "win_rate_closed_pct": 71.43,
-      "tp_rate_closed_pct": 71.43,
-      "gross_R": 8.5,
-      "net_est_R": 7.2305,
-      "profit_factor_gross": 3.125,
-      "expectancy_net_R": 0.5165,
-      "equity_end_closed_only_usd": 107.3857,
-      "max_drawdown_pct": -1.12,
-      "average_trades_per_30d": 2.33,
+      "profitable_trades": 20,
+      "win_rate_closed_pct": 68.97,
+      "tp_rate_closed_pct": 68.97,
+      "gross_R": 16.0,
+      "net_est_R": 13.0659,
+      "profit_factor_gross": 2.7778,
+      "expectancy_net_R": 0.4505,
+      "equity_end_closed_only_usd": 113.6812,
+      "max_drawdown_pct": -2.255,
+      "average_trades_per_30d": 2.38,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
-      "max_active_positions_seen": 2
+      "max_active_positions_seen": 3
     },
     "COMBINED_WITHOUT_LEGACY_CORE": {
-      "closed_trades": 231,
-      "TP": 114,
-      "SL": 115,
-      "TIMEOUT": 2,
+      "closed_trades": 502,
+      "TP": 232,
+      "SL": 265,
+      "TIMEOUT": 5,
       "CUTOFF": 0,
-      "profitable_trades": 114,
-      "win_rate_closed_pct": 49.35,
-      "tp_rate_closed_pct": 49.35,
-      "gross_R": 26.7746,
-      "net_est_R": -2.9104,
-      "profit_factor_gross": 1.2314,
-      "expectancy_net_R": -0.0126,
-      "equity_end_closed_only_usd": 95.5008,
-      "max_drawdown_pct": -15.228,
-      "average_trades_per_30d": 38.5,
+      "profitable_trades": 234,
+      "win_rate_closed_pct": 46.61,
+      "tp_rate_closed_pct": 46.22,
+      "gross_R": 25.7044,
+      "net_est_R": -36.5938,
+      "profit_factor_gross": 1.0966,
+      "expectancy_net_R": -0.0729,
+      "equity_end_closed_only_usd": 66.5675,
+      "max_drawdown_pct": -36.021,
+      "average_trades_per_30d": 41.26,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
@@ -900,294 +900,294 @@
   "walk_forward_development_sweep": [
     {
       "score_ceiling": 40,
-      "closed_trades": 64,
-      "TP": 33,
-      "SL": 28,
-      "TIMEOUT": 2,
+      "closed_trades": 230,
+      "TP": 109,
+      "SL": 117,
+      "TIMEOUT": 3,
       "CUTOFF": 1,
-      "profitable_trades": 33,
-      "win_rate_closed_pct": 51.56,
-      "tp_rate_closed_pct": 51.56,
-      "gross_R": 12.4572,
-      "net_est_R": 3.6068,
-      "profit_factor_gross": 1.4327,
-      "expectancy_net_R": 0.0564,
-      "equity_end_closed_only_usd": 103.2935,
-      "max_drawdown_pct": -7.251,
-      "average_trades_per_30d": 16.0,
+      "profitable_trades": 109,
+      "win_rate_closed_pct": 47.39,
+      "tp_rate_closed_pct": 47.39,
+      "gross_R": 18.1595,
+      "net_est_R": -12.2072,
+      "profit_factor_gross": 1.1538,
+      "expectancy_net_R": -0.0531,
+      "equity_end_closed_only_usd": 86.9448,
+      "max_drawdown_pct": -19.849,
+      "average_trades_per_30d": 22.62,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 45,
-      "closed_trades": 83,
-      "TP": 43,
-      "SL": 37,
-      "TIMEOUT": 2,
+      "closed_trades": 280,
+      "TP": 130,
+      "SL": 144,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 43,
-      "win_rate_closed_pct": 51.81,
-      "tp_rate_closed_pct": 51.81,
-      "gross_R": 15.9572,
-      "net_est_R": 4.4061,
-      "profit_factor_gross": 1.4222,
-      "expectancy_net_R": 0.0531,
-      "equity_end_closed_only_usd": 103.9518,
-      "max_drawdown_pct": -8.873,
-      "average_trades_per_30d": 20.75,
+      "profitable_trades": 132,
+      "win_rate_closed_pct": 47.14,
+      "tp_rate_closed_pct": 46.43,
+      "gross_R": 19.1371,
+      "net_est_R": -17.6355,
+      "profit_factor_gross": 1.1319,
+      "expectancy_net_R": -0.063,
+      "equity_end_closed_only_usd": 82.0199,
+      "max_drawdown_pct": -24.801,
+      "average_trades_per_30d": 27.54,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 48,
-      "closed_trades": 94,
-      "TP": 49,
-      "SL": 42,
-      "TIMEOUT": 2,
+      "closed_trades": 309,
+      "TP": 147,
+      "SL": 156,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 49,
-      "win_rate_closed_pct": 52.13,
-      "tp_rate_closed_pct": 52.13,
-      "gross_R": 18.4572,
-      "net_est_R": 5.5369,
-      "profit_factor_gross": 1.4313,
-      "expectancy_net_R": 0.0589,
-      "equity_end_closed_only_usd": 105.0471,
-      "max_drawdown_pct": -9.063,
-      "average_trades_per_30d": 23.5,
+      "profitable_trades": 149,
+      "win_rate_closed_pct": 48.22,
+      "tp_rate_closed_pct": 47.57,
+      "gross_R": 28.3871,
+      "net_est_R": -11.6953,
+      "profit_factor_gross": 1.1807,
+      "expectancy_net_R": -0.0378,
+      "equity_end_closed_only_usd": 86.7922,
+      "max_drawdown_pct": -22.145,
+      "average_trades_per_30d": 30.39,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 50,
-      "closed_trades": 107,
-      "TP": 54,
-      "SL": 50,
-      "TIMEOUT": 2,
+      "closed_trades": 332,
+      "TP": 158,
+      "SL": 168,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 54,
-      "win_rate_closed_pct": 50.47,
-      "tp_rate_closed_pct": 50.47,
-      "gross_R": 16.7072,
-      "net_est_R": 2.2013,
-      "profit_factor_gross": 1.3289,
-      "expectancy_net_R": 0.0206,
-      "equity_end_closed_only_usd": 101.4972,
-      "max_drawdown_pct": -14.896,
-      "average_trades_per_30d": 26.75,
+      "profitable_trades": 160,
+      "win_rate_closed_pct": 48.19,
+      "tp_rate_closed_pct": 47.59,
+      "gross_R": 30.1371,
+      "net_est_R": -12.6611,
+      "profit_factor_gross": 1.1782,
+      "expectancy_net_R": -0.0381,
+      "equity_end_closed_only_usd": 85.777,
+      "max_drawdown_pct": -20.805,
+      "average_trades_per_30d": 32.66,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 51,
-      "closed_trades": 110,
-      "TP": 56,
-      "SL": 51,
-      "TIMEOUT": 2,
+      "closed_trades": 338,
+      "TP": 163,
+      "SL": 169,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 56,
-      "win_rate_closed_pct": 50.91,
-      "tp_rate_closed_pct": 50.91,
-      "gross_R": 18.2072,
-      "net_est_R": 3.2634,
-      "profit_factor_gross": 1.3515,
-      "expectancy_net_R": 0.0297,
-      "equity_end_closed_only_usd": 102.5618,
-      "max_drawdown_pct": -14.896,
-      "average_trades_per_30d": 27.5,
+      "profitable_trades": 165,
+      "win_rate_closed_pct": 48.82,
+      "tp_rate_closed_pct": 48.22,
+      "gross_R": 35.3871,
+      "net_est_R": -8.0076,
+      "profit_factor_gross": 1.208,
+      "expectancy_net_R": -0.0237,
+      "equity_end_closed_only_usd": 89.7929,
+      "max_drawdown_pct": -19.924,
+      "average_trades_per_30d": 33.25,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 52,
-      "closed_trades": 113,
-      "TP": 59,
-      "SL": 51,
-      "TIMEOUT": 2,
+      "closed_trades": 344,
+      "TP": 165,
+      "SL": 173,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 59,
-      "win_rate_closed_pct": 52.21,
-      "tp_rate_closed_pct": 52.21,
-      "gross_R": 21.9572,
-      "net_est_R": 6.3288,
-      "profit_factor_gross": 1.4239,
-      "expectancy_net_R": 0.056,
-      "equity_end_closed_only_usd": 105.7375,
-      "max_drawdown_pct": -14.225,
-      "average_trades_per_30d": 28.25,
+      "profitable_trades": 167,
+      "win_rate_closed_pct": 48.55,
+      "tp_rate_closed_pct": 47.97,
+      "gross_R": 33.8871,
+      "net_est_R": -10.5341,
+      "profit_factor_gross": 1.1947,
+      "expectancy_net_R": -0.0306,
+      "equity_end_closed_only_usd": 87.5416,
+      "max_drawdown_pct": -22.234,
+      "average_trades_per_30d": 33.84,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 53,
-      "closed_trades": 117,
-      "TP": 61,
-      "SL": 53,
-      "TIMEOUT": 2,
+      "closed_trades": 350,
+      "TP": 168,
+      "SL": 176,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 61,
-      "win_rate_closed_pct": 52.14,
-      "tp_rate_closed_pct": 52.14,
-      "gross_R": 22.4572,
-      "net_est_R": 6.4951,
-      "profit_factor_gross": 1.4175,
-      "expectancy_net_R": 0.0555,
-      "equity_end_closed_only_usd": 105.8986,
-      "max_drawdown_pct": -14.225,
-      "average_trades_per_30d": 29.25,
+      "profitable_trades": 170,
+      "win_rate_closed_pct": 48.57,
+      "tp_rate_closed_pct": 48.0,
+      "gross_R": 34.6371,
+      "net_est_R": -10.3511,
+      "profit_factor_gross": 1.1956,
+      "expectancy_net_R": -0.0296,
+      "equity_end_closed_only_usd": 87.668,
+      "max_drawdown_pct": -22.241,
+      "average_trades_per_30d": 34.43,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 54,
-      "closed_trades": 122,
-      "TP": 62,
-      "SL": 57,
-      "TIMEOUT": 2,
+      "closed_trades": 360,
+      "TP": 171,
+      "SL": 183,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 62,
-      "win_rate_closed_pct": 50.82,
-      "tp_rate_closed_pct": 50.82,
-      "gross_R": 19.7072,
-      "net_est_R": 3.0292,
-      "profit_factor_gross": 1.341,
-      "expectancy_net_R": 0.0248,
-      "equity_end_closed_only_usd": 102.2692,
-      "max_drawdown_pct": -15.143,
-      "average_trades_per_30d": 30.5,
+      "profitable_trades": 173,
+      "win_rate_closed_pct": 48.06,
+      "tp_rate_closed_pct": 47.5,
+      "gross_R": 31.3871,
+      "net_est_R": -14.9698,
+      "profit_factor_gross": 1.1705,
+      "expectancy_net_R": -0.0416,
+      "equity_end_closed_only_usd": 83.6302,
+      "max_drawdown_pct": -24.893,
+      "average_trades_per_30d": 35.41,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 55,
-      "closed_trades": 123,
-      "TP": 62,
-      "SL": 58,
-      "TIMEOUT": 2,
+      "closed_trades": 365,
+      "TP": 171,
+      "SL": 188,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 62,
-      "win_rate_closed_pct": 50.41,
-      "tp_rate_closed_pct": 50.41,
-      "gross_R": 18.7072,
-      "net_est_R": 1.9351,
-      "profit_factor_gross": 1.3182,
-      "expectancy_net_R": 0.0157,
-      "equity_end_closed_only_usd": 101.1503,
-      "max_drawdown_pct": -15.143,
-      "average_trades_per_30d": 30.75,
+      "profitable_trades": 173,
+      "win_rate_closed_pct": 47.4,
+      "tp_rate_closed_pct": 46.85,
+      "gross_R": 26.3871,
+      "net_est_R": -20.3907,
+      "profit_factor_gross": 1.1395,
+      "expectancy_net_R": -0.0559,
+      "equity_end_closed_only_usd": 79.1843,
+      "max_drawdown_pct": -28.11,
+      "average_trades_per_30d": 35.9,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 56,
-      "closed_trades": 126,
-      "TP": 64,
-      "SL": 59,
-      "TIMEOUT": 2,
+      "closed_trades": 372,
+      "TP": 176,
+      "SL": 190,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 64,
-      "win_rate_closed_pct": 50.79,
-      "tp_rate_closed_pct": 50.79,
-      "gross_R": 20.2072,
-      "net_est_R": 3.107,
-      "profit_factor_gross": 1.338,
-      "expectancy_net_R": 0.0247,
-      "equity_end_closed_only_usd": 102.309,
-      "max_drawdown_pct": -14.251,
-      "average_trades_per_30d": 31.5,
+      "profitable_trades": 178,
+      "win_rate_closed_pct": 47.85,
+      "tp_rate_closed_pct": 47.31,
+      "gross_R": 30.6371,
+      "net_est_R": -16.8357,
+      "profit_factor_gross": 1.1603,
+      "expectancy_net_R": -0.0453,
+      "equity_end_closed_only_usd": 82.0231,
+      "max_drawdown_pct": -26.399,
+      "average_trades_per_30d": 36.59,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 58,
-      "closed_trades": 130,
-      "TP": 65,
-      "SL": 62,
-      "TIMEOUT": 2,
+      "closed_trades": 383,
+      "TP": 179,
+      "SL": 198,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 65,
-      "win_rate_closed_pct": 50.0,
-      "tp_rate_closed_pct": 50.0,
-      "gross_R": 18.4572,
-      "net_est_R": 0.9538,
-      "profit_factor_gross": 1.2939,
-      "expectancy_net_R": 0.0073,
-      "equity_end_closed_only_usd": 100.106,
-      "max_drawdown_pct": -16.095,
-      "average_trades_per_30d": 32.5,
+      "profitable_trades": 181,
+      "win_rate_closed_pct": 47.26,
+      "tp_rate_closed_pct": 46.74,
+      "gross_R": 26.3871,
+      "net_est_R": -22.0233,
+      "profit_factor_gross": 1.1325,
+      "expectancy_net_R": -0.0575,
+      "equity_end_closed_only_usd": 77.7857,
+      "max_drawdown_pct": -27.659,
+      "average_trades_per_30d": 37.67,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 60,
-      "closed_trades": 134,
-      "TP": 66,
-      "SL": 65,
-      "TIMEOUT": 2,
+      "closed_trades": 391,
+      "TP": 178,
+      "SL": 207,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 66,
-      "win_rate_closed_pct": 49.25,
-      "tp_rate_closed_pct": 49.25,
-      "gross_R": 16.7072,
-      "net_est_R": -1.3639,
-      "profit_factor_gross": 1.2539,
-      "expectancy_net_R": -0.0102,
-      "equity_end_closed_only_usd": 97.8155,
-      "max_drawdown_pct": -16.999,
-      "average_trades_per_30d": 33.5,
+      "profitable_trades": 180,
+      "win_rate_closed_pct": 46.04,
+      "tp_rate_closed_pct": 45.52,
+      "gross_R": 16.1371,
+      "net_est_R": -33.1093,
+      "profit_factor_gross": 1.0775,
+      "expectancy_net_R": -0.0847,
+      "equity_end_closed_only_usd": 69.5785,
+      "max_drawdown_pct": -32.543,
+      "average_trades_per_30d": 38.46,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 62,
-      "closed_trades": 142,
-      "TP": 69,
-      "SL": 70,
-      "TIMEOUT": 2,
+      "closed_trades": 406,
+      "TP": 183,
+      "SL": 217,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 69,
-      "win_rate_closed_pct": 48.59,
-      "tp_rate_closed_pct": 48.59,
-      "gross_R": 15.4572,
-      "net_est_R": -3.6924,
-      "profit_factor_gross": 1.2183,
-      "expectancy_net_R": -0.026,
-      "equity_end_closed_only_usd": 95.5173,
-      "max_drawdown_pct": -17.237,
-      "average_trades_per_30d": 35.5,
+      "profitable_trades": 185,
+      "win_rate_closed_pct": 45.57,
+      "tp_rate_closed_pct": 45.07,
+      "gross_R": 12.3871,
+      "net_est_R": -38.7534,
+      "profit_factor_gross": 1.0568,
+      "expectancy_net_R": -0.0955,
+      "equity_end_closed_only_usd": 65.6618,
+      "max_drawdown_pct": -36.34,
+      "average_trades_per_30d": 39.93,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
     },
     {
       "score_ceiling": 65,
-      "closed_trades": 148,
-      "TP": 72,
-      "SL": 73,
-      "TIMEOUT": 2,
+      "closed_trades": 419,
+      "TP": 190,
+      "SL": 223,
+      "TIMEOUT": 5,
       "CUTOFF": 1,
-      "profitable_trades": 72,
-      "win_rate_closed_pct": 48.65,
-      "tp_rate_closed_pct": 48.65,
-      "gross_R": 16.2072,
-      "net_est_R": -3.4156,
-      "profit_factor_gross": 1.2196,
-      "expectancy_net_R": -0.0231,
-      "equity_end_closed_only_usd": 95.6673,
-      "max_drawdown_pct": -15.228,
-      "average_trades_per_30d": 37.0,
+      "profitable_trades": 192,
+      "win_rate_closed_pct": 45.82,
+      "tp_rate_closed_pct": 45.35,
+      "gross_R": 15.1371,
+      "net_est_R": -37.0989,
+      "profit_factor_gross": 1.0675,
+      "expectancy_net_R": -0.0885,
+      "equity_end_closed_only_usd": 66.6835,
+      "max_drawdown_pct": -36.021,
+      "average_trades_per_30d": 41.21,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
@@ -1195,7 +1195,7 @@
   ],
   "walk_forward_selection": {
     "rule": "Choose highest estimated net R using development period only among score ceilings with >=10 closed trades; holdout outcomes are not used for selection.",
-    "selected_score_ceiling": 53,
+    "selected_score_ceiling": 51,
     "fallback_used": false
   },
   "walk_forward_holdout": {
@@ -1240,21 +1240,21 @@
       "max_active_positions_seen": 3
     },
     "WALK_FORWARD_SELECTED_SCORE": {
-      "closed_trades": 62,
-      "TP": 29,
-      "SL": 33,
+      "closed_trades": 59,
+      "TP": 27,
+      "SL": 32,
       "TIMEOUT": 0,
       "CUTOFF": 0,
-      "profitable_trades": 29,
-      "win_rate_closed_pct": 46.77,
-      "tp_rate_closed_pct": 46.77,
-      "gross_R": 3.25,
-      "net_est_R": -4.9786,
-      "profit_factor_gross": 1.0985,
-      "expectancy_net_R": -0.0803,
-      "equity_end_closed_only_usd": 94.7101,
+      "profitable_trades": 27,
+      "win_rate_closed_pct": 45.76,
+      "tp_rate_closed_pct": 45.76,
+      "gross_R": 1.75,
+      "net_est_R": -6.2554,
+      "profit_factor_gross": 1.0547,
+      "expectancy_net_R": -0.106,
+      "equity_end_closed_only_usd": 93.5143,
       "max_drawdown_pct": -13.821,
-      "average_trades_per_30d": 31.0,
+      "average_trades_per_30d": 29.5,
       "open_positions": 0,
       "open_unrealized_R_mark_to_market": 0,
       "max_active_positions_seen": 3
@@ -2223,6 +2223,6 @@
     }
   ],
   "holdout_pristine": false,
-  "holdout_caveat": "The Aug-Oct 2026 evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The selected threshold itself was chosen only from the Apr-Aug development period, but this is not a fully untouched final holdout for the overall project. Collect a new post-2026-10-10 forward holdout before production approval.",
+  "holdout_caveat": "The later evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The walk-forward threshold was chosen only from this run's earlier development segment, but this is not a fully untouched final holdout for the overall project. Collect a new post-2026-10-10 forward holdout before production approval.",
   "interpretation": "The walk-forward score selection is development-only. Holdout parameter-neighbor and leave-one-coin-out tables are robustness diagnostics, not a basis for re-tuning on the same holdout. Small holdout samples imply uncertainty."
 }
