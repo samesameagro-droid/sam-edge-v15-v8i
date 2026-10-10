@@ -286,19 +286,23 @@ def main():
         "cooldown_bars": args.cooldown_bars,
         "train_window": "2025-01-01 through 2026-03-31",
         "test_window": "2026-04-01 through 2026-08-31",
-        "note": "Research replay, gross R before fees/slippage; holdout after 2026-09-04 remains untouched.",
+        "holdout_window": "2026-09-05 through 2026-09-30",
+        "note": "Research replay, gross R before fees/slippage. Holdout metrics are reported only for frozen V2 and V3 score-cap-40 candidate.",
         "variants": {}
     }
     periods = {
-        "full": (None, None),
+        "full": (None, pd.Timestamp("2026-09-01", tz="UTC")),
         "train": (pd.Timestamp("2025-01-01", tz="UTC"), pd.Timestamp("2026-04-01", tz="UTC")),
         "test": (pd.Timestamp("2026-04-01", tz="UTC"), pd.Timestamp("2026-09-01", tz="UTC")),
+        "holdout": (pd.Timestamp("2026-09-05", tz="UTC"), pd.Timestamp("2026-10-01", tz="UTC")),
     }
     variants = ["V2_EXECUTABLE", *ADX_VARIANTS.keys(), *SCORE_VARIANTS.keys(), *COMBO_VARIANTS.keys()]
     all_rows = []
     for variant in variants:
         report["variants"][variant] = {}
         for period, (start, end) in periods.items():
+            if period == "holdout" and variant not in {"V2_EXECUTABLE", "V3_SCORE_CAP_40"}:
+                continue
             period_events = events
             period_frames = frames
             if start is not None or end is not None:
