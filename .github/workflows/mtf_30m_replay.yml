@@ -6,6 +6,7 @@ on:
       - research/premium-indicator-benchmark
     paths:
       - "research/mtf_30m_replay.py"
+      - "research/portfolio_event_replay.py"
       - ".github/workflows/mtf_30m_replay.yml"
       - "paper_v15_state_v2.json"
   workflow_dispatch:
@@ -36,6 +37,8 @@ jobs:
         run: python -m py_compile research/mtf_30m_replay.py
       - name: Download public candles and replay MTF gates
         run: python research/mtf_30m_replay.py --state paper_v15_state_v2.json --out research/results/mtf_30m_replay --fee-bps 5 --slippage-bps 2
+      - name: Run full-event Binance portfolio replay and walk-forward holdout
+        run: python research/portfolio_event_replay.py --days 180 --out research/results/portfolio_event_replay
       - name: Upload replay results
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,7 +51,7 @@ jobs:
         run: |
           git config user.name "SAM EDGE RESEARCH BOT"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research/results/mtf_30m_replay
+          git add research/results/mtf_30m_replay research/results/portfolio_event_replay
           if ! git diff --cached --quiet; then
             git commit -m "research: add 30m multi-timeframe replay results"
             git fetch origin research/premium-indicator-benchmark
