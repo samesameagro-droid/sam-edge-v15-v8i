@@ -36,6 +36,7 @@ def fetch_one_archive(symbol, interval, kind, period):
         }).dropna()
         x["open_ms"]=x["open_ms"].astype("int64")
         x["close_ms"]=x["open_ms"]+INTERVALS[interval]*60_000-1
+        x["source"]=f"binance_archive_{kind}"
         return x
     except Exception as e:
         print(f"ARCHIVE_ERROR {symbol} {interval} {period}: {type(e).__name__}: {e}",flush=True)
@@ -76,6 +77,7 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
             if not x.empty and int(x.open_ms.max()) < 100_000_000_000:
                 x["open_ms"] = x["open_ms"] * 1000
             x["close_ms"] = x["open_ms"] + interval_ms - 1
+            x["source"] = f"{source}_rest"
             return x[(x.open_ms >= start_ms) & (x.open_ms < end_ms)].copy()
         except Exception as e:
             print(f"PARSE_ERROR {source} {symbol} {interval}: {type(e).__name__}: {e}", flush=True)
@@ -311,7 +313,18 @@ def main():
         pos=float(z.loc[z.R_gross>0,"R_gross"].sum()); neg=float(-z.loc[z.R_gross<0,"R_gross"].sum())
         return {"n":len(z),"wins":wins,"losses":losses,"win_rate_pct":round(100*wins/len(z),2),"gross_R":round(float(z.R_gross.sum()),4),"net_est_R":round(float(z.R_net_est.sum()),4),"profit_factor_gross":round(pos/neg,4) if neg else None,"excluded_SL":int(((~mask)&(df.R_gross<0)).sum()),"excluded_TP":int(((~mask)&(df.R_gross>0)).sum())}
     allmask=pd.Series(True,index=df.index)
-    summary={"source":"Binance USD-M Futures public archive plus official Binance Futures REST host fallback","source_caveat":"Binance proxy, not exact BingX candles/fills; coverage is validated against each symbol's latest cohort entry.","lookahead":"Only candles whose close_ms is strictly before entry timestamp are used for context.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
+    score_thresholds=[40,45,48,50,51,52,53,54,54.5,55,56,58,60,62,65]
+    score_sweep=[{"max_entry_score":threshold,**stats(df.entry_score <= threshold)}
+                 for threshold in score_thresholds]
+    eligible=[item for item in score_sweep if item.get("excluded_SL",0)>=5]
+    best_score_filter=(sorted(eligible,key=lambda item:(
+        item.get("wins",0),item.get("excluded_SL",0),item.get("net_est_R",0),
+        -item.get("excluded_TP",0)),reverse=True)[0] if eligible else None)
+    source_coverage=[]
+    for (sym,tf),series in sorted(cache.items()):
+        counts=series["source"].value_counts().to_dict() if "source" in series.columns else {}
+        source_coverage.append({"symbol":sym,"tf":tf,"candle_count":len(series),"source_counts":counts})
+    summary={"source":"Binance public archives with public Binance Futures REST attempt and BingX swap REST fallback; per-candle provenance included","source_caveat":"Binance Futures REST returned HTTP 451 in this runner. Candle source can be mixed when BingX backfills archive gaps; inspect source_coverage. This is research data, not exact BingX execution fills.","lookahead":"Only candles whose close_ms is strictly before each trade entry timestamp are used for context.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
     if errors:
