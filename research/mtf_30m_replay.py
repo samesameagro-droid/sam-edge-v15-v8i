@@ -82,12 +82,7 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
             return pd.DataFrame()
 
     # First try official Binance USD-M Futures REST hosts.
-    endpoints = [
-        "https://fapi.binance.com/fapi/v1/klines",
-        "https://fapi1.binance.com/fapi/v1/klines",
-        "https://fapi2.binance.com/fapi/v1/klines",
-        "https://fapi3.binance.com/fapi/v1/klines",
-    ]
+    endpoints = ["https://fapi.binance.com/fapi/v1/klines"]
     cursor = start_ms
     pieces = []
     binance_failed = False
@@ -100,7 +95,7 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
                 r = requests.get(endpoint, params={
                     "symbol": symbol, "interval": interval,
                     "startTime": cursor, "endTime": chunk_end, "limit": 1500
-                }, headers=HEADERS, timeout=15)
+                }, headers=HEADERS, timeout=8)
                 r.raise_for_status()
                 rows = r.json()
                 break
@@ -139,7 +134,7 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
                 r = requests.get(endpoint, params={
                     "symbol": bingx_symbol, "interval": interval,
                     "startTime": cursor, "endTime": chunk_end, "limit": 1000
-                }, headers=HEADERS, timeout=20)
+                }, headers=HEADERS, timeout=10)
                 r.raise_for_status()
                 payload = r.json()
                 if payload.get("code") not in (None, 0, "0"):
@@ -190,7 +185,7 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
         month = next_month
 
     pieces = []
-    with ThreadPoolExecutor(max_workers=8) as pool:
+    with ThreadPoolExecutor(max_workers=4) as pool:
         futures = [pool.submit(fetch_one_archive, symbol, interval, kind, period)
                    for kind, period in periods]
         for fut in futures:
@@ -249,28 +244,39 @@ def main():
     start_ms=int(start.timestamp()*1000); end_ms=int(end.timestamp()*1000)
     symbols=sorted({t["coin"].split("/")[0].replace(":USDT","")+"USDT" for t in trades})
     cache={}; errors=[]
-    for sym in symbols:
-        for tf in ("15m","30m","1h","4h"):
-            cache[(sym,tf)]=fetch_klines(sym,tf,start_ms,end_ms)
-            print(f"DATA {sym} {tf}: {len(cache[(sym,tf)])} candles",flush=True)
-            interval_ms = INTERVALS[tf] * 60_000
-            if cache[(sym,tf)].empty:
-                errors.append({"symbol":sym,"tf":tf,"error":"No archive or REST candles returned"})
-                continue
-            opens = set(cache[(sym,tf)].open_ms.astype("int64").tolist())
-            gaps = int((cache[(sym,tf)].open_ms.diff().dropna() > interval_ms * 1.5).sum())
-            if gaps:
-                errors.append({"symbol":sym,"tf":tf,"error":"Internal candle gaps","gap_count":gaps})
-            # Validate the exact last fully closed candle available before every cohort entry.
-            for trade in [t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]:
-                entry_ms = int(pd.Timestamp(trade["opened_at"]).timestamp() * 1000)
-                required_open = ((entry_ms - interval_ms) // interval_ms) * interval_ms
-                if required_open not in opens:
-                    errors.append({
-                        "symbol":sym,"tf":tf,"error":"Missing exact last closed candle before entry",
-                        "entry_utc":pd.to_datetime(entry_ms,unit="ms",utc=True).isoformat(),
-                        "required_candle_open_utc":pd.to_datetime(required_open,unit="ms",utc=True).isoformat()
-                    })
+    tasks=[(sym,tf) for sym in symbols for tf in ("15m","30m","1h","4h")]
+    # Fetch symbol/timeframe series concurrently so one slow public endpoint cannot
+    # serialize the entire 96-series replay.
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures={pool.submit(fetch_klines,sym,tf,start_ms,end_ms):(sym,tf) for sym,tf in tasks}
+        for future,key in futures.items():
+            sym,tf=key
+            try:
+                cache[key]=future.result()
+            except Exception as e:
+                cache[key]=pd.DataFrame()
+                errors.append({"symbol":sym,"tf":tf,"error":"Candle fetch exception","detail":f"{type(e).__name__}: {e}"})
+            print(f"DATA {sym} {tf}: {len(cache[key])} candles",flush=True)
+    for sym,tf in tasks:
+        interval_ms = INTERVALS[tf] * 60_000
+        series=cache[(sym,tf)]
+        if series.empty:
+            errors.append({"symbol":sym,"tf":tf,"error":"No archive or REST candles returned"})
+            continue
+        opens = set(series.open_ms.astype("int64").tolist())
+        gaps = int((series.open_ms.diff().dropna() > interval_ms * 1.5).sum())
+        if gaps:
+            errors.append({"symbol":sym,"tf":tf,"error":"Internal candle gaps","gap_count":gaps})
+        # Validate the exact last fully closed candle available before every cohort entry.
+        for trade in [t for t in trades if t["coin"].split("/")[0].replace(":USDT","")+"USDT" == sym]:
+            entry_ms = int(pd.Timestamp(trade["opened_at"]).timestamp() * 1000)
+            required_open = ((entry_ms - interval_ms) // interval_ms) * interval_ms
+            if required_open not in opens:
+                errors.append({
+                    "symbol":sym,"tf":tf,"error":"Missing exact last closed candle before entry",
+                    "entry_utc":pd.to_datetime(entry_ms,unit="ms",utc=True).isoformat(),
+                    "required_candle_open_utc":pd.to_datetime(required_open,unit="ms",utc=True).isoformat()
+                })
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
