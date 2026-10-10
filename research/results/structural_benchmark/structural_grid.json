@@ -1,0 +1,1487 @@
+[
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "train": {
+      "trades": 7254,
+      "win_rate_pct": 37.68,
+      "net_R": -2537.279,
+      "expectancy_R": -0.34978,
+      "profit_factor": 0.5653,
+      "max_closed_equity_DD_R": -2542.808,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2287,
+      "win_rate_pct": 41.58,
+      "net_R": -818.004,
+      "expectancy_R": -0.35768,
+      "profit_factor": 0.5649,
+      "max_closed_equity_DD_R": -836.262,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 396,
+      "win_rate_pct": 36.87,
+      "net_R": -162.201,
+      "expectancy_R": -0.4096,
+      "profit_factor": 0.5111,
+      "max_closed_equity_DD_R": -165.241,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2287,
+      "win_rate_pct": 39.83,
+      "net_R": -1607.435,
+      "expectancy_R": -0.70286,
+      "profit_factor": 0.323,
+      "max_closed_equity_DD_R": -1612.55,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 396,
+      "win_rate_pct": 34.85,
+      "net_R": -273.553,
+      "expectancy_R": -0.69079,
+      "profit_factor": 0.3261,
+      "max_closed_equity_DD_R": -274.936,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "train": {
+      "trades": 7023,
+      "win_rate_pct": 31.38,
+      "net_R": -2478.788,
+      "expectancy_R": -0.35295,
+      "profit_factor": 0.6022,
+      "max_closed_equity_DD_R": -2488.818,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2234,
+      "win_rate_pct": 35.72,
+      "net_R": -726.632,
+      "expectancy_R": -0.32526,
+      "profit_factor": 0.6394,
+      "max_closed_equity_DD_R": -759.345,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 384,
+      "win_rate_pct": 32.55,
+      "net_R": -140.289,
+      "expectancy_R": -0.36534,
+      "profit_factor": 0.5924,
+      "max_closed_equity_DD_R": -146.784,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2234,
+      "win_rate_pct": 35.05,
+      "net_R": -1496.261,
+      "expectancy_R": -0.66977,
+      "profit_factor": 0.4076,
+      "max_closed_equity_DD_R": -1508.623,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 384,
+      "win_rate_pct": 31.51,
+      "net_R": -249.281,
+      "expectancy_R": -0.64917,
+      "profit_factor": 0.4047,
+      "max_closed_equity_DD_R": -251.945,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "train": {
+      "trades": 6839,
+      "win_rate_pct": 27.43,
+      "net_R": -2295.147,
+      "expectancy_R": -0.3356,
+      "profit_factor": 0.6426,
+      "max_closed_equity_DD_R": -2308.676,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2174,
+      "win_rate_pct": 30.82,
+      "net_R": -702.101,
+      "expectancy_R": -0.32295,
+      "profit_factor": 0.6675,
+      "max_closed_equity_DD_R": -740.922,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 374,
+      "win_rate_pct": 29.41,
+      "net_R": -117.27,
+      "expectancy_R": -0.31356,
+      "profit_factor": 0.6631,
+      "max_closed_equity_DD_R": -129.086,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2174,
+      "win_rate_pct": 30.5,
+      "net_R": -1449.161,
+      "expectancy_R": -0.66659,
+      "profit_factor": 0.4511,
+      "max_closed_equity_DD_R": -1469.543,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 374,
+      "win_rate_pct": 28.88,
+      "net_R": -221.523,
+      "expectancy_R": -0.59231,
+      "profit_factor": 0.4738,
+      "max_closed_equity_DD_R": -228.843,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "train": {
+      "trades": 6130,
+      "win_rate_pct": 38.94,
+      "net_R": -1373.975,
+      "expectancy_R": -0.22414,
+      "profit_factor": 0.6929,
+      "max_closed_equity_DD_R": -1380.288,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1996,
+      "win_rate_pct": 42.33,
+      "net_R": -410.946,
+      "expectancy_R": -0.20588,
+      "profit_factor": 0.718,
+      "max_closed_equity_DD_R": -447.233,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 337,
+      "win_rate_pct": 44.51,
+      "net_R": -37.932,
+      "expectancy_R": -0.11256,
+      "profit_factor": 0.8321,
+      "max_closed_equity_DD_R": -59.212,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1996,
+      "win_rate_pct": 41.98,
+      "net_R": -872.173,
+      "expectancy_R": -0.43696,
+      "profit_factor": 0.4974,
+      "max_closed_equity_DD_R": -892.184,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 337,
+      "win_rate_pct": 43.92,
+      "net_R": -101.126,
+      "expectancy_R": -0.30008,
+      "profit_factor": 0.6126,
+      "max_closed_equity_DD_R": -113.908,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "train": {
+      "trades": 5720,
+      "win_rate_pct": 32.88,
+      "net_R": -1223.668,
+      "expectancy_R": -0.21393,
+      "profit_factor": 0.7331,
+      "max_closed_equity_DD_R": -1230.888,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1876,
+      "win_rate_pct": 35.61,
+      "net_R": -372.766,
+      "expectancy_R": -0.1987,
+      "profit_factor": 0.7552,
+      "max_closed_equity_DD_R": -410.374,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 313,
+      "win_rate_pct": 34.5,
+      "net_R": -59.316,
+      "expectancy_R": -0.18951,
+      "profit_factor": 0.7575,
+      "max_closed_equity_DD_R": -84.816,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1876,
+      "win_rate_pct": 35.34,
+      "net_R": -801.288,
+      "expectancy_R": -0.42713,
+      "profit_factor": 0.5565,
+      "max_closed_equity_DD_R": -823.887,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 313,
+      "win_rate_pct": 34.19,
+      "net_R": -116.434,
+      "expectancy_R": -0.37199,
+      "profit_factor": 0.5867,
+      "max_closed_equity_DD_R": -135.354,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "train": {
+      "trades": 5384,
+      "win_rate_pct": 28.62,
+      "net_R": -1125.763,
+      "expectancy_R": -0.20909,
+      "profit_factor": 0.7543,
+      "max_closed_equity_DD_R": -1142.515,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1766,
+      "win_rate_pct": 31.37,
+      "net_R": -318.764,
+      "expectancy_R": -0.1805,
+      "profit_factor": 0.7911,
+      "max_closed_equity_DD_R": -364.762,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 304,
+      "win_rate_pct": 30.92,
+      "net_R": -49.221,
+      "expectancy_R": -0.16191,
+      "profit_factor": 0.805,
+      "max_closed_equity_DD_R": -73.432,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1766,
+      "win_rate_pct": 31.14,
+      "net_R": -719.719,
+      "expectancy_R": -0.40754,
+      "profit_factor": 0.6012,
+      "max_closed_equity_DD_R": -749.1,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 304,
+      "win_rate_pct": 30.59,
+      "net_R": -105.617,
+      "expectancy_R": -0.34742,
+      "profit_factor": 0.637,
+      "max_closed_equity_DD_R": -123.43,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "train": {
+      "trades": 5009,
+      "win_rate_pct": 39.89,
+      "net_R": -768.083,
+      "expectancy_R": -0.15334,
+      "profit_factor": 0.7762,
+      "max_closed_equity_DD_R": -776.812,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1690,
+      "win_rate_pct": 41.36,
+      "net_R": -272.089,
+      "expectancy_R": -0.161,
+      "profit_factor": 0.7686,
+      "max_closed_equity_DD_R": -305.39,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 275,
+      "win_rate_pct": 45.09,
+      "net_R": -13.576,
+      "expectancy_R": -0.04937,
+      "profit_factor": 0.9211,
+      "max_closed_equity_DD_R": -28.231,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1690,
+      "win_rate_pct": 41.01,
+      "net_R": -558.338,
+      "expectancy_R": -0.33038,
+      "profit_factor": 0.5869,
+      "max_closed_equity_DD_R": -581.49,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 275,
+      "win_rate_pct": 44.36,
+      "net_R": -51.713,
+      "expectancy_R": -0.18805,
+      "profit_factor": 0.7314,
+      "max_closed_equity_DD_R": -59.75,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "train": {
+      "trades": 4536,
+      "win_rate_pct": 34.1,
+      "net_R": -664.851,
+      "expectancy_R": -0.14657,
+      "profit_factor": 0.8044,
+      "max_closed_equity_DD_R": -686.848,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1537,
+      "win_rate_pct": 35.59,
+      "net_R": -226.478,
+      "expectancy_R": -0.14735,
+      "profit_factor": 0.8069,
+      "max_closed_equity_DD_R": -260.938,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 259,
+      "win_rate_pct": 39.38,
+      "net_R": -3.024,
+      "expectancy_R": -0.01167,
+      "profit_factor": 0.9832,
+      "max_closed_equity_DD_R": -35.199,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1537,
+      "win_rate_pct": 35.13,
+      "net_R": -486.543,
+      "expectancy_R": -0.31655,
+      "profit_factor": 0.6384,
+      "max_closed_equity_DD_R": -511.769,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 259,
+      "win_rate_pct": 39.0,
+      "net_R": -39.716,
+      "expectancy_R": -0.15334,
+      "profit_factor": 0.8033,
+      "max_closed_equity_DD_R": -58.69,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "LIQUIDITY_SWEEP",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "train": {
+      "trades": 4214,
+      "win_rate_pct": 30.71,
+      "net_R": -541.521,
+      "expectancy_R": -0.12851,
+      "profit_factor": 0.8362,
+      "max_closed_equity_DD_R": -582.6,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1438,
+      "win_rate_pct": 31.57,
+      "net_R": -209.416,
+      "expectancy_R": -0.14563,
+      "profit_factor": 0.8192,
+      "max_closed_equity_DD_R": -250.887,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 245,
+      "win_rate_pct": 37.14,
+      "net_R": 13.406,
+      "expectancy_R": 0.05472,
+      "profit_factor": 1.0759,
+      "max_closed_equity_DD_R": -38.315,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1438,
+      "win_rate_pct": 31.02,
+      "net_R": -451.255,
+      "expectancy_R": -0.31381,
+      "profit_factor": 0.66,
+      "max_closed_equity_DD_R": -474.376,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 245,
+      "win_rate_pct": 36.33,
+      "net_R": -21.682,
+      "expectancy_R": -0.0885,
+      "profit_factor": 0.8907,
+      "max_closed_equity_DD_R": -52.097,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "train": {
+      "trades": 7147,
+      "win_rate_pct": 39.88,
+      "net_R": -2089.97,
+      "expectancy_R": -0.29243,
+      "profit_factor": 0.6227,
+      "max_closed_equity_DD_R": -2093.082,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2590,
+      "win_rate_pct": 40.85,
+      "net_R": -955.748,
+      "expectancy_R": -0.36901,
+      "profit_factor": 0.5521,
+      "max_closed_equity_DD_R": -967.867,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 466,
+      "win_rate_pct": 41.63,
+      "net_R": -117.979,
+      "expectancy_R": -0.25317,
+      "profit_factor": 0.6661,
+      "max_closed_equity_DD_R": -130.222,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2590,
+      "win_rate_pct": 38.84,
+      "net_R": -1830.671,
+      "expectancy_R": -0.70682,
+      "profit_factor": 0.3172,
+      "max_closed_equity_DD_R": -1836.034,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 466,
+      "win_rate_pct": 40.56,
+      "net_R": -235.389,
+      "expectancy_R": -0.50513,
+      "profit_factor": 0.4464,
+      "max_closed_equity_DD_R": -240.984,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "train": {
+      "trades": 6620,
+      "win_rate_pct": 33.43,
+      "net_R": -1908.113,
+      "expectancy_R": -0.28823,
+      "profit_factor": 0.6646,
+      "max_closed_equity_DD_R": -1910.818,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2430,
+      "win_rate_pct": 34.9,
+      "net_R": -840.262,
+      "expectancy_R": -0.34579,
+      "profit_factor": 0.6192,
+      "max_closed_equity_DD_R": -858.858,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 437,
+      "win_rate_pct": 33.87,
+      "net_R": -122.145,
+      "expectancy_R": -0.27951,
+      "profit_factor": 0.6744,
+      "max_closed_equity_DD_R": -134.801,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2430,
+      "win_rate_pct": 34.16,
+      "net_R": -1660.767,
+      "expectancy_R": -0.68344,
+      "profit_factor": 0.3961,
+      "max_closed_equity_DD_R": -1673.052,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 437,
+      "win_rate_pct": 33.41,
+      "net_R": -232.84,
+      "expectancy_R": -0.53282,
+      "profit_factor": 0.4819,
+      "max_closed_equity_DD_R": -238.433,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "train": {
+      "trades": 6169,
+      "win_rate_pct": 28.85,
+      "net_R": -1741.737,
+      "expectancy_R": -0.28234,
+      "profit_factor": 0.6927,
+      "max_closed_equity_DD_R": -1743.011,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2308,
+      "win_rate_pct": 30.5,
+      "net_R": -749.486,
+      "expectancy_R": -0.32473,
+      "profit_factor": 0.6651,
+      "max_closed_equity_DD_R": -780.836,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 410,
+      "win_rate_pct": 30.0,
+      "net_R": -101.124,
+      "expectancy_R": -0.24664,
+      "profit_factor": 0.7276,
+      "max_closed_equity_DD_R": -118.377,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2308,
+      "win_rate_pct": 30.24,
+      "net_R": -1524.671,
+      "expectancy_R": -0.6606,
+      "profit_factor": 0.4523,
+      "max_closed_equity_DD_R": -1543.462,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 410,
+      "win_rate_pct": 30.0,
+      "net_R": -204.757,
+      "expectancy_R": -0.49941,
+      "profit_factor": 0.5383,
+      "max_closed_equity_DD_R": -215.633,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "train": {
+      "trades": 5413,
+      "win_rate_pct": 40.44,
+      "net_R": -990.621,
+      "expectancy_R": -0.18301,
+      "profit_factor": 0.7424,
+      "max_closed_equity_DD_R": -990.971,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 2031,
+      "win_rate_pct": 41.85,
+      "net_R": -435.003,
+      "expectancy_R": -0.21418,
+      "profit_factor": 0.7081,
+      "max_closed_equity_DD_R": -457.842,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 360,
+      "win_rate_pct": 38.89,
+      "net_R": -82.662,
+      "expectancy_R": -0.22962,
+      "profit_factor": 0.6886,
+      "max_closed_equity_DD_R": -96.472,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 2031,
+      "win_rate_pct": 41.41,
+      "net_R": -888.126,
+      "expectancy_R": -0.43728,
+      "profit_factor": 0.4955,
+      "max_closed_equity_DD_R": -900.397,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 360,
+      "win_rate_pct": 38.61,
+      "net_R": -144.676,
+      "expectancy_R": -0.40188,
+      "profit_factor": 0.5248,
+      "max_closed_equity_DD_R": -153.019,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "train": {
+      "trades": 4799,
+      "win_rate_pct": 33.84,
+      "net_R": -866.952,
+      "expectancy_R": -0.18065,
+      "profit_factor": 0.7708,
+      "max_closed_equity_DD_R": -867.281,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1848,
+      "win_rate_pct": 35.88,
+      "net_R": -343.067,
+      "expectancy_R": -0.18564,
+      "profit_factor": 0.7702,
+      "max_closed_equity_DD_R": -368.35,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 328,
+      "win_rate_pct": 33.23,
+      "net_R": -68.528,
+      "expectancy_R": -0.20893,
+      "profit_factor": 0.7408,
+      "max_closed_equity_DD_R": -91.36,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1848,
+      "win_rate_pct": 35.71,
+      "net_R": -752.488,
+      "expectancy_R": -0.40719,
+      "profit_factor": 0.5723,
+      "max_closed_equity_DD_R": -768.527,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 328,
+      "win_rate_pct": 33.23,
+      "net_R": -125.714,
+      "expectancy_R": -0.38327,
+      "profit_factor": 0.5854,
+      "max_closed_equity_DD_R": -141.523,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "train": {
+      "trades": 4405,
+      "win_rate_pct": 30.28,
+      "net_R": -620.748,
+      "expectancy_R": -0.14092,
+      "profit_factor": 0.83,
+      "max_closed_equity_DD_R": -661.979,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1710,
+      "win_rate_pct": 29.77,
+      "net_R": -385.248,
+      "expectancy_R": -0.22529,
+      "profit_factor": 0.745,
+      "max_closed_equity_DD_R": -416.506,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 299,
+      "win_rate_pct": 29.1,
+      "net_R": -63.181,
+      "expectancy_R": -0.21131,
+      "profit_factor": 0.7522,
+      "max_closed_equity_DD_R": -91.234,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1710,
+      "win_rate_pct": 29.59,
+      "net_R": -765.822,
+      "expectancy_R": -0.44785,
+      "profit_factor": 0.5696,
+      "max_closed_equity_DD_R": -786.315,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 299,
+      "win_rate_pct": 29.1,
+      "net_R": -114.937,
+      "expectancy_R": -0.38441,
+      "profit_factor": 0.6061,
+      "max_closed_equity_DD_R": -134.355,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "train": {
+      "trades": 4117,
+      "win_rate_pct": 40.9,
+      "net_R": -506.606,
+      "expectancy_R": -0.12305,
+      "profit_factor": 0.8167,
+      "max_closed_equity_DD_R": -515.149,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1623,
+      "win_rate_pct": 43.13,
+      "net_R": -191.603,
+      "expectancy_R": -0.11805,
+      "profit_factor": 0.8254,
+      "max_closed_equity_DD_R": -224.0,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 277,
+      "win_rate_pct": 39.35,
+      "net_R": -50.028,
+      "expectancy_R": -0.18061,
+      "profit_factor": 0.7405,
+      "max_closed_equity_DD_R": -72.228,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1623,
+      "win_rate_pct": 42.95,
+      "net_R": -461.265,
+      "expectancy_R": -0.2842,
+      "profit_factor": 0.6319,
+      "max_closed_equity_DD_R": -477.952,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 277,
+      "win_rate_pct": 38.63,
+      "net_R": -86.532,
+      "expectancy_R": -0.31239,
+      "profit_factor": 0.5986,
+      "max_closed_equity_DD_R": -103.705,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "train": {
+      "trades": 3657,
+      "win_rate_pct": 35.77,
+      "net_R": -311.528,
+      "expectancy_R": -0.08519,
+      "profit_factor": 0.883,
+      "max_closed_equity_DD_R": -385.153,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1427,
+      "win_rate_pct": 34.69,
+      "net_R": -233.679,
+      "expectancy_R": -0.16376,
+      "profit_factor": 0.7886,
+      "max_closed_equity_DD_R": -276.748,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 250,
+      "win_rate_pct": 32.8,
+      "net_R": -52.692,
+      "expectancy_R": -0.21077,
+      "profit_factor": 0.726,
+      "max_closed_equity_DD_R": -78.573,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1427,
+      "win_rate_pct": 34.48,
+      "net_R": -471.969,
+      "expectancy_R": -0.33074,
+      "profit_factor": 0.6262,
+      "max_closed_equity_DD_R": -499.937,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 250,
+      "win_rate_pct": 32.0,
+      "net_R": -85.961,
+      "expectancy_R": -0.34384,
+      "profit_factor": 0.5997,
+      "max_closed_equity_DD_R": -108.466,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "TREND_PULLBACK",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "train": {
+      "trades": 3331,
+      "win_rate_pct": 31.97,
+      "net_R": -221.152,
+      "expectancy_R": -0.06639,
+      "profit_factor": 0.9135,
+      "max_closed_equity_DD_R": -336.32,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1299,
+      "win_rate_pct": 30.95,
+      "net_R": -182.013,
+      "expectancy_R": -0.14012,
+      "profit_factor": 0.8286,
+      "max_closed_equity_DD_R": -230.071,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 223,
+      "win_rate_pct": 28.7,
+      "net_R": -51.704,
+      "expectancy_R": -0.23186,
+      "profit_factor": 0.716,
+      "max_closed_equity_DD_R": -82.775,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1299,
+      "win_rate_pct": 30.64,
+      "net_R": -399.823,
+      "expectancy_R": -0.30779,
+      "profit_factor": 0.671,
+      "max_closed_equity_DD_R": -434.847,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 223,
+      "win_rate_pct": 28.25,
+      "net_R": -81.757,
+      "expectancy_R": -0.36662,
+      "profit_factor": 0.5987,
+      "max_closed_equity_DD_R": -109.612,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 1.0,
+    "rr": 1.5,
+    "train": {
+      "trades": 4257,
+      "win_rate_pct": 40.85,
+      "net_R": -1110.371,
+      "expectancy_R": -0.26083,
+      "profit_factor": 0.657,
+      "max_closed_equity_DD_R": -1124.832,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1292,
+      "win_rate_pct": 38.47,
+      "net_R": -516.943,
+      "expectancy_R": -0.40011,
+      "profit_factor": 0.5217,
+      "max_closed_equity_DD_R": -527.691,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 295,
+      "win_rate_pct": 40.34,
+      "net_R": -85.304,
+      "expectancy_R": -0.28917,
+      "profit_factor": 0.6257,
+      "max_closed_equity_DD_R": -87.99,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1292,
+      "win_rate_pct": 37.38,
+      "net_R": -924.036,
+      "expectancy_R": -0.7152,
+      "profit_factor": 0.3089,
+      "max_closed_equity_DD_R": -928.493,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 295,
+      "win_rate_pct": 38.98,
+      "net_R": -160.565,
+      "expectancy_R": -0.54429,
+      "profit_factor": 0.4145,
+      "max_closed_equity_DD_R": -160.565,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 1.0,
+    "rr": 2.0,
+    "train": {
+      "trades": 4096,
+      "win_rate_pct": 34.45,
+      "net_R": -1030.49,
+      "expectancy_R": -0.25158,
+      "profit_factor": 0.7021,
+      "max_closed_equity_DD_R": -1051.95,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1258,
+      "win_rate_pct": 31.8,
+      "net_R": -519.963,
+      "expectancy_R": -0.41332,
+      "profit_factor": 0.5564,
+      "max_closed_equity_DD_R": -539.88,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 288,
+      "win_rate_pct": 33.68,
+      "net_R": -82.294,
+      "expectancy_R": -0.28574,
+      "profit_factor": 0.6656,
+      "max_closed_equity_DD_R": -88.96,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1258,
+      "win_rate_pct": 31.4,
+      "net_R": -918.502,
+      "expectancy_R": -0.73013,
+      "profit_factor": 0.3647,
+      "max_closed_equity_DD_R": -926.908,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 288,
+      "win_rate_pct": 33.33,
+      "net_R": -155.404,
+      "expectancy_R": -0.5396,
+      "profit_factor": 0.4711,
+      "max_closed_equity_DD_R": -159.211,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 1.0,
+    "rr": 2.5,
+    "train": {
+      "trades": 3937,
+      "win_rate_pct": 29.95,
+      "net_R": -941.288,
+      "expectancy_R": -0.23909,
+      "profit_factor": 0.735,
+      "max_closed_equity_DD_R": -969.196,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1232,
+      "win_rate_pct": 27.92,
+      "net_R": -484.594,
+      "expectancy_R": -0.39334,
+      "profit_factor": 0.6006,
+      "max_closed_equity_DD_R": -520.938,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 284,
+      "win_rate_pct": 28.87,
+      "net_R": -81.348,
+      "expectancy_R": -0.28644,
+      "profit_factor": 0.6869,
+      "max_closed_equity_DD_R": -84.597,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1232,
+      "win_rate_pct": 27.76,
+      "net_R": -875.96,
+      "expectancy_R": -0.71101,
+      "profit_factor": 0.4139,
+      "max_closed_equity_DD_R": -890.763,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 284,
+      "win_rate_pct": 28.87,
+      "net_R": -153.646,
+      "expectancy_R": -0.54101,
+      "profit_factor": 0.5033,
+      "max_closed_equity_DD_R": -153.953,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 1.5,
+    "rr": 1.5,
+    "train": {
+      "trades": 3716,
+      "win_rate_pct": 41.39,
+      "net_R": -589.722,
+      "expectancy_R": -0.1587,
+      "profit_factor": 0.7728,
+      "max_closed_equity_DD_R": -619.274,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1193,
+      "win_rate_pct": 40.49,
+      "net_R": -278.776,
+      "expectancy_R": -0.23368,
+      "profit_factor": 0.6849,
+      "max_closed_equity_DD_R": -299.447,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 273,
+      "win_rate_pct": 38.83,
+      "net_R": -61.587,
+      "expectancy_R": -0.2256,
+      "profit_factor": 0.6912,
+      "max_closed_equity_DD_R": -66.514,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1193,
+      "win_rate_pct": 40.23,
+      "net_R": -532.298,
+      "expectancy_R": -0.44618,
+      "profit_factor": 0.4873,
+      "max_closed_equity_DD_R": -541.644,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 273,
+      "win_rate_pct": 38.46,
+      "net_R": -107.52,
+      "expectancy_R": -0.39384,
+      "profit_factor": 0.5272,
+      "max_closed_equity_DD_R": -107.52,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 1.5,
+    "rr": 2.0,
+    "train": {
+      "trades": 3482,
+      "win_rate_pct": 34.58,
+      "net_R": -554.122,
+      "expectancy_R": -0.15914,
+      "profit_factor": 0.7963,
+      "max_closed_equity_DD_R": -585.541,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1141,
+      "win_rate_pct": 33.65,
+      "net_R": -275.651,
+      "expectancy_R": -0.24159,
+      "profit_factor": 0.7075,
+      "max_closed_equity_DD_R": -307.196,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 256,
+      "win_rate_pct": 32.81,
+      "net_R": -53.136,
+      "expectancy_R": -0.20756,
+      "profit_factor": 0.7399,
+      "max_closed_equity_DD_R": -61.797,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1141,
+      "win_rate_pct": 33.39,
+      "net_R": -518.999,
+      "expectancy_R": -0.45486,
+      "profit_factor": 0.5293,
+      "max_closed_equity_DD_R": -533.499,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 256,
+      "win_rate_pct": 32.81,
+      "net_R": -96.123,
+      "expectancy_R": -0.37548,
+      "profit_factor": 0.587,
+      "max_closed_equity_DD_R": -96.908,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 1.5,
+    "rr": 2.5,
+    "train": {
+      "trades": 3322,
+      "win_rate_pct": 30.04,
+      "net_R": -509.535,
+      "expectancy_R": -0.15338,
+      "profit_factor": 0.816,
+      "max_closed_equity_DD_R": -559.969,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1103,
+      "win_rate_pct": 27.47,
+      "net_R": -327.891,
+      "expectancy_R": -0.29727,
+      "profit_factor": 0.6717,
+      "max_closed_equity_DD_R": -350.561,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 243,
+      "win_rate_pct": 29.63,
+      "net_R": -39.385,
+      "expectancy_R": -0.16208,
+      "profit_factor": 0.8082,
+      "max_closed_equity_DD_R": -56.025,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1103,
+      "win_rate_pct": 27.38,
+      "net_R": -564.389,
+      "expectancy_R": -0.51169,
+      "profit_factor": 0.5174,
+      "max_closed_equity_DD_R": -578.999,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 243,
+      "win_rate_pct": 29.63,
+      "net_R": -80.858,
+      "expectancy_R": -0.33275,
+      "profit_factor": 0.6557,
+      "max_closed_equity_DD_R": -86.578,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 2.0,
+    "rr": 1.5,
+    "train": {
+      "trades": 3293,
+      "win_rate_pct": 41.82,
+      "net_R": -341.221,
+      "expectancy_R": -0.10362,
+      "profit_factor": 0.844,
+      "max_closed_equity_DD_R": -382.712,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1095,
+      "win_rate_pct": 39.82,
+      "net_R": -215.866,
+      "expectancy_R": -0.19714,
+      "profit_factor": 0.7236,
+      "max_closed_equity_DD_R": -240.51,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 244,
+      "win_rate_pct": 38.11,
+      "net_R": -46.28,
+      "expectancy_R": -0.18967,
+      "profit_factor": 0.7307,
+      "max_closed_equity_DD_R": -52.352,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1095,
+      "win_rate_pct": 39.45,
+      "net_R": -392.694,
+      "expectancy_R": -0.35862,
+      "profit_factor": 0.5573,
+      "max_closed_equity_DD_R": -405.831,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 244,
+      "win_rate_pct": 38.11,
+      "net_R": -76.958,
+      "expectancy_R": -0.3154,
+      "profit_factor": 0.5962,
+      "max_closed_equity_DD_R": -77.548,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 2.0,
+    "rr": 2.0,
+    "train": {
+      "trades": 3051,
+      "win_rate_pct": 36.02,
+      "net_R": -254.533,
+      "expectancy_R": -0.08343,
+      "profit_factor": 0.8857,
+      "max_closed_equity_DD_R": -326.778,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 1027,
+      "win_rate_pct": 32.23,
+      "net_R": -245.931,
+      "expectancy_R": -0.23946,
+      "profit_factor": 0.7025,
+      "max_closed_equity_DD_R": -265.02,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 231,
+      "win_rate_pct": 32.03,
+      "net_R": -44.074,
+      "expectancy_R": -0.1908,
+      "profit_factor": 0.7563,
+      "max_closed_equity_DD_R": -52.579,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 1027,
+      "win_rate_pct": 31.94,
+      "net_R": -412.918,
+      "expectancy_R": -0.40206,
+      "profit_factor": 0.5608,
+      "max_closed_equity_DD_R": -424.314,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 231,
+      "win_rate_pct": 32.03,
+      "net_R": -73.686,
+      "expectancy_R": -0.31899,
+      "profit_factor": 0.634,
+      "max_closed_equity_DD_R": -77.48,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  },
+  {
+    "family": "BREAKOUT_RETEST",
+    "stop_atr": 2.0,
+    "rr": 2.5,
+    "train": {
+      "trades": 2849,
+      "win_rate_pct": 32.01,
+      "net_R": -196.265,
+      "expectancy_R": -0.06889,
+      "profit_factor": 0.9111,
+      "max_closed_equity_DD_R": -299.316,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "validation": {
+      "trades": 990,
+      "win_rate_pct": 28.08,
+      "net_R": -248.201,
+      "expectancy_R": -0.25071,
+      "profit_factor": 0.7067,
+      "max_closed_equity_DD_R": -275.372,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "holdout": {
+      "trades": 214,
+      "win_rate_pct": 29.91,
+      "net_R": -23.67,
+      "expectancy_R": -0.11061,
+      "profit_factor": 0.8629,
+      "max_closed_equity_DD_R": -50.886,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_validation": {
+      "trades": 990,
+      "win_rate_pct": 27.78,
+      "net_R": -409.964,
+      "expectancy_R": -0.41411,
+      "profit_factor": 0.5746,
+      "max_closed_equity_DD_R": -423.241,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    },
+    "stress_holdout": {
+      "trades": 214,
+      "win_rate_pct": 29.91,
+      "net_R": -51.838,
+      "expectancy_R": -0.24223,
+      "profit_factor": 0.7311,
+      "max_closed_equity_DD_R": -62.7,
+      "max_concurrent_positions": 5,
+      "note": "event-driven concurrency cap; no funding/correlation model"
+    }
+  }
+]
