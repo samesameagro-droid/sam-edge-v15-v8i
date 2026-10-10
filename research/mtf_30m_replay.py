@@ -8,7 +8,7 @@ import requests
 import pandas as pd
 
 ARCHIVE = "https://data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}"
-INTERVALS = {"1m":1,"15m":15,"30m":30,"1h":60,"4h":240}
+INTERVALS = {"1m":1,"5m":5,"15m":15,"30m":30,"1h":60,"4h":240}
 HEADERS = {"User-Agent":"SAM-EDGE-MTF-Research/1.0"}
 
 def fetch_one_archive(symbol, interval, kind, period):
@@ -209,10 +209,10 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
 
     # Do not silently trust a partial archive: fill/replace with the REST series when
     # its latest candle is stale or the archive contains internal timestamp gaps.
-    if interval == "1m" or archive_stale or archive_gappy:
+    if interval in ("1m","5m") or archive_stale or archive_gappy:
         api = fetch_klines_api(symbol, interval, start_ms, target_end)
         if not api.empty:
-            if interval == "1m":
+            if interval in ("1m","5m"):
                 # Intrabar path replay prefers a single REST source for the entire window.
                 archive = api.sort_values("open_ms").drop_duplicates("open_ms").reset_index(drop=True)
             else:
@@ -333,14 +333,16 @@ def main():
         path_end=int(max(pd.Timestamp(t["closed_at"]).timestamp()*1000 for t in sym_trades))+15*60_000
         path_ranges[sym]=(path_start,path_end)
     with ThreadPoolExecutor(max_workers=8) as pool:
-        path_futures={pool.submit(fetch_klines,sym,"1m",path_ranges[sym][0],path_ranges[sym][1]):sym for sym in symbols}
-        for future,sym in path_futures.items():
+        path_futures={pool.submit(fetch_klines,sym,tf,path_ranges[sym][0],path_ranges[sym][1]):(sym,tf)
+                      for sym in symbols for tf in ("1m","5m")}
+        for future,key in path_futures.items():
+            sym,tf=key
             try:
-                cache[(sym,"1m")]=future.result()
+                cache[key]=future.result()
             except Exception as e:
-                cache[(sym,"1m")]=pd.DataFrame()
-                path_errors.append({"symbol":sym,"tf":"1m","error":"Minute candle fetch exception","detail":f"{type(e).__name__}: {e}"})
-            print(f"DATA {sym} 1m path: {len(cache[(sym,'1m')])} candles",flush=True)
+                cache[key]=pd.DataFrame()
+                path_errors.append({"symbol":sym,"tf":tf,"error":"Path candle fetch exception","detail":f"{type(e).__name__}: {e}"})
+            print(f"DATA {sym} {tf} path: {len(cache[key])} candles",flush=True)
     for sym in symbols:
         series=cache[(sym,"1m")]
         if series.empty:
@@ -397,6 +399,14 @@ def main():
         row["ohlc_path_touch_utc"]=pd.to_datetime(base_path["touch_ms"],unit="ms",utc=True).isoformat() if base_path["touch_ms"] is not None else None
         row["ohlc_path_bars"]=base_path["bars"]
         row["ohlc_path_matches_recorded"]=(base_path["result"]==t["result"] and not base_path["ambiguous"])
+        bars5m=cache.get((sym,"5m"),pd.DataFrame())
+        path5=simulate_path(bars5m,entry_ms,exit_ms,t["side"],float(t["sl"]),float(t["tp"]))
+        row["ohlc_path_5m_result"]=path5["result"]
+        row["ohlc_path_5m_ambiguous"]=path5["ambiguous"]
+        row["ohlc_path_5m_matches_recorded"]=(path5["result"]==t["result"] and not path5["ambiguous"])
+        window5=bars5m[(bars5m.open_ms>=entry_ms)&(bars5m.close_ms<exit_ms)] if not bars5m.empty else pd.DataFrame()
+        row["path_5m_min_low"]=float(window5.low.min()) if not window5.empty else None
+        row["path_5m_max_high"]=float(window5.high.max()) if not window5.empty else None
         if base_path["result"] in ("NO_DATA","NO_BARS"):
             path_errors.append({"symbol":sym,"tf":"1m","error":"No path bars for recorded trade","entry_utc":t["opened_at"],"exit_utc":t["closed_at"],"result":base_path["result"]})
         # ATR-distance sensitivity: scale original stop/target distances by +/-10%.
@@ -476,12 +486,19 @@ def main():
                 "gross_R_timeout_assumed_zero":round(gross,4)}
     score54_mask=df.entry_score<=54
     path_matches=int(df.ohlc_path_matches_recorded.sum())
-    path_validation={"trades":len(df),"matches_recorded_outcome":path_matches,
-                     "mismatches":int(len(df)-path_matches),
-                     "ambiguous_same_minute":int(df.ohlc_path_ambiguous.fillna(False).sum()),
+    path5_matches=int(df.ohlc_path_5m_matches_recorded.sum())
+    path_validation={"trades":len(df),"matches_recorded_outcome_1m":path_matches,
+                     "mismatches_1m":int(len(df)-path_matches),
+                     "matches_recorded_outcome_5m":path5_matches,
+                     "mismatches_5m":int(len(df)-path5_matches),
+                     "ambiguous_same_minute_1m":int(df.ohlc_path_ambiguous.fillna(False).sum()),
+                     "ambiguous_same_bar_5m":int(df.ohlc_path_5m_ambiguous.fillna(False).sum()),
                      "path_data_errors":len(path_errors),
-                     "validation_passed":path_matches==len(df) and not path_errors}
+                     "validation_passed_1m":path_matches==len(df) and not path_errors,
+                     "validation_passed_5m":path5_matches==len(df) and not path_errors}
     path_scenarios={
+        "recorded_entry_sl_tp_5m_all_trades":outcome_stats("ohlc_path_5m_result",allmask),
+        "score_max_54_recorded_entry_5m":outcome_stats("ohlc_path_5m_result",score54_mask),
         "recorded_entry_sl_tp_all_trades":outcome_stats("ohlc_path_result",allmask),
         "score_max_54_recorded_entry":outcome_stats("ohlc_path_result",score54_mask),
         "atr_distance_minus_10pct_all_trades":outcome_stats("atr_minus10_result",allmask),
