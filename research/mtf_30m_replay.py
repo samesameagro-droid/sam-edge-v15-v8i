@@ -7,40 +7,55 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import pandas as pd
 
-ARCHIVE = "https://data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}"
+ARCHIVE_BASES = [
+    "https://data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
+    "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
+]
 INTERVALS = {"1m":1,"5m":5,"15m":15,"30m":30,"1h":60,"4h":240}
 HEADERS = {"User-Agent":"SAM-EDGE-MTF-Research/1.0"}
 
 def fetch_one_archive(symbol, interval, kind, period):
     filename=f"{symbol}-{interval}-{period}.zip"
-    url=ARCHIVE.format(kind=kind,symbol=symbol,interval=interval,filename=filename)
-    try:
-        r=requests.get(url,headers=HEADERS,timeout=35)
-        if r.status_code == 404:
-            return None
-        r.raise_for_status()
-        with zipfile.ZipFile(io.BytesIO(r.content)) as z:
-            names=[n for n in z.namelist() if n.lower().endswith(".csv")]
-            if not names: return None
-            raw=pd.read_csv(z.open(names[0]),header=None)
-        if raw.empty or raw.shape[1]<6: return None
-        if not str(raw.iloc[0,0]).strip().replace(".","",1).isdigit():
-            raw=raw.iloc[1:].reset_index(drop=True)
-        x=pd.DataFrame({
-            "open_ms":pd.to_numeric(raw.iloc[:,0],errors="coerce"),
-            "open":pd.to_numeric(raw.iloc[:,1],errors="coerce"),
-            "high":pd.to_numeric(raw.iloc[:,2],errors="coerce"),
-            "low":pd.to_numeric(raw.iloc[:,3],errors="coerce"),
-            "close":pd.to_numeric(raw.iloc[:,4],errors="coerce"),
-            "volume":pd.to_numeric(raw.iloc[:,5],errors="coerce")
-        }).dropna()
-        x["open_ms"]=x["open_ms"].astype("int64")
-        x["close_ms"]=x["open_ms"]+INTERVALS[interval]*60_000-1
-        x["source"]=f"binance_archive_{kind}"
-        return x
-    except Exception as e:
-        print(f"ARCHIVE_ERROR {symbol} {interval} {period}: {type(e).__name__}: {e}",flush=True)
-        return None
+    last_error = None
+    for template in ARCHIVE_BASES:
+        url=template.format(kind=kind,symbol=symbol,interval=interval,filename=filename)
+        try:
+            r=requests.get(url,headers=HEADERS,timeout=20)
+            if r.status_code == 404:
+                continue
+            r.raise_for_status()
+            with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+                names=[n for n in z.namelist() if n.lower().endswith(".csv")]
+                if not names:
+                    last_error = f"{url}: ZIP contains no CSV"
+                    continue
+                raw=pd.read_csv(z.open(names[0]),header=None)
+            if raw.empty or raw.shape[1]<6:
+                last_error = f"{url}: empty/invalid CSV"
+                continue
+            if not str(raw.iloc[0,0]).strip().replace(".","",1).isdigit():
+                raw=raw.iloc[1:].reset_index(drop=True)
+            x=pd.DataFrame({
+                "open_ms":pd.to_numeric(raw.iloc[:,0],errors="coerce"),
+                "open":pd.to_numeric(raw.iloc[:,1],errors="coerce"),
+                "high":pd.to_numeric(raw.iloc[:,2],errors="coerce"),
+                "low":pd.to_numeric(raw.iloc[:,3],errors="coerce"),
+                "close":pd.to_numeric(raw.iloc[:,4],errors="coerce"),
+                "volume":pd.to_numeric(raw.iloc[:,5],errors="coerce")
+            }).dropna()
+            if x.empty:
+                last_error = f"{url}: no valid OHLC rows"
+                continue
+            x["open_ms"]=x["open_ms"].astype("int64")
+            x["close_ms"]=x["open_ms"]+INTERVALS[interval]*60_000-1
+            x["source"]=f"binance_archive_{kind}"
+            print(f"ARCHIVE_OK {symbol} {interval} {period} rows={len(x)} host={r.url.split('/')[2]}",flush=True)
+            return x
+        except Exception as e:
+            last_error = f"{type(e).__name__}: {e}"
+    if last_error:
+        print(f"ARCHIVE_ERROR {symbol} {interval} {period}: {last_error}",flush=True)
+    return None
 
 def fetch_klines_api(symbol, interval, start_ms, end_ms):
     """Fetch public Binance USD-M Futures klines only; never fall back to another exchange."""
@@ -120,8 +135,12 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
         if len(rows) < 1500:
             break
 
+    # Assemble all successful Binance REST chunks; this was previously missing,
+    # which raised NameError whenever REST fallback was needed.
+    combined = (pd.concat(pieces, ignore_index=True).drop_duplicates("open_ms")
+                .sort_values("open_ms").reset_index(drop=True)) if pieces else pd.DataFrame()
     # Fail closed: research requires Binance USD-M Futures provenance.
-    # Never splice or substitute BingX candles when Binance REST is blocked/incomplete.
+    # Never splice or substitute another exchange when Binance is blocked/incomplete.
     return combined[(combined.open_ms >= start_ms) & (combined.open_ms < end_ms)].reset_index(drop=True) if not combined.empty else pd.DataFrame()
 
 def fetch_klines(symbol, interval, start_ms, end_ms):
@@ -170,6 +189,8 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
     # This avoids treating an unpublished/missing monthly aggregate as no historical data.
     missing_months = [period for (kind, period), result in fetched.items()
                       if kind == "monthly" and (result is None or result.empty)]
+    if missing_months:
+        print(f"ARCHIVE_MONTHLY_MISSING {symbol} {interval}: {','.join(missing_months)}; trying daily ZIPs", flush=True)
     daily_fallback = []
     for month_text in missing_months:
         month_start = pd.Timestamp(month_text + "-01", tz="UTC")
