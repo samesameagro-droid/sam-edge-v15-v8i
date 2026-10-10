@@ -16,7 +16,7 @@
         "net_R": -225.134,
         "expectancy_R": -0.15253,
         "profit_factor": 0.8163,
-        "max_closed_equity_DD_R": -238.516,
+        "max_closed_equity_DD_R": -259.218,
         "period_start": "2025-01-01",
         "period_end_exclusive": "2026-04-01"
       },
@@ -26,7 +26,7 @@
         "net_R": -43.963,
         "expectancy_R": -0.09027,
         "profit_factor": 0.8917,
-        "max_closed_equity_DD_R": -67.497,
+        "max_closed_equity_DD_R": -54.554,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -36,7 +36,7 @@
         "net_R": -1.529,
         "expectancy_R": -0.01718,
         "profit_factor": 0.9784,
-        "max_closed_equity_DD_R": -17.647,
+        "max_closed_equity_DD_R": -26.816,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       },
@@ -46,7 +46,7 @@
         "net_R": -156.46,
         "expectancy_R": -0.32127,
         "profit_factor": 0.6735,
-        "max_closed_equity_DD_R": -157.783,
+        "max_closed_equity_DD_R": -159.171,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -56,7 +56,7 @@
         "net_R": -16.553,
         "expectancy_R": -0.18599,
         "profit_factor": 0.7951,
-        "max_closed_equity_DD_R": -24.272,
+        "max_closed_equity_DD_R": -30.944,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       }
@@ -76,7 +76,7 @@
         "net_R": -124.464,
         "expectancy_R": -0.08548,
         "profit_factor": 0.8893,
-        "max_closed_equity_DD_R": -150.404,
+        "max_closed_equity_DD_R": -192.579,
         "period_start": "2025-01-01",
         "period_end_exclusive": "2026-04-01"
       },
@@ -86,7 +86,7 @@
         "net_R": -45.499,
         "expectancy_R": -0.09401,
         "profit_factor": 0.8836,
-        "max_closed_equity_DD_R": -55.952,
+        "max_closed_equity_DD_R": -67.361,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -96,7 +96,7 @@
         "net_R": 6.497,
         "expectancy_R": 0.07383,
         "profit_factor": 1.0992,
-        "max_closed_equity_DD_R": -8.881,
+        "max_closed_equity_DD_R": -25.612,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       },
@@ -106,7 +106,7 @@
         "net_R": -129.445,
         "expectancy_R": -0.26745,
         "profit_factor": 0.7106,
-        "max_closed_equity_DD_R": -129.445,
+        "max_closed_equity_DD_R": -135.07,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -116,7 +116,7 @@
         "net_R": -4.648,
         "expectancy_R": -0.05282,
         "profit_factor": 0.9361,
-        "max_closed_equity_DD_R": -11.992,
+        "max_closed_equity_DD_R": -28.708,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       }
@@ -136,7 +136,7 @@
         "net_R": -126.771,
         "expectancy_R": -0.08636,
         "profit_factor": 0.8812,
-        "max_closed_equity_DD_R": -146.395,
+        "max_closed_equity_DD_R": -177.548,
         "period_start": "2025-01-01",
         "period_end_exclusive": "2026-04-01"
       },
@@ -146,7 +146,7 @@
         "net_R": -47.042,
         "expectancy_R": -0.09679,
         "profit_factor": 0.8708,
-        "max_closed_equity_DD_R": -56.861,
+        "max_closed_equity_DD_R": -56.452,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -156,7 +156,7 @@
         "net_R": 0.997,
         "expectancy_R": 0.01133,
         "profit_factor": 1.0161,
-        "max_closed_equity_DD_R": -9.881,
+        "max_closed_equity_DD_R": -22.612,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       },
@@ -166,7 +166,7 @@
         "net_R": -131.262,
         "expectancy_R": -0.27009,
         "profit_factor": 0.6847,
-        "max_closed_equity_DD_R": -131.262,
+        "max_closed_equity_DD_R": -134.955,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -176,7 +176,7 @@
         "net_R": -10.148,
         "expectancy_R": -0.11532,
         "profit_factor": 0.8524,
-        "max_closed_equity_DD_R": -14.091,
+        "max_closed_equity_DD_R": -25.708,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       }
@@ -196,7 +196,7 @@
         "net_R": -125.263,
         "expectancy_R": -0.08487,
         "profit_factor": 0.8701,
-        "max_closed_equity_DD_R": -143.703,
+        "max_closed_equity_DD_R": -162.195,
         "period_start": "2025-01-01",
         "period_end_exclusive": "2026-04-01"
       },
@@ -206,7 +206,7 @@
         "net_R": -55.371,
         "expectancy_R": -0.1137,
         "profit_factor": 0.831,
-        "max_closed_equity_DD_R": -59.423,
+        "max_closed_equity_DD_R": -63.637,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -216,7 +216,7 @@
         "net_R": -5.787,
         "expectancy_R": -0.0643,
         "profit_factor": 0.9012,
-        "max_closed_equity_DD_R": -11.638,
+        "max_closed_equity_DD_R": -20.612,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       },
@@ -226,7 +226,7 @@
         "net_R": -139.719,
         "expectancy_R": -0.2869,
         "profit_factor": 0.6271,
-        "max_closed_equity_DD_R": -141.962,
+        "max_closed_equity_DD_R": -141.344,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -236,7 +236,7 @@
         "net_R": -17.176,
         "expectancy_R": -0.19084,
         "profit_factor": 0.7359,
-        "max_closed_equity_DD_R": -18.321,
+        "max_closed_equity_DD_R": -23.708,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       }
@@ -256,7 +256,7 @@
         "net_R": -214.522,
         "expectancy_R": -0.14495,
         "profit_factor": 0.8124,
-        "max_closed_equity_DD_R": -227.136,
+        "max_closed_equity_DD_R": -239.197,
         "period_start": "2025-01-01",
         "period_end_exclusive": "2026-04-01"
       },
@@ -266,7 +266,7 @@
         "net_R": -56.813,
         "expectancy_R": -0.11642,
         "profit_factor": 0.8498,
-        "max_closed_equity_DD_R": -74.383,
+        "max_closed_equity_DD_R": -63.182,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -276,7 +276,7 @@
         "net_R": 0.284,
         "expectancy_R": 0.00316,
         "profit_factor": 1.0044,
-        "max_closed_equity_DD_R": -13.184,
+        "max_closed_equity_DD_R": -23.816,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       },
@@ -286,7 +286,7 @@
         "net_R": -169.48,
         "expectancy_R": -0.34729,
         "profit_factor": 0.6207,
-        "max_closed_equity_DD_R": -172.942,
+        "max_closed_equity_DD_R": -169.48,
         "period_start": "2026-04-01",
         "period_end_exclusive": "2026-09-01"
       },
@@ -296,7 +296,7 @@
         "net_R": -14.901,
         "expectancy_R": -0.16557,
         "profit_factor": 0.7982,
-        "max_closed_equity_DD_R": -18.485,
+        "max_closed_equity_DD_R": -27.944,
         "period_start": "2026-09-05",
         "period_end_exclusive": "2026-10-01"
       }
