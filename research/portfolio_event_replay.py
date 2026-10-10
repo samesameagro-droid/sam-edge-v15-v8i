@@ -3,8 +3,10 @@
 from __future__ import annotations
 import argparse, json
 from pathlib import Path
+import sys
 import numpy as np
 import pandas as pd
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from core_engine_v15 import (
     CORE_NAME, RR, MAX_HOLD_BARS, enrich, signal_mask, trade_levels,
     ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
