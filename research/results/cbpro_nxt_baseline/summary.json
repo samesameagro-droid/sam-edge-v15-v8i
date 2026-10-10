@@ -1,0 +1,143 @@
+{
+  "benchmark": "CB Pro NXT-inspired public-rule reconstruction; NOT proprietary CB Pro NXT code",
+  "data_coins": 13,
+  "variants": {
+    "A_ZONE_EMA_MACD": {
+      "full": {
+        "trades": 1004,
+        "win_rate_pct": 44.82,
+        "net_R": -129.252,
+        "expectancy_R": -0.12874,
+        "profit_factor": 0.7495,
+        "max_closed_equity_DD_R": -135.896,
+        "long_trades": 494,
+        "short_trades": 510
+      },
+      "train_2025_to_2026Q1": {
+        "trades": 695,
+        "win_rate_pct": 44.32,
+        "net_R": -92.221,
+        "expectancy_R": -0.13269,
+        "profit_factor": 0.7408,
+        "max_closed_equity_DD_R": -97.932,
+        "long_trades": 332,
+        "short_trades": 363
+      },
+      "test_2026Q2_to_aug": {
+        "trades": 253,
+        "win_rate_pct": 46.25,
+        "net_R": -32.775,
+        "expectancy_R": -0.12955,
+        "profit_factor": 0.7574,
+        "max_closed_equity_DD_R": -46.764,
+        "long_trades": 137,
+        "short_trades": 116
+      },
+      "holdout_2026_sep": {
+        "trades": 48,
+        "win_rate_pct": 45.83,
+        "net_R": -4.238,
+        "expectancy_R": -0.0883,
+        "profit_factor": 0.807,
+        "max_closed_equity_DD_R": -8.441,
+        "long_trades": 22,
+        "short_trades": 26
+      }
+    },
+    "B_PLUS_STOCH": {
+      "full": {
+        "trades": 169,
+        "win_rate_pct": 44.97,
+        "net_R": -23.078,
+        "expectancy_R": -0.13656,
+        "profit_factor": 0.7436,
+        "max_closed_equity_DD_R": -29.616,
+        "long_trades": 80,
+        "short_trades": 89
+      },
+      "train_2025_to_2026Q1": {
+        "trades": 115,
+        "win_rate_pct": 47.83,
+        "net_R": -4.124,
+        "expectancy_R": -0.03586,
+        "profit_factor": 0.9256,
+        "max_closed_equity_DD_R": -10.882,
+        "long_trades": 53,
+        "short_trades": 62
+      },
+      "test_2026Q2_to_aug": {
+        "trades": 43,
+        "win_rate_pct": 37.21,
+        "net_R": -17.2,
+        "expectancy_R": -0.40001,
+        "profit_factor": 0.4344,
+        "max_closed_equity_DD_R": -20.183,
+        "long_trades": 23,
+        "short_trades": 20
+      },
+      "holdout_2026_sep": {
+        "trades": 8,
+        "win_rate_pct": 50.0,
+        "net_R": -1.275,
+        "expectancy_R": -0.15934,
+        "profit_factor": 0.5888,
+        "max_closed_equity_DD_R": -1.651,
+        "long_trades": 4,
+        "short_trades": 4
+      }
+    },
+    "C_PLUS_CONFIRMED_STRUCTURE": {
+      "full": {
+        "trades": 107,
+        "win_rate_pct": 43.93,
+        "net_R": -16.896,
+        "expectancy_R": -0.15791,
+        "profit_factor": 0.7203,
+        "max_closed_equity_DD_R": -25.232,
+        "long_trades": 57,
+        "short_trades": 50
+      },
+      "train_2025_to_2026Q1": {
+        "trades": 73,
+        "win_rate_pct": 46.58,
+        "net_R": -4.595,
+        "expectancy_R": -0.06295,
+        "profit_factor": 0.88,
+        "max_closed_equity_DD_R": -15.787,
+        "long_trades": 37,
+        "short_trades": 36
+      },
+      "test_2026Q2_to_aug": {
+        "trades": 26,
+        "win_rate_pct": 38.46,
+        "net_R": -10.142,
+        "expectancy_R": -0.39007,
+        "profit_factor": 0.4531,
+        "max_closed_equity_DD_R": -11.551,
+        "long_trades": 17,
+        "short_trades": 9
+      },
+      "holdout_2026_sep": {
+        "trades": 5,
+        "win_rate_pct": 40.0,
+        "net_R": -1.68,
+        "expectancy_R": -0.33597,
+        "profit_factor": 0.3259,
+        "max_closed_equity_DD_R": -2.056,
+        "long_trades": 3,
+        "short_trades": 2
+      }
+    }
+  },
+  "costs": {
+    "fee_bps_per_side": 5.0,
+    "slippage_bps_per_side": 2.0
+  },
+  "caveats": [
+    "OHLCV proxy from Binance archive, not BingX fills",
+    "funding not included",
+    "confirmed-pivot structure variant is intentionally delayed to avoid ZigZag look-ahead",
+    "Zone is an explicit ATR proxy, not the proprietary zone formula",
+    "TP1/TP2 modeled as 50% at 1R and 50% at 2R, stop-first on ambiguous bars"
+  ]
+}
