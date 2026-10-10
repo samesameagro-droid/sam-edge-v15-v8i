@@ -426,7 +426,7 @@ def main():
         "holdout_score_neighbor_sweep_exploratory":holdout_sweep,
         "holdout_leave_one_coin_out_precision65":loo_rows,
         "holdout_pristine":False,
-        "holdout_caveat":"The Aug-Oct 2026 evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The selected threshold itself was chosen only from the Apr-Aug development period, but this is not a fully untouched final holdout for the overall project. Collect a new post-2026-10-10 forward holdout before production approval.",
+        "holdout_caveat":"The later evaluation window overlaps the prior 28-trade cohort and earlier in-sample threshold exploration. The walk-forward threshold was chosen only from this run's earlier development segment, but this is not a fully untouched final holdout for the overall project. Collect a new post-2026-10-10 forward holdout before production approval.",
         "interpretation":"The walk-forward score selection is development-only. Holdout parameter-neighbor and leave-one-coin-out tables are robustness diagnostics, not a basis for re-tuning on the same holdout. Small holdout samples imply uncertainty."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps({"validation_passed":True,"data_errors":[],"full_period_variants":full_results,
