@@ -43,7 +43,7 @@ def fetch_one_archive(symbol, interval, kind, period):
         return None
 
 def fetch_klines_api(symbol, interval, start_ms, end_ms):
-    """Try public Binance Futures endpoints, then public BingX swap klines."""
+    """Fetch public Binance USD-M Futures klines only; never fall back to another exchange."""
     interval_ms = INTERVALS[interval] * 60_000
 
     def normalize_rows(rows, source):
@@ -120,53 +120,9 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
         if len(rows) < 1500:
             break
 
-    # If Binance REST is blocked or incomplete, query BingX's public perpetual-kline API.
-    combined = (pd.concat(pieces, ignore_index=True).drop_duplicates("open_ms")
-                .sort_values("open_ms").reset_index(drop=True)) if pieces else pd.DataFrame()
-    need_bingx = (combined.empty or int(combined.open_ms.max()) < end_ms - interval_ms * 2
-                  or bool((combined.open_ms.diff().dropna() > interval_ms * 1.5).any()))
-    if need_bingx:
-        bingx_symbol = symbol[:-4] + "-USDT" if symbol.endswith("USDT") else symbol
-        cursor = start_ms
-        bx_pieces = []
-        endpoint = "https://open-api.bingx.com/openApi/swap/v3/quote/klines"
-        while cursor < end_ms:
-            chunk_end = min(end_ms - 1, cursor + interval_ms * 999)
-            try:
-                r = requests.get(endpoint, params={
-                    "symbol": bingx_symbol, "interval": interval,
-                    "startTime": cursor, "endTime": chunk_end, "limit": 1000
-                }, headers=HEADERS, timeout=10)
-                r.raise_for_status()
-                payload = r.json()
-                if payload.get("code") not in (None, 0, "0"):
-                    raise ValueError(f"BingX API code={payload.get('code')} msg={payload.get('msg')}")
-                rows = payload.get("data", [])
-                if not rows:
-                    break
-                x = normalize_rows(rows, "bingx")
-                if x.empty:
-                    break
-                bx_pieces.append(x)
-                next_cursor = int(x.open_ms.max()) + interval_ms
-                if next_cursor <= cursor:
-                    break
-                cursor = next_cursor
-            except Exception as e:
-                print(f"BINGX_API_ERROR {symbol} {interval}: {type(e).__name__}: {e}", flush=True)
-                break
-        if bx_pieces:
-            bx = (pd.concat(bx_pieces, ignore_index=True).drop_duplicates("open_ms")
-                  .sort_values("open_ms").reset_index(drop=True))
-            # Prefer exact BingX candles if they cover the requested period.
-            if combined.empty or int(bx.open_ms.max()) > int(combined.open_ms.max()):
-                combined = bx
-            elif not bx.empty:
-                combined = (pd.concat([combined, bx], ignore_index=True)
-                            .drop_duplicates("open_ms", keep="last")
-                            .sort_values("open_ms").reset_index(drop=True))
+    # Fail closed: research requires Binance USD-M Futures provenance.
+    # Never splice or substitute BingX candles when Binance REST is blocked/incomplete.
     return combined[(combined.open_ms >= start_ms) & (combined.open_ms < end_ms)].reset_index(drop=True) if not combined.empty else pd.DataFrame()
-
 
 def fetch_klines(symbol, interval, start_ms, end_ms):
     start = pd.to_datetime(start_ms, unit="ms", utc=True)
@@ -365,6 +321,19 @@ def main():
                 gaps=int((segment.open_ms.diff().dropna()>interval_ms*1.5).sum())
                 if gaps:
                     path_errors.append({"symbol":sym,"tf":tf,"error":"Timestamp gaps inside tracking window","entry_utc":trade["opened_at"],"exit_utc":trade["closed_at"],"gap_count":gaps})
+    # Enforce provenance for every candle series used by MTF and path replay.
+    # This prevents validation_passed=true from masking a non-Binance fallback.
+    for (sym, tf), series in cache.items():
+        if series.empty:
+            continue
+        if "source" not in series.columns:
+            errors.append({"symbol":sym,"tf":tf,"error":"Missing candle provenance"})
+            continue
+        bad_sources=sorted(set(series["source"].dropna().astype(str)) - {"binance_rest","binance_archive_monthly","binance_archive_daily"})
+        if bad_sources:
+            errors.append({"symbol":sym,"tf":tf,"error":"Non-Binance candle source rejected","sources":bad_sources})
+        if series["source"].isna().any():
+            errors.append({"symbol":sym,"tf":tf,"error":"Candle provenance contains null values"})
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
@@ -539,7 +508,7 @@ def main():
     for (sym,tf),series in sorted(cache.items()):
         counts=series["source"].value_counts().to_dict() if "source" in series.columns else {}
         source_coverage.append({"symbol":sym,"tf":tf,"candle_count":len(series),"source_counts":counts})
-    summary={"source":"Per-candle source recorded in source_coverage; observed current run uses BingX REST klines where available","source_caveat":"Binance Futures REST returned HTTP 451 in this runner; source_coverage is authoritative for candle provenance. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
+    summary={"source":"Binance USD-M Futures only; each candle must be sourced from Binance REST or Binance Vision archive","source_caveat":"No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":not errors,"data_errors":errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they must be confirmed on a later untouched holdout/walk-forward before production use. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
     if errors:
