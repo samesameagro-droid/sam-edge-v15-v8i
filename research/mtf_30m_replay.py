@@ -125,58 +125,84 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
     return combined[(combined.open_ms >= start_ms) & (combined.open_ms < end_ms)].reset_index(drop=True) if not combined.empty else pd.DataFrame()
 
 def fetch_klines(symbol, interval, start_ms, end_ms):
+    """Fetch Binance USD-M Futures candles from Vision archives; REST is a secondary Binance-only source."""
     start = pd.to_datetime(start_ms, unit="ms", utc=True)
     end = pd.to_datetime(end_ms - 1, unit="ms", utc=True)
-    periods = []
-    month = start.replace(day=1)
-    last_month = end.replace(day=1)
     now = pd.Timestamp.now(tz="UTC")
+    first_day = start.normalize()
+    last_day = end.normalize()
+    periods = []
+    month = first_day.replace(day=1)
+    last_month = last_day.replace(day=1)
     while month <= last_month:
         next_month = (month + pd.offsets.MonthBegin(1)).normalize()
         if month < now.replace(day=1):
             periods.append(("monthly", month.strftime("%Y-%m")))
         else:
-            day = max(start.normalize(), month)
-            while day <= end.normalize():
+            day = max(first_day, month)
+            while day <= min(last_day, now.normalize()):
                 periods.append(("daily", day.strftime("%Y-%m-%d")))
-                day = day + pd.Timedelta(days=1)
+                day += pd.Timedelta(days=1)
         month = next_month
 
-    pieces = []
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        futures = [pool.submit(fetch_one_archive, symbol, interval, kind, period)
-                   for kind, period in periods]
-        for fut in futures:
-            piece = fut.result()
-            if piece is not None and not piece.empty:
-                pieces.append(piece)
+    def download_periods(items):
+        pieces = []
+        results = {}
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            futures = {pool.submit(fetch_one_archive, symbol, interval, kind, period):(kind, period)
+                       for kind, period in items}
+            for fut, key in futures.items():
+                try:
+                    result = fut.result()
+                except Exception as e:
+                    print(f"ARCHIVE_FETCH_ERROR {symbol} {interval} {key[0]} {key[1]}: {type(e).__name__}: {e}", flush=True)
+                    result = None
+                results[key] = result
+                if result is not None and not result.empty:
+                    pieces.append(result)
+        frame = (pd.concat(pieces, ignore_index=True).drop_duplicates("open_ms")
+                 .sort_values("open_ms").reset_index(drop=True)) if pieces else pd.DataFrame()
+        return frame, results
 
-    archive = pd.DataFrame()
-    if pieces:
-        archive = (pd.concat(pieces, ignore_index=True)
-                   .drop_duplicates("open_ms").sort_values("open_ms").reset_index(drop=True))
-        archive = archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True)
+    archive, fetched = download_periods(periods)
 
+    # If a monthly ZIP is absent, retry that month as daily Binance Vision ZIPs.
+    # This avoids treating an unpublished/missing monthly aggregate as no historical data.
+    missing_months = [period for (kind, period), result in fetched.items()
+                      if kind == "monthly" and (result is None or result.empty)]
+    daily_fallback = []
+    for month_text in missing_months:
+        month_start = pd.Timestamp(month_text + "-01", tz="UTC")
+        month_end = (month_start + pd.offsets.MonthBegin(1)).normalize() - pd.Timedelta(days=1)
+        day = max(first_day, month_start)
+        month_end = min(last_day, month_end, now.normalize())
+        while day <= month_end:
+            daily_fallback.append(("daily", day.strftime("%Y-%m-%d")))
+            day += pd.Timedelta(days=1)
+    if daily_fallback:
+        daily_frame, _ = download_periods(daily_fallback)
+        if not daily_frame.empty:
+            archive = (pd.concat([archive, daily_frame], ignore_index=True)
+                       .drop_duplicates("open_ms").sort_values("open_ms").reset_index(drop=True))
+
+    archive = archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True) if not archive.empty else pd.DataFrame()
     interval_ms = INTERVALS[interval] * 60_000
     target_end = min(end_ms, int(pd.Timestamp.now(tz="UTC").timestamp() * 1000))
     expected_last_open = ((target_end - 1) // interval_ms) * interval_ms
     archive_stale = (archive.empty or int(archive.open_ms.max()) < expected_last_open - interval_ms)
     archive_gappy = (not archive.empty and bool((archive.open_ms.diff().dropna() > interval_ms * 1.5).any()))
 
-    # Do not silently trust a partial archive: fill/replace with the REST series when
-    # its latest candle is stale or the archive contains internal timestamp gaps.
-    if interval in ("1m","5m") or archive_stale or archive_gappy:
+    # REST fallback remains Binance USD-M only. Never replace good archive data with an empty REST result.
+    if interval in ("1m", "5m") or archive_stale or archive_gappy:
         api = fetch_klines_api(symbol, interval, start_ms, target_end)
         if not api.empty:
-            if interval in ("1m","5m"):
-                # Intrabar path replay prefers a single REST source for the entire window.
+            if interval in ("1m", "5m"):
                 archive = api.sort_values("open_ms").drop_duplicates("open_ms").reset_index(drop=True)
             else:
                 archive = (pd.concat([archive, api], ignore_index=True)
                            .drop_duplicates("open_ms", keep="last")
                            .sort_values("open_ms").reset_index(drop=True))
-
-    return archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True)
+    return archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True) if not archive.empty else pd.DataFrame()
 
 def classify(df, entry_ms):
     if df.empty: return {"state":"NO_DATA","close":None,"ema20":None,"ema50":None}
@@ -334,6 +360,22 @@ def main():
             errors.append({"symbol":sym,"tf":tf,"error":"Non-Binance candle source rejected","sources":bad_sources})
         if series["source"].isna().any():
             errors.append({"symbol":sym,"tf":tf,"error":"Candle provenance contains null values"})
+    # Stop cleanly before trade simulation if any required MTF series is absent.
+    missing_primary = [{"symbol":sym,"tf":tf,"error":"No Binance USD-M candle data retrieved"}
+                       for (sym,tf),series in cache.items()
+                       if tf in ("15m","30m","1h","4h") and series.empty]
+    if missing_primary:
+        fail_summary = {
+            "source":"Binance USD-M Futures only (Binance Vision archives and Binance Futures REST)",
+            "validation_passed":False,
+            "data_errors":missing_primary,
+            "trade_count":len(trades),
+            "source_caveat":"Replay aborted before metrics because required Binance candle series were unavailable. No cross-exchange fallback is allowed."
+        }
+        dest=Path(args.out)
+        dest.mkdir(parents=True,exist_ok=True)
+        (dest/"summary.json").write_text(json.dumps(fail_summary,indent=2))
+        raise SystemExit(f"REPLAY_INVALID: {len(missing_primary)} required Binance candle series missing; metrics not computed.")
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
