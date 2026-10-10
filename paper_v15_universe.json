@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T09:26:31.861609+00:00",
+  "updated_at": "2026-10-10T09:31:37.055162+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -18,8 +18,8 @@
     "PUMP/USDT:USDT",
     "STRK/USDT:USDT",
     "MAGIC/USDT:USDT",
-    "WLD/USDT:USDT",
     "ONDO/USDT:USDT",
+    "WLD/USDT:USDT",
     "ENA/USDT:USDT",
     "BNB/USDT:USDT",
     "ADA/USDT:USDT",
