@@ -3,7 +3,680 @@
   "source_caveat": "Binance proxy, not exact BingX candles/fills; data availability is reported per symbol/timeframe.",
   "lookahead": "Only candles whose close_ms is strictly before entry timestamp are used for context.",
   "trade_count": 28,
-  "data_errors": [],
+  "data_errors": [
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "1000PEPEUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ARBUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "FILUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "IMXUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "INJUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "JUPUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LDOUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "LTCUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ORDIUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "QNTUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "SANDUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "STRKUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "SUIUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "TAOUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "TIAUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "WLDUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "XRPUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "15m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:45:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:15:00+00:00"
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "30m",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:30:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "1h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T23:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    },
+    {
+      "symbol": "ZROUSDT",
+      "tf": "4h",
+      "error": "Stale coverage",
+      "latest_open_utc": "2026-09-30T20:00:00+00:00",
+      "expected_latest_open_utc": "2026-10-10T12:00:00+00:00"
+    }
+  ],
   "baseline": {
     "n": 28,
     "wins": 16,
