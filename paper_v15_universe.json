@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T13:56:35.489871+00:00",
+  "updated_at": "2026-10-10T14:02:27.174189+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -24,11 +24,11 @@
     "INJ/USDT:USDT",
     "STRK/USDT:USDT",
     "LTC/USDT:USDT",
-    "ADA/USDT:USDT",
     "TAO/USDT:USDT",
     "YFI/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "QNT/USDT:USDT",
-    "KAIA/USDT:USDT"
+    "KAIA/USDT:USDT",
+    "ADA/USDT:USDT"
   ]
 }
