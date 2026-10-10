@@ -1,0 +1,329 @@
+{
+  "title": "SAM EDGE Core V3 strategy-family comparison",
+  "data_source": "data",
+  "coins": [
+    "ADA",
+    "AVAX",
+    "BNB",
+    "BTC",
+    "CRV",
+    "DOGE",
+    "ETH",
+    "FET",
+    "LINK",
+    "SOL",
+    "SUI",
+    "UNI",
+    "XRP"
+  ],
+  "timeframe": "15m execution; completed 1H/4H context",
+  "RR": 1.5,
+  "max_hold_bars": 96,
+  "max_active_positions": 5,
+  "cooldown_bars": 4,
+  "execution": "next 15m open; conservative same-bar SL priority; stop gaps modeled using adverse open",
+  "costs": {
+    "fee_bps_per_side": 5.0,
+    "slippage_bps_per_side": 2.0,
+    "funding": "excluded; not yet joined"
+  },
+  "caution": "Exploratory screening, not live-ready. Net R subtracts explicit fee/slippage assumptions but realized DD ignores intrabar unrealized portfolio equity and funding.",
+  "results": {
+    "TREND_PULLBACK": {
+      "full": {
+        "closed": 3302,
+        "wins_net_positive": 1413,
+        "losses_or_nonpositive": 1889,
+        "win_rate_pct": 42.79,
+        "net_R_after_fee_and_slippage_assumption": -238.059,
+        "expectancy_R": -0.0721,
+        "profit_factor": 0.8879,
+        "max_drawdown_realized_R": -246.74,
+        "trades_per_calendar_day": 5.309,
+        "time_exits": 77,
+        "period_end_marked": 1,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "train": {
+        "closed": 2319,
+        "wins_net_positive": 983,
+        "losses_or_nonpositive": 1336,
+        "win_rate_pct": 42.39,
+        "net_R_after_fee_and_slippage_assumption": -163.166,
+        "expectancy_R": -0.0704,
+        "profit_factor": 0.8901,
+        "max_drawdown_realized_R": -242.685,
+        "trades_per_calendar_day": 5.282,
+        "time_exits": 56,
+        "period_end_marked": 1,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "test": {
+        "closed": 805,
+        "wins_net_positive": 356,
+        "losses_or_nonpositive": 449,
+        "win_rate_pct": 44.22,
+        "net_R_after_fee_and_slippage_assumption": -57.284,
+        "expectancy_R": -0.0712,
+        "profit_factor": 0.8903,
+        "max_drawdown_realized_R": -108.177,
+        "trades_per_calendar_day": 5.261,
+        "time_exits": 16,
+        "period_end_marked": 1,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "holdout": {
+        "closed": 160,
+        "wins_net_positive": 70,
+        "losses_or_nonpositive": 90,
+        "win_rate_pct": 43.75,
+        "net_R_after_fee_and_slippage_assumption": -6.778,
+        "expectancy_R": -0.0424,
+        "profit_factor": 0.9315,
+        "max_drawdown_realized_R": -25.994,
+        "trades_per_calendar_day": 6.154,
+        "time_exits": 4,
+        "period_end_marked": 1,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      }
+    },
+    "BREAKOUT_RETEST": {
+      "full": {
+        "closed": 3938,
+        "wins_net_positive": 1670,
+        "losses_or_nonpositive": 2268,
+        "win_rate_pct": 42.41,
+        "net_R_after_fee_and_slippage_assumption": -198.816,
+        "expectancy_R": -0.0505,
+        "profit_factor": 0.9196,
+        "max_drawdown_realized_R": -237.299,
+        "trades_per_calendar_day": 6.192,
+        "time_exits": 113,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "train": {
+        "closed": 2784,
+        "wins_net_positive": 1192,
+        "losses_or_nonpositive": 1592,
+        "win_rate_pct": 42.82,
+        "net_R_after_fee_and_slippage_assumption": -90.707,
+        "expectancy_R": -0.0326,
+        "profit_factor": 0.9473,
+        "max_drawdown_realized_R": -159.36,
+        "trades_per_calendar_day": 6.146,
+        "time_exits": 84,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "test": {
+        "closed": 941,
+        "wins_net_positive": 392,
+        "losses_or_nonpositive": 549,
+        "win_rate_pct": 41.66,
+        "net_R_after_fee_and_slippage_assumption": -86.59,
+        "expectancy_R": -0.092,
+        "profit_factor": 0.858,
+        "max_drawdown_realized_R": -121.258,
+        "trades_per_calendar_day": 6.15,
+        "time_exits": 22,
+        "period_end_marked": 5,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "holdout": {
+        "closed": 193,
+        "wins_net_positive": 75,
+        "losses_or_nonpositive": 118,
+        "win_rate_pct": 38.86,
+        "net_R_after_fee_and_slippage_assumption": -24.887,
+        "expectancy_R": -0.129,
+        "profit_factor": 0.807,
+        "max_drawdown_realized_R": -42.842,
+        "trades_per_calendar_day": 7.423,
+        "time_exits": 3,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      }
+    },
+    "SWEEP_RECLAIM": {
+      "full": {
+        "closed": 11387,
+        "wins_net_positive": 4468,
+        "losses_or_nonpositive": 6919,
+        "win_rate_pct": 39.24,
+        "net_R_after_fee_and_slippage_assumption": -2622.659,
+        "expectancy_R": -0.2303,
+        "profit_factor": 0.6868,
+        "max_drawdown_realized_R": -2639.821,
+        "trades_per_calendar_day": 17.932,
+        "time_exits": 104,
+        "period_end_marked": 2,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "train": {
+        "closed": 8166,
+        "wins_net_positive": 3140,
+        "losses_or_nonpositive": 5026,
+        "win_rate_pct": 38.45,
+        "net_R_after_fee_and_slippage_assumption": -1917.122,
+        "expectancy_R": -0.2348,
+        "profit_factor": 0.6805,
+        "max_drawdown_realized_R": -1935.106,
+        "trades_per_calendar_day": 18.066,
+        "time_exits": 65,
+        "period_end_marked": 4,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "test": {
+        "closed": 2719,
+        "wins_net_positive": 1117,
+        "losses_or_nonpositive": 1602,
+        "win_rate_pct": 41.08,
+        "net_R_after_fee_and_slippage_assumption": -629.668,
+        "expectancy_R": -0.2316,
+        "profit_factor": 0.6886,
+        "max_drawdown_realized_R": -637.56,
+        "trades_per_calendar_day": 17.771,
+        "time_exits": 28,
+        "period_end_marked": 5,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "holdout": {
+        "closed": 433,
+        "wins_net_positive": 184,
+        "losses_or_nonpositive": 249,
+        "win_rate_pct": 42.49,
+        "net_R_after_fee_and_slippage_assumption": -62.966,
+        "expectancy_R": -0.1454,
+        "profit_factor": 0.7882,
+        "max_drawdown_realized_R": -83.272,
+        "trades_per_calendar_day": 16.654,
+        "time_exits": 10,
+        "period_end_marked": 2,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      }
+    },
+    "RANGE_MEAN_REVERSION": {
+      "full": {
+        "closed": 2708,
+        "wins_net_positive": 1106,
+        "losses_or_nonpositive": 1602,
+        "win_rate_pct": 40.84,
+        "net_R_after_fee_and_slippage_assumption": -775.914,
+        "expectancy_R": -0.2865,
+        "profit_factor": 0.6375,
+        "max_drawdown_realized_R": -811.781,
+        "trades_per_calendar_day": 4.298,
+        "time_exits": 3,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "train": {
+        "closed": 1882,
+        "wins_net_positive": 772,
+        "losses_or_nonpositive": 1110,
+        "win_rate_pct": 41.02,
+        "net_R_after_fee_and_slippage_assumption": -487.925,
+        "expectancy_R": -0.2593,
+        "profit_factor": 0.6648,
+        "max_drawdown_realized_R": -520.649,
+        "trades_per_calendar_day": 4.21,
+        "time_exits": 2,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "test": {
+        "closed": 701,
+        "wins_net_positive": 290,
+        "losses_or_nonpositive": 411,
+        "win_rate_pct": 41.37,
+        "net_R_after_fee_and_slippage_assumption": -223.92,
+        "expectancy_R": -0.3194,
+        "profit_factor": 0.6066,
+        "max_drawdown_realized_R": -227.961,
+        "trades_per_calendar_day": 4.612,
+        "time_exits": 1,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      },
+      "holdout": {
+        "closed": 114,
+        "wins_net_positive": 41,
+        "losses_or_nonpositive": 73,
+        "win_rate_pct": 35.96,
+        "net_R_after_fee_and_slippage_assumption": -55.938,
+        "expectancy_R": -0.4907,
+        "profit_factor": 0.4633,
+        "max_drawdown_realized_R": -61.74,
+        "trades_per_calendar_day": 4.385,
+        "time_exits": 0,
+        "period_end_marked": 0,
+        "assumptions": {
+          "fee_bps_per_side": 5.0,
+          "slippage_bps_per_side": 2.0,
+          "funding": "not included; historical funding data not yet joined"
+        }
+      }
+    }
+  }
+}
