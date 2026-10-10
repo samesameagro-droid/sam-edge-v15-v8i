@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-10T05:16:51.004232+00:00",
+  "updated_at": "2026-10-10T05:22:06.986265+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -23,8 +23,8 @@
     "BNB/USDT:USDT",
     "INJ/USDT:USDT",
     "KAIA/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
     "WLD/USDT:USDT",
+    "FARTCOIN/USDT:USDT",
     "LTC/USDT:USDT",
     "MAGIC/USDT:USDT",
     "RLC/USDT:USDT",
