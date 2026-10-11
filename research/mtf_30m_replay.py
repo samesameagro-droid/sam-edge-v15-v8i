@@ -13,6 +13,9 @@ ARCHIVE_BASES = [
 ]
 INTERVALS = {"1m":1,"5m":5,"15m":15,"30m":30,"1h":60,"4h":240}
 HEADERS = {"User-Agent":"SAM-EDGE-MTF-Research/1.0"}
+# Circuit breaker: if every official USD-M REST host fails for one request,
+# avoid repeating the same blocked-host timeout for every symbol in a 24-coin run.
+BINANCE_REST_UNAVAILABLE = False
 
 def fetch_one_archive(symbol, interval, kind, period):
     filename=f"{symbol}-{interval}-{period}.zip"
@@ -84,6 +87,10 @@ def fetch_one_archive(symbol, interval, kind, period):
 
 def fetch_klines_api(symbol, interval, start_ms, end_ms):
     """Fetch public Binance USD-M Futures klines only; never fall back to another exchange."""
+    global BINANCE_REST_UNAVAILABLE
+    if BINANCE_REST_UNAVAILABLE:
+        print(f"BINANCE_API_SKIPPED {symbol} {interval}: official REST hosts already failed this run", flush=True)
+        return pd.DataFrame()
     interval_ms = INTERVALS[interval] * 60_000
 
     def normalize_rows(rows, source):
@@ -154,6 +161,7 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
         if rows is None:
             print(f"BINANCE_API_UNAVAILABLE {symbol} {interval}: " + " | ".join(host_errors), flush=True)
             binance_failed = True
+            BINANCE_REST_UNAVAILABLE = True
             break
         if not rows:
             break
