@@ -8,6 +8,10 @@ on:
       - "research/forward_holdout_replay.py"
       - ".github/workflows/forward_holdout.yml"
   workflow_dispatch:
+  # Binance Vision daily USD-M archives may publish hours after UTC midnight.
+  # Retry after the usual publication window instead of repeatedly failing early.
+  schedule:
+    - cron: "15 12 * * *"
 
 permissions:
   contents: read
