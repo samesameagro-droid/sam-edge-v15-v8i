@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T07:46:56.748453+00:00",
+  "updated_at": "2026-10-11T07:51:58.139373+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -26,8 +26,8 @@
     "TIA/USDT:USDT",
     "LTC/USDT:USDT",
     "YFI/USDT:USDT",
-    "MAGIC/USDT:USDT",
     "QNT/USDT:USDT",
+    "MAGIC/USDT:USDT",
     "CFX/USDT:USDT",
     "ADA/USDT:USDT"
   ]
