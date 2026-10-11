@@ -6,6 +6,8 @@ on:
       - research/premium-indicator-benchmark
     paths:
       - "research/forward_holdout_replay.py"
+      - "research/portfolio_event_replay.py"
+      - "research/mtf_30m_replay.py"
       - ".github/workflows/forward_holdout.yml"
   workflow_dispatch:
   # Binance Vision daily USD-M archives may publish hours after UTC midnight.
