@@ -17,7 +17,8 @@ from portfolio_event_replay import (
 
 HOLDOUT_START = pd.Timestamp("2026-10-10T00:00:00Z")
 # Evaluate only completed 15m candles; end is exclusive.
-HOLDOUT_END = pd.Timestamp.now(tz="UTC").floor("15min")
+# Use only complete UTC days so delayed daily archives are not mistaken for missing live candles.
+HOLDOUT_END = pd.Timestamp.now(tz="UTC").floor("D")
 VARIANTS = {
     "PRECISION_V2_BASELINE_LT65": "precision65",
     "PRECISION_V2_SCORE_LE52": "precision_score_52",
