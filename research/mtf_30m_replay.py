@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Research-only MTF replay for SAM EDGE V15 cohort 101-128. No orders; research branch only."""
 from __future__ import annotations
-import argparse, json, io, zipfile
+import argparse, json, io, zipfile, time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import requests
@@ -17,13 +17,38 @@ HEADERS = {"User-Agent":"SAM-EDGE-MTF-Research/1.0"}
 def fetch_one_archive(symbol, interval, kind, period):
     filename=f"{symbol}-{interval}-{period}.zip"
     last_error = None
+    # Binance Vision daily files can lag publication. Retry only recent 404s;
+    # old/missing historical files should fail over immediately without long waits.
+    today = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%d")
+    yesterday = (pd.Timestamp.now(tz="UTC").normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    recent_daily = kind == "daily" and period in {today, yesterday}
     for template in ARCHIVE_BASES:
         url=template.format(kind=kind,symbol=symbol,interval=interval,filename=filename)
+        for attempt in range(4):
+            try:
+                r=requests.get(url,headers=HEADERS,timeout=20)
+                if r.status_code == 404:
+                    last_error = f"{url}: HTTP 404 (archive not published or unavailable)"
+                    if recent_daily and attempt < 3:
+                        time.sleep(2 * (attempt + 1))
+                        continue
+                    break
+                if r.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+                    last_error = f"{url}: HTTP {r.status_code}"
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                r.raise_for_status()
+                break
+            except requests.RequestException as e:
+                last_error = f"{url}: {type(e).__name__}: {e}"
+                if attempt < 3:
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                r = None
+                break
+        if r is None or not r.ok:
+            continue
         try:
-            r=requests.get(url,headers=HEADERS,timeout=20)
-            if r.status_code == 404:
-                continue
-            r.raise_for_status()
             with zipfile.ZipFile(io.BytesIO(r.content)) as z:
                 names=[n for n in z.namelist() if n.lower().endswith(".csv")]
                 if not names:
@@ -99,7 +124,15 @@ def fetch_klines_api(symbol, interval, start_ms, end_ms):
             return pd.DataFrame()
 
     # First try official Binance USD-M Futures REST hosts.
-    endpoints = ["https://fapi.binance.com/fapi/v1/klines"]
+    # Official Binance USD-M Futures API hosts. Try regional API hostnames when
+    # the default fapi.binance.com endpoint is blocked (e.g. HTTP 451).
+    endpoints = [
+        "https://fapi.binance.com/fapi/v1/klines",
+        "https://fapi1.binance.com/fapi/v1/klines",
+        "https://fapi2.binance.com/fapi/v1/klines",
+        "https://fapi3.binance.com/fapi/v1/klines",
+        "https://fapi4.binance.com/fapi/v1/klines",
+    ]
     cursor = start_ms
     pieces = []
     binance_failed = False
