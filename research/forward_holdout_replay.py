@@ -9,6 +9,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 import requests
 import pandas as pd
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
