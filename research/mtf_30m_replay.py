@@ -238,6 +238,92 @@ def fetch_klines(symbol, interval, start_ms, end_ms):
                            .sort_values("open_ms").reset_index(drop=True))
     return archive[(archive.open_ms >= start_ms) & (archive.open_ms < end_ms)].reset_index(drop=True) if not archive.empty else pd.DataFrame()
 
+
+def fetch_bingx_klines(symbol, interval, start_ms, end_ms):
+    """Fetch public BingX swap candles for execution-venue reconciliation only."""
+    interval_ms = INTERVALS[interval] * 60_000
+    market_symbol = symbol.replace("USDT", "-USDT")
+    endpoints = [
+        "https://open-api.bingx.com/openApi/swap/v3/quote/klines",
+        "https://open-api.bingx.com/openApi/swap/v2/quote/klines",
+    ]
+    cursor = start_ms
+    pieces = []
+    seen = set()
+    while cursor < end_ms:
+        page = None
+        last_error = None
+        params = {"symbol": market_symbol, "interval": interval,
+                  "startTime": cursor, "endTime": end_ms - 1, "limit": 1000}
+        for endpoint in endpoints:
+            try:
+                response = requests.get(endpoint, params=params, headers=HEADERS, timeout=15)
+                response.raise_for_status()
+                payload = response.json()
+                if payload.get("code") != 0:
+                    last_error = f"BingX API code={payload.get('code')} msg={payload.get('msg')}"
+                    continue
+                data = payload.get("data") or []
+                if isinstance(data, dict):
+                    data = data.get("klines") or data.get("list") or data.get("rows") or []
+                normalized = []
+                for item in data:
+                    try:
+                        if isinstance(item, dict):
+                            ts = item.get("openTime", item.get("time", item.get("timestamp", item.get("open_time"))))
+                            values = [ts, item["open"], item["high"], item["low"], item["close"], item["volume"]]
+                        else:
+                            values = item[:6]
+                        ts = int(float(values[0]))
+                        if ts < 100_000_000_000:
+                            ts *= 1000
+                        normalized.append([ts, float(values[1]), float(values[2]),
+                                           float(values[3]), float(values[4]), float(values[5])])
+                    except (TypeError, ValueError, KeyError, IndexError):
+                        continue
+                normalized.sort(key=lambda x: x[0])
+                if normalized:
+                    page = normalized
+                    break
+                last_error = "empty BingX candle response"
+            except Exception as exc:
+                last_error = f"{type(exc).__name__}: {exc}"
+        if page is None:
+            raise RuntimeError(last_error or "BingX candle request failed")
+        fresh = []
+        for values in page:
+            ts = values[0]
+            if start_ms <= ts < end_ms and ts not in seen:
+                seen.add(ts)
+                fresh.append(values)
+        if fresh:
+            pieces.extend(fresh)
+        newest = max((x[0] for x in page), default=cursor - interval_ms)
+        next_cursor = newest + interval_ms
+        if next_cursor <= cursor:
+            break
+        cursor = next_cursor
+        if len(page) < 1000:
+            break
+    if not pieces:
+        return pd.DataFrame(columns=["open_ms", "open", "high", "low", "close", "volume", "close_ms", "source"])
+    frame = pd.DataFrame(pieces, columns=["open_ms", "open", "high", "low", "close", "volume"])
+    frame = frame.drop_duplicates("open_ms").sort_values("open_ms").reset_index(drop=True)
+    frame["close_ms"] = frame["open_ms"] + interval_ms - 1
+    frame["source"] = "bingx_public_swap_rest"
+    return frame[(frame.open_ms >= start_ms) & (frame.open_ms < end_ms)].reset_index(drop=True)
+
+
+def bingx_path_task(task):
+    symbol, interval, start_ms, end_ms = task
+    try:
+        frame = fetch_bingx_klines(symbol, interval, start_ms, end_ms)
+        if frame.empty:
+            return task, frame, "EMPTY_BINGX_CANDLES"
+        return task, frame, None
+    except Exception as exc:
+        return task, pd.DataFrame(), f"{type(exc).__name__}: {exc}"
+
 def classify(df, entry_ms):
     if df.empty: return {"state":"NO_DATA","close":None,"ema20":None,"ema50":None}
     x=df[df.close_ms < entry_ms].copy()
@@ -410,6 +496,28 @@ def main():
         dest.mkdir(parents=True,exist_ok=True)
         (dest/"summary.json").write_text(json.dumps(fail_summary,indent=2))
         raise SystemExit(f"REPLAY_INVALID: {len(missing_primary)} required Binance candle series missing; metrics not computed.")
+    # Paper positions are tracked on BingX. Download the same venue's 1m/5m
+    # paths separately from Binance reference candles, so venue basis is not
+    # mislabeled as a broken TP/SL engine. Missing BingX data fails closed.
+    bingx_tasks = []
+    for trade in trades:
+        symbol = trade["coin"].split("/")[0].replace(":USDT", "") + "USDT"
+        entry_ms_task = int(pd.Timestamp(trade["opened_at"]).timestamp() * 1000)
+        exit_ms_task = int(pd.Timestamp(trade["closed_at"]).timestamp() * 1000)
+        for tf_task in ("1m", "5m"):
+            bingx_tasks.append((symbol, tf_task, entry_ms_task + 1, exit_ms_task + 5 * 60_000))
+    bingx_cache = {}
+    bingx_errors = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures = [pool.submit(bingx_path_task, task) for task in bingx_tasks]
+        for future in futures:
+            task, frame, error = future.result()
+            bingx_cache[task] = frame
+            if error:
+                bingx_errors.append({"symbol": task[0], "tf": task[1],
+                                     "start_ms": task[2], "end_ms": task[3], "error": error})
+    print(f"BINGX_PATHS downloaded={len(bingx_cache)-len(bingx_errors)}/{len(bingx_tasks)} errors={len(bingx_errors)}", flush=True)
+
     out=[]
     for t in trades:
         sym=t["coin"].split("/")[0].replace(":USDT","")+"USDT"
@@ -432,6 +540,18 @@ def main():
         exit_ms=int(pd.Timestamp(t["closed_at"]).timestamp()*1000)
         base_path=simulate_path(bars1m,entry_ms+1,exit_ms+5*60_000,t["side"],float(t["sl"]),float(t["tp"]))
         path_window=bars1m[(bars1m.open_ms>entry_ms)&(bars1m.open_ms<exit_ms+5*60_000)] if not bars1m.empty else pd.DataFrame()
+        bingx1 = bingx_cache.get((sym, "1m", entry_ms+1, exit_ms+5*60_000), pd.DataFrame())
+        bingx5 = bingx_cache.get((sym, "5m", entry_ms+1, exit_ms+5*60_000), pd.DataFrame())
+        bingx_path1 = simulate_path(bingx1, entry_ms+1, exit_ms+5*60_000, t["side"], float(t["sl"]), float(t["tp"]))
+        bingx_path5 = simulate_path(bingx5, entry_ms+1, exit_ms+5*60_000, t["side"], float(t["sl"]), float(t["tp"]))
+        row["bingx_1m_candles"] = len(bingx1)
+        row["bingx_5m_candles"] = len(bingx5)
+        row["bingx_1m_result"] = bingx_path1["result"]
+        row["bingx_5m_result"] = bingx_path5["result"]
+        row["bingx_1m_ambiguous"] = bingx_path1["ambiguous"]
+        row["bingx_5m_ambiguous"] = bingx_path5["ambiguous"]
+        row["bingx_1m_matches_recorded"] = (bingx_path1["result"] == t["result"] and not bingx_path1["ambiguous"])
+        row["bingx_5m_matches_recorded"] = (bingx_path5["result"] == t["result"] and not bingx_path5["ambiguous"])
         row["recorded_exit"]=t.get("exit")
         row["path_window_min_low"]=float(path_window.low.min()) if not path_window.empty else None
         row["path_window_max_high"]=float(path_window.high.max()) if not path_window.empty else None
@@ -584,25 +704,56 @@ def main():
     for (sym,tf),series in sorted(cache.items()):
         counts=series["source"].value_counts().to_dict() if "source" in series.columns else {}
         source_coverage.append({"symbol":sym,"tf":tf,"candle_count":len(series),"source_counts":counts})
+    # Binance remains the reference source for MTF features and sensitivity
+    # checks. Because the paper engine executes against BingX, the hard
+    # outcome reconciliation gate uses BingX's own public swap candles.
     outcome_reconciliation_errors = []
+    binance_cross_venue_differences = []
+    bingx_matches_1m = 0
+    bingx_matches_5m = 0
     for row in out:
-        if not row.get("ohlc_path_matches_recorded", False) or not row.get("ohlc_path_5m_matches_recorded", False):
+        b1 = bool(row.get("bingx_1m_matches_recorded", False))
+        b5 = bool(row.get("bingx_5m_matches_recorded", False))
+        bingx_matches_1m += int(b1)
+        bingx_matches_5m += int(b5)
+        if not b1 or not b5:
             outcome_reconciliation_errors.append({
                 "symbol": row["coin"].split("/")[0] + "USDT",
-                "side": row["side"],
-                "entry_utc": row["opened_at"],
+                "side": row["side"], "entry_utc": row["opened_at"],
+                "recorded_result": row["result"],
+                "bingx_1m_result": row.get("bingx_1m_result"),
+                "bingx_5m_result": row.get("bingx_5m_result"),
+                "binance_1m_result": row.get("ohlc_path_result"),
+                "binance_5m_result": row.get("ohlc_path_5m_result"),
+                "reason": "BingX execution-venue OHLC path does not reproduce the recorded paper outcome"
+            })
+        if not row.get("ohlc_path_matches_recorded", False) or not row.get("ohlc_path_5m_matches_recorded", False):
+            binance_cross_venue_differences.append({
+                "symbol": row["coin"].split("/")[0] + "USDT",
+                "side": row["side"], "entry_utc": row["opened_at"],
                 "recorded_result": row["result"],
                 "binance_1m_result": row.get("ohlc_path_result"),
                 "binance_5m_result": row.get("ohlc_path_5m_result"),
-                "reason": "Binance OHLC path does not reproduce the recorded paper outcome"
+                "bingx_1m_result": row.get("bingx_1m_result"),
+                "bingx_5m_result": row.get("bingx_5m_result"),
+                "reason": "Cross-venue price path differs; retained as a diagnostic, not a BingX execution failure"
             })
     candle_validation_passed = not errors
+    bingx_path_validation = {
+        "trades": len(out),
+        "matches_recorded_outcome_1m": bingx_matches_1m,
+        "matches_recorded_outcome_5m": bingx_matches_5m,
+        "bingx_data_errors": len(bingx_errors),
+        "validation_passed_1m": bingx_matches_1m == len(out) and not bingx_errors,
+        "validation_passed_5m": bingx_matches_5m == len(out) and not bingx_errors,
+    }
     outcome_reconciliation_passed = (
-        path_validation["validation_passed_1m"] and path_validation["validation_passed_5m"]
+        bingx_path_validation["validation_passed_1m"]
+        and bingx_path_validation["validation_passed_5m"]
         and not outcome_reconciliation_errors
     )
     overall_validation_passed = candle_validation_passed and outcome_reconciliation_passed
-    summary={"source":"Binance USD-M Futures only; each candle must be sourced from Binance REST or Binance Vision archive","source_caveat":"No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":overall_validation_passed,"candle_validation_passed":candle_validation_passed,"outcome_reconciliation_passed":outcome_reconciliation_passed,"data_errors":errors,"outcome_reconciliation_errors":outcome_reconciliation_errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they are exploratory diagnostics and must not be used for production until an independent full-event walk-forward/holdout validates them. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
+    summary={"source":"Binance USD-M Futures only; each candle must be sourced from Binance REST or Binance Vision archive","source_caveat":"No cross-exchange fallback is permitted. If Binance data is unavailable, missing coverage/provenance errors invalidate the replay. Public exchange candles are not exact private execution fills.","lookahead":"Context uses only candles whose close_ms is strictly before each trade entry. Minute path replay uses only 1m candles fully closed before the tested horizon.","trade_count":len(df),"validation_passed":overall_validation_passed,"candle_validation_passed":candle_validation_passed,"outcome_reconciliation_passed":outcome_reconciliation_passed,"outcome_reconciliation_source":"BingX public swap 1m/5m candles, because the paper engine tracks positions on BingX","bingx_path_validation":bingx_path_validation,"bingx_path_data_errors":bingx_errors,"outcome_reconciliation_errors":outcome_reconciliation_errors,"binance_cross_venue_differences":binance_cross_venue_differences,"data_errors":errors,"path_replay_validation":path_validation,"path_replay_data_errors":path_errors,"path_sensitivity_scenarios":path_scenarios,"leave_one_coin_out_score_max_54":loo_summary,"source_coverage":source_coverage,"baseline":stats(allmask),"gate_30m":stats(df.keep_30m_gate),"gate_1h_plus_30m":stats(df.keep_1h30m_gate),"gate_4h_plus_1h_plus_30m":stats(df.keep_strict_4h1h30m),"score_filter_sweep_in_sample":score_sweep,"best_score_filter_meeting_5_SL_target_in_sample":best_score_filter,"score_filter_caveat":"Thresholds are selected on the same 28-trade cohort and are exploratory only; they are exploratory diagnostics and must not be used for production until an independent full-event walk-forward/holdout validates them. OHLC sensitivity timeouts are counted as 0R only for the displayed gross-R diagnostic.","definition":"Bull = close > EMA20 > EMA50; bear = close < EMA20 < EMA50; otherwise mixed. Directional veto test only; it does not generate new countertrend SHORT signals. Estimated fees/slippage are approximate in R. Gate statistics are diagnostic only unless validation_passed=true."}
     (dest/"summary.json").write_text(json.dumps(summary,indent=2))
     print(json.dumps(summary,indent=2))
     # Fail closed: clean candle downloads are not sufficient when recorded trade
