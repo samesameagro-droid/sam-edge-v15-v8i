@@ -18,7 +18,7 @@ from portfolio_event_replay import (
     prepare, build_indices, simulate, stats, SYMBOLS, BAR_MS,
     FEE_BPS, SLIPPAGE_BPS, START_EQUITY, RISK_PCT,
 )
-from mtf_30m_replay import ARCHIVE_BASES
+from mtf_30m_replay import ARCHIVE_BASES, fetch_klines_api
 
 HOLDOUT_START = pd.Timestamp("2026-10-10T00:00:00Z")
 # Evaluate only completed 15m candles; end is exclusive.
@@ -77,15 +77,41 @@ def main():
         (out / "summary.json").write_text(json.dumps(summary, indent=2))
         raise SystemExit("No completed candles in the new holdout window.")
 
-    # Diagnostic only: an unpublished daily Vision ZIP must not prevent trying
-    # the official Binance USD-M REST fallback inside fetch_klines(). If both
-    # sources fail, strict per-symbol coverage/provenance checks below invalidate
-    # the run and withhold all metrics.
+    # Preflight both official sources before downloading 60 days for 24 symbols.
+    # If Vision has not published the latest day and Binance USD-M REST is blocked,
+    # defer quickly rather than spending 10+ minutes fetching stale history that
+    # cannot pass the preregistered holdout coverage gate.
     latest_required_day = (HOLDOUT_END - pd.Timedelta(days=1)).normalize()
     preflight = latest_day_archive_preflight(latest_required_day)
-    print(json.dumps({"archive_preflight": preflight,
-                      "action": "continue_to_binance_only_fetch_and_strict_validation"},
-                     sort_keys=True), flush=True)
+    rest_probe = {"attempted": False, "available": False, "rows": 0}
+    if preflight["available_symbols"] < len(SYMBOLS):
+        probe_start = int(latest_required_day.timestamp() * 1000)
+        probe_end = int((latest_required_day + pd.Timedelta(days=1)).timestamp() * 1000)
+        probe_symbol = next((x["symbol"] for x in preflight["missing"]), SYMBOLS[0])
+        probe = fetch_klines_api(probe_symbol, "15m", probe_start, probe_end)
+        rest_probe = {"attempted": True, "symbol": probe_symbol,
+                      "available": not probe.empty, "rows": int(len(probe)),
+                      "source_counts": probe.source.value_counts().to_dict() if not probe.empty else {}}
+    print(json.dumps({"archive_preflight": preflight, "rest_probe": rest_probe}, sort_keys=True), flush=True)
+    if preflight["available_symbols"] < len(SYMBOLS) and not rest_probe["available"]:
+        summary = {
+            "status": "deferred_waiting_for_official_binance_data",
+            "validation_passed": None,
+            "data_ready": False,
+            "reason": "Latest required Binance USD-M 15m candles are unavailable from both Binance Vision daily archives and official Binance USD-M REST. No replay was run and no strategy metrics were calculated.",
+            "holdout_start_utc": HOLDOUT_START.isoformat(),
+            "holdout_end_utc_exclusive": HOLDOUT_END.isoformat(),
+            "archive_preflight": preflight,
+            "rest_probe": rest_probe,
+            "rule_lock": {
+                "variants": list(VARIANTS.keys()),
+                "threshold_selection": "No threshold selection or optimization on holdout.",
+                "production": "Unchanged; SAM EDGE remains PAPER ONLY."
+            }
+        }
+        (out / "summary.json").write_text(json.dumps(summary, indent=2))
+        print(json.dumps(summary, indent=2), flush=True)
+        return
 
     # Load 60 days of warm-up candles so indicators are initialized correctly,
     # but simulate entries only from the preregistered 2026-10-10 start.
