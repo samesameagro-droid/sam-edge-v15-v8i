@@ -77,29 +77,15 @@ def main():
         (out / "summary.json").write_text(json.dumps(summary, indent=2))
         raise SystemExit("No completed candles in the new holdout window.")
 
-    # Binance Vision daily files are published with a delay. Do not waste a full
-    # 24-symbol replay (or report a strategy failure) while the latest required
-    # daily archive is not published. A scheduled workflow retries later.
+    # Diagnostic only: an unpublished daily Vision ZIP must not prevent trying
+    # the official Binance USD-M REST fallback inside fetch_klines(). If both
+    # sources fail, strict per-symbol coverage/provenance checks below invalidate
+    # the run and withhold all metrics.
     latest_required_day = (HOLDOUT_END - pd.Timedelta(days=1)).normalize()
     preflight = latest_day_archive_preflight(latest_required_day)
-    if preflight["missing"]:
-        summary = {
-            "status": "deferred_waiting_for_binance_vision_archive",
-            "validation_passed": None,
-            "data_ready": False,
-            "reason": "Latest required Binance Vision USD-M 15m daily archive is not yet available for every required symbol; no replay was run and no metrics were calculated.",
-            "holdout_start_utc": HOLDOUT_START.isoformat(),
-            "holdout_end_utc_exclusive": HOLDOUT_END.isoformat(),
-            "archive_preflight": preflight,
-            "rule_lock": {
-                "variants": list(VARIANTS.keys()),
-                "threshold_selection": "No threshold selection or optimization on holdout.",
-                "production": "Unchanged; SAM EDGE remains PAPER ONLY."
-            }
-        }
-        (out / "summary.json").write_text(json.dumps(summary, indent=2))
-        print(json.dumps(summary, indent=2), flush=True)
-        return
+    print(json.dumps({"archive_preflight": preflight,
+                      "action": "continue_to_binance_only_fetch_and_strict_validation"},
+                     sort_keys=True), flush=True)
 
     # Load 60 days of warm-up candles so indicators are initialized correctly,
     # but simulate entries only from the preregistered 2026-10-10 start.
@@ -118,6 +104,7 @@ def main():
         "signal_candidates_after_volume_gate": len(candidates),
         "data_errors": errors,
         "coverage": coverage,
+        "archive_preflight": preflight,
         "rule_lock": {
             "selection": "No threshold selection or optimization on this period. 52, 54, and 56 are fixed sensitivity comparisons only.",
             "entry": "Confirmed 15m signal, next 15m open execution.",
