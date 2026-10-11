@@ -395,19 +395,19 @@
     {
       "symbol": "1000PEPEUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "1000PEPEUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -421,19 +421,19 @@
     {
       "symbol": "1000PEPEUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "1000PEPEUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -447,19 +447,19 @@
     {
       "symbol": "AAVEUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "AAVEUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -474,19 +474,19 @@
     {
       "symbol": "AAVEUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "AAVEUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -501,19 +501,19 @@
     {
       "symbol": "ARBUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "ARBUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -527,19 +527,19 @@
     {
       "symbol": "ARBUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "ARBUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -553,19 +553,19 @@
     {
       "symbol": "DOTUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "DOTUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -579,19 +579,19 @@
     {
       "symbol": "DOTUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "DOTUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -605,19 +605,19 @@
     {
       "symbol": "ETHUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "ETHUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -631,19 +631,19 @@
     {
       "symbol": "ETHUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "ETHUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -657,19 +657,19 @@
     {
       "symbol": "FILUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "FILUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -683,19 +683,19 @@
     {
       "symbol": "FILUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "FILUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -709,19 +709,19 @@
     {
       "symbol": "IMXUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "IMXUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -735,19 +735,19 @@
     {
       "symbol": "IMXUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "IMXUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -761,19 +761,19 @@
     {
       "symbol": "INJUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "INJUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -787,19 +787,19 @@
     {
       "symbol": "INJUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "INJUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -813,19 +813,19 @@
     {
       "symbol": "JUPUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "JUPUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -839,19 +839,19 @@
     {
       "symbol": "JUPUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "JUPUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -865,19 +865,19 @@
     {
       "symbol": "LDOUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "LDOUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -891,19 +891,19 @@
     {
       "symbol": "LDOUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "LDOUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -917,19 +917,19 @@
     {
       "symbol": "LINKUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "LINKUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -943,19 +943,19 @@
     {
       "symbol": "LINKUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "LINKUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -969,19 +969,19 @@
     {
       "symbol": "LTCUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "LTCUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -995,19 +995,19 @@
     {
       "symbol": "LTCUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "LTCUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1021,19 +1021,19 @@
     {
       "symbol": "NEARUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "NEARUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1047,19 +1047,19 @@
     {
       "symbol": "NEARUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "NEARUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1073,19 +1073,19 @@
     {
       "symbol": "ORDIUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "ORDIUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1099,19 +1099,19 @@
     {
       "symbol": "ORDIUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "ORDIUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1125,19 +1125,19 @@
     {
       "symbol": "QNTUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "QNTUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1151,19 +1151,19 @@
     {
       "symbol": "QNTUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "QNTUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1177,19 +1177,19 @@
     {
       "symbol": "RUNEUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "RUNEUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1203,19 +1203,19 @@
     {
       "symbol": "RUNEUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "RUNEUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1229,19 +1229,19 @@
     {
       "symbol": "SANDUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "SANDUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1255,19 +1255,19 @@
     {
       "symbol": "SANDUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "SANDUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1281,19 +1281,19 @@
     {
       "symbol": "STRKUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "STRKUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1308,19 +1308,19 @@
     {
       "symbol": "STRKUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "STRKUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1335,19 +1335,19 @@
     {
       "symbol": "SUIUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "SUIUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1361,19 +1361,19 @@
     {
       "symbol": "SUIUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "SUIUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1387,19 +1387,19 @@
     {
       "symbol": "TAOUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "TAOUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1413,19 +1413,19 @@
     {
       "symbol": "TAOUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "TAOUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1439,19 +1439,19 @@
     {
       "symbol": "TIAUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "TIAUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1465,19 +1465,19 @@
     {
       "symbol": "TIAUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "TIAUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1491,19 +1491,19 @@
     {
       "symbol": "WLDUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "WLDUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1518,19 +1518,19 @@
     {
       "symbol": "WLDUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "WLDUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
@@ -1597,19 +1597,19 @@
     {
       "symbol": "ZROUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "ZROUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1623,19 +1623,19 @@
     {
       "symbol": "ZROUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "ZROUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
