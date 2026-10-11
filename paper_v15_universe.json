@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T00:06:55.859351+00:00",
+  "updated_at": "2026-10-11T00:11:45.123517+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -18,8 +18,8 @@
     "PUMP/USDT:USDT",
     "INJ/USDT:USDT",
     "MAGIC/USDT:USDT",
-    "ONDO/USDT:USDT",
     "ENA/USDT:USDT",
+    "ONDO/USDT:USDT",
     "HYPE/USDT:USDT",
     "XRP/USDT:USDT",
     "BNB/USDT:USDT",
@@ -28,7 +28,6 @@
     "YFI/USDT:USDT",
     "QNT/USDT:USDT",
     "ADA/USDT:USDT",
-    "CFX/USDT:USDT",
-    "KAIA/USDT:USDT"
+    "CFX/USDT:USDT"
   ]
 }
