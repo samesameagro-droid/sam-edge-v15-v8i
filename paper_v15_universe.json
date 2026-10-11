@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-11T22:16:35.686489+00:00",
+  "updated_at": "2026-10-11T22:21:42.161123+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,9 +29,9 @@
     "S/USDT:USDT",
     "DOGE/USDT:USDT",
     "FARTCOIN/USDT:USDT",
-    "MAGIC/USDT:USDT",
     "APT/USDT:USDT",
-    "CFX/USDT:USDT",
-    "1000PEPE/USDT:USDT"
+    "MAGIC/USDT:USDT",
+    "1000PEPE/USDT:USDT",
+    "CFX/USDT:USDT"
   ]
 }
