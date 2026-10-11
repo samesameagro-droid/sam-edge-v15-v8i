@@ -6,6 +6,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sys
+from concurrent.futures import ThreadPoolExecutor
+import requests
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +18,7 @@ from portfolio_event_replay import (
     prepare, build_indices, simulate, stats, SYMBOLS, BAR_MS,
     FEE_BPS, SLIPPAGE_BPS, START_EQUITY, RISK_PCT,
 )
+from mtf_30m_replay import ARCHIVE_BASES
 
 HOLDOUT_START = pd.Timestamp("2026-10-10T00:00:00Z")
 # Evaluate only completed 15m candles; end is exclusive.
@@ -30,6 +33,37 @@ VARIANTS = {
 }
 
 
+def latest_day_archive_preflight(day):
+    """Check the latest required Binance Vision daily archive before fetching 24 full histories."""
+    day_text = day.strftime("%Y-%m-%d")
+    def check(symbol):
+        filename = f"{symbol}-15m-{day_text}.zip"
+        attempts = []
+        for template in ARCHIVE_BASES:
+            url = template.format(kind="daily", symbol=symbol, interval="15m", filename=filename)
+            try:
+                response = requests.head(url, timeout=12, allow_redirects=True)
+                status = response.status_code
+                response.close()
+                if status == 405:
+                    # Some object-store fronts may not implement HEAD; verify with a streamed GET.
+                    response = requests.get(url, headers={"Range": "bytes=0-0"}, timeout=12, stream=True)
+                    status = response.status_code
+                    response.close()
+                attempts.append({"host": url.split("/")[2], "http_status": status})
+                if status == 200 or status == 206:
+                    return {"symbol": symbol, "available": True, "attempts": attempts}
+            except Exception as exc:
+                attempts.append({"host": url.split("/")[2], "error": f"{type(exc).__name__}: {exc}"})
+        return {"symbol": symbol, "available": False, "attempts": attempts}
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(check, SYMBOLS))
+    missing = [item for item in results if not item["available"]]
+    return {"day_utc": day_text, "checked_symbols": len(results),
+            "available_symbols": len(results) - len(missing), "missing": missing}
+
+
 def main():
     out = Path("research/results/new_forward_holdout")
     out.mkdir(parents=True, exist_ok=True)
@@ -42,6 +76,30 @@ def main():
         }
         (out / "summary.json").write_text(json.dumps(summary, indent=2))
         raise SystemExit("No completed candles in the new holdout window.")
+
+    # Binance Vision daily files are published with a delay. Do not waste a full
+    # 24-symbol replay (or report a strategy failure) while the latest required
+    # daily archive is not published. A scheduled workflow retries later.
+    latest_required_day = (HOLDOUT_END - pd.Timedelta(days=1)).normalize()
+    preflight = latest_day_archive_preflight(latest_required_day)
+    if preflight["missing"]:
+        summary = {
+            "status": "deferred_waiting_for_binance_vision_archive",
+            "validation_passed": None,
+            "data_ready": False,
+            "reason": "Latest required Binance Vision USD-M 15m daily archive is not yet available for every required symbol; no replay was run and no metrics were calculated.",
+            "holdout_start_utc": HOLDOUT_START.isoformat(),
+            "holdout_end_utc_exclusive": HOLDOUT_END.isoformat(),
+            "archive_preflight": preflight,
+            "rule_lock": {
+                "variants": list(VARIANTS.keys()),
+                "threshold_selection": "No threshold selection or optimization on holdout.",
+                "production": "Unchanged; SAM EDGE remains PAPER ONLY."
+            }
+        }
+        (out / "summary.json").write_text(json.dumps(summary, indent=2))
+        print(json.dumps(summary, indent=2), flush=True)
+        return
 
     # Load 60 days of warm-up candles so indicators are initialized correctly,
     # but simulate entries only from the preregistered 2026-10-10 start.
