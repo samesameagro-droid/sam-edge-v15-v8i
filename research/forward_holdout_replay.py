@@ -39,22 +39,27 @@ def latest_day_archive_preflight(day):
     def check(symbol):
         filename = f"{symbol}-15m-{day_text}.zip"
         attempts = []
-        for template in ARCHIVE_BASES:
-            url = template.format(kind="daily", symbol=symbol, interval="15m", filename=filename)
-            try:
-                response = requests.head(url, timeout=12, allow_redirects=True)
-                status = response.status_code
-                response.close()
-                if status == 405:
-                    # Some object-store fronts may not implement HEAD; verify with a streamed GET.
-                    response = requests.get(url, headers={"Range": "bytes=0-0"}, timeout=12, stream=True)
+        # Newly published archives can appear at slightly different times across
+        # objects. Retry only missing objects; successful symbols return immediately.
+        for round_idx in range(3):
+            for template in ARCHIVE_BASES:
+                url = template.format(kind="daily", symbol=symbol, interval="15m", filename=filename)
+                try:
+                    response = requests.head(url, timeout=12, allow_redirects=True)
                     status = response.status_code
                     response.close()
-                attempts.append({"host": url.split("/")[2], "http_status": status})
-                if status == 200 or status == 206:
-                    return {"symbol": symbol, "available": True, "attempts": attempts}
-            except Exception as exc:
-                attempts.append({"host": url.split("/")[2], "error": f"{type(exc).__name__}: {exc}"})
+                    if status == 405:
+                        response = requests.get(url, headers={"Range": "bytes=0-0"}, timeout=12, stream=True)
+                        status = response.status_code
+                        response.close()
+                    attempts.append({"host": url.split("/")[2], "round": round_idx + 1, "http_status": status})
+                    if status in (200, 206):
+                        return {"symbol": symbol, "available": True, "attempts": attempts}
+                except Exception as exc:
+                    attempts.append({"host": url.split("/")[2], "round": round_idx + 1,
+                                     "error": f"{type(exc).__name__}: {exc}"})
+            if round_idx < 2:
+                time.sleep(5 * (round_idx + 1))
         return {"symbol": symbol, "available": False, "attempts": attempts}
 
     with ThreadPoolExecutor(max_workers=8) as pool:
