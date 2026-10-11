@@ -226,13 +226,14 @@ def main():
             score_calc,calc_status=score_at_row(enriched[base],r["signal_time"],str(r["side"]).upper())
         r["score_recorded"]=score_recorded if score_recorded is not None else ""
         r["score_reconstructed"]=score_calc if score_calc is not None else ""
-        # Use the exact recorded live score where available; reconstruct only missing historical scores.
-        if score_recorded is not None:
-            r["score_used"]=score_recorded; r["score_source"]="RECORDED_ENTRY_SCORE"
-            if score_calc is not None:
-                recorded_score_validation.append(abs(float(score_recorded)-float(score_calc)))
-        elif score_calc is not None:
+        # Use one consistent Binance-reconstructed score for every trade where candles exist.
+        # Recorded scores are retained for validation and only used as fallback if reconstruction fails.
+        if score_recorded is not None and score_calc is not None:
+            recorded_score_validation.append(abs(float(score_recorded)-float(score_calc)))
+        if score_calc is not None:
             r["score_used"]=score_calc; r["score_source"]="RECONSTRUCTED_CURRENT_FORMULA_BINANCE"
+        elif score_recorded is not None:
+            r["score_used"]=score_recorded; r["score_source"]="RECORDED_SCORE_FALLBACK_NO_BINANCE"
         else:
             r["score_used"]=""; r["score_source"]="MISSING_SCORE"
         r["score_reconstruction_status"]=calc_status
@@ -276,8 +277,8 @@ def main():
         "candle_fetch_or_enrichment_errors":fetch_errors,
         "methodology":{
             "population":"Only unique journal trades #1-128 with a terminal TP or SL and valid timestamps. No WAITLIST or ongoing trades.",
-            "historical_scores":"The master journal does not persist scores for #1-100. Those entries are re-scored with the current entry-score formula at the exact historical 15m signal candle using Binance OHLCV. The legacy core name is ignored for score calculation.",
-            "newer_scores":"Recorded entry_score is authoritative for #101-128; Binance recomputation is a diagnostic only.",
+            "historical_scores":"Every trade with available candles is re-scored with the same current entry-score formula at the exact historical 15m signal candle using Binance OHLCV, regardless of the core that originally executed it. The legacy core name is ignored for score calculation.",
+            "newer_scores":"Recorded entry_score for #101-128 is retained as a validation reference; the score filter uses the consistently reconstructed Binance score when available.",
             "filter":"Accept if score <= maximum, inclusive. Unscorable rows are not counted as passes.",
             "portfolio":"Only retained historical executions are simulated; no waitlist replacement trades are invented. Risk is 1% of realized equity at entry. Closes at identical timestamps are processed before entries.",
             "costs":"Estimated 5 bps fee + 2 bps slippage per side, converted to R using entry-to-SL distance. Gross journal R is also reported.",
