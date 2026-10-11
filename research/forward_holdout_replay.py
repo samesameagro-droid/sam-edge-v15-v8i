@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Fixed-rule forward holdout for SAM EDGE; no parameter selection and no orders."""
+# Candle fetcher retries recent Binance Vision archive publication and tries official
+# Binance USD-M REST host variants; provenance and complete coverage remain mandatory.
 from __future__ import annotations
 import json
 from pathlib import Path
