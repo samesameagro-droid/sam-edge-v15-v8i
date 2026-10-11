@@ -5,10 +5,15 @@ signal timestamp; for #101-128, retain the recorded entry_score as the authorita
 and independently recompute it as a source/feature consistency diagnostic. No orders placed.
 """
 from __future__ import annotations
-import argparse, csv, json, math
+import argparse, csv, json, math, sys
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+
+# When launched as "python research/script.py", make repository-root modules importable.
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 import numpy as np
 import pandas as pd
