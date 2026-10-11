@@ -8,13 +8,11 @@ import requests
 import pandas as pd
 
 ARCHIVE_BASES = [
-    # Official Binance Vision CDN plus AWS S3 endpoint variants for the same
-    # public data.binance.vision bucket. These are source mirrors, not other exchanges.
+    # Official Binance Vision CDN and AWS S3 path-style endpoints for the same
+    # public data.binance.vision bucket. No other exchange is used.
     "https://data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
     "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
-    "https://s3.amazonaws.com/data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
-    "https://s3.us-east-1.amazonaws.com/data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
-    "https://data.binance.vision.s3.ap-northeast-1.amazonaws.com/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
+    "https://s3.ap-northeast-1.amazonaws.com/data.binance.vision/data/futures/um/{kind}/klines/{symbol}/{interval}/{filename}",
 ]
 INTERVALS = {"1m":1,"5m":5,"15m":15,"30m":30,"1h":60,"4h":240}
 HEADERS = {"User-Agent":"SAM-EDGE-MTF-Research/1.0"}
