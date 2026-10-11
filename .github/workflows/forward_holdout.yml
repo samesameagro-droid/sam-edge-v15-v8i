@@ -30,7 +30,8 @@ jobs:
       - name: Checkout research branch only
         uses: actions/checkout@v4
         with:
-          ref: research/premium-indicator-benchmark
+          # Pin the replay to the exact commit that triggered this run.
+          ref: ${{ github.sha }}
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
