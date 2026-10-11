@@ -76,19 +76,39 @@ def prepare(start_ms, end_ms):
         sources = set(raw.source.dropna().astype(str)) if "source" in raw else set()
         if not sources or not sources.issubset(allowed) or raw.source.isna().any():
             errors.append({"symbol":symbol,"error":"invalid/missing candle provenance","sources":sorted(sources)})
-        raw = raw.sort_values("open_ms").drop_duplicates("open_ms").reset_index(drop=True)
-        gaps = int((raw.open_ms.diff().dropna() > BAR_MS*1.5).sum())
+        raw = raw.sort_values("open_ms").reset_index(drop=True)
+        duplicate_count = int(raw.open_ms.duplicated().sum())
+        if duplicate_count:
+            errors.append({"symbol":symbol,"error":"duplicate 15m candle timestamps",
+                "duplicate_count":duplicate_count})
+        raw = raw.drop_duplicates("open_ms").reset_index(drop=True)
+        gaps = int((raw.open_ms.diff().dropna() > BAR_MS).sum())
         if gaps:
             errors.append({"symbol":symbol,"error":"internal 15m gaps","gap_count":gaps})
         if len(raw) < 250:
             errors.append({"symbol":symbol,"error":"less than 250 warm-up candles","candles":len(raw)})
             continue
+
+        # Exact interval coverage is required, not merely a small-enough latest
+        # timestamp. The research window is aligned to UTC 15m boundaries.
+        expected_opens = np.arange(start_ms, end_ms, BAR_MS, dtype=np.int64)
+        actual_opens = raw.open_ms.to_numpy(dtype=np.int64)
+        missing_opens = np.setdiff1d(expected_opens, actual_opens, assume_unique=True)
+        unexpected_opens = np.setdiff1d(actual_opens, expected_opens, assume_unique=True)
+        if len(missing_opens) or len(unexpected_opens) or len(actual_opens) != len(expected_opens):
+            errors.append({"symbol":symbol,"error":"incomplete expected 15m candle coverage",
+                "expected_candles":int(len(expected_opens)),
+                "actual_candles":int(len(actual_opens)),
+                "missing_candles":int(len(missing_opens)),
+                "unexpected_candles":int(len(unexpected_opens)),
+                "first_missing_open_utc":pd.to_datetime(int(missing_opens[0]),unit="ms",utc=True).isoformat() if len(missing_opens) else None,
+                "last_missing_open_utc":pd.to_datetime(int(missing_opens[-1]),unit="ms",utc=True).isoformat() if len(missing_opens) else None})
         latest = int(raw.open_ms.max())
-        expected = ((end_ms-1)//BAR_MS)*BAR_MS
-        if latest < expected-BAR_MS:
-            errors.append({"symbol":symbol,"error":"stale candle coverage",
+        expected_last = int(expected_opens[-1]) if len(expected_opens) else None
+        if latest != expected_last:
+            errors.append({"symbol":symbol,"error":"stale or out-of-window latest candle",
                 "latest_open_utc":pd.to_datetime(latest,unit="ms",utc=True).isoformat(),
-                "expected_open_utc":pd.to_datetime(expected,unit="ms",utc=True).isoformat()})
+                "expected_open_utc":pd.to_datetime(expected_last,unit="ms",utc=True).isoformat() if expected_last is not None else None})
         x = pd.DataFrame({
             "timestamp":pd.to_datetime(raw.open_ms,unit="ms",utc=True),
             "open":pd.to_numeric(raw.open,errors="coerce"),
