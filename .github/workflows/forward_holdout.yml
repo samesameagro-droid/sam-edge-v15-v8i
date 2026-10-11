@@ -20,7 +20,8 @@ permissions:
 
 concurrency:
   group: sam-edge-fixed-forward-holdout
-  cancel-in-progress: false
+  # Cancel stale runs when a new research fix is pushed; only the latest code should run.
+  cancel-in-progress: true
 
 jobs:
   forward-holdout:
