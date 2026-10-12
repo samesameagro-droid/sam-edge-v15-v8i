@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T05:17:10.530373+00:00",
+  "updated_at": "2026-10-12T05:21:54.489323+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -32,8 +32,8 @@
     "1000PEPE/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "ZRO/USDT:USDT",
-    "APT/USDT:USDT",
     "W/USDT:USDT",
+    "APT/USDT:USDT",
     "CFX/USDT:USDT"
   ]
 }
