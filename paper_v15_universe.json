@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T06:42:12.552588+00:00",
+  "updated_at": "2026-10-12T06:47:38.081037+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,8 +29,8 @@
     "YFI/USDT:USDT",
     "DOGE/USDT:USDT",
     "ZRO/USDT:USDT",
-    "MAGIC/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "MAGIC/USDT:USDT",
     "W/USDT:USDT",
     "TIA/USDT:USDT",
     "APT/USDT:USDT",
