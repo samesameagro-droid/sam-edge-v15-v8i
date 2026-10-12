@@ -1,5 +1,5 @@
 {
-  "equity": 105.97739366075524,
+  "equity": 107.30211108151468,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -4062,10 +4062,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 105.97739366075524
-    }
-  ],
-  "positions": {
-    "DOGE/USDT:USDT": {
+    },
+    {
       "coin": "DOGE/USDT:USDT",
       "side": "SHORT",
       "entry": 0.08494,
@@ -4196,7 +4194,13 @@
         "close": 82870.2,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-12T21:40:00+00:00",
+      "exit": 0.08405933587758604,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 107.30211108151468
     }
-  }
+  ],
+  "positions": {}
 }
