@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-12T13:02:10.290955+00:00",
+  "updated_at": "2026-10-12T13:07:13.420534+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -33,6 +33,7 @@
     "QNT/USDT:USDT",
     "APT/USDT:USDT",
     "LINK/USDT:USDT",
-    "FARTCOIN/USDT:USDT"
+    "FARTCOIN/USDT:USDT",
+    "ADA/USDT:USDT"
   ]
 }
