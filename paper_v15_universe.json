@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T10:32:49.667083+00:00",
+  "updated_at": "2026-10-13T10:36:44.380508+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -28,8 +28,8 @@
     "LTC/USDT:USDT",
     "DOGE/USDT:USDT",
     "1000PEPE/USDT:USDT",
-    "W/USDT:USDT",
     "FARTCOIN/USDT:USDT",
+    "W/USDT:USDT",
     "YFI/USDT:USDT",
     "QNT/USDT:USDT",
     "TIA/USDT:USDT",
