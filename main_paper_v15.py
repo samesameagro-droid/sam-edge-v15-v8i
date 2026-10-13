@@ -457,7 +457,7 @@ class PaperEngine:
 
     @staticmethod
     def shadow_e_snapshot(x, i, side):
-        # V15.1-E is SHADOW ONLY: never changes V15 execution.
+        # Precision V2 uses these E checks as an execution gate; score itself is ranking-only.
         # Fresh pullback = EMA20 touch-zone on either of the 2 completed
         # 15m candles immediately preceding the current signal candle.
         if side == 'LONG':
