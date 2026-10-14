@@ -41,6 +41,13 @@ class PrecisionGateDecisionTests(unittest.TestCase):
         result = precision_gate_decision({"e_pass": True}, 30, True, math.nan)
         self.assertFalse(result["pass"])
 
+    def test_out_of_range_scores_fail_closed(self):
+        for score in (-0.01, 100.01):
+            with self.subTest(score=score):
+                result = precision_gate_decision({"e_pass": True}, score, True, 65)
+                self.assertFalse(result["pass"])
+                self.assertFalse(result["score_ok"])
+
 
 if __name__ == "__main__":
     unittest.main()
