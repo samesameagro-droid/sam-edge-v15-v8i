@@ -22,6 +22,7 @@ from core_engine_v15 import (
     EARLY_VOLUME_RATIO_MIN, EARLY_VOLUME_SLOPE_MIN,
     STRUCTURE_STOP_LOOKBACK, STRUCTURE_STOP_ATR_BUFFER, STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
 )
+from precision_policy import precision_gate_decision
 
 load_dotenv()
 
@@ -55,6 +56,7 @@ V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper
 # Precision V2 final execution gate. Enabled by default for the new forward-test cohort.
 V15_PRECISION_MODE = os.getenv('V15_PRECISION_MODE', '1').strip().lower() in {'1','true','yes','on'}
 V15_PRECISION_SCORE_MAX = float(os.getenv('V15_PRECISION_SCORE_MAX', '65'))
+PRECISION_GATE_POLICY_VERSION = 'precision-score-cap-v2'
 
 # Failure-mode shield is a separate execution permission layer. It is OFF by default.
 V15_FAILURE_SHIELD_ENABLED = os.getenv('V15_FAILURE_SHIELD_ENABLED', '0').strip().lower() in {'1','true','yes','on'}
@@ -71,7 +73,8 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
     V15_DEFENSIVE_MODE, V15_ENTRY_SCORE_MAX, V15_DIST_EMA_MAX_ATR,
     V15_MIN_VOLUME_RATIO, V15_LOSS_STREAK_PAUSE, V15_LOSS_PAUSE_MIN,
-    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX, V15_FAILURE_SHIELD_ENABLED,
+    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX,
+    PRECISION_GATE_POLICY_VERSION, V15_FAILURE_SHIELD_ENABLED,
 ])).encode()).hexdigest()[:16]
 
 STATE_FILE = Path('paper_v15_state_v2.json')
@@ -457,7 +460,7 @@ class PaperEngine:
 
     @staticmethod
     def shadow_e_snapshot(x, i, side):
-        # V15.1-E is SHADOW ONLY: never changes V15 execution.
+        # Precision V2 uses these E checks as an execution gate; score itself is ranking-only.
         # Fresh pullback = EMA20 touch-zone on either of the 2 completed
         # 15m candles immediately preceding the current signal candle.
         if side == 'LONG':
@@ -668,19 +671,25 @@ class PaperEngine:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
 
         shadow_e = self.shadow_e_snapshot(x, i, side)
+        # The historical journal shows negative expectancy for scores >= 65.
+        # Keep this as an explicit upper-bound quality gate; rank eligible
+        # candidates by score only after this gate passes.
+        precision = precision_gate_decision(
+            shadow_e=shadow_e,
+            score=score,
+            enabled=V15_PRECISION_MODE,
+            score_max=V15_PRECISION_SCORE_MAX,
+        )
         diag['precision_gate'] = {
-            'enabled': V15_PRECISION_MODE,
-            'pass': bool(shadow_e['e_pass'] and score < V15_PRECISION_SCORE_MAX),
+            **precision,
             'fresh_pullback': bool(shadow_e['fresh_pullback']),
             'touch_age': shadow_e['touch_age'],
             'adx_ok': bool(shadow_e['adx_ok']),
             'vol_ok': bool(shadow_e['vol_ok']),
             'ema_ok': bool(shadow_e['ema_ok']),
-            'score_ok': bool(score < V15_PRECISION_SCORE_MAX),
-            'score_max': V15_PRECISION_SCORE_MAX,
         }
-        if V15_PRECISION_MODE and (not shadow_e['e_pass'] or score >= V15_PRECISION_SCORE_MAX):
-            print(f'PRECISION GATE | {symbol} | {side} | fresh={shadow_e["fresh_pullback"]} | adx_ok={shadow_e["adx_ok"]} | vol={shadow_e["volr"]:.2f} | dist={shadow_e["ema_dist_atr"]:.2f} | score={score:.1f}<{V15_PRECISION_SCORE_MAX:g} | REJECT')
+        if V15_PRECISION_MODE and not precision['pass']:
+            print(f'PRECISION GATE | {symbol} | {side} | fresh={shadow_e["fresh_pullback"]} | adx_ok={shadow_e["adx_ok"]} | vol={shadow_e["volr"]:.2f} | dist={shadow_e["ema_dist_atr"]:.2f} | score={score:.1f}<{V15_PRECISION_SCORE_MAX:g} required | REJECT')
             return {'signal': None, 'timestamp': ts, 'diag': diag}
         self.persist_shadow_e(p, shadow_e)
         return {'signal': {'position': p, 'score': float(score), 'key': key, 'side': side,
@@ -786,7 +795,7 @@ class PaperEngine:
         print(f'TIMEFRAME={TIMEFRAME} | TRACK={TRACK_TIMEFRAME} | EQUITY=${self.equity:.2f} | RISK={RISK_PCT*100:.2f}% | MAX_ACTIVE={MAX_ACTIVE}')
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
-        print(f'PRECISION V2 FINAL | enabled={V15_PRECISION_MODE} | score<{V15_PRECISION_SCORE_MAX:g} + fresh_pullback(1-2) + ADX deterioration veto + vol>=1.20 + distEMA<=0.80')
+        print(f'PRECISION V2 FINAL | enabled={V15_PRECISION_MODE} | score<{V15_PRECISION_SCORE_MAX:g} upper-bound + fresh_pullback(1-2) + ADX deterioration veto + vol>=1.20 + distEMA<=0.80')
         print(f'FAILURE SHIELD | enabled={V15_FAILURE_SHIELD_ENABLED} | stacked-veto only | core={CORE_NAME}')
         syms = self.discover_universe()
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.

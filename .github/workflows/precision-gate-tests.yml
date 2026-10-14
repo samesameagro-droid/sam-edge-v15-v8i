@@ -1,0 +1,25 @@
+name: Precision Gate Regression Tests
+
+on:
+  push:
+    branches:
+      - main
+      - "fix/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  precision-gate-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile strategy modules
+        run: python -m py_compile main_paper_v15.py core_engine_v15.py precision_policy.py
+      - name: Run Precision gate regression tests
+        run: python -m unittest discover -s tests -v
