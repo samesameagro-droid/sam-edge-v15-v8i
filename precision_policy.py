@@ -28,8 +28,9 @@ def precision_gate_decision(
         numeric_max = float("nan")
 
     score_finite = math.isfinite(numeric_score)
+    score_in_range = score_finite and 0.0 <= numeric_score <= 100.0
     max_finite = math.isfinite(numeric_max)
-    score_ok = score_finite and max_finite and numeric_score < numeric_max
+    score_ok = score_in_range and max_finite and numeric_score < numeric_max
     e_ok = bool(shadow_e.get("e_pass", False))
     is_enabled = bool(enabled)
     passed = (not is_enabled) or (e_ok and score_ok)
@@ -40,6 +41,7 @@ def precision_gate_decision(
         "e_pass": e_ok,
         "score_ok": score_ok,
         "score_finite": score_finite,
+        "score_in_range": score_in_range,
         "score_max": numeric_max,
         "score_gate_applied": is_enabled,
         "score_role": "upper_bound_quality_gate",
