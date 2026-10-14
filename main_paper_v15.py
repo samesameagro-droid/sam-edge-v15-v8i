@@ -56,6 +56,7 @@ V15_SELECTION_MODE = os.getenv('V15_SELECTION_MODE', 'HIGH_SCORE').strip().upper
 # Precision V2 final execution gate. Enabled by default for the new forward-test cohort.
 V15_PRECISION_MODE = os.getenv('V15_PRECISION_MODE', '1').strip().lower() in {'1','true','yes','on'}
 V15_PRECISION_SCORE_MAX = float(os.getenv('V15_PRECISION_SCORE_MAX', '65'))
+PRECISION_GATE_POLICY_VERSION = 'precision-score-cap-v2'
 
 # Failure-mode shield is a separate execution permission layer. It is OFF by default.
 V15_FAILURE_SHIELD_ENABLED = os.getenv('V15_FAILURE_SHIELD_ENABLED', '0').strip().lower() in {'1','true','yes','on'}
@@ -72,7 +73,8 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     STRUCTURE_STOP_MIN_ATR, STRUCTURE_STOP_MAX_ATR,
     V15_DEFENSIVE_MODE, V15_ENTRY_SCORE_MAX, V15_DIST_EMA_MAX_ATR,
     V15_MIN_VOLUME_RATIO, V15_LOSS_STREAK_PAUSE, V15_LOSS_PAUSE_MIN,
-    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX, V15_FAILURE_SHIELD_ENABLED,
+    V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX,
+    PRECISION_GATE_POLICY_VERSION, V15_FAILURE_SHIELD_ENABLED,
 ])).encode()).hexdigest()[:16]
 
 STATE_FILE = Path('paper_v15_state_v2.json')
