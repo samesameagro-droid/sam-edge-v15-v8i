@@ -1,5 +1,5 @@
 {
-  "equity": 107.30211108151468,
+  "equity": 106.22908997069953,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -4200,10 +4200,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 107.30211108151468
-    }
-  ],
-  "positions": {
-    "FARTCOIN/USDT:USDT": {
+    },
+    {
       "coin": "FARTCOIN/USDT:USDT",
       "side": "SHORT",
       "entry": 0.1603,
@@ -4334,7 +4332,13 @@
         "close": 83305.1,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-14T00:15:00+00:00",
+      "exit": 0.16454732165063216,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 106.22908997069953
     }
-  }
+  ],
+  "positions": {}
 }
