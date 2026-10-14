@@ -1545,19 +1545,19 @@
     {
       "symbol": "XRPUSDT",
       "tf": "15m",
-      "candle_count": 2698,
+      "candle_count": 2780,
       "source_counts": {
         "binance_archive_monthly": 1834,
-        "binance_archive_daily": 864
+        "binance_archive_daily": 946
       }
     },
     {
       "symbol": "XRPUSDT",
       "tf": "1h",
-      "candle_count": 674,
+      "candle_count": 695,
       "source_counts": {
         "binance_archive_monthly": 458,
-        "binance_archive_daily": 216
+        "binance_archive_daily": 237
       }
     },
     {
@@ -1571,19 +1571,19 @@
     {
       "symbol": "XRPUSDT",
       "tf": "30m",
-      "candle_count": 1349,
+      "candle_count": 1390,
       "source_counts": {
         "binance_archive_monthly": 917,
-        "binance_archive_daily": 432
+        "binance_archive_daily": 473
       }
     },
     {
       "symbol": "XRPUSDT",
       "tf": "4h",
-      "candle_count": 168,
+      "candle_count": 174,
       "source_counts": {
         "binance_archive_monthly": 114,
-        "binance_archive_daily": 54
+        "binance_archive_daily": 60
       }
     },
     {
