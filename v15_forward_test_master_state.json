@@ -1,11 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 133,
+  "next_trade_no": 134,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 132,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "ETH/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 133,
+      "coin": "ETH/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-15T00:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 2417.93,
+      "sl": 2434.3162989130237,
+      "tp": 2397.44712635872,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
