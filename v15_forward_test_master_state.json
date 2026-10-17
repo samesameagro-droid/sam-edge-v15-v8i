@@ -3,23 +3,9 @@
   "next_trade_no": 135,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 133,
-  "active_positions": [
-    "BNB/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 134,
-      "coin": "BNB/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-10-16T21:45:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 721.47,
-      "sl": 724.0780182113233,
-      "tp": 718.2099772358459,
-      "status": "ONGOING"
-    }
-  ],
+  "cohort_closed_trades": 134,
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
