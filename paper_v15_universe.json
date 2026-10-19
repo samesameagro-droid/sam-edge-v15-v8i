@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T05:22:43.896466+00:00",
+  "updated_at": "2026-10-19T05:25:33.896380+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -42,7 +42,8 @@
     "ASTER/USDT:USDT",
     "TRX/USDT:USDT",
     "BCH/USDT:USDT",
+    "APT/USDT:USDT",
     "STX/USDT:USDT",
-    "APT/USDT:USDT"
+    "AGT/USDT:USDT"
   ]
 }
