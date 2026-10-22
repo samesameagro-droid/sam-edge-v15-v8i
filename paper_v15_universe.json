@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T19:09:35.486949+00:00",
+  "updated_at": "2026-10-22T19:19:56.799824+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -36,7 +36,7 @@
     "JUP/USDT:USDT",
     "MAGMA/USDT:USDT",
     "QNT/USDT:USDT",
-    "FARTCOIN/USDT:USDT",
-    "XMR/USDT:USDT"
+    "XMR/USDT:USDT",
+    "FARTCOIN/USDT:USDT"
   ]
 }
