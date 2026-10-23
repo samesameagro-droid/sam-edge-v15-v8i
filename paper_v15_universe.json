@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T05:22:13.150356+00:00",
+  "updated_at": "2026-10-23T05:29:53.124310+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -51,8 +51,8 @@
     "WIF/USDT:USDT",
     "JTO/USDT:USDT",
     "OP/USDT:USDT",
-    "XMR/USDT:USDT",
+    "ETC/USDT:USDT",
     "APT/USDT:USDT",
-    "PENDLE/USDT:USDT"
+    "XMR/USDT:USDT"
   ]
 }
