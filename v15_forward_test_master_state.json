@@ -1,11 +1,49 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 138,
+  "next_trade_no": 141,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "cohort_closed_trades": 137,
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "LINK/USDT:USDT",
+    "TAO/USDT:USDT",
+    "JASMY/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 138,
+      "coin": "LINK/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-24T21:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 11.503,
+      "sl": 11.620259419384869,
+      "tp": 11.356425725768915,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 139,
+      "coin": "TAO/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-24T21:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 248.54,
+      "sl": 251.55514413381894,
+      "tp": 244.7710698327263,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 140,
+      "coin": "JASMY/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-24T21:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.004416,
+      "sl": 0.004469856321610041,
+      "tp": 0.004348679597987448,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
