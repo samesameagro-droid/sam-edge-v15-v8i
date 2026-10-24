@@ -1,5 +1,5 @@
 {
-  "equity": 110.26268320921588,
+  "equity": 113.03647883369773,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -4752,10 +4752,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 110.26268320921588
-    }
-  ],
-  "positions": {
-    "TAO/USDT:USDT": {
+    },
+    {
       "coin": "TAO/USDT:USDT",
       "side": "SHORT",
       "entry": 259.23,
@@ -4886,9 +4884,14 @@
         "close": 81410.1,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-23T22:30:00+00:00",
+      "exit": 255.32448633831314,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 111.64096674933108
     },
-    "ONDO/USDT:USDT": {
+    {
       "coin": "ONDO/USDT:USDT",
       "side": "SHORT",
       "entry": 0.4288,
@@ -5019,7 +5022,13 @@
         "close": 81410.1,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-23T22:30:00+00:00",
+      "exit": 0.422383468814587,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 113.03647883369773
     }
-  }
+  ],
+  "positions": {}
 }
