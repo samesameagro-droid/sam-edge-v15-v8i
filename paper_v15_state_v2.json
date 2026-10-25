@@ -1,5 +1,5 @@
 {
-  "equity": 113.03647883369773,
+  "equity": 109.67918237585808,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -5028,10 +5028,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 113.03647883369773
-    }
-  ],
-  "positions": {
-    "LINK/USDT:USDT": {
+    },
+    {
       "coin": "LINK/USDT:USDT",
       "side": "SHORT",
       "entry": 11.503,
@@ -5162,9 +5160,14 @@
         "close": 80485.6,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-24T23:30:00+00:00",
+      "exit": 11.620259419384869,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 111.90611404536075
     },
-    "TAO/USDT:USDT": {
+    {
       "coin": "TAO/USDT:USDT",
       "side": "SHORT",
       "entry": 248.54,
@@ -5295,9 +5298,14 @@
         "close": 80485.6,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-25T00:25:00+00:00",
+      "exit": 251.55514413381894,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 110.78705290490714
     },
-    "JASMY/USDT:USDT": {
+    {
       "coin": "JASMY/USDT:USDT",
       "side": "SHORT",
       "entry": 0.004416,
@@ -5428,7 +5436,13 @@
         "close": 80485.6,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-24T23:30:00+00:00",
+      "exit": 0.004469856321610041,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 109.67918237585808
     }
-  }
+  ],
+  "positions": {}
 }
