@@ -33,6 +33,14 @@ VARIANTS = {
     "PRECISION_V2_SCORE_LE56": "precision_score_56",
     "SCORE_ONLY_LE54_DIAGNOSTIC": "score_only_54",
 }
+# Independent guard: do not let a future edit silently add/remove/retune holdout variants.
+EXPECTED_VARIANTS = {
+    "PRECISION_V2_BASELINE_LT65": "precision65",
+    "PRECISION_V2_SCORE_LE52": "precision_score_52",
+    "PRECISION_V2_SCORE_LE54": "precision_score_54",
+    "PRECISION_V2_SCORE_LE56": "precision_score_56",
+    "SCORE_ONLY_LE54_DIAGNOSTIC": "score_only_54",
+}
 
 
 def latest_day_archive_preflight(day):
@@ -74,6 +82,22 @@ def latest_day_archive_preflight(day):
 def main():
     out = Path("research/results/new_forward_holdout")
     out.mkdir(parents=True, exist_ok=True)
+    # Fail closed if fixed symbols or locked strategy variants are edited in a future commit.
+    if VARIANTS != EXPECTED_VARIANTS:
+        summary = {
+            "status": "invalid_variant_lock",
+            "validation_passed": False,
+            "data_ready": False,
+            "expected_variants": EXPECTED_VARIANTS,
+            "actual_variants": VARIANTS,
+            "reason": "The five preregistered variants are locked; no threshold selection or optimization on holdout.",
+            "rule_lock": {
+                "threshold_selection": "No threshold selection or optimization on holdout.",
+                "production": "Unchanged; SAM EDGE remains PAPER ONLY."
+            }
+        }
+        (out / "summary.json").write_text(json.dumps(summary, indent=2))
+        raise SystemExit("VARIANT_LOCK_INVALID: fixed variants changed; metrics withheld.")
     # Fail closed if the symbol universe is edited or silently reduced in a future commit.
     if len(SYMBOLS) != 24 or len(set(SYMBOLS)) != 24 or set(SYMBOLS) != set(REQUIRED_SYMBOLS):
         summary = {
