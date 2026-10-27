@@ -10,7 +10,7 @@ import main_paper_v15 as base
 # Forward-test policy:
 # - scanner still scans the whole eligible universe;
 # - a signal becomes a trade when it passes the SAME 9 V15 gates used by signal_mask();
-# - SCORE is informational/ranking only and is NOT an execution threshold;
+# - Precision mode also applies an explicit score ceiling; summary metadata must reflect the active config;
 # - Trade # is a MASTER sequence across all coins and is assigned when a trade closes;
 # - selected/closed trades count toward the 20-trade target;
 # - waitlist signals do not count because they were not executed by the paper engine;
@@ -49,7 +49,8 @@ class ForwardPaperEngine(base.PaperEngine):
         print(
             f"FORWARD TEST | baseline={BASELINE_TRADE_NO} | cohort_closed={max(0, len(self.master_rows)-BASELINE_TRADE_NO)}/{TARGET_TRADES} "
             f"| active={len(self.positions)} | max_active={base.MAX_ACTIVE} "
-            f"| policy=9_GATES_NO_SCORE_THRESHOLD"
+            f"| policy=V15_GATES_PLUS_PRECISION_GATE "
+            f"| precision={base.V15_PRECISION_MODE} score<{base.V15_PRECISION_SCORE_MAX:g}"
         )
 
     @staticmethod
@@ -358,8 +359,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "equity": float(self.equity),
             "active_positions": len(self.positions),
             "max_active": base.MAX_ACTIVE,
-            "score_is_execution_threshold": False,
-            "validation": "9 V15 gates from signal_mask",
+            "score_is_execution_threshold": bool(base.V15_PRECISION_MODE),
+            "precision_mode": bool(base.V15_PRECISION_MODE),
+            "precision_score_max": base.V15_PRECISION_SCORE_MAX,
+            "validation": "V15 signal_mask plus configured precision gate; score ceiling applies when precision mode is enabled",
             "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
             "cohort": "TRADE_101_PLUS",
             "performance_diagnostics": self._performance_diagnostics(),
@@ -373,8 +376,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "active_positions": list(self.positions),
             "ongoing_trades": [dict(trade_no=n, coin=p.coin, side=p.side, opened_at=p.opened_at, core=p.core, entry=p.entry, sl=p.sl, tp=p.tp, status="ONGOING") for n,p in sorted([(self._ongoing_trade_map().get(f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"), p) for p in self.positions.values()], key=lambda x: x[0])],
             "max_active": base.MAX_ACTIVE,
-            "score_is_execution_threshold": False,
-            "validation": "9 V15 gates from signal_mask",
+            "score_is_execution_threshold": bool(base.V15_PRECISION_MODE),
+            "precision_mode": bool(base.V15_PRECISION_MODE),
+            "precision_score_max": base.V15_PRECISION_SCORE_MAX,
+            "validation": "V15 signal_mask plus configured precision gate; score ceiling applies when precision mode is enabled",
         }, indent=2, ensure_ascii=False), encoding="utf-8")
 
     def analyze_latest(self, symbol):
