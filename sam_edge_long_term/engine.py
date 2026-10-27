@@ -19,8 +19,8 @@ import pandas as pd
 
 EXCHANGE_ID = os.getenv("LT_EXCHANGE", "bingx")
 QUOTE = os.getenv("LT_QUOTE", "USDT")
-MIN_QUOTE_VOLUME = float(os.getenv("LT_MIN_QUOTE_VOLUME", "1000000"))
-MAX_SYMBOLS = int(os.getenv("LT_MAX_SYMBOLS", "80"))
+MIN_QUOTE_VOLUME = float(os.getenv("LT_MIN_QUOTE_VOLUME", "500000"))
+MAX_SYMBOLS = int(os.getenv("LT_MAX_SYMBOLS", "250"))
 DAILY_BARS = int(os.getenv("LT_DAILY_BARS", "300"))
 WEEKLY_BARS = int(os.getenv("LT_WEEKLY_BARS", "120"))
 MIN_RR = float(os.getenv("LT_MIN_RR", "2.0"))
@@ -40,7 +40,14 @@ class Candidate:
     entry_low: float
     entry_high: float
     stop_loss: float
-    take_profit: float
+    take_profit: float  # TP3 / maximum chart-based target
+    take_profit_1: float
+    take_profit_2: float
+    take_profit_3: float
+    tp_allocations_pct: str
+    setup_score: int
+    sideways_bars: int
+    breakout_volume_ratio: float
     risk_pct: float
     reward_pct: float
     rr: float
@@ -153,29 +160,60 @@ def analyse_symbol(exchange, symbol: str, quote_volume: float) -> Optional[Candi
     vol_ratio = float(x.volume / x.vol_sma20) if x.vol_sma20 and x.vol_sma20 > 0 else 0
     rsi = float(x.rsi) if np.isfinite(x.rsi) else 50.0
 
-    # Spot LONG only. Require weekly trend not bearish; avoid buying stretched candles.
+    # Spot LONG only. Weekly bearish regime is excluded.
     if wtrend == "BEARISH":
         return None
 
-    # Setup 1: bullish pullback near confirmed support with a bullish daily candle.
-    near_support = price <= support + max(0.8 * atr, support * 0.025)
-    bullish_candle = x.close > x.open and x.close > prev.close
-    pullback_ok = near_support and bullish_candle and rsi >= 35 and rsi <= 68
-    # Setup 2: close above a recent range high, volume expansion; next candle validation is still needed.
+    # Detect compression/sideways before a possible expansion candle.
+    box = daily.iloc[-16:-1]
     range_high = float(daily.high.iloc[-21:-1].max())
-    breakout_ok = price > range_high and vol_ratio >= 1.15 and rsi < 75
+    candle_range = max(float(x.high - x.low), 1e-12)
+    body_ratio = abs(float(x.close - x.open)) / candle_range
+    close_location = (float(x.close) - float(x.low)) / candle_range
+    sideways_bars = 0
+    for n in range(15, 7, -1):
+        sample = daily.iloc[-(n + 1):-1]
+        if len(sample) == n and (float(sample.high.max()) - float(sample.low.min())) / atr <= 4.5:
+            sideways_bars = n
+            break
 
-    if pullback_ok:
+    vol_ratio = float(x.volume / x.vol_sma20) if x.vol_sma20 and x.vol_sma20 > 0 else 0.0
+    god_candle = (
+        float(x.close) > range_high
+        and body_ratio >= 0.60
+        and close_location >= 0.75
+        and vol_ratio >= 1.8
+        and candle_range >= 1.5 * atr
+        and sideways_bars >= 8
+    )
+    # Don't chase a vertical candle: if extended >1.25 ATR above breakout level, wait for retest.
+    extended_breakout = float(x.close) - range_high > 1.25 * atr
+    bullish_candle = x.close > x.open and x.close > prev.close
+    near_support = float(x.low) <= support + max(0.8 * atr, support * 0.025)
+    pullback_ok = near_support and bullish_candle and 35 <= rsi <= 68
+    breakout_ok = price > range_high and vol_ratio >= 1.15 and rsi < 82
+
+    if god_candle:
+        setup = "GOD_CANDLE_BREAKOUT_RETEST" if extended_breakout else "GOD_CANDLE_BREAKOUT"
+        entry_low, entry_high = range_high * 0.99, range_high * 1.015
+        status = "WAIT_RETEST"
+        rationale = (
+            f"Sideways {sideways_bars} candle, breakout body {body_ratio:.0%}, "
+            f"volume {vol_ratio:.2f}x SMA20, candle range {candle_range / atr:.2f} ATR. "
+            "Wait for retest if price is extended; do not chase."
+        )
+        if not extended_breakout and price <= entry_high:
+            status = "PAPER_CANDIDATE"
+    elif pullback_ok:
         setup = "SUPPORT_PULLBACK"
         entry_low, entry_high = price * 0.995, price * 1.005
-        rationale = "Harga dekat support terkonfirmasi, candle harian bullish, RSI tidak terlalu panas."
+        status = "PAPER_CANDIDATE"
+        rationale = "Price tests confirmed support with a bullish daily candle; RSI is not overheated."
     elif breakout_ok and dtrend == "BULLISH":
         setup = "BREAKOUT_RETEST_WATCH"
-        # Do not chase: a breakout is a watchlist setup until retest/confirmation.
-        entry_low, entry_high = range_high * 0.985, range_high * 1.005
-        if price > entry_high:
-            return None
-        rationale = "Breakout range 20 hari dengan dukungan volume; tunggu retest, jangan mengejar harga."
+        entry_low, entry_high = range_high * 0.99, range_high * 1.015
+        status = "WAIT_RETEST"
+        rationale = "20-day range breakout with volume confirmation; wait for retest, do not chase."
     else:
         return None
 
@@ -184,33 +222,52 @@ def analyse_symbol(exchange, symbol: str, quote_volume: float) -> Optional[Candi
     if stop <= 0 or stop >= entry_low:
         return None
 
-    # Chart-based target: nearest meaningful resistance. If no nearby confirmed resistance,
-    # use the visible 60-bar high as a fallback only when above entry.
-    target = resistance
-    if target <= entry_high:
-        target = float(d.high.tail(60).max())
-    if target <= entry_high:
+    # Derive three targets from confirmed swing highs / visible historical highs.
+    _, swing_highs = swing_levels(daily, left_right=3)
+    levels = sorted({float(v) for _, v in swing_highs if float(v) > entry_high * 1.01})
+    for lookback in (60, 120, 200):
+        level = float(d.high.tail(min(lookback, len(d))).max())
+        if level > entry_high * 1.01 and not any(abs(level - old) / level < 0.008 for old in levels):
+            levels.append(level)
+    levels = sorted(set(levels))
+    if len(levels) < 3:
         return None
-
+    # Select chart levels distributed across available overhead resistance, not fixed R multiples.
+    indexes = sorted(set([0, len(levels) // 2, len(levels) - 1]))
+    targets = [levels[i] for i in indexes]
+    if len(targets) < 3:
+        targets = levels[:3]
+    tp1, tp2, tp3 = targets[0], targets[1], targets[2]
     risk = entry_high - stop
-    reward = target - entry_high
-    rr = reward / risk if risk > 0 else 0
-    # RR is a quality filter, not the method for choosing the target.
+    rr = (tp3 - entry_high) / risk if risk > 0 else 0.0
+    # RR is a quality gate after chart-derived target selection.
     if rr < MIN_RR:
         return None
 
-    status = "PAPER_CANDIDATE" if setup == "SUPPORT_PULLBACK" else "WAIT_RETEST"
+    score = 0
+    score += 20 if wtrend == "BULLISH" else 8
+    score += 15 if dtrend == "BULLISH" else 6
+    score += 20 if god_candle else 0
+    score += 15 if vol_ratio >= 1.8 else (8 if vol_ratio >= 1.2 else 0)
+    score += 10 if near_support else 0
+    score += 10 if 40 <= rsi <= 65 else 4
+    score += 10 if rr >= 3 else (6 if rr >= 2 else 0)
+
     return Candidate(
         symbol=symbol, setup=setup, status=status, price=price,
         entry_low=round(entry_low, 10), entry_high=round(entry_high, 10),
-        stop_loss=round(stop, 10), take_profit=round(target, 10),
+        stop_loss=round(stop, 10), take_profit=round(tp3, 10),
+        take_profit_1=round(tp1, 10), take_profit_2=round(tp2, 10),
+        take_profit_3=round(tp3, 10), tp_allocations_pct="30/30/40",
+        setup_score=min(score, 100), sideways_bars=sideways_bars,
+        breakout_volume_ratio=round(vol_ratio, 2),
         risk_pct=round(100 * (entry_high - stop) / entry_high, 2),
-        reward_pct=round(100 * (target - entry_high) / entry_high, 2),
+        reward_pct=round(100 * (tp3 - entry_high) / entry_high, 2),
         rr=round(rr, 2), daily_trend=dtrend, weekly_trend=wtrend,
         support=round(support, 10), resistance=round(resistance, 10),
         atr_pct=round(atr_pct, 2), quote_volume_24h=round(quote_volume, 2),
         rationale=rationale,
-        invalidation=f"Daily close below support/SL zone {stop:.8g}; re-evaluate structure.",
+        invalidation=f"Daily close below structural SL {stop:.8g}; re-evaluate structure.",
         timestamp_utc=datetime.now(timezone.utc).isoformat()
     )
 
@@ -243,6 +300,7 @@ def main():
     universe = universe[:max(1, args.limit)]
     print(f"ENGINE=SAM_EDGE_LONG_TERM | EXCHANGE={EXCHANGE_ID} | MARKET=SPOT | TF=1D | PAPER_ONLY={PAPER_ONLY}")
     print(f"Eligible spot symbols: {len(universe)} (min 24h quote volume {MIN_QUOTE_VOLUME:,.0f} {QUOTE})")
+    print("Setups: support pullback, breakout/retest, sideways-to-GOD-CANDLE. TP1/TP2/TP3 allocation 30/30/40.")
 
     candidates = []
     for symbol, qv in universe:
@@ -251,8 +309,8 @@ def main():
             candidates.append(asdict(c))
             print(f"[{c.status}] {c.symbol} setup={c.setup} entry={c.entry_low}-{c.entry_high} SL={c.stop_loss} TP={c.take_profit} RR={c.rr}")
 
-    candidates.sort(key=lambda c: (c["rr"], c["quote_volume_24h"]), reverse=True)
-    candidates = candidates[:3]
+    candidates.sort(key=lambda c: (c["setup_score"], c["quote_volume_24h"], c["rr"]), reverse=True)
+    candidates = candidates[:10]
     payload = {
         "engine": "SAM_EDGE_LONG_TERM",
         "mode": "PAPER_ONLY",
