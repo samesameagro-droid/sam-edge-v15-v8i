@@ -30,6 +30,11 @@ TIMEFRAME = '15m'
 TRACK_TIMEFRAME = '5m'
 START_EQUITY = float(os.getenv('START_EQUITY', '100'))
 RISK_PCT = float(os.getenv('RISK_PCT', '0.01'))
+# Portfolio-level risk budget: limit total open stop-risk across concurrent positions.
+MAX_PORTFOLIO_RISK_PCT = float(os.getenv('MAX_PORTFOLIO_RISK_PCT', '0.02'))
+# Conservative default assumes taker fills on both entry and exit. Funding/slippage are not modeled here.
+FEE_RATE_ENTRY = float(os.getenv('FEE_RATE_ENTRY', '0.0005'))
+FEE_RATE_EXIT = float(os.getenv('FEE_RATE_EXIT', '0.0005'))
 SCAN_SEC = int(os.getenv('SCAN_SEC', '300'))
 HISTORY_15M = int(os.getenv('HISTORY_15M', '3600'))
 FETCH_CHUNK = int(os.getenv('FETCH_CHUNK', '900'))
@@ -72,6 +77,7 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     V15_DEFENSIVE_MODE, V15_ENTRY_SCORE_MAX, V15_DIST_EMA_MAX_ATR,
     V15_MIN_VOLUME_RATIO, V15_LOSS_STREAK_PAUSE, V15_LOSS_PAUSE_MIN,
     V15_MAX_ACTIVE_PER_SIDE, V15_SELECTION_MODE, V15_PRECISION_MODE, V15_PRECISION_SCORE_MAX, V15_FAILURE_SHIELD_ENABLED,
+    MAX_PORTFOLIO_RISK_PCT, FEE_RATE_ENTRY, FEE_RATE_EXIT,
 ])).encode()).hexdigest()[:16]
 
 STATE_FILE = Path('paper_v15_state_v2.json')
@@ -748,11 +754,25 @@ class PaperEngine:
 
     def close(self, key, result, price, ts):
         p = self.positions[key]
-        rr = RR if result == 'TP' else -1.0
-        risk_now = self.equity * RISK_PCT
-        new_equity = self.equity + risk_now * rr
+        gross_r = RR if result == 'TP' else -1.0
+        # Use the risk budget frozen at entry. Recalculating from current equity
+        # misstates PnL when several positions overlap and close at different times.
+        risk_cash = float(getattr(p, 'risk_cash', 0.0) or 0.0)
+        if not np.isfinite(risk_cash) or risk_cash <= 0:
+            risk_cash = self.equity * RISK_PCT
+        stop_distance = abs(float(p.entry) - float(p.sl))
+        quantity = risk_cash / stop_distance if stop_distance > 0 else 0.0
+        entry_notional = quantity * abs(float(p.entry))
+        exit_notional = quantity * abs(float(price))
+        fee_cash = entry_notional * FEE_RATE_ENTRY + exit_notional * FEE_RATE_EXIT
+        gross_pnl = risk_cash * gross_r
+        net_pnl = gross_pnl - fee_cash
+        net_r = net_pnl / risk_cash if risk_cash > 0 else gross_r
+        new_equity = self.equity + net_pnl
         rec = asdict(p)
-        rec.update({'closed_at': ts, 'exit': price, 'result': result, 'R': rr, 'equity_after': new_equity})
+        rec.update({'closed_at': ts, 'exit': price, 'result': result, 'R': net_r,
+                    'gross_R': gross_r, 'fee_cash': fee_cash, 'gross_pnl': gross_pnl,
+                    'net_pnl': net_pnl, 'net_R': net_r, 'equity_after': new_equity})
         self._upsert_trade_journal(rec)
         self.closed.append(rec)
         self.equity = new_equity
@@ -787,6 +807,7 @@ class PaperEngine:
         print(f'GATE | 4H ADX LONG={ADX_LONG_PCT:.2f}/{ADX_LONG_DELTA:.2f} | SHORT={ADX_SHORT_PCT:.2f}/{ADX_SHORT_DELTA:.2f} | EARLY 15M RECLAIM | NO-CHASE move5<={EARLY_MOVE5_MAX_ATR:.2f} ATR distEMA<={EARLY_DIST_EMA_MAX_ATR:.2f} ATR')
         print(f'BTC CONTEXT | enabled={BTC_FILTER_ENABLED} | mode={BTC_FILTER_MODE} | alignment=1H+4H | execution_blocking=False')
         print(f'PRECISION V2 FINAL | enabled={V15_PRECISION_MODE} | score<{V15_PRECISION_SCORE_MAX:g} + fresh_pullback(1-2) + ADX deterioration veto + vol>=1.20 + distEMA<=0.80')
+        print(f'RISK BUDGET | per_trade={RISK_PCT*100:.2f}% | max_open={MAX_PORTFOLIO_RISK_PCT*100:.2f}% | fee_entry={FEE_RATE_ENTRY*100:.3f}% | fee_exit={FEE_RATE_EXIT*100:.3f}%')
         print(f'FAILURE SHIELD | enabled={V15_FAILURE_SHIELD_ENABLED} | stacked-veto only | core={CORE_NAME}')
         syms = self.discover_universe()
         # Refresh BTC context once per scan; existing positions are never blocked or closed by this filter.
@@ -868,18 +889,27 @@ class PaperEngine:
         selected = []
         active_long = sum(1 for p in self.positions.values() if p.side == 'LONG')
         active_short = sum(1 for p in self.positions.values() if p.side == 'SHORT')
+        open_risk_cash = sum(max(0.0, float(getattr(p, 'risk_cash', 0.0) or 0.0)) for p in self.positions.values())
+        selected_risk_cash = 0.0
+        risk_budget_cash = max(0.0, self.equity * MAX_PORTFOLIO_RISK_PCT)
+        risk_budget_skips = 0
         for c in candidates:
             if len(selected) >= free_slots:
                 break
+            candidate_risk = max(0.0, float(getattr(c['position'], 'risk_cash', 0.0) or 0.0))
+            if open_risk_cash + selected_risk_cash + candidate_risk > risk_budget_cash + 1e-9:
+                risk_budget_skips += 1
+                continue
             if V15_DEFENSIVE_MODE:
                 if c['side'] == 'LONG' and active_long >= V15_MAX_ACTIVE_PER_SIDE:
                     continue
                 if c['side'] == 'SHORT' and active_short >= V15_MAX_ACTIVE_PER_SIDE:
                     continue
             selected.append(c)
+            selected_risk_cash += candidate_risk
             if c['side'] == 'LONG': active_long += 1
             else: active_short += 1
-        print(f'SELECTION | candidates={len(candidates)} | free_slots={free_slots} | selected={len(selected)}')
+        print(f'SELECTION | candidates={len(candidates)} | free_slots={free_slots} | selected={len(selected)} | risk_budget_skips={risk_budget_skips} | open_risk=${open_risk_cash:.4f}/${risk_budget_cash:.4f}')
         for rank, c in enumerate(candidates[:max(MAX_ACTIVE,10)],1):
             tag='SELECT' if c in selected else 'WAIT'
             print(f'  #{rank:<2} {tag:<6} | {c["position"].coin:<24} | {c["side"]:<5} | score={c["score"]:.1f}')
