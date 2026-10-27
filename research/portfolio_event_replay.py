@@ -318,10 +318,16 @@ def stats(sim,period_days):
     tr=pd.DataFrame(sim["closed_trades"])
     if tr.empty:
         return {"closed_trades":0,"TP":0,"SL":0,"TIMEOUT":0,"CUTOFF":0,"gross_R":0.0,"net_est_R":0.0,
-            "profit_factor_gross":None,"expectancy_net_R":0.0,"average_trades_per_30d":0.0,
-            "open_positions":len(sim["open_positions"]),"max_active_positions_seen":sim["max_active_positions_seen"]}
+            "profit_factor_gross":None,"profit_factor_net":None,"expectancy_net_R":0.0,
+            "estimated_cost_R_total":0.0,"estimated_cost_usd_total":0.0,"max_drawdown_pct":0.0,
+            "average_trades_per_30d":0.0,"open_positions":len(sim["open_positions"]),
+            "open_unrealized_R_mark_to_market":round(sum(p["unrealized_R_mark_to_market"] for p in sim["open_positions"]),4),
+            "max_active_positions_seen":sim["max_active_positions_seen"]}
     g=tr.R_gross.astype(float); n=tr.R_net_est.astype(float)
     pos=float(g[g>0].sum()); neg=float(-g[g<0].sum())
+    net_pos=float(n[n>0].sum()); net_neg=float(-n[n<0].sum())
+    cost_r=float(tr.estimated_cost_R.sum()) if "estimated_cost_R" in tr else 0.0
+    cost_usd=float((tr.risk_cash_usd.astype(float)*tr.estimated_cost_R.astype(float)).sum()) if {"risk_cash_usd","estimated_cost_R"}.issubset(tr.columns) else 0.0
     eq=pd.Series(sim["equity_curve"],dtype=float); dd=((eq-eq.cummax())/eq.cummax().replace(0,np.nan)*100).min()
     return {"closed_trades":len(tr),"TP":int((tr.result=="TP").sum()),"SL":int((tr.result=="SL").sum()),
         "TIMEOUT":int((tr.result=="TIMEOUT").sum()),"CUTOFF":int((tr.result=="CUTOFF").sum()),
@@ -329,7 +335,10 @@ def stats(sim,period_days):
         "tp_rate_closed_pct":round(100*float((tr.result=="TP").sum())/len(tr),2),
         "gross_R":round(float(g.sum()),4),"net_est_R":round(float(n.sum()),4),
         "profit_factor_gross":round(pos/neg,4) if neg>0 else None,
-        "expectancy_net_R":round(float(n.mean()),4),"equity_end_closed_only_usd":round(float(sim["equity_end_closed_only"]),4),
+        "profit_factor_net":round(net_pos/net_neg,4) if net_neg>0 else None,
+        "expectancy_net_R":round(float(n.mean()),4),"estimated_cost_R_total":round(cost_r,4),
+        "estimated_cost_usd_total":round(cost_usd,4),
+        "equity_end_closed_only_usd":round(float(sim["equity_end_closed_only"]),4),
         "max_drawdown_pct":round(float(dd),3) if pd.notna(dd) else None,
         "average_trades_per_30d":round(len(tr)/max(period_days,1)*30,2),
         "open_positions":len(sim["open_positions"]),
