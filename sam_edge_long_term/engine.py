@@ -1,5 +1,5 @@
 """
-SAM EDGE LONG TERM — Spot / Daily chart-based engine.
+HODLER IS A WINNER — Long-Term Spot / Daily chart-based engine.
 Standalone module: does not import or modify the existing SAM EDGE V15 engine.
 Default mode is ANALYSIS/PAPER ONLY; it never places live orders.
 """
@@ -130,6 +130,23 @@ def swing_levels(df: pd.DataFrame, left_right: int = 3):
     return lows, highs
 
 
+def select_three_targets(levels, entry_high: float, min_spacing_pct: float = 0.01):
+    """Select three ascending, distinct overhead levels, merging nearby resistance clusters."""
+    valid = sorted(float(level) for level in levels
+                   if np.isfinite(level) and float(level) > entry_high * (1 + min_spacing_pct))
+    clustered = []
+    for level in valid:
+        if not clustered or (level - clustered[-1]) / clustered[-1] >= min_spacing_pct:
+            clustered.append(level)
+    if len(clustered) < 3:
+        return None
+    # Preserve the nearest, middle, and furthest overhead chart levels.
+    indexes = sorted(set([0, len(clustered) // 2, len(clustered) - 1]))
+    if len(indexes) != 3:
+        return None
+    return [clustered[i] for i in indexes]
+
+
 def nearest_levels(df: pd.DataFrame, price: float):
     lows, highs = swing_levels(df)
     supports = [v for _, v in lows if v < price]
@@ -232,12 +249,11 @@ def analyse_symbol(exchange, symbol: str, quote_volume: float) -> Optional[Candi
     levels = sorted(set(levels))
     if len(levels) < 3:
         return None
-    # Select chart levels distributed across available overhead resistance, not fixed R multiples.
-    indexes = sorted(set([0, len(levels) // 2, len(levels) - 1]))
-    targets = [levels[i] for i in indexes]
-    if len(targets) < 3:
-        targets = levels[:3]
-    tp1, tp2, tp3 = targets[0], targets[1], targets[2]
+    # Select three distinct chart levels; reject a setup if overhead structure is insufficient.
+    targets = select_three_targets(levels, entry_high)
+    if targets is None:
+        return None
+    tp1, tp2, tp3 = targets
     risk = entry_high - stop
     rr = (tp3 - entry_high) / risk if risk > 0 else 0.0
     # RR is a quality gate after chart-derived target selection.
@@ -273,7 +289,7 @@ def analyse_symbol(exchange, symbol: str, quote_volume: float) -> Optional[Candi
 
 
 def main():
-    parser = argparse.ArgumentParser(description="SAM EDGE LONG TERM — Spot Daily paper scanner")
+    parser = argparse.ArgumentParser(description="HODLER IS A WINNER — Spot Daily paper scanner")
     parser.add_argument("--limit", type=int, default=MAX_SYMBOLS, help="Maximum liquid spot symbols to scan")
     args = parser.parse_args()
 
@@ -298,7 +314,7 @@ def main():
             universe.append((symbol, qv))
     universe.sort(key=lambda item: item[1], reverse=True)
     universe = universe[:max(1, args.limit)]
-    print(f"ENGINE=SAM_EDGE_LONG_TERM | EXCHANGE={EXCHANGE_ID} | MARKET=SPOT | TF=1D | PAPER_ONLY={PAPER_ONLY}")
+    print(f"ENGINE=HODLER_IS_A_WINNER | EXCHANGE={EXCHANGE_ID} | MARKET=SPOT | TF=1D | PAPER_ONLY={PAPER_ONLY}")
     print(f"Eligible spot symbols: {len(universe)} (min 24h quote volume {MIN_QUOTE_VOLUME:,.0f} {QUOTE})")
     print("Setups: support pullback, breakout/retest, sideways-to-GOD-CANDLE. TP1/TP2/TP3 allocation 30/30/40.")
 
@@ -312,7 +328,7 @@ def main():
     candidates.sort(key=lambda c: (c["setup_score"], c["quote_volume_24h"], c["rr"]), reverse=True)
     candidates = candidates[:10]
     payload = {
-        "engine": "SAM_EDGE_LONG_TERM",
+        "engine": "HODLER_IS_A_WINNER",
         "mode": "PAPER_ONLY",
         "market": "SPOT",
         "timeframe": "1D",
