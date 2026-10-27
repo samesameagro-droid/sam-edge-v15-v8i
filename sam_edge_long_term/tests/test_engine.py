@@ -35,6 +35,14 @@ class IndicatorTests(unittest.TestCase):
         self.assertTrue(all(isinstance(item[0], int) for item in lows + highs))
         self.assertTrue(all(isinstance(item[1], float) for item in lows + highs))
 
+    def test_rsi_handles_monotonic_uptrend_without_nan(self):
+        frame = sample_ohlcv(240)
+        frame["open"] = frame["close"] - 0.05
+        frame["high"] = frame["close"] + 0.1
+        frame["low"] = frame["close"] - 0.1
+        result = engine.indicators(frame)
+        self.assertEqual(float(result["rsi"].iloc[-1]), 100.0)
+
     def test_trend_label_is_known_for_sufficient_history(self):
         label = engine.trend_label(sample_ohlcv())
         self.assertIn(label, {"BULLISH", "BEARISH", "NEUTRAL", "UNKNOWN"})
