@@ -54,3 +54,14 @@ def calculate_trade_pnl(
         "gross_R": gross_r,
         "net_R": net_r,
     }
+
+
+def risk_budget_allows(*, open_risk_cash: float, selected_risk_cash: float, candidate_risk_cash: float, equity: float, max_portfolio_risk_pct: float) -> bool:
+    """Whether adding a candidate keeps aggregate open stop-risk within budget."""
+    values = (open_risk_cash, selected_risk_cash, candidate_risk_cash, equity, max_portfolio_risk_pct)
+    if not all(isfinite(float(v)) for v in values):
+        return False
+    if equity <= 0 or max_portfolio_risk_pct < 0:
+        return False
+    total_risk = max(0.0, open_risk_cash) + max(0.0, selected_risk_cash) + max(0.0, candidate_risk_cash)
+    return total_risk <= equity * max_portfolio_risk_pct + 1e-9
