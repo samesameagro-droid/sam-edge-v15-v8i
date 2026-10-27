@@ -1,4 +1,8 @@
-# SAM EDGE LONG TERM — Spot / Daily Engine
+# HODLER IS A WINNER — Long-Term Spot Engine
+
+> **Motto:** Hodler is a winner — but only when the asset, entry, and risk are selected with discipline. Holding is not a guarantee of profit.
+
+This is the new public-facing name for the separate long-term Spot scanner. The internal folder remains `sam_edge_long_term` to keep the existing repository layout stable.
 
 This is a **separate engine**. It does not replace, edit, or import the existing SAM EDGE V15/V2 engine. Work is isolated on branch `feature/sam-edge-long-term-spot`; the existing `main` branch is unchanged.
 
