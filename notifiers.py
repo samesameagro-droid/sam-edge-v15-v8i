@@ -266,7 +266,7 @@ def _journal_signal(p, status: str):
         fields = [
             'signal_key','signal_time','coin','side','core','status','entry','sl','tp',
             'entry_score','rsi_entry','adx4h_pct_entry','adx4h_delta_entry',
-            'volume_ratio_entry','ema20_dist_atr_entry','result','exit','R',
+            'volume_ratio_entry','ema20_dist_atr_entry','result','exit','R','gross_R','fee_cash','net_pnl',
             'closed_at','equity_after','post_mortem'
         ]
         # Normalise all rows to the same schema.
@@ -303,11 +303,15 @@ def _journal_result(p, result, exit_price, closed_at, equity):
         if row is None:
             return
 
-        rr = 1.25 if result == 'TP' else -1.0
+        gross_rr = float(p.get('gross_R', 1.25 if result == 'TP' else -1.0))
+        net_rr = float(p.get('net_R', p.get('R', gross_rr)))
         row['status'] = 'CLOSED'
         row['result'] = result
         row['exit'] = exit_price
-        row['R'] = rr
+        row['R'] = net_rr
+        row['gross_R'] = gross_rr
+        row['fee_cash'] = p.get('fee_cash', '')
+        row['net_pnl'] = p.get('net_pnl', '')
         row['closed_at'] = closed_at
         row['equity_after'] = equity
         row['post_mortem'] = (
@@ -326,7 +330,7 @@ def _journal_result(p, result, exit_price, closed_at, equity):
             writer = csv.DictWriter(f, fieldnames=fields)
             writer.writeheader()
             writer.writerows(rows)
-        print(f'📒 JOURNAL RESULT | {p.get("coin")} | {result} | R={rr:+.2f}')
+        print(f'📒 JOURNAL RESULT | {p.get("coin")} | {result} | gross_R={gross_rr:+.2f} | net_R={net_rr:+.2f}')
     except Exception as e:
         print(f'JOURNAL RESULT ERROR | {p.get("coin")} | {type(e).__name__}: {e}')
 
