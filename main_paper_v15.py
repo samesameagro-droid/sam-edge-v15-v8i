@@ -13,7 +13,7 @@ import ccxt
 import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
-from sam_edge_accounting import calculate_trade_pnl
+from sam_edge_accounting import calculate_trade_pnl, risk_budget_allows
 
 from core_engine_v15 import (
     CORE_NAME, RR, enrich, signal_mask, failure_shield_mask, failure_shield_snapshot, trade_levels,
@@ -899,7 +899,13 @@ class PaperEngine:
             if len(selected) >= free_slots:
                 break
             candidate_risk = max(0.0, float(getattr(c['position'], 'risk_cash', 0.0) or 0.0))
-            if open_risk_cash + selected_risk_cash + candidate_risk > risk_budget_cash + 1e-9:
+            if not risk_budget_allows(
+                open_risk_cash=open_risk_cash,
+                selected_risk_cash=selected_risk_cash,
+                candidate_risk_cash=candidate_risk,
+                equity=self.equity,
+                max_portfolio_risk_pct=MAX_PORTFOLIO_RISK_PCT,
+            ):
                 risk_budget_skips += 1
                 continue
             if V15_DEFENSIVE_MODE:
