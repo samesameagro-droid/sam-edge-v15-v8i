@@ -14,10 +14,14 @@ from core_engine_v15 import (
 )
 from mtf_30m_replay import fetch_klines, INTERVALS
 
-SYMBOLS = ["1000PEPEUSDT","AAVEUSDT","ARBUSDT","DOTUSDT","ETHUSDT","FILUSDT",
-"IMXUSDT","INJUSDT","JUPUSDT","LDOUSDT","LINKUSDT","LTCUSDT","NEARUSDT",
-"ORDIUSDT","QNTUSDT","RUNEUSDT","SANDUSDT","STRKUSDT","SUIUSDT","TAOUSDT",
-"TIAUSDT","WLDUSDT","ZROUSDT"]
+# Fixed preregistered USD-M universe: do not silently drop a symbol to make data validation pass.
+REQUIRED_SYMBOLS = (
+    "1000PEPEUSDT", "AAVEUSDT", "ARBUSDT", "DOTUSDT", "ETHUSDT", "FILUSDT",
+    "IMXUSDT", "INJUSDT", "JUPUSDT", "LDOUSDT", "LINKUSDT", "LTCUSDT", "NEARUSDT",
+    "ORDIUSDT", "QNTUSDT", "RUNEUSDT", "SANDUSDT", "STRKUSDT", "SUIUSDT", "TAOUSDT",
+    "TIAUSDT", "WLDUSDT", "XRPUSDT", "ZROUSDT",
+)
+SYMBOLS = list(REQUIRED_SYMBOLS)
 TF = "15m"
 BAR_MS = INTERVALS[TF] * 60_000
 MIN_24H_QUOTE_VOLUME = 10_000_000.0
@@ -63,6 +67,11 @@ def precision_pass_at(x, i, side, score):
 
 def prepare(start_ms, end_ms):
     data, coverage, errors, candidates = {}, [], [], []
+    if len(SYMBOLS) != 24 or len(set(SYMBOLS)) != 24 or set(SYMBOLS) != set(REQUIRED_SYMBOLS):
+        raise RuntimeError(
+            "FIXED_UNIVERSE_INVALID: expected the exact preregistered 24-symbol Binance USD-M universe; "
+            f"expected={list(REQUIRED_SYMBOLS)}, actual={SYMBOLS}"
+        )
     allowed = {"binance_rest","binance_archive_monthly","binance_archive_daily"}
     for symbol in SYMBOLS:
         try:
