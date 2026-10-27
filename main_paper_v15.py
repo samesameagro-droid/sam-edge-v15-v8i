@@ -13,6 +13,7 @@ import ccxt
 import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
+from sam_edge_accounting import calculate_trade_pnl
 
 from core_engine_v15 import (
     CORE_NAME, RR, enrich, signal_mask, failure_shield_mask, failure_shield_snapshot, trade_levels,
@@ -754,20 +755,21 @@ class PaperEngine:
 
     def close(self, key, result, price, ts):
         p = self.positions[key]
-        gross_r = RR if result == 'TP' else -1.0
-        # Use the risk budget frozen at entry. Recalculating from current equity
-        # misstates PnL when several positions overlap and close at different times.
+        # Freeze entry risk and deduct estimated entry/exit fees from realized PnL.
+        # The helper is pure and unit-tested; funding and slippage remain unmodeled.
         risk_cash = float(getattr(p, 'risk_cash', 0.0) or 0.0)
         if not np.isfinite(risk_cash) or risk_cash <= 0:
             risk_cash = self.equity * RISK_PCT
-        stop_distance = abs(float(p.entry) - float(p.sl))
-        quantity = risk_cash / stop_distance if stop_distance > 0 else 0.0
-        entry_notional = quantity * abs(float(p.entry))
-        exit_notional = quantity * abs(float(price))
-        fee_cash = entry_notional * FEE_RATE_ENTRY + exit_notional * FEE_RATE_EXIT
-        gross_pnl = risk_cash * gross_r
-        net_pnl = gross_pnl - fee_cash
-        net_r = net_pnl / risk_cash if risk_cash > 0 else gross_r
+        pnl = calculate_trade_pnl(
+            entry=float(p.entry), sl=float(p.sl), exit_price=float(price),
+            risk_cash=risk_cash, side=str(p.side),
+            fee_rate_entry=FEE_RATE_ENTRY, fee_rate_exit=FEE_RATE_EXIT,
+        )
+        gross_r = pnl['gross_R']
+        fee_cash = pnl['fee_cash']
+        gross_pnl = pnl['gross_pnl']
+        net_pnl = pnl['net_pnl']
+        net_r = pnl['net_R']
         new_equity = self.equity + net_pnl
         rec = asdict(p)
         rec.update({'closed_at': ts, 'exit': price, 'result': result, 'R': net_r,
