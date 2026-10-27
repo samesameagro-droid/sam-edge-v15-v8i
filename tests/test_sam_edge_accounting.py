@@ -1,6 +1,6 @@
 import unittest
 
-from sam_edge_accounting import calculate_trade_pnl
+from sam_edge_accounting import calculate_trade_pnl, risk_budget_allows
 
 
 class TradePnLTests(unittest.TestCase):
@@ -37,6 +37,16 @@ class TradePnLTests(unittest.TestCase):
             risk_cash=5.0, side="LONG",
         )
         self.assertEqual(first, second)
+
+    def test_portfolio_risk_budget_allows_only_risk_within_cap(self):
+        self.assertTrue(risk_budget_allows(
+            open_risk_cash=3.0, selected_risk_cash=2.0, candidate_risk_cash=5.0,
+            equity=500.0, max_portfolio_risk_pct=0.02,
+        ))
+        self.assertFalse(risk_budget_allows(
+            open_risk_cash=5.0, selected_risk_cash=2.0, candidate_risk_cash=5.0,
+            equity=500.0, max_portfolio_risk_pct=0.02,
+        ))
 
     def test_invalid_inputs_are_rejected(self):
         with self.assertRaises(ValueError):
