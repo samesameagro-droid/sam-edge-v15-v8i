@@ -781,7 +781,7 @@ class PaperEngine:
         print(f'🎯 {result} | {p.coin} | {p.side} | gross_R={gross_r:+.2f} | net_R={net_r:+.2f} | fee=${fee_cash:.4f} | Equity=${self.equity:.2f}')
         try:
             from telegram_result_guard import send_result as send_guarded_result
-            sent = send_guarded_result(asdict(p), result, price, ts, self.equity)
+            sent = send_guarded_result(rec, result, price, ts, self.equity)
             if sent:
                 print(f'📨 TELEGRAM RESULT GUARDED | {p.coin} | {p.side} | {result} | delivered')
             else:
