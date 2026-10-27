@@ -17,5 +17,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Compile patched Python modules
+        run: python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py run_v15_accounting_validation.py notifiers.py telegram_result_guard.py sam_edge_accounting.py
       - name: Run accounting tests
         run: python -m unittest discover -s tests -v
