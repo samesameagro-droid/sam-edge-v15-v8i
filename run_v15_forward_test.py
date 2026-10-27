@@ -17,10 +17,10 @@ import main_paper_v15 as base
 # - preserve the main paper engine's normal multi-position capacity (default 5).
 base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 
-MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
-MASTER_STATE = Path("v15_forward_test_master_state.json")
-ONGOING_JOURNAL = Path("v15_forward_test_ongoing.csv")
-MASTER_SUMMARY = Path("v15_forward_test_summary.json")
+MASTER_JOURNAL = Path(os.getenv("FORWARD_MASTER_JOURNAL", "v15_forward_test_master_journal.csv"))
+MASTER_STATE = Path(os.getenv("FORWARD_MASTER_STATE", "v15_forward_test_master_state.json"))
+ONGOING_JOURNAL = Path(os.getenv("FORWARD_ONGOING_JOURNAL", "v15_forward_test_ongoing.csv"))
+MASTER_SUMMARY = Path(os.getenv("FORWARD_MASTER_SUMMARY", "v15_forward_test_summary.json"))
 BASELINE_TRADE_NO = int(os.getenv('FORWARD_BASELINE_TRADE_NO', '100'))
 TARGET_TRADES = int(os.getenv('FORWARD_TARGET_NEW_TRADES', '100'))
 
@@ -94,7 +94,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "coin": r.get("coin", ""),
             "side": r.get("side", ""),
             "core": r.get("core", ""),
-            "score": r.get("selection_score", ""),
+            "score": r.get("selection_score", r.get("entry_score", "")),
+            "gross_R": r.get("gross_R", ""),
+            "fee_cash": r.get("fee_cash", ""),
+            "net_pnl": r.get("net_pnl", ""),
             "entry": r.get("entry", ""),
             "sl": r.get("sl", ""),
             "tp": r.get("tp", ""),
@@ -129,8 +132,8 @@ class ForwardPaperEngine(base.PaperEngine):
                 print(f"MASTER JOURNAL RESTORE ERROR: {e}")
 
         sources = []
-        state_file = Path("paper_v15_state.json")
-        legacy = Path("paper_v15_trades.csv")
+        state_file = base.STATE_FILE
+        legacy = base.JOURNAL_FILE
         try:
             if state_file.exists():
                 d = json.loads(state_file.read_text(encoding="utf-8"))
@@ -343,6 +346,9 @@ class ForwardPaperEngine(base.PaperEngine):
             "target_new_closed_trades": TARGET_TRADES,
             "closed_trades": len(rs),
             "remaining": max(0, TARGET_TRADES - len(rs)),
+            "new_cohort_trades": len(self.master_rows[BASELINE_TRADE_NO:]),
+            "new_cohort_net_R": round(sum(float(r.get("R", 0) or 0) for r in self.master_rows[BASELINE_TRADE_NO:]), 4),
+            "accounting_note": "Legacy rows may be gross R without fees; patched-engine rows include estimated entry/exit trading fees. Funding and slippage are not modeled.",
             "wins": wins,
             "losses": losses,
             "win_rate_pct": round(wins / len(rs) * 100.0, 2) if rs else 0.0,
