@@ -29,6 +29,7 @@ FIELDS = [
     "entry", "sl", "tp", "closed_at", "exit", "result", "R", "equity_after",
     "btc_mode", "btc_allowed_for_side", "btc_h1_bull", "btc_h4_bull",
     "btc_h1_bear", "btc_h4_bear", "btc_timestamp", "btc_reason",
+    "gross_R", "fee_cash", "net_pnl",
     "win_loss", "win_rate_pct", "net_R", "profit_factor", "drawdown_R",
 ]
 
@@ -403,7 +404,14 @@ class ForwardPaperEngine(base.PaperEngine):
             meta["score"] for key, meta in self.candidate_meta.items()
             if key.startswith(prefix) and key.endswith(suffix)
         ]
-        return matches[-1] if matches else ""
+        if matches:
+            return matches[-1]
+        # Score is persisted on Position, so a runner restart must not erase it.
+        try:
+            score = float(getattr(p, "entry_score", 0.0))
+            return score if score > 0 else ""
+        except (TypeError, ValueError):
+            return ""
 
     def close(self, key, result, price, ts):
         p = self.positions[key]
@@ -418,7 +426,10 @@ class ForwardPaperEngine(base.PaperEngine):
         score = self._score_for_position(p)
         trade_no = self._ongoing_trade_map().get(trade_key, BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + 1)
         super().close(key, result, price, ts)
-        rr = base.RR if result == 'TP' else -1.0
+        # Base engine now calculates net PnL using entry-time risk and estimated
+        # entry/exit trading fees. Keep gross R separately for strategy diagnostics.
+        close_rec = self.closed[-1] if self.closed else {}
+        rr = float(close_rec.get('R', base.RR if result == 'TP' else -1.0))
         row = {
             'trade_no': str(trade_no),
             'trade_key': trade_key,
@@ -434,6 +445,9 @@ class ForwardPaperEngine(base.PaperEngine):
             'exit': price,
             'result': 'TP HIT' if result == 'TP' else 'SL HIT',
             'R': rr,
+            'gross_R': close_rec.get('gross_R', base.RR if result == 'TP' else -1.0),
+            'fee_cash': close_rec.get('fee_cash', ''),
+            'net_pnl': close_rec.get('net_pnl', ''),
             'equity_after': self.equity,
             'btc_mode': (p.btc_context or {}).get('mode', 'shadow'),
             'btc_allowed_for_side': (p.btc_context or {}).get(
