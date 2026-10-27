@@ -100,7 +100,12 @@ def indicators(df: pd.DataFrame) -> pd.DataFrame:
     gain = delta.clip(lower=0).rolling(14).mean()
     loss = (-delta.clip(upper=0)).rolling(14).mean()
     rs = gain / loss.replace(0, np.nan)
-    d["rsi"] = 100 - (100 / (1 + rs))
+    rsi = 100 - (100 / (1 + rs))
+    # Handle one-directional markets explicitly instead of leaving RSI NaN.
+    rsi = rsi.mask((loss == 0) & (gain > 0), 100.0)
+    rsi = rsi.mask((gain == 0) & (loss > 0), 0.0)
+    rsi = rsi.mask((gain == 0) & (loss == 0), 50.0)
+    d["rsi"] = rsi
     return d
 
 
@@ -161,7 +166,7 @@ def analyse_symbol(exchange, symbol: str, quote_volume: float) -> Optional[Candi
     weekly = ohlcv_df(exchange, symbol, "1w", WEEKLY_BARS)
     if daily is None or weekly is None:
         return None
-    d = indicators(daily).dropna().reset_index(drop=True)
+    d = indicators(daily).dropna(subset=["ema20", "ema50", "ema200", "atr", "vol_sma20"]).reset_index(drop=True)
     if len(d) < 50:
         return None
     wtrend = trend_label(weekly)
