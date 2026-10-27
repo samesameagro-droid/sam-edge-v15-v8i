@@ -21,7 +21,7 @@ from run_v15_forward_test import ForwardPaperEngine, TARGET_TRADES, BASELINE_TRA
 
 CHART_CANDLES = int(os.getenv("TELEGRAM_CHART_CANDLES", "80"))
 CHART_FILE = Path(tempfile.gettempdir()) / "sam_edge_v15_signal_chart.png"
-MIGRATION_FLAG = Path("v15_telegram_professional_migration.done")
+MIGRATION_FLAG = Path(os.getenv("SAM_EDGE_MIGRATION_FLAG", "v15_telegram_professional_migration.done"))
 
 
 def _fetch_df_full_history(self, symbol, timeframe="15m", limit=3600):
@@ -292,7 +292,18 @@ def _dedupe_forward_state(engine):
         risk_pct = float(os.getenv('RISK_PCT', '0.005'))
         valid_rows = sorted(engine.closed, key=lambda r: str(r.get('closed_at', '')))
         for r in valid_rows:
-            equity += equity * risk_pct * float(r.get('R', 0) or 0)
+            # New records carry realized net_pnl. Older records are rebuilt from
+            # their entry-time risk_cash when available, with a legacy fallback.
+            try:
+                net_pnl = r.get('net_pnl', '')
+                if net_pnl not in ('', None):
+                    equity += float(net_pnl)
+                    continue
+                risk_cash = float(r.get('risk_cash', 0) or 0)
+                risk_value = float(r.get('R', 0) or 0)
+                equity += risk_cash * risk_value if risk_cash > 0 else equity * risk_pct * risk_value
+            except (TypeError, ValueError):
+                continue
         engine.equity = equity
         print(f"FORWARD EQUITY REBUILT | valid_closed={len(valid_rows)} | equity=${equity:.2f}")
     except Exception as e:

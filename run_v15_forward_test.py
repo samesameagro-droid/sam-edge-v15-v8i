@@ -10,17 +10,17 @@ import main_paper_v15 as base
 # Forward-test policy:
 # - scanner still scans the whole eligible universe;
 # - a signal becomes a trade when it passes the SAME 9 V15 gates used by signal_mask();
-# - SCORE is informational/ranking only and is NOT an execution threshold;
+# - Precision mode also applies an explicit score ceiling; summary metadata must reflect the active config;
 # - Trade # is a MASTER sequence across all coins and is assigned when a trade closes;
 # - selected/closed trades count toward the 20-trade target;
 # - waitlist signals do not count because they were not executed by the paper engine;
 # - preserve the main paper engine's normal multi-position capacity (default 5).
 base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 
-MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
-MASTER_STATE = Path("v15_forward_test_master_state.json")
-ONGOING_JOURNAL = Path("v15_forward_test_ongoing.csv")
-MASTER_SUMMARY = Path("v15_forward_test_summary.json")
+MASTER_JOURNAL = Path(os.getenv("FORWARD_MASTER_JOURNAL", "v15_forward_test_master_journal.csv"))
+MASTER_STATE = Path(os.getenv("FORWARD_MASTER_STATE", "v15_forward_test_master_state.json"))
+ONGOING_JOURNAL = Path(os.getenv("FORWARD_ONGOING_JOURNAL", "v15_forward_test_ongoing.csv"))
+MASTER_SUMMARY = Path(os.getenv("FORWARD_MASTER_SUMMARY", "v15_forward_test_summary.json"))
 BASELINE_TRADE_NO = int(os.getenv('FORWARD_BASELINE_TRADE_NO', '100'))
 TARGET_TRADES = int(os.getenv('FORWARD_TARGET_NEW_TRADES', '100'))
 
@@ -29,6 +29,7 @@ FIELDS = [
     "entry", "sl", "tp", "closed_at", "exit", "result", "R", "equity_after",
     "btc_mode", "btc_allowed_for_side", "btc_h1_bull", "btc_h4_bull",
     "btc_h1_bear", "btc_h4_bear", "btc_timestamp", "btc_reason",
+    "gross_R", "fee_cash", "net_pnl",
     "win_loss", "win_rate_pct", "net_R", "profit_factor", "drawdown_R",
 ]
 
@@ -48,7 +49,8 @@ class ForwardPaperEngine(base.PaperEngine):
         print(
             f"FORWARD TEST | baseline={BASELINE_TRADE_NO} | cohort_closed={max(0, len(self.master_rows)-BASELINE_TRADE_NO)}/{TARGET_TRADES} "
             f"| active={len(self.positions)} | max_active={base.MAX_ACTIVE} "
-            f"| policy=9_GATES_NO_SCORE_THRESHOLD"
+            f"| policy=V15_GATES_PLUS_PRECISION_GATE "
+            f"| precision={base.V15_PRECISION_MODE} score<{base.V15_PRECISION_SCORE_MAX:g}"
         )
 
     @staticmethod
@@ -93,7 +95,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "coin": r.get("coin", ""),
             "side": r.get("side", ""),
             "core": r.get("core", ""),
-            "score": r.get("selection_score", ""),
+            "score": r.get("selection_score", r.get("entry_score", "")),
+            "gross_R": r.get("gross_R", ""),
+            "fee_cash": r.get("fee_cash", ""),
+            "net_pnl": r.get("net_pnl", ""),
             "entry": r.get("entry", ""),
             "sl": r.get("sl", ""),
             "tp": r.get("tp", ""),
@@ -128,8 +133,8 @@ class ForwardPaperEngine(base.PaperEngine):
                 print(f"MASTER JOURNAL RESTORE ERROR: {e}")
 
         sources = []
-        state_file = Path("paper_v15_state.json")
-        legacy = Path("paper_v15_trades.csv")
+        state_file = base.STATE_FILE
+        legacy = base.JOURNAL_FILE
         try:
             if state_file.exists():
                 d = json.loads(state_file.read_text(encoding="utf-8"))
@@ -342,6 +347,9 @@ class ForwardPaperEngine(base.PaperEngine):
             "target_new_closed_trades": TARGET_TRADES,
             "closed_trades": len(rs),
             "remaining": max(0, TARGET_TRADES - len(rs)),
+            "new_cohort_trades": len(self.master_rows[BASELINE_TRADE_NO:]),
+            "new_cohort_net_R": round(sum(float(r.get("R", 0) or 0) for r in self.master_rows[BASELINE_TRADE_NO:]), 4),
+            "accounting_note": "Legacy rows may be gross R without fees; patched-engine rows include estimated entry/exit trading fees. Funding and slippage are not modeled.",
             "wins": wins,
             "losses": losses,
             "win_rate_pct": round(wins / len(rs) * 100.0, 2) if rs else 0.0,
@@ -351,8 +359,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "equity": float(self.equity),
             "active_positions": len(self.positions),
             "max_active": base.MAX_ACTIVE,
-            "score_is_execution_threshold": False,
-            "validation": "9 V15 gates from signal_mask",
+            "score_is_execution_threshold": bool(base.V15_PRECISION_MODE),
+            "precision_mode": bool(base.V15_PRECISION_MODE),
+            "precision_score_max": base.V15_PRECISION_SCORE_MAX,
+            "validation": "V15 signal_mask plus configured precision gate; score ceiling applies when precision mode is enabled",
             "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
             "cohort": "TRADE_101_PLUS",
             "performance_diagnostics": self._performance_diagnostics(),
@@ -366,8 +376,10 @@ class ForwardPaperEngine(base.PaperEngine):
             "active_positions": list(self.positions),
             "ongoing_trades": [dict(trade_no=n, coin=p.coin, side=p.side, opened_at=p.opened_at, core=p.core, entry=p.entry, sl=p.sl, tp=p.tp, status="ONGOING") for n,p in sorted([(self._ongoing_trade_map().get(f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"), p) for p in self.positions.values()], key=lambda x: x[0])],
             "max_active": base.MAX_ACTIVE,
-            "score_is_execution_threshold": False,
-            "validation": "9 V15 gates from signal_mask",
+            "score_is_execution_threshold": bool(base.V15_PRECISION_MODE),
+            "precision_mode": bool(base.V15_PRECISION_MODE),
+            "precision_score_max": base.V15_PRECISION_SCORE_MAX,
+            "validation": "V15 signal_mask plus configured precision gate; score ceiling applies when precision mode is enabled",
         }, indent=2, ensure_ascii=False), encoding="utf-8")
 
     def analyze_latest(self, symbol):
@@ -403,7 +415,14 @@ class ForwardPaperEngine(base.PaperEngine):
             meta["score"] for key, meta in self.candidate_meta.items()
             if key.startswith(prefix) and key.endswith(suffix)
         ]
-        return matches[-1] if matches else ""
+        if matches:
+            return matches[-1]
+        # Score is persisted on Position, so a runner restart must not erase it.
+        try:
+            score = float(getattr(p, "entry_score", 0.0))
+            return score if score > 0 else ""
+        except (TypeError, ValueError):
+            return ""
 
     def close(self, key, result, price, ts):
         p = self.positions[key]
@@ -418,7 +437,10 @@ class ForwardPaperEngine(base.PaperEngine):
         score = self._score_for_position(p)
         trade_no = self._ongoing_trade_map().get(trade_key, BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + 1)
         super().close(key, result, price, ts)
-        rr = base.RR if result == 'TP' else -1.0
+        # Base engine now calculates net PnL using entry-time risk and estimated
+        # entry/exit trading fees. Keep gross R separately for strategy diagnostics.
+        close_rec = self.closed[-1] if self.closed else {}
+        rr = float(close_rec.get('R', base.RR if result == 'TP' else -1.0))
         row = {
             'trade_no': str(trade_no),
             'trade_key': trade_key,
@@ -434,6 +456,9 @@ class ForwardPaperEngine(base.PaperEngine):
             'exit': price,
             'result': 'TP HIT' if result == 'TP' else 'SL HIT',
             'R': rr,
+            'gross_R': close_rec.get('gross_R', base.RR if result == 'TP' else -1.0),
+            'fee_cash': close_rec.get('fee_cash', ''),
+            'net_pnl': close_rec.get('net_pnl', ''),
             'equity_after': self.equity,
             'btc_mode': (p.btc_context or {}).get('mode', 'shadow'),
             'btc_allowed_for_side': (p.btc_context or {}).get(
