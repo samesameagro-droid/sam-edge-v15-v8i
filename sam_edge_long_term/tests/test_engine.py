@@ -39,6 +39,19 @@ class IndicatorTests(unittest.TestCase):
         label = engine.trend_label(sample_ohlcv())
         self.assertIn(label, {"BULLISH", "BEARISH", "NEUTRAL", "UNKNOWN"})
 
+    def test_target_selection_requires_three_distinct_overhead_levels(self):
+        self.assertEqual(
+            engine.select_three_targets([10.2, 10.5, 11.0, 12.0], 10.0),
+            [10.2, 11.0, 12.0],
+        )
+        self.assertIsNone(engine.select_three_targets([10.2, 10.5], 10.0))
+
+    def test_target_selection_merges_near_duplicate_resistance(self):
+        targets = engine.select_three_targets([10.2, 10.205, 10.8, 11.5], 10.0)
+        self.assertIsNotNone(targets)
+        self.assertEqual(len(targets), 3)
+        self.assertTrue(targets[0] < targets[1] < targets[2])
+
     def test_candidate_tp_allocations_are_explicit(self):
         self.assertEqual(engine.Candidate.__dataclass_fields__["tp_allocations_pct"].name,
                          "tp_allocations_pct")
