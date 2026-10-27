@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fixed-rule forward holdout for SAM EDGE; no parameter selection and no orders."""
-# Universe is defined in portfolio_event_replay.py; XRPUSDT was removed from that fixed research list.
+# Universe is fixed in portfolio_event_replay.py; validation rejects any deviation from the preregistered 24 symbols.
 # Candle fetcher retries recent Binance Vision archive publication and tries official
 # Binance USD-M REST host variants; provenance and complete coverage remain mandatory.
 from __future__ import annotations
@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "research"))
 
 from portfolio_event_replay import (
-    prepare, build_indices, simulate, stats, SYMBOLS, BAR_MS,
+    prepare, build_indices, simulate, stats, SYMBOLS, REQUIRED_SYMBOLS, BAR_MS,
     FEE_BPS, SLIPPAGE_BPS, START_EQUITY, RISK_PCT,
 )
 from mtf_30m_replay import ARCHIVE_BASES, fetch_klines_api
@@ -65,15 +65,34 @@ def latest_day_archive_preflight(day):
         return {"symbol": symbol, "available": False, "attempts": attempts}
 
     with ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(check, SYMBOLS))
+        results = list(pool.map(check, REQUIRED_SYMBOLS))
     missing = [item for item in results if not item["available"]]
-    return {"day_utc": day_text, "checked_symbols": len(results),
+    return {"day_utc": day_text, "checked_symbols": len(REQUIRED_SYMBOLS),
             "available_symbols": len(results) - len(missing), "missing": missing}
 
 
 def main():
     out = Path("research/results/new_forward_holdout")
     out.mkdir(parents=True, exist_ok=True)
+    # Fail closed if the symbol universe is edited or silently reduced in a future commit.
+    if len(SYMBOLS) != 24 or len(set(SYMBOLS)) != 24 or set(SYMBOLS) != set(REQUIRED_SYMBOLS):
+        summary = {
+            "status": "invalid_fixed_universe",
+            "validation_passed": False,
+            "data_ready": False,
+            "symbols_expected": 24,
+            "symbols_loaded": len(set(SYMBOLS)),
+            "expected_symbols": list(REQUIRED_SYMBOLS),
+            "actual_symbols": list(SYMBOLS),
+            "reason": "The fixed holdout universe must contain the exact preregistered 24 Binance USD-M symbols. No replay or metrics allowed.",
+            "rule_lock": {
+                "variants": list(VARIANTS.keys()),
+                "threshold_selection": "No threshold selection or optimization on holdout.",
+                "production": "Unchanged; SAM EDGE remains PAPER ONLY."
+            }
+        }
+        (out / "summary.json").write_text(json.dumps(summary, indent=2))
+        raise SystemExit("FIXED_UNIVERSE_INVALID: expected exact 24-symbol universe; metrics withheld.")
     if HOLDOUT_END <= HOLDOUT_START:
         summary = {
             "validation_passed": False,
@@ -131,7 +150,7 @@ def main():
         "holdout_start_utc": HOLDOUT_START.isoformat(),
         "holdout_end_utc_exclusive": HOLDOUT_END.isoformat(),
         "data_warmup_start_utc": data_start.isoformat(),
-        "symbols_expected": len(SYMBOLS),
+        "symbols_expected": len(REQUIRED_SYMBOLS),
         "symbols_loaded": len(data),
         "total_15m_candles": int(sum(len(x) for x in data.values())),
         "signal_candidates_after_volume_gate": len(candidates),
@@ -147,9 +166,9 @@ def main():
             "scope": "Only entries whose next-open entry timestamp falls within the new holdout window are simulated. No legacy journal outcomes are imported.",
         },
     }
-    if errors or len(data) != len(SYMBOLS):
+    if errors or len(data) != len(REQUIRED_SYMBOLS) or set(data) != set(REQUIRED_SYMBOLS):
         summary = {**summary_base, "validation_passed": False,
-                   "reason": "Candle coverage/provenance validation failed; metrics withheld."}
+                   "reason": "Candle coverage/provenance or exact 24-symbol identity validation failed; metrics withheld."}
         (out / "summary.json").write_text(json.dumps(summary, indent=2))
         raise SystemExit(f"FORWARD_HOLDOUT_INVALID: {len(errors)} data errors; metrics withheld.")
     if not candidates:
