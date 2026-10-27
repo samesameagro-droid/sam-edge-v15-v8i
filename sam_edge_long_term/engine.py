@@ -307,7 +307,7 @@ def main():
         c = analyse_symbol(exchange, symbol, qv)
         if c:
             candidates.append(asdict(c))
-            print(f"[{c.status}] {c.symbol} setup={c.setup} entry={c.entry_low}-{c.entry_high} SL={c.stop_loss} TP={c.take_profit} RR={c.rr}")
+            print(f"[{c.status}] {c.symbol} score={c.setup_score} setup={c.setup} entry={c.entry_low}-{c.entry_high} SL={c.stop_loss} TP1={c.take_profit_1} TP2={c.take_profit_2} TP3={c.take_profit_3} alloc={c.tp_allocations_pct} RR={c.rr} vol={c.breakout_volume_ratio}x")
 
     candidates.sort(key=lambda c: (c["setup_score"], c["quote_volume_24h"], c["rr"]), reverse=True)
     candidates = candidates[:10]
