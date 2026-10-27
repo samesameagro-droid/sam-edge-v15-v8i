@@ -81,12 +81,12 @@ V15_STRATEGY_FINGERPRINT = hashlib.sha256('|'.join(map(str, [
     MAX_PORTFOLIO_RISK_PCT, FEE_RATE_ENTRY, FEE_RATE_EXIT,
 ])).encode()).hexdigest()[:16]
 
-STATE_FILE = Path('paper_v15_state_v2.json')
-STATE_BACKUP_FILE = Path('paper_v15_state_v2.backup.json')
-JOURNAL_FILE = Path('paper_v15_trades_v2.csv')
-SIGNAL_HISTORY = Path('paper_v15_signal_history_v2.json')
-UNIVERSE_FILE = Path('paper_v15_universe.json')
-SHADOW_E_FILE = Path('v15_1_shadow_e_signals.csv')
+STATE_FILE = Path(os.getenv('SAM_EDGE_STATE_FILE', 'paper_v15_state_v2.json'))
+STATE_BACKUP_FILE = Path(os.getenv('SAM_EDGE_STATE_BACKUP_FILE', 'paper_v15_state_v2.backup.json'))
+JOURNAL_FILE = Path(os.getenv('SAM_EDGE_JOURNAL_FILE', 'paper_v15_trades_v2.csv'))
+SIGNAL_HISTORY = Path(os.getenv('SAM_EDGE_SIGNAL_HISTORY_FILE', 'paper_v15_signal_history_v2.json'))
+UNIVERSE_FILE = Path(os.getenv('SAM_EDGE_UNIVERSE_FILE', 'paper_v15_universe.json'))
+SHADOW_E_FILE = Path(os.getenv('SAM_EDGE_SHADOW_E_FILE', 'v15_1_shadow_e_signals.csv'))
 TELEGRAM_SIGNAL_ENABLED = os.getenv('TELEGRAM_SIGNAL_ENABLED', '1').strip().lower() in {'1','true','yes','on'}
 
 
