@@ -132,7 +132,16 @@ def _build_text(p: dict[str, Any], result: str, exit_price: float, closed_at: st
     is_tp = result == 'TP'
     icon = '🎯' if is_tp else '🛑'
     label = 'TAKE PROFIT' if is_tp else 'STOP LOSS'
-    rr = '+1.25R' if is_tp else '-1.00R'
+    gross_r = p.get('gross_R', 1.25 if is_tp else -1.0)
+    net_r = p.get('net_R', p.get('R', gross_r))
+    try:
+        gross_r_text = f'{float(gross_r):+.2f}R'
+    except (TypeError, ValueError):
+        gross_r_text = '+1.25R' if is_tp else '-1.00R'
+    try:
+        net_r_text = f'{float(net_r):+.2f}R'
+    except (TypeError, ValueError):
+        net_r_text = gross_r_text
     coin = html.escape(str(p.get('coin', '-')), quote=False)
     side = html.escape(str(p.get('side', '-')), quote=False)
     core = html.escape(str(p.get('core', '-')), quote=False)
@@ -154,7 +163,8 @@ def _build_text(p: dict[str, Any], result: str, exit_price: float, closed_at: st
         '',
         f'🪙 <b>{coin}</b>  |  <b>{side}</b>',
         f'📌 Result: <b>{label}</b>',
-        f'📈 R-Multiple: <b>{rr}</b>',
+        f'📈 Gross R-Multiple: <b>{gross_r_text}</b>',
+        f'💹 Net R-Multiple: <b>{net_r_text}</b>',
         f'🕒 Closed: <code>{html.escape(str(closed_at), quote=False)}</code>',
         '',
         f'🔎 <b>WHY {"PROFIT" if is_tp else "LOSS"}?</b>',
@@ -167,6 +177,8 @@ def _build_text(p: dict[str, Any], result: str, exit_price: float, closed_at: st
         f'├ Take Profit <code>{_fmt(p.get("tp"))}</code>',
         f'└ Exit      <code>{exit_px}</code>',
         '',
+        *( [f'🧾 Estimated Trading Fees: <b>${float(p.get("fee_cash")):.4f}</b>'] if p.get('fee_cash') not in (None, '') else [] ),
+        *( [f'💰 Net PnL: <b>${float(p.get("net_pnl")):+.4f}</b>'] if p.get('net_pnl') not in (None, '') else [] ),
         f'💵 Equity After: <b>${float(equity):.4f}</b>',
         f'🧠 Core: <code>{core}</code>',
         '',
