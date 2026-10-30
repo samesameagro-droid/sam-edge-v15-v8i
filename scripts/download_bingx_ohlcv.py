@@ -29,7 +29,7 @@ DEFAULT_COINS = ["ADA", "AVAX", "BNB", "BTC", "CRV", "DOGE", "ETH",
                  "FET", "LINK", "SOL", "SUI", "UNI", "XRP"]
 INTERVAL = "15m"
 INTERVAL_MS = 15 * 60 * 1000
-MAX_LIMIT = 1440
+MAX_LIMIT = 1000  # observed response cap; paginate backward by endTime
 USER_AGENT = "SAM-EDGE-research-data-fetcher/1.1"
 
 
@@ -77,25 +77,37 @@ def fetch_page(session: requests.Session, symbol: str, start_ms: int, end_ms: in
 
 def download_coin(session, coin, start_ms, end_ms, pause, max_pages=None):
     all_rows = {}
-    cursor = start_ms
+    cursor_end = end_ms
     pages = 0
-    while cursor <= end_ms:
-        rows = fetch_page(session, coin, cursor, end_ms)
+    while cursor_end >= start_ms:
+        rows = fetch_page(session, coin, start_ms, cursor_end)
         pages += 1
         if not rows:
-            # Empty page may mean no candles are available in this interval.
             break
-        for row in rows:
-            ts = row[0]
-            if start_ms <= ts <= end_ms:
-                all_rows[ts] = row
-        newest = max(r[0] for r in rows)
-        next_cursor = newest + INTERVAL_MS
-        if next_cursor <= cursor:
-            raise RuntimeError(f"Pagination did not advance for {coin}: {cursor} -> {next_cursor}")
-        cursor = next_cursor
-        if newest >= end_ms - INTERVAL_MS:
+        valid_rows = [r for r in rows if start_ms <= r[0] <= cursor_end]
+        if not valid_rows:
+            raise RuntimeError(
+                f"BingX returned no candles within requested window for {coin}; "
+                f"requested end_ms={cursor_end}, response min_ms={min(r[0] for r in rows)}, "
+                f"max_ms={max(r[0] for r in rows)}. API may be ignoring endTime."
+            )
+        for row in valid_rows:
+            all_rows[row[0]] = row
+        oldest = min(r[0] for r in valid_rows)
+        print(
+            f"[{coin}] page={pages} rows={len(valid_rows)} "
+            f"page_first_ms={oldest} page_last_ms={max(r[0] for r in valid_rows)}",
+            flush=True,
+        )
+        if oldest <= start_ms:
             break
+        next_end = oldest - INTERVAL_MS
+        if next_end >= cursor_end:
+            raise RuntimeError(
+                f"Backward pagination did not advance for {coin}: "
+                f"cursor_end={cursor_end}, oldest={oldest}"
+            )
+        cursor_end = next_end
         if max_pages is not None and pages >= max_pages:
             break
         time.sleep(pause)
