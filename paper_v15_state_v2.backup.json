@@ -1,5 +1,5 @@
 {
-  "equity": 107.4965666465785,
+  "equity": 108.84027372966074,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -5718,10 +5718,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 107.4965666465785
-    }
-  ],
-  "positions": {
-    "1000PEPE/USDT:USDT": {
+    },
+    {
       "coin": "1000PEPE/USDT:USDT",
       "side": "LONG",
       "entry": 0.004962,
@@ -5852,7 +5850,13 @@
         "close": 77972.3,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-30T11:00:00+00:00",
+      "exit": 0.005201144034938165,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 108.84027372966074
     }
-  }
+  ],
+  "positions": {}
 }
