@@ -21,18 +21,10 @@ on:
         required: false
         default: false
         type: boolean
-  schedule:
-    # Poll more frequently so a delayed/dropped scheduled event has more
-    # opportunities to recover the next 10-minute scan. The cadence guard
-    # below still prevents an actual scan more often than every 9 minutes.
-    - cron: '*/5 * * * *'
-    # Redundant offset: if one scheduled event is delayed/dropped, the offset event can recover it.
-    - cron: '2-59/5 * * * *'
 
 concurrency:
   # One writer/runner at a time. Never cancel an active scan or state-persistence run.
-  # The 5-minute scheduler is paired with the cadence guard so multiple scheduler
-  # events can recover missed runs without increasing the effective scan frequency.
+  # External cron-job.org should trigger workflow_dispatch every 5 minutes.
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
@@ -49,33 +41,6 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
-      - name: Early scheduled cadence guard
-        if: ${{ github.event_name == 'schedule' }}
-        run: |
-          if [ -f v15_scan_health.json ]; then
-            LAST_TS=$(python - <<'PY'
-          import json
-          from datetime import datetime
-          try:
-              with open('v15_scan_health.json', encoding='utf-8') as f:
-                  s = json.load(f)
-              dt = datetime.fromisoformat(str(s.get('updated_at', '')).replace('Z', '+00:00'))
-              print(int(dt.timestamp()))
-          except Exception:
-              print(0)
-          PY
-            )
-            NOW_TS=$(date +%s)
-            if [ "$LAST_TS" -gt 0 ]; then
-              AGE=$((NOW_TS-LAST_TS))
-              if [ "$AGE" -lt 540 ]; then
-                echo "V15 EARLY CADENCE GUARD | previous scan ${AGE}s ago | skip duplicate scheduled event"
-                exit 0
-              fi
-            fi
-          fi
-          echo "V15 EARLY CADENCE GUARD | run scan"
 
       - name: Apply forward journal compatibility patch
         run: python patch_forward_master_compat.py
