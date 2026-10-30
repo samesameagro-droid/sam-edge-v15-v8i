@@ -71,7 +71,7 @@ def fetch_page(session: requests.Session, symbol: str, start_ms: int, end_ms: in
             continue
         if any(v is None for v in row):
             continue
-        rows.append([int(float(row[0])] + [float(v) for v in row[1:6]])
+        rows.append([int(float(row[0]))] + [float(v) for v in row[1:6]]
     return rows
 
 
