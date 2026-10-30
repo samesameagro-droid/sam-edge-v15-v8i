@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T23:33:01.858293+00:00",
+  "updated_at": "2026-10-30T23:37:19.138560+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -16,8 +16,8 @@
     "AAVE/USDT:USDT",
     "BNB/USDT:USDT",
     "ADA/USDT:USDT",
-    "UNI/USDT:USDT",
     "SUI/USDT:USDT",
+    "UNI/USDT:USDT",
     "TAO/USDT:USDT",
     "LINK/USDT:USDT",
     "DOGE/USDT:USDT",
@@ -28,9 +28,9 @@
     "ENA/USDT:USDT",
     "BCH/USDT:USDT",
     "ONDO/USDT:USDT",
+    "KAS/USDT:USDT",
     "COMP/USDT:USDT",
     "JASMY/USDT:USDT",
-    "KAS/USDT:USDT",
     "OP/USDT:USDT",
     "BANANA/USDT:USDT",
     "WIF/USDT:USDT",
@@ -38,8 +38,8 @@
     "LTC/USDT:USDT",
     "APT/USDT:USDT",
     "ZRO/USDT:USDT",
-    "TRX/USDT:USDT",
     "JUP/USDT:USDT",
+    "TRX/USDT:USDT",
     "GALA/USDT:USDT",
     "IMX/USDT:USDT",
     "TURBO/USDT:USDT",
@@ -62,11 +62,11 @@
     "RENDER/USDT:USDT",
     "ATOM/USDT:USDT",
     "STX/USDT:USDT",
-    "APE/USDT:USDT",
     "FLOKI/USDT:USDT",
+    "APE/USDT:USDT",
     "PEOPLE/USDT:USDT",
+    "BLUR/USDT:USDT",
     "RUNE/USDT:USDT",
-    "DYM/USDT:USDT",
-    "BLUR/USDT:USDT"
+    "DYM/USDT:USDT"
   ]
 }
