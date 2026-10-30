@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T16:47:24.296544+00:00",
+  "updated_at": "2026-10-30T16:52:25.362769+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -22,8 +22,8 @@
     "ENA/USDT:USDT",
     "INJ/USDT:USDT",
     "LINK/USDT:USDT",
-    "DOGE/USDT:USDT",
     "WLD/USDT:USDT",
+    "DOGE/USDT:USDT",
     "CRV/USDT:USDT",
     "ONDO/USDT:USDT",
     "ARB/USDT:USDT",
@@ -56,17 +56,16 @@
     "OP/USDT:USDT",
     "MEW/USDT:USDT",
     "PUMP/USDT:USDT",
+    "STX/USDT:USDT",
     "1INCH/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "STX/USDT:USDT",
+    "RUNE/USDT:USDT",
     "RENDER/USDT:USDT",
     "ORDI/USDT:USDT",
-    "RUNE/USDT:USDT",
     "LDO/USDT:USDT",
     "CFX/USDT:USDT",
     "BEAT/USDT:USDT",
     "APE/USDT:USDT",
-    "10000SATS/USDT:USDT",
-    "ASTER/USDT:USDT"
+    "10000SATS/USDT:USDT"
   ]
 }
