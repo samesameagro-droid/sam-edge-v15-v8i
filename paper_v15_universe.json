@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T09:17:10.080171+00:00",
+  "updated_at": "2026-10-30T09:22:39.629610+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -43,9 +43,9 @@
     "BCH/USDT:USDT",
     "ATOM/USDT:USDT",
     "TRB/USDT:USDT",
+    "IMX/USDT:USDT",
     "STRK/USDT:USDT",
     "AUCTION/USDT:USDT",
-    "IMX/USDT:USDT",
     "DOT/USDT:USDT",
     "JTO/USDT:USDT",
     "OP/USDT:USDT",
