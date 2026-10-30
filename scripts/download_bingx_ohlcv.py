@@ -35,7 +35,7 @@ USER_AGENT = "SAM-EDGE-research-data-fetcher/1.0"
 
 def ms_from_date(value: str, end: bool = False) -> int:
     dt = datetime.fromisoformat(value).replace(tzinfo=timezone.utc)
-    return int(dt.timestamp() * 1000) + (INTERVAL_MS - 1 if end else 0)
+    return int(dt.timestamp() * 1000) + (24 * 60 * 60 * 1000 - 1 if end else 0)
 
 
 def fetch_page(session: requests.Session, symbol: str, start_ms: int, end_ms: int):
