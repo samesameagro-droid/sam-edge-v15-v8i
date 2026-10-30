@@ -30,7 +30,7 @@ DEFAULT_COINS = ["ADA", "AVAX", "BNB", "BTC", "CRV", "DOGE", "ETH",
 INTERVAL = "15m"
 INTERVAL_MS = 15 * 60 * 1000
 MAX_LIMIT = 1440
-USER_AGENT = "SAM-EDGE-research-data-fetcher/1.0"
+USER_AGENT = "SAM-EDGE-research-data-fetcher/1.1"
 
 
 def ms_from_date(value: str, end: bool = False) -> int:
@@ -94,9 +94,7 @@ def download_coin(session, coin, start_ms, end_ms, pause, max_pages=None):
         if next_cursor <= cursor:
             raise RuntimeError(f"Pagination did not advance for {coin}: {cursor} -> {next_cursor}")
         cursor = next_cursor
-        if len(rows) < MAX_LIMIT:
-            # If server returns a short page despite a long requested window,
-            # there may be no more available history for this symbol.
+        if newest >= end_ms - INTERVAL_MS:
             break
         if max_pages is not None and pages >= max_pages:
             break
@@ -137,7 +135,7 @@ def main():
         "warnings": [
             "Candles may be unavailable for newly listed or delisted symbols.",
             "This dataset contains OHLCV only; funding, fees, and slippage must be modeled separately.",
-            "Inspect candle gaps and API coverage before treating results as a valid backtest.",
+            "Inspect candle coverage, pagination, and gaps before treating results as a valid backtest.",
         ],
     }
 
@@ -164,12 +162,12 @@ def main():
             "first_open_time_ms": rows[0][0], "last_open_time_ms": rows[-1][0],
             "gap_count": gaps,
         }
-        print(f"[{coin}] rows={len(rows)} gaps={gaps} file={out_path}", flush=True)
+        print(f"[{coin}] rows={len(rows)} pages={pages} gaps={gaps} first_ms={rows[0][0]} last_ms={rows[-1][0]} file={out_path}", flush=True)
 
     manifest_path = root / "download_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     print(f"Manifest written: {manifest_path}")
-    print("Download complete. Validate coverage/gaps and reproduce baseline before testing variants.")
+    print("Download complete. Check row counts, first/last timestamps, coverage and gaps before backtesting.")
 
 
 if __name__ == "__main__":
