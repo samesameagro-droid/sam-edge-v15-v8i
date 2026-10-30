@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T08:58:09.395134+00:00",
+  "updated_at": "2026-10-30T09:00:35.057082+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -57,8 +57,8 @@
     "JUP/USDT:USDT",
     "FLOKI/USDT:USDT",
     "STX/USDT:USDT",
-    "APE/USDT:USDT",
     "LDO/USDT:USDT",
+    "APE/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "CFX/USDT:USDT"
