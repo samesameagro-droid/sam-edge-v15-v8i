@@ -1,10 +1,14 @@
 {
-  "updated_at": "2026-10-30T06:12:48.135242+00:00",
+  "updated_at": "2026-10-30T06:17:28.157025+00:00",
   "baseline_trade_no": 100,
   "next_trade_no": 143,
   "target_new_closed_trades": 100,
   "closed_trades": 142,
-  "remaining": 0,
+  "total_closed_trades": 142,
+  "baseline_closed_trades": 100,
+  "cohort_closed_trades": 42,
+  "remaining": 58,
+  "remaining_new_closed_trades": 58,
   "wins": 73,
   "losses": 69,
   "win_rate_pct": 51.41,
@@ -16,7 +20,7 @@
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
-  "status": "COMPLETE",
+  "status": "RUNNING",
   "cohort": "TRADE_101_PLUS",
   "performance_diagnostics": {
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
@@ -90,5 +94,66 @@
     },
     "current_loss_streak": 5,
     "max_loss_streak": 9
-  }
+  },
+  "cohort_performance_diagnostics": {
+    "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
+    "recent_10": {
+      "trades": 10,
+      "wins": 5,
+      "losses": 5,
+      "win_rate_pct": 50.0,
+      "net_R": 1.25,
+      "profit_factor": 1.25
+    },
+    "recent_20": {
+      "trades": 20,
+      "wins": 8,
+      "losses": 12,
+      "win_rate_pct": 40.0,
+      "net_R": -2.0,
+      "profit_factor": 0.8333
+    },
+    "all_closed": {
+      "trades": 42,
+      "wins": 22,
+      "losses": 20,
+      "win_rate_pct": 52.38,
+      "net_R": 7.5,
+      "profit_factor": 1.375
+    },
+    "by_side": {
+      "LONG": {
+        "trades": 30,
+        "wins": 16,
+        "losses": 14,
+        "win_rate_pct": 53.33,
+        "net_R": 6.0,
+        "profit_factor": 1.4286
+      },
+      "SHORT": {
+        "trades": 12,
+        "wins": 6,
+        "losses": 6,
+        "win_rate_pct": 50.0,
+        "net_R": 1.5,
+        "profit_factor": 1.25
+      }
+    },
+    "by_core": {
+      "V15_PRECISION_V2_FINAL": {
+        "trades": 42,
+        "wins": 22,
+        "losses": 20,
+        "win_rate_pct": 52.38,
+        "net_R": 7.5,
+        "profit_factor": 1.375
+      }
+    },
+    "current_loss_streak": 5,
+    "max_loss_streak": 5
+  },
+  "cohort_net_R": 7.5,
+  "cohort_wins": 22,
+  "cohort_losses": 20,
+  "cohort_win_rate_pct": 52.38
 }
