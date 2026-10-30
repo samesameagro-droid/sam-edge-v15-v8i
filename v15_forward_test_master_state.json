@@ -1,14 +1,28 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 144,
+  "next_trade_no": 145,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 143,
   "cohort_closed_trades": 43,
   "remaining_new_closed_trades": 57,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "MEW/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 144,
+      "coin": "MEW/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-30T11:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.0004177,
+      "sl": 0.00042587429660959335,
+      "tp": 0.00040748212923800834,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
