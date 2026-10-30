@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T17:52:46.008158+00:00",
+  "updated_at": "2026-10-30T17:57:38.145270+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -41,8 +41,8 @@
     "JASMY/USDT:USDT",
     "DOT/USDT:USDT",
     "STRK/USDT:USDT",
-    "NOT/USDT:USDT",
     "KAS/USDT:USDT",
+    "NOT/USDT:USDT",
     "ATOM/USDT:USDT",
     "JUP/USDT:USDT",
     "PENDLE/USDT:USDT",
@@ -58,11 +58,11 @@
     "MEW/USDT:USDT",
     "ORDI/USDT:USDT",
     "PUMP/USDT:USDT",
-    "APE/USDT:USDT",
     "1INCH/USDT:USDT",
+    "APE/USDT:USDT",
     "RUNE/USDT:USDT",
-    "LDO/USDT:USDT",
     "RENDER/USDT:USDT",
+    "LDO/USDT:USDT",
     "ICP/USDT:USDT",
     "1000BONK/USDT:USDT"
   ]
