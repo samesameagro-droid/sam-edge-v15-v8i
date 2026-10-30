@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T08:22:42.877567+00:00",
+  "updated_at": "2026-10-30T08:27:28.860345+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -54,8 +54,8 @@
     "JUP/USDT:USDT",
     "JASMY/USDT:USDT",
     "10000SATS/USDT:USDT",
-    "CFX/USDT:USDT",
     "STX/USDT:USDT",
+    "CFX/USDT:USDT",
     "FARTCOIN/USDT:USDT",
     "LDO/USDT:USDT",
     "PEOPLE/USDT:USDT"
