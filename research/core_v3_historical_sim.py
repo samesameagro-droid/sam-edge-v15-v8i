@@ -46,6 +46,7 @@ SCORE_VARIANTS = {
 COMBO_VARIANTS = {
     "V3_SCORE40_ADX_RISING_050": (40.0, 0.50, 0.00),
 }
+SELECTIVE_VARIANT = "SAM_EDGE_PRECISION_V3_SELECTIVE"
 
 def read_file(path: Path) -> pd.DataFrame:
     if path.suffix.lower() == ".zip":
@@ -115,13 +116,22 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
         # candles, volume >= 1.20, distance <= 0.80 ATR, ADX exhaustion veto,
         # score < 65. Current signal candle itself is not counted as the pullback.
         touch = touch_long if side == "LONG" else touch_short
-        fresh = bool(touch.iloc[i-1] or touch.iloc[i-2])
+        touch_age = 1 if bool(touch.iloc[i-1]) else (2 if bool(touch.iloc[i-2]) else None)
+        fresh = touch_age is not None
         adx_pct = float(x["h4_adx_pct"].iloc[i])
         adx_delta = float(x["h4_adx_delta"].iloc[i])
         volr = float(x["volr"].iloc[i])
         dist = float(x["dist_ema20_atr"].iloc[i])
         adx_ok = not (adx_pct >= 0.90 and adx_delta < 0)
         precision_pass = fresh and adx_ok and volr >= 1.20 and dist <= 0.80 and score_value < 65
+        # Pre-registered selective candidate: only the immediately preceding completed
+        # candle may satisfy the pullback touch. Keep the V2 score cap and all base
+        # signal/HTF structure gates; use the candidate's ADX exhaustion veto at 0.95.
+        selective_pass = (
+            touch_age == 1 and
+            not (adx_pct >= 0.95 and adx_delta < 0) and
+            volr >= 1.20 and dist <= 0.80 and score_value < 65
+        )
         shield = failure_shield_snapshot(x, i, side)
         # One-bar-delay execution at next candle OPEN; do not use that candle
         # to decide whether the entry signal exists.
@@ -159,7 +169,10 @@ def build_events(coin: str, raw: pd.DataFrame) -> tuple[pd.DataFrame, list[dict]
             "sl": float(sl), "tp": float(tp), "risk_price": float(risk),
             "score": score_value, "adx_pct": adx_pct, "adx_delta": adx_delta,
             "volr": volr, "dist_ema20_atr": dist, "fresh_pullback": fresh,
-            "precision_pass": bool(precision_pass), "shield_pass": not bool(shield["veto"]),
+            "touch_age": touch_age,
+            "precision_pass": bool(precision_pass),
+            "selective_v3_pass": bool(selective_pass),
+            "shield_pass": not bool(shield["veto"]),
             "v3_strict_adx_ok": (adx_pct >= 0.90 and adx_delta >= 1.00),
             "signal_index": i,
         })
@@ -173,6 +186,8 @@ def replay(event_rows: list[dict], frames: dict[str, pd.DataFrame], variant: str
     """
     if variant == "V2_EXECUTABLE":
         candidates = [e for e in event_rows if e["precision_pass"]]
+    elif variant == SELECTIVE_VARIANT:
+        candidates = [e for e in event_rows if e["selective_v3_pass"]]
     elif variant in ADX_VARIANTS:
         adx_floor, delta_floor = ADX_VARIANTS[variant]
         candidates = [e for e in event_rows if e["precision_pass"] and e["adx_pct"] >= adx_floor and e["adx_delta"] >= delta_floor]
@@ -375,17 +390,18 @@ def main():
         "variants": {}
     }
     periods = {
-        "full": (None, pd.Timestamp("2026-09-01", tz="UTC")),
+        "full": (None, pd.Timestamp("2026-10-30", tz="UTC")),
         "train": (pd.Timestamp("2025-01-01", tz="UTC"), pd.Timestamp("2026-04-01", tz="UTC")),
         "test": (pd.Timestamp("2026-04-01", tz="UTC"), pd.Timestamp("2026-09-01", tz="UTC")),
-        "holdout": (pd.Timestamp("2026-09-05", tz="UTC"), pd.Timestamp("2026-10-01", tz="UTC")),
+        # Temporal holdout begins after the previous research branch's data cutoff (2026-10-09).
+        "holdout": (pd.Timestamp("2026-10-10", tz="UTC"), pd.Timestamp("2026-10-30", tz="UTC")),
     }
-    variants = ["V2_EXECUTABLE", *ADX_VARIANTS.keys(), *SCORE_VARIANTS.keys(), *COMBO_VARIANTS.keys()]
+    variants = ["V2_EXECUTABLE", SELECTIVE_VARIANT, *ADX_VARIANTS.keys(), *SCORE_VARIANTS.keys(), *COMBO_VARIANTS.keys()]
     all_rows = []
     for variant in variants:
         report["variants"][variant] = {}
         for period, (start, end) in periods.items():
-            if period == "holdout" and variant not in {"V2_EXECUTABLE", "V3_SCORE_CAP_40"}:
+            if period == "holdout" and variant not in {"V2_EXECUTABLE", SELECTIVE_VARIANT}:
                 continue
             period_events = events
             period_frames = frames
