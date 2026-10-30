@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T13:32:53.566043+00:00",
+  "updated_at": "2026-10-30T13:37:36.275812+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -60,6 +60,7 @@
     "APE/USDT:USDT",
     "ASTER/USDT:USDT",
     "RENDER/USDT:USDT",
+    "FLOKI/USDT:USDT",
     "FIL/USDT:USDT",
     "PEOPLE/USDT:USDT"
   ]
