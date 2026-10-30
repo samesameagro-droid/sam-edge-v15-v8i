@@ -64,7 +64,14 @@ jobs:
           now = datetime.now(timezone.utc)
           assert ForwardPaperEngine._valid_closed_record({'result':'TP','signal_time':now.isoformat(),'closed_at':(now+timedelta(minutes=1)).isoformat()})
           assert not ForwardPaperEngine._valid_closed_record({'result':'TP','signal_time':now.isoformat(),'closed_at':(now-timedelta(minutes=1)).isoformat()})
-          print('V15 FORWARD STATE PREFLIGHT OK')
+          # Regression guard: baseline trades must not count toward the 100-trade new cohort.
+          p = ForwardPaperEngine._cohort_progress(100, 100, 100)
+          assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 0, 'remaining_new_closed_trades': 100, 'status': 'RUNNING'}, p
+          p = ForwardPaperEngine._cohort_progress(142, 100, 100)
+          assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 42, 'remaining_new_closed_trades': 58, 'status': 'RUNNING'}, p
+          p = ForwardPaperEngine._cohort_progress(200, 100, 100)
+          assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 100, 'remaining_new_closed_trades': 0, 'status': 'COMPLETE'}, p
+          print('V15 FORWARD STATE PREFLIGHT OK | cohort progress regression tests passed')
           PY
           echo "V15 PYTHON PREFLIGHT OK"
 
