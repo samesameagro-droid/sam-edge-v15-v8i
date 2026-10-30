@@ -281,8 +281,24 @@ class ForwardPaperEngine(base.PaperEngine):
             "profit_factor": round(pf, 4) if pf is not None else None,
         }
 
-    def _performance_diagnostics(self):
-        rows = list(self.master_rows)
+    @staticmethod
+    def _cohort_progress(total_closed, baseline_trade_no=BASELINE_TRADE_NO, target_new_trades=TARGET_TRADES):
+        """Calculate progress using only closed trades after the baseline."""
+        total_closed = max(0, int(total_closed))
+        baseline_trade_no = max(0, int(baseline_trade_no))
+        target_new_trades = max(0, int(target_new_trades))
+        baseline_closed = min(total_closed, baseline_trade_no)
+        cohort_closed = max(0, total_closed - baseline_trade_no)
+        remaining = max(0, target_new_trades - cohort_closed)
+        return {
+            "baseline_closed_trades": baseline_closed,
+            "cohort_closed_trades": cohort_closed,
+            "remaining_new_closed_trades": remaining,
+            "status": "COMPLETE" if cohort_closed >= target_new_trades else "RUNNING",
+        }
+
+    def _performance_diagnostics(self, rows=None):
+        rows = list(self.master_rows if rows is None else rows)
         def streak():
             current = 0
             maximum = 0
@@ -334,14 +350,26 @@ class ForwardPaperEngine(base.PaperEngine):
             running += x
             peak = max(peak, running)
             max_dd = max(max_dd, peak - running)
+        cohort_rows = self.master_rows[BASELINE_TRADE_NO:]
+        cohort_rs = []
+        for row in cohort_rows:
+            try:
+                cohort_rs.append(float(row["R"]))
+            except (KeyError, TypeError, ValueError):
+                pass
+        progress = self._cohort_progress(len(self.master_rows))
         from datetime import datetime, timezone
         MASTER_SUMMARY.write_text(json.dumps({
             "updated_at": datetime.now(timezone.utc).isoformat(),
             "baseline_trade_no": BASELINE_TRADE_NO,
-            "next_trade_no": BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + len(self.positions) + 1,
+            "next_trade_no": BASELINE_TRADE_NO + len(cohort_rows) + len(self.positions) + 1,
             "target_new_closed_trades": TARGET_TRADES,
             "closed_trades": len(rs),
-            "remaining": max(0, TARGET_TRADES - len(rs)),
+            "total_closed_trades": len(rs),
+            "baseline_closed_trades": progress["baseline_closed_trades"],
+            "cohort_closed_trades": progress["cohort_closed_trades"],
+            "remaining": progress["remaining_new_closed_trades"],
+            "remaining_new_closed_trades": progress["remaining_new_closed_trades"],
             "wins": wins,
             "losses": losses,
             "win_rate_pct": round(wins / len(rs) * 100.0, 2) if rs else 0.0,
@@ -353,16 +381,24 @@ class ForwardPaperEngine(base.PaperEngine):
             "max_active": base.MAX_ACTIVE,
             "score_is_execution_threshold": False,
             "validation": "9 V15 gates from signal_mask",
-            "status": "COMPLETE" if len(rs) >= TARGET_TRADES else "RUNNING",
+            "status": progress["status"],
             "cohort": "TRADE_101_PLUS",
             "performance_diagnostics": self._performance_diagnostics(),
+            "cohort_performance_diagnostics": self._performance_diagnostics(cohort_rows),
+            "cohort_net_R": round(sum(cohort_rs), 4),
+            "cohort_wins": sum(x > 0 for x in cohort_rs),
+            "cohort_losses": sum(x < 0 for x in cohort_rs),
+            "cohort_win_rate_pct": round(sum(x > 0 for x in cohort_rs) / len(cohort_rs) * 100.0, 2) if cohort_rs else 0.0,
         }, indent=2, ensure_ascii=False), encoding="utf-8")
         MASTER_STATE.write_text(json.dumps({
             "baseline_trade_no": BASELINE_TRADE_NO,
             "next_trade_no": len(self.master_rows) + len(self.positions) + 1,
             "target_new_closed_trades": TARGET_TRADES,
-            "baseline_closed_trades": BASELINE_TRADE_NO,
-            "cohort_closed_trades": len(rs),
+            "baseline_closed_trades": progress["baseline_closed_trades"],
+            "total_closed_trades": len(rs),
+            "cohort_closed_trades": progress["cohort_closed_trades"],
+            "remaining_new_closed_trades": progress["remaining_new_closed_trades"],
+            "status": progress["status"],
             "active_positions": list(self.positions),
             "ongoing_trades": [dict(trade_no=n, coin=p.coin, side=p.side, opened_at=p.opened_at, core=p.core, entry=p.entry, sl=p.sl, tp=p.tp, status="ONGOING") for n,p in sorted([(self._ongoing_trade_map().get(f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"), p) for p in self.positions.values()], key=lambda x: x[0])],
             "max_active": base.MAX_ACTIVE,
