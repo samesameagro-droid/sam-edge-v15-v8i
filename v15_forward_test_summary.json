@@ -1,22 +1,22 @@
 {
-  "updated_at": "2026-10-30T14:18:13.512111+00:00",
+  "updated_at": "2026-10-30T14:22:34.386025+00:00",
   "baseline_trade_no": 100,
   "next_trade_no": 145,
   "target_new_closed_trades": 100,
-  "closed_trades": 143,
-  "total_closed_trades": 143,
+  "closed_trades": 144,
+  "total_closed_trades": 144,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 43,
-  "remaining": 57,
-  "remaining_new_closed_trades": 57,
-  "wins": 74,
+  "cohort_closed_trades": 44,
+  "remaining": 56,
+  "remaining_new_closed_trades": 56,
+  "wins": 75,
   "losses": 69,
-  "win_rate_pct": 51.75,
-  "net_R": 23.5,
-  "profit_factor": 1.3406,
+  "win_rate_pct": 52.08,
+  "net_R": 24.75,
+  "profit_factor": 1.3587,
   "drawdown_R": 13.75,
-  "equity": 108.84027372966074,
-  "active_positions": 1,
+  "equity": 110.2007771512815,
+  "active_positions": 0,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -34,19 +34,19 @@
     },
     "recent_20": {
       "trades": 20,
-      "wins": 8,
-      "losses": 12,
-      "win_rate_pct": 40.0,
-      "net_R": -2.0,
-      "profit_factor": 0.8333
+      "wins": 9,
+      "losses": 11,
+      "win_rate_pct": 45.0,
+      "net_R": 0.25,
+      "profit_factor": 1.0227
     },
     "all_closed": {
-      "trades": 143,
-      "wins": 74,
+      "trades": 144,
+      "wins": 75,
       "losses": 69,
-      "win_rate_pct": 51.75,
-      "net_R": 23.5,
-      "profit_factor": 1.3406
+      "win_rate_pct": 52.08,
+      "net_R": 24.75,
+      "profit_factor": 1.3587
     },
     "by_side": {
       "LONG": {
@@ -58,12 +58,12 @@
         "profit_factor": 1.332
       },
       "SHORT": {
-        "trades": 17,
-        "wins": 9,
+        "trades": 18,
+        "wins": 10,
         "losses": 8,
-        "win_rate_pct": 52.94,
-        "net_R": 3.25,
-        "profit_factor": 1.4062
+        "win_rate_pct": 55.56,
+        "net_R": 4.5,
+        "profit_factor": 1.5625
       }
     },
     "by_core": {
@@ -84,12 +84,12 @@
         "profit_factor": 1.3587
       },
       "V15_PRECISION_V2_FINAL": {
-        "trades": 43,
-        "wins": 23,
+        "trades": 44,
+        "wins": 24,
         "losses": 20,
-        "win_rate_pct": 53.49,
-        "net_R": 8.75,
-        "profit_factor": 1.4375
+        "win_rate_pct": 54.55,
+        "net_R": 10.0,
+        "profit_factor": 1.5
       }
     },
     "current_loss_streak": 0,
@@ -107,19 +107,19 @@
     },
     "recent_20": {
       "trades": 20,
-      "wins": 8,
-      "losses": 12,
-      "win_rate_pct": 40.0,
-      "net_R": -2.0,
-      "profit_factor": 0.8333
+      "wins": 9,
+      "losses": 11,
+      "win_rate_pct": 45.0,
+      "net_R": 0.25,
+      "profit_factor": 1.0227
     },
     "all_closed": {
-      "trades": 43,
-      "wins": 23,
+      "trades": 44,
+      "wins": 24,
       "losses": 20,
-      "win_rate_pct": 53.49,
-      "net_R": 8.75,
-      "profit_factor": 1.4375
+      "win_rate_pct": 54.55,
+      "net_R": 10.0,
+      "profit_factor": 1.5
     },
     "by_side": {
       "LONG": {
@@ -131,29 +131,29 @@
         "profit_factor": 1.5179
       },
       "SHORT": {
-        "trades": 12,
-        "wins": 6,
+        "trades": 13,
+        "wins": 7,
         "losses": 6,
-        "win_rate_pct": 50.0,
-        "net_R": 1.5,
-        "profit_factor": 1.25
+        "win_rate_pct": 53.85,
+        "net_R": 2.75,
+        "profit_factor": 1.4583
       }
     },
     "by_core": {
       "V15_PRECISION_V2_FINAL": {
-        "trades": 43,
-        "wins": 23,
+        "trades": 44,
+        "wins": 24,
         "losses": 20,
-        "win_rate_pct": 53.49,
-        "net_R": 8.75,
-        "profit_factor": 1.4375
+        "win_rate_pct": 54.55,
+        "net_R": 10.0,
+        "profit_factor": 1.5
       }
     },
     "current_loss_streak": 0,
     "max_loss_streak": 5
   },
-  "cohort_net_R": 8.75,
-  "cohort_wins": 23,
+  "cohort_net_R": 10.0,
+  "cohort_wins": 24,
   "cohort_losses": 20,
-  "cohort_win_rate_pct": 53.49
+  "cohort_win_rate_pct": 54.55
 }

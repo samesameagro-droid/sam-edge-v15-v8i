@@ -1,5 +1,5 @@
 {
-  "equity": 108.84027372966074,
+  "equity": 110.2007771512815,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -5856,10 +5856,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 108.84027372966074
-    }
-  ],
-  "positions": {
-    "MEW/USDT:USDT": {
+    },
+    {
       "coin": "MEW/USDT:USDT",
       "side": "SHORT",
       "entry": 0.0004177,
@@ -5990,7 +5988,13 @@
         "close": 77348.4,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-30T14:15:00+00:00",
+      "exit": 0.00040748212923800834,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 110.2007771512815
     }
-  }
+  ],
+  "positions": {}
 }
