@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T19:53:21.936991+00:00",
+  "updated_at": "2026-10-30T19:57:50.730280+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -40,9 +40,9 @@
     "WIF/USDT:USDT",
     "JASMY/USDT:USDT",
     "JUP/USDT:USDT",
-    "FIL/USDT:USDT",
     "TIA/USDT:USDT",
     "OP/USDT:USDT",
+    "FIL/USDT:USDT",
     "DOT/USDT:USDT",
     "IMX/USDT:USDT",
     "PENDLE/USDT:USDT",
@@ -70,7 +70,6 @@
     "LDO/USDT:USDT",
     "1000BONK/USDT:USDT",
     "BLUR/USDT:USDT",
-    "10000SATS/USDT:USDT",
-    "SEI/USDT:USDT"
+    "10000SATS/USDT:USDT"
   ]
 }
