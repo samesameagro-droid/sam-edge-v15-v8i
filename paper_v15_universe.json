@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T18:22:50.885565+00:00",
+  "updated_at": "2026-10-30T18:27:46.025067+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -41,8 +41,8 @@
     "TRB/USDT:USDT",
     "DOT/USDT:USDT",
     "JUP/USDT:USDT",
-    "STRK/USDT:USDT",
     "PENDLE/USDT:USDT",
+    "STRK/USDT:USDT",
     "FIL/USDT:USDT",
     "KAS/USDT:USDT",
     "ATOM/USDT:USDT",
@@ -63,7 +63,8 @@
     "PUMP/USDT:USDT",
     "RENDER/USDT:USDT",
     "LDO/USDT:USDT",
+    "PEOPLE/USDT:USDT",
     "ICP/USDT:USDT",
-    "1000BONK/USDT:USDT"
+    "IDOL/USDT:USDT"
   ]
 }
