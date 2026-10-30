@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T11:27:18.742499+00:00",
+  "updated_at": "2026-10-30T11:33:01.511701+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,9 +29,9 @@
     "ZRO/USDT:USDT",
     "APT/USDT:USDT",
     "LTC/USDT:USDT",
+    "TRX/USDT:USDT",
     "ARB/USDT:USDT",
     "COMP/USDT:USDT",
-    "TRX/USDT:USDT",
     "BANANA/USDT:USDT",
     "PENDLE/USDT:USDT",
     "WIF/USDT:USDT",
@@ -60,6 +60,7 @@
     "STX/USDT:USDT",
     "APE/USDT:USDT",
     "FIL/USDT:USDT",
+    "RENDER/USDT:USDT",
     "10000SATS/USDT:USDT"
   ]
 }
