@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 146,
+  "next_trade_no": 147,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 144,
@@ -8,7 +8,8 @@
   "remaining_new_closed_trades": 56,
   "status": "RUNNING",
   "active_positions": [
-    "AVAX/USDT:USDT"
+    "AVAX/USDT:USDT",
+    "BNB/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -20,6 +21,17 @@
       "entry": 8.273,
       "sl": 8.463206823355534,
       "tp": 8.03524147080558,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 146,
+      "coin": "BNB/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-30T17:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 699.36,
+      "sl": 704.8456829901819,
+      "tp": 692.5028962622727,
       "status": "ONGOING"
     }
   ],
