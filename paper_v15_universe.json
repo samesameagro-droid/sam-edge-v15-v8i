@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T06:03:40.313651+00:00",
+  "updated_at": "2026-10-30T06:07:24.812897+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -32,8 +32,8 @@
     "BOME/USDT:USDT",
     "BEAT/USDT:USDT",
     "ARB/USDT:USDT",
-    "TIA/USDT:USDT",
     "BANANA/USDT:USDT",
+    "TIA/USDT:USDT",
     "PUMP/USDT:USDT",
     "ETHFI/USDT:USDT",
     "TRX/USDT:USDT",
