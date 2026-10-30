@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30T12:12:32.843042+00:00",
+  "updated_at": "2026-10-30T12:17:38.653467+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -54,13 +54,13 @@
     "JTO/USDT:USDT",
     "OP/USDT:USDT",
     "MEW/USDT:USDT",
+    "1INCH/USDT:USDT",
     "JUP/USDT:USDT",
-    "ASTER/USDT:USDT",
     "1000BONK/USDT:USDT",
+    "ASTER/USDT:USDT",
     "RENDER/USDT:USDT",
     "STX/USDT:USDT",
     "APE/USDT:USDT",
-    "1INCH/USDT:USDT",
     "FIL/USDT:USDT"
   ]
 }
