@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T01:47:57.941451+00:00",
+  "updated_at": "2026-10-31T01:52:59.536624+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -21,11 +21,11 @@
     "UNI/USDT:USDT",
     "SUI/USDT:USDT",
     "INJ/USDT:USDT",
-    "DOGE/USDT:USDT",
     "WLD/USDT:USDT",
     "CRV/USDT:USDT",
     "JUP/USDT:USDT",
     "ARB/USDT:USDT",
+    "DOGE/USDT:USDT",
     "BCH/USDT:USDT",
     "KAS/USDT:USDT",
     "LTC/USDT:USDT",
@@ -66,8 +66,8 @@
     "JTO/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "DYM/USDT:USDT",
-    "CFX/USDT:USDT",
     "RUNE/USDT:USDT",
+    "CFX/USDT:USDT",
     "LDO/USDT:USDT",
     "SEI/USDT:USDT"
   ]
