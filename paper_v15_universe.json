@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T21:32:43.954928+00:00",
+  "updated_at": "2026-10-31T21:37:20.987696+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -31,11 +31,11 @@
     "ADA/USDT:USDT",
     "BOME/USDT:USDT",
     "DOGE/USDT:USDT",
+    "MEW/USDT:USDT",
     "GALA/USDT:USDT",
     "AIN/USDT:USDT",
     "RUNE/USDT:USDT",
     "ETC/USDT:USDT",
-    "MEW/USDT:USDT",
     "ATOM/USDT:USDT",
     "IMX/USDT:USDT",
     "BCH/USDT:USDT",
@@ -56,7 +56,6 @@
     "SEI/USDT:USDT",
     "FIL/USDT:USDT",
     "CFX/USDT:USDT",
-    "ENS/USDT:USDT",
     "TIA/USDT:USDT",
     "ICP/USDT:USDT"
   ]
