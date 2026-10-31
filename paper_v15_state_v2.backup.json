@@ -1,5 +1,5 @@
 {
-  "equity": 109.61760391956861,
+  "equity": 108.52142788037293,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -6684,10 +6684,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 109.61760391956861
-    }
-  ],
-  "positions": {
-    "FIL/USDT:USDT": {
+    },
+    {
       "coin": "FIL/USDT:USDT",
       "side": "SHORT",
       "entry": 0.8584,
@@ -6818,7 +6816,13 @@
         "close": 77336.0,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-31T10:40:00+00:00",
+      "exit": 0.8641316038065794,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 108.52142788037293
     }
-  }
+  ],
+  "positions": {}
 }
