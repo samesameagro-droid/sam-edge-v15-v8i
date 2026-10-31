@@ -1,5 +1,5 @@
 {
-  "equity": 106.3618514655535,
+  "equity": 105.29823295089797,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -7098,10 +7098,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 106.3618514655535
-    }
-  ],
-  "positions": {
-    "LTC/USDT:USDT": {
+    },
+    {
       "coin": "LTC/USDT:USDT",
       "side": "SHORT",
       "entry": 54.89,
@@ -7232,7 +7230,13 @@
         "close": 77540.5,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-31T14:15:00+00:00",
+      "exit": 55.15134685144318,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 105.29823295089797
     }
-  }
+  ],
+  "positions": {}
 }
