@@ -6957,6 +6957,139 @@
         "reason": "1H+4H trend alignment"
       },
       "strategy_fingerprint": "a391f765bccd3f3d"
+    },
+    "LTC/USDT:USDT": {
+      "coin": "LTC/USDT:USDT",
+      "side": "SHORT",
+      "entry": 54.89,
+      "sl": 55.15134685144318,
+      "tp": 54.563316435696024,
+      "risk_R": 1.0,
+      "risk_cash": 1.0852142788037293,
+      "opened_at": "2026-10-31T11:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "status": "OPEN",
+      "entry_score": 60.48356685449725,
+      "entry_diag": {
+        "timestamp": "2026-10-31T11:30:00+00:00",
+        "long": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": false,
+          "early_reclaim": false
+        },
+        "short": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": true,
+          "early_reclaim": true
+        },
+        "final_long": false,
+        "final_short": true,
+        "failure_shield": {
+          "core": "V15_PRECISION_V2_FINAL",
+          "shield": "V15_FAILURE_SHIELD_V1",
+          "side": "SHORT",
+          "pass": true,
+          "veto": false,
+          "reasons": [],
+          "dist_ema20_atr": 0.2948173093721468,
+          "volume_ratio": 2.6068241921717377,
+          "h4_adx_pct": 0.52,
+          "h4_adx_delta": 3.784387665237663,
+          "enabled": false
+        },
+        "execution_parity": {
+          "base_signal_mask": true,
+          "shield_applied": false,
+          "base_long": false,
+          "base_short": true,
+          "final_long": false,
+          "final_short": true
+        },
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": false,
+          "allowed_short": true,
+          "h1_bull": false,
+          "h4_bull": false,
+          "h1_bear": true,
+          "h4_bear": true,
+          "timestamp": "2026-10-31T11:30:00+00:00",
+          "close": 77540.5,
+          "reason": "1H+4H trend alignment"
+        },
+        "defensive_gate": {
+          "pass": true,
+          "reason": "disabled"
+        },
+        "precision_gate": {
+          "enabled": true,
+          "pass": true,
+          "fresh_pullback": true,
+          "touch_age": 1,
+          "adx_ok": true,
+          "vol_ok": true,
+          "ema_ok": true,
+          "score_ok": true,
+          "score_max": 65.0
+        }
+      },
+      "entry_metrics": {
+        "close": 54.89,
+        "rsi": 45.74912038917337,
+        "h4_adx_pct": 0.52,
+        "h4_adx_delta": 3.784387665237663,
+        "volr": 2.6068241921717377,
+        "vol_slope": 2.4016431017788866,
+        "dist_ema20_atr": 0.2948173093721468,
+        "room_atr": 2.5616646474735667,
+        "body_atr": 0.4981014592309741,
+        "close_pos": 0.20000000000002843,
+        "atr": 0.1405336176048837
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 1.0,
+        "room": 1.0,
+        "location": 0.4913621822869113,
+        "volume": 1.0,
+        "trigger": 0.6226268240387176
+      },
+      "signal_key": "LTC/USDT:USDT|SHORT|2026-10-31T11:30:00+00:00|V15_PRECISION_V2_FINAL",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": false,
+        "allowed_short": true,
+        "h1_bull": false,
+        "h4_bull": false,
+        "h1_bear": true,
+        "h4_bear": true,
+        "timestamp": "2026-10-31T11:30:00+00:00",
+        "close": 77540.5,
+        "reason": "1H+4H trend alignment"
+      },
+      "strategy_fingerprint": "a391f765bccd3f3d"
     }
   }
 }
