@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T06:57:35.326707+00:00",
+  "updated_at": "2026-10-31T07:03:19.139469+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,8 +29,8 @@
     "TAO/USDT:USDT",
     "LTC/USDT:USDT",
     "KAS/USDT:USDT",
-    "ONDO/USDT:USDT",
     "TURBO/USDT:USDT",
+    "ONDO/USDT:USDT",
     "ZRO/USDT:USDT",
     "GALA/USDT:USDT",
     "ENA/USDT:USDT",
@@ -39,8 +39,8 @@
     "FIL/USDT:USDT",
     "AUCTION/USDT:USDT",
     "JASMY/USDT:USDT",
-    "ICP/USDT:USDT",
     "DOT/USDT:USDT",
+    "ICP/USDT:USDT",
     "NOT/USDT:USDT",
     "APE/USDT:USDT",
     "TRX/USDT:USDT",
@@ -50,7 +50,6 @@
     "IMX/USDT:USDT",
     "FLOKI/USDT:USDT",
     "ORDI/USDT:USDT",
-    "MEW/USDT:USDT",
     "ETC/USDT:USDT",
     "STX/USDT:USDT",
     "TRB/USDT:USDT",
@@ -60,13 +59,14 @@
     "ENS/USDT:USDT",
     "STRK/USDT:USDT",
     "DYM/USDT:USDT",
+    "MEW/USDT:USDT",
     "PENDLE/USDT:USDT",
     "TIA/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "PEOPLE/USDT:USDT",
-    "BANANA/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "SEI/USDT:USDT",
-    "JTO/USDT:USDT"
+    "BANANA/USDT:USDT",
+    "PEOPLE/USDT:USDT",
+    "JTO/USDT:USDT",
+    "SEI/USDT:USDT"
   ]
 }
