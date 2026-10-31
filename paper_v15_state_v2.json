@@ -1,5 +1,5 @@
 {
-  "equity": 107.4362136015692,
+  "equity": 106.3618514655535,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -6960,6 +6960,144 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 107.4362136015692
+    },
+    {
+      "coin": "TAO/USDT:USDT",
+      "side": "SHORT",
+      "entry": 235.11,
+      "sl": 236.39613172240686,
+      "tp": 233.50233534699146,
+      "risk_R": 1.0,
+      "risk_cash": 1.0852142788037293,
+      "opened_at": "2026-10-31T12:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "status": "OPEN",
+      "entry_score": 45.194031753685984,
+      "entry_diag": {
+        "timestamp": "2026-10-31T12:00:00+00:00",
+        "long": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": false,
+          "early_reclaim": false
+        },
+        "short": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": true,
+          "early_reclaim": true
+        },
+        "final_long": false,
+        "final_short": true,
+        "failure_shield": {
+          "core": "V15_PRECISION_V2_FINAL",
+          "shield": "V15_FAILURE_SHIELD_V1",
+          "side": "SHORT",
+          "pass": true,
+          "veto": false,
+          "reasons": [],
+          "dist_ema20_atr": 0.407530558581587,
+          "volume_ratio": 1.7782196881416483,
+          "h4_adx_pct": 0.69,
+          "h4_adx_delta": 2.0922207329141678,
+          "enabled": false
+        },
+        "execution_parity": {
+          "base_signal_mask": true,
+          "shield_applied": false,
+          "base_long": false,
+          "base_short": true,
+          "final_long": false,
+          "final_short": true
+        },
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": false,
+          "allowed_short": true,
+          "h1_bull": false,
+          "h4_bull": false,
+          "h1_bear": true,
+          "h4_bear": true,
+          "timestamp": "2026-10-31T12:00:00+00:00",
+          "close": 77560.2,
+          "reason": "1H+4H trend alignment"
+        },
+        "defensive_gate": {
+          "pass": true,
+          "reason": "disabled"
+        },
+        "precision_gate": {
+          "enabled": true,
+          "pass": true,
+          "fresh_pullback": true,
+          "touch_age": 1,
+          "adx_ok": true,
+          "vol_ok": true,
+          "ema_ok": true,
+          "score_ok": true,
+          "score_max": 65.0
+        }
+      },
+      "entry_metrics": {
+        "close": 235.11,
+        "rsi": 46.16801755297745,
+        "h4_adx_pct": 0.69,
+        "h4_adx_delta": 2.0922207329141678,
+        "volr": 1.7782196881416483,
+        "vol_slope": 1.4968732180926503,
+        "dist_ema20_atr": 0.407530558581587,
+        "room_atr": 1.6672815387342403,
+        "body_atr": 0.52725997378771,
+        "close_pos": 0.13636363636364224,
+        "atr": 0.7017411113951706
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.5961103664570839,
+        "room": 0.5448543591561602,
+        "location": 0.6792175976359783,
+        "volume": 0.8891098440708242,
+        "trigger": 0.6590749672346374
+      },
+      "signal_key": "TAO/USDT:USDT|SHORT|2026-10-31T12:00:00+00:00|V15_PRECISION_V2_FINAL",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": false,
+        "allowed_short": true,
+        "h1_bull": false,
+        "h4_bull": false,
+        "h1_bear": true,
+        "h4_bear": true,
+        "timestamp": "2026-10-31T12:00:00+00:00",
+        "close": 77560.2,
+        "reason": "1H+4H trend alignment"
+      },
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-31T12:35:00+00:00",
+      "exit": 236.39613172240686,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 106.3618514655535
     }
   ],
   "positions": {
@@ -7092,139 +7230,6 @@
         "h4_bear": true,
         "timestamp": "2026-10-31T11:30:00+00:00",
         "close": 77540.5,
-        "reason": "1H+4H trend alignment"
-      },
-      "strategy_fingerprint": "a391f765bccd3f3d"
-    },
-    "TAO/USDT:USDT": {
-      "coin": "TAO/USDT:USDT",
-      "side": "SHORT",
-      "entry": 235.11,
-      "sl": 236.39613172240686,
-      "tp": 233.50233534699146,
-      "risk_R": 1.0,
-      "risk_cash": 1.0852142788037293,
-      "opened_at": "2026-10-31T12:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "status": "OPEN",
-      "entry_score": 45.194031753685984,
-      "entry_diag": {
-        "timestamp": "2026-10-31T12:00:00+00:00",
-        "long": {
-          "trend": false,
-          "ema": false,
-          "vwap": false,
-          "di": false,
-          "rsi": false,
-          "room": false,
-          "no_chase": false,
-          "adx_context": false,
-          "volume": true,
-          "pullback": true,
-          "reclaim": false,
-          "early_reclaim": false
-        },
-        "short": {
-          "trend": true,
-          "ema": true,
-          "vwap": true,
-          "di": true,
-          "rsi": true,
-          "room": true,
-          "no_chase": true,
-          "adx_context": false,
-          "volume": true,
-          "pullback": true,
-          "reclaim": true,
-          "early_reclaim": true
-        },
-        "final_long": false,
-        "final_short": true,
-        "failure_shield": {
-          "core": "V15_PRECISION_V2_FINAL",
-          "shield": "V15_FAILURE_SHIELD_V1",
-          "side": "SHORT",
-          "pass": true,
-          "veto": false,
-          "reasons": [],
-          "dist_ema20_atr": 0.407530558581587,
-          "volume_ratio": 1.7782196881416483,
-          "h4_adx_pct": 0.69,
-          "h4_adx_delta": 2.0922207329141678,
-          "enabled": false
-        },
-        "execution_parity": {
-          "base_signal_mask": true,
-          "shield_applied": false,
-          "base_long": false,
-          "base_short": true,
-          "final_long": false,
-          "final_short": true
-        },
-        "btc_filter_mode": "shadow",
-        "btc_filter_allowed": true,
-        "btc_context": {
-          "enabled": true,
-          "mode": "shadow",
-          "allowed_long": false,
-          "allowed_short": true,
-          "h1_bull": false,
-          "h4_bull": false,
-          "h1_bear": true,
-          "h4_bear": true,
-          "timestamp": "2026-10-31T12:00:00+00:00",
-          "close": 77560.2,
-          "reason": "1H+4H trend alignment"
-        },
-        "defensive_gate": {
-          "pass": true,
-          "reason": "disabled"
-        },
-        "precision_gate": {
-          "enabled": true,
-          "pass": true,
-          "fresh_pullback": true,
-          "touch_age": 1,
-          "adx_ok": true,
-          "vol_ok": true,
-          "ema_ok": true,
-          "score_ok": true,
-          "score_max": 65.0
-        }
-      },
-      "entry_metrics": {
-        "close": 235.11,
-        "rsi": 46.16801755297745,
-        "h4_adx_pct": 0.69,
-        "h4_adx_delta": 2.0922207329141678,
-        "volr": 1.7782196881416483,
-        "vol_slope": 1.4968732180926503,
-        "dist_ema20_atr": 0.407530558581587,
-        "room_atr": 1.6672815387342403,
-        "body_atr": 0.52725997378771,
-        "close_pos": 0.13636363636364224,
-        "atr": 0.7017411113951706
-      },
-      "score_breakdown": {
-        "adx": 0.0,
-        "delta": 0.5961103664570839,
-        "room": 0.5448543591561602,
-        "location": 0.6792175976359783,
-        "volume": 0.8891098440708242,
-        "trigger": 0.6590749672346374
-      },
-      "signal_key": "TAO/USDT:USDT|SHORT|2026-10-31T12:00:00+00:00|V15_PRECISION_V2_FINAL",
-      "btc_context": {
-        "enabled": true,
-        "mode": "shadow",
-        "allowed_long": false,
-        "allowed_short": true,
-        "h1_bull": false,
-        "h4_bull": false,
-        "h1_bear": true,
-        "h4_bear": true,
-        "timestamp": "2026-10-31T12:00:00+00:00",
-        "close": 77560.2,
         "reason": "1H+4H trend alignment"
       },
       "strategy_fingerprint": "a391f765bccd3f3d"
