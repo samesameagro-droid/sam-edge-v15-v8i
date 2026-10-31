@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T21:42:11.789338+00:00",
+  "updated_at": "2026-10-31T21:47:45.066247+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -49,12 +49,13 @@
     "APE/USDT:USDT",
     "PENDLE/USDT:USDT",
     "WIF/USDT:USDT",
+    "SEI/USDT:USDT",
     "LDO/USDT:USDT",
     "JASMY/USDT:USDT",
-    "STRK/USDT:USDT",
-    "SEI/USDT:USDT",
     "FIL/USDT:USDT",
     "1INCH/USDT:USDT",
+    "STRK/USDT:USDT",
+    "NOT/USDT:USDT",
     "CFX/USDT:USDT",
     "TIA/USDT:USDT",
     "ICP/USDT:USDT"
