@@ -1,22 +1,22 @@
 {
-  "updated_at": "2026-10-31T00:03:46.133283+00:00",
+  "updated_at": "2026-10-31T00:09:27.269018+00:00",
   "baseline_trade_no": 100,
   "next_trade_no": 148,
   "target_new_closed_trades": 100,
-  "closed_trades": 146,
-  "total_closed_trades": 146,
+  "closed_trades": 147,
+  "total_closed_trades": 147,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 46,
-  "remaining": 54,
-  "remaining_new_closed_trades": 54,
+  "cohort_closed_trades": 47,
+  "remaining": 53,
+  "remaining_new_closed_trades": 53,
   "wins": 75,
-  "losses": 71,
-  "win_rate_pct": 51.37,
-  "net_R": 22.75,
-  "profit_factor": 1.3204,
+  "losses": 72,
+  "win_rate_pct": 51.02,
+  "net_R": 21.75,
+  "profit_factor": 1.3021,
   "drawdown_R": 13.75,
-  "equity": 108.007781685971,
-  "active_positions": 1,
+  "equity": 106.92770386911128,
+  "active_positions": 0,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -26,27 +26,27 @@
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
-      "wins": 3,
-      "losses": 7,
-      "win_rate_pct": 30.0,
-      "net_R": -3.25,
-      "profit_factor": 0.5357
+      "wins": 2,
+      "losses": 8,
+      "win_rate_pct": 20.0,
+      "net_R": -5.5,
+      "profit_factor": 0.3125
     },
     "recent_20": {
       "trades": 20,
-      "wins": 9,
-      "losses": 11,
-      "win_rate_pct": 45.0,
-      "net_R": 0.25,
-      "profit_factor": 1.0227
+      "wins": 8,
+      "losses": 12,
+      "win_rate_pct": 40.0,
+      "net_R": -2.0,
+      "profit_factor": 0.8333
     },
     "all_closed": {
-      "trades": 146,
+      "trades": 147,
       "wins": 75,
-      "losses": 71,
-      "win_rate_pct": 51.37,
-      "net_R": 22.75,
-      "profit_factor": 1.3204
+      "losses": 72,
+      "win_rate_pct": 51.02,
+      "net_R": 21.75,
+      "profit_factor": 1.3021
     },
     "by_side": {
       "LONG": {
@@ -58,12 +58,12 @@
         "profit_factor": 1.332
       },
       "SHORT": {
-        "trades": 20,
+        "trades": 21,
         "wins": 10,
-        "losses": 10,
-        "win_rate_pct": 50.0,
-        "net_R": 2.5,
-        "profit_factor": 1.25
+        "losses": 11,
+        "win_rate_pct": 47.62,
+        "net_R": 1.5,
+        "profit_factor": 1.1364
       }
     },
     "by_core": {
@@ -84,42 +84,42 @@
         "profit_factor": 1.3587
       },
       "V15_PRECISION_V2_FINAL": {
-        "trades": 46,
+        "trades": 47,
         "wins": 24,
-        "losses": 22,
-        "win_rate_pct": 52.17,
-        "net_R": 8.0,
-        "profit_factor": 1.3636
+        "losses": 23,
+        "win_rate_pct": 51.06,
+        "net_R": 7.0,
+        "profit_factor": 1.3043
       }
     },
-    "current_loss_streak": 2,
+    "current_loss_streak": 3,
     "max_loss_streak": 9
   },
   "cohort_performance_diagnostics": {
     "optimization_mode": "SHADOW_ONLY_UNTIL_100_TRADES",
     "recent_10": {
       "trades": 10,
-      "wins": 3,
-      "losses": 7,
-      "win_rate_pct": 30.0,
-      "net_R": -3.25,
-      "profit_factor": 0.5357
+      "wins": 2,
+      "losses": 8,
+      "win_rate_pct": 20.0,
+      "net_R": -5.5,
+      "profit_factor": 0.3125
     },
     "recent_20": {
       "trades": 20,
-      "wins": 9,
-      "losses": 11,
-      "win_rate_pct": 45.0,
-      "net_R": 0.25,
-      "profit_factor": 1.0227
+      "wins": 8,
+      "losses": 12,
+      "win_rate_pct": 40.0,
+      "net_R": -2.0,
+      "profit_factor": 0.8333
     },
     "all_closed": {
-      "trades": 46,
+      "trades": 47,
       "wins": 24,
-      "losses": 22,
-      "win_rate_pct": 52.17,
-      "net_R": 8.0,
-      "profit_factor": 1.3636
+      "losses": 23,
+      "win_rate_pct": 51.06,
+      "net_R": 7.0,
+      "profit_factor": 1.3043
     },
     "by_side": {
       "LONG": {
@@ -131,29 +131,29 @@
         "profit_factor": 1.5179
       },
       "SHORT": {
-        "trades": 15,
+        "trades": 16,
         "wins": 7,
-        "losses": 8,
-        "win_rate_pct": 46.67,
-        "net_R": 0.75,
-        "profit_factor": 1.0938
+        "losses": 9,
+        "win_rate_pct": 43.75,
+        "net_R": -0.25,
+        "profit_factor": 0.9722
       }
     },
     "by_core": {
       "V15_PRECISION_V2_FINAL": {
-        "trades": 46,
+        "trades": 47,
         "wins": 24,
-        "losses": 22,
-        "win_rate_pct": 52.17,
-        "net_R": 8.0,
-        "profit_factor": 1.3636
+        "losses": 23,
+        "win_rate_pct": 51.06,
+        "net_R": 7.0,
+        "profit_factor": 1.3043
       }
     },
-    "current_loss_streak": 2,
+    "current_loss_streak": 3,
     "max_loss_streak": 5
   },
-  "cohort_net_R": 8.0,
+  "cohort_net_R": 7.0,
   "cohort_wins": 24,
-  "cohort_losses": 22,
-  "cohort_win_rate_pct": 52.17
+  "cohort_losses": 23,
+  "cohort_win_rate_pct": 51.06
 }

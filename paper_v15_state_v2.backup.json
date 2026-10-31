@@ -1,5 +1,5 @@
 {
-  "equity": 108.007781685971,
+  "equity": 106.92770386911128,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -6270,10 +6270,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 108.007781685971
-    }
-  ],
-  "positions": {
-    "BNB/USDT:USDT": {
+    },
+    {
       "coin": "BNB/USDT:USDT",
       "side": "SHORT",
       "entry": 699.36,
@@ -6404,7 +6402,13 @@
         "close": 77146.1,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-31T00:00:00+00:00",
+      "exit": 704.8456829901819,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 106.92770386911128
     }
-  }
+  ],
+  "positions": {}
 }
