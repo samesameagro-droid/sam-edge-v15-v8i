@@ -3,29 +3,16 @@
   "next_trade_no": 151,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 147,
-  "cohort_closed_trades": 47,
-  "remaining_new_closed_trades": 53,
+  "total_closed_trades": 149,
+  "cohort_closed_trades": 49,
+  "remaining_new_closed_trades": 51,
   "status": "RUNNING",
   "active_positions": [
-    "DOGE/USDT:USDT",
-    "FIL/USDT:USDT",
-    "LTC/USDT:USDT"
+    "FIL/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 148,
-      "coin": "DOGE/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-10-31T06:45:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.07539,
-      "sl": 0.0756626731199234,
-      "tp": 0.07504915860009574,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 149,
+      "trade_no": 150,
       "coin": "FIL/USDT:USDT",
       "side": "SHORT",
       "opened_at": "2026-10-31T06:45:00+00:00",
@@ -33,17 +20,6 @@
       "entry": 0.8584,
       "sl": 0.8641316038065794,
       "tp": 0.8512354952417759,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 150,
-      "coin": "LTC/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-10-31T07:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 55.12,
-      "sl": 55.448752115572475,
-      "tp": 54.7090598555344,
       "status": "ONGOING"
     }
   ],
