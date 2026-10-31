@@ -1,14 +1,28 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 151,
+  "next_trade_no": 152,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 150,
   "cohort_closed_trades": 50,
   "remaining_new_closed_trades": 50,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "APT/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 151,
+      "coin": "APT/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-10-31T10:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.633,
+      "sl": 0.6374097351625552,
+      "tp": 0.627487831046806,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
