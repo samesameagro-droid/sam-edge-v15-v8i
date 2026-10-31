@@ -1,5 +1,5 @@
 {
-  "equity": 105.29823295089797,
+  "equity": 104.24525062138899,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -7236,10 +7236,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 105.29823295089797
-    }
-  ],
-  "positions": {
-    "JASMY/USDT:USDT": {
+    },
+    {
       "coin": "JASMY/USDT:USDT",
       "side": "SHORT",
       "entry": 0.003705,
@@ -7370,7 +7368,13 @@
         "close": 77637.7,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-10-31T20:00:00+00:00",
+      "exit": 0.0037374795795059325,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 104.24525062138899
     }
-  }
+  ],
+  "positions": {}
 }

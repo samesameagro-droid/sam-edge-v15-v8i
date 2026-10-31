@@ -3,26 +3,12 @@
   "next_trade_no": 155,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 153,
-  "cohort_closed_trades": 53,
-  "remaining_new_closed_trades": 47,
+  "total_closed_trades": 154,
+  "cohort_closed_trades": 54,
+  "remaining_new_closed_trades": 46,
   "status": "RUNNING",
-  "active_positions": [
-    "JASMY/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 154,
-      "coin": "JASMY/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-10-31T19:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.003705,
-      "sl": 0.0037374795795059325,
-      "tp": 0.003664400525617584,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
