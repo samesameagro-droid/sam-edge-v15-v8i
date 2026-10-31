@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-31T09:03:20.433650+00:00",
+  "updated_at": "2026-10-31T09:07:28.987086+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -36,9 +36,9 @@
     "FIL/USDT:USDT",
     "CRV/USDT:USDT",
     "ATOM/USDT:USDT",
+    "ICP/USDT:USDT",
     "ZRO/USDT:USDT",
     "AUCTION/USDT:USDT",
-    "ICP/USDT:USDT",
     "ORDI/USDT:USDT",
     "NOT/USDT:USDT",
     "RENDER/USDT:USDT",
