@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 158,
+  "next_trade_no": 159,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 155,
@@ -9,7 +9,8 @@
   "status": "RUNNING",
   "active_positions": [
     "ETHFI/USDT:USDT",
-    "FLOKI/USDT:USDT"
+    "FLOKI/USDT:USDT",
+    "INJ/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -32,6 +33,17 @@
       "entry": 2.331e-05,
       "sl": 2.349783763083799e-05,
       "tp": 2.3075202961452507e-05,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 158,
+      "coin": "INJ/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-01T15:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 7.221,
+      "sl": 7.282125704553273,
+      "tp": 7.144592869308409,
       "status": "ONGOING"
     }
   ],
