@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 160,
+  "next_trade_no": 161,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 158,
@@ -8,7 +8,8 @@
   "remaining_new_closed_trades": 42,
   "status": "RUNNING",
   "active_positions": [
-    "DOT/USDT:USDT"
+    "DOT/USDT:USDT",
+    "DYM/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -20,6 +21,17 @@
       "entry": 0.9484,
       "sl": 0.9533345403566926,
       "tp": 0.9422318245541342,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 160,
+      "coin": "DYM/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-01T22:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.01538,
+      "sl": 0.015523480437234604,
+      "tp": 0.015200649453456744,
       "status": "ONGOING"
     }
   ],
