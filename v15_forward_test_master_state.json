@@ -1,14 +1,40 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 156,
+  "next_trade_no": 158,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 155,
   "cohort_closed_trades": 55,
   "remaining_new_closed_trades": 45,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "ETHFI/USDT:USDT",
+    "FLOKI/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 156,
+      "coin": "ETHFI/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-01T13:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.6182,
+      "sl": 0.6221312615061138,
+      "tp": 0.6132859231173577,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 157,
+      "coin": "FLOKI/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-01T13:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 2.331e-05,
+      "sl": 2.349783763083799e-05,
+      "tp": 2.3075202961452507e-05,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
