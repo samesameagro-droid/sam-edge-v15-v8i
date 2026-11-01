@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T14:28:02.275761+00:00",
+  "updated_at": "2026-11-01T14:32:56.697688+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -58,15 +58,15 @@
     "ENS/USDT:USDT",
     "PEOPLE/USDT:USDT",
     "MEW/USDT:USDT",
-    "NOT/USDT:USDT",
-    "APT/USDT:USDT",
-    "APE/USDT:USDT",
     "BOME/USDT:USDT",
+    "NOT/USDT:USDT",
+    "APE/USDT:USDT",
+    "APT/USDT:USDT",
     "OP/USDT:USDT",
     "FIL/USDT:USDT",
     "BLUR/USDT:USDT",
     "BCH/USDT:USDT",
-    "AUCTION/USDT:USDT",
-    "TURBO/USDT:USDT"
+    "TURBO/USDT:USDT",
+    "AUCTION/USDT:USDT"
   ]
 }
