@@ -1,22 +1,22 @@
 {
-  "updated_at": "2026-11-01T18:17:51.053149+00:00",
+  "updated_at": "2026-11-01T18:22:41.518548+00:00",
   "baseline_trade_no": 100,
   "next_trade_no": 159,
   "target_new_closed_trades": 100,
-  "closed_trades": 157,
-  "total_closed_trades": 157,
+  "closed_trades": 158,
+  "total_closed_trades": 158,
   "baseline_closed_trades": 100,
-  "cohort_closed_trades": 57,
-  "remaining": 43,
-  "remaining_new_closed_trades": 43,
-  "wins": 79,
+  "cohort_closed_trades": 58,
+  "remaining": 42,
+  "remaining_new_closed_trades": 42,
+  "wins": 80,
   "losses": 78,
-  "win_rate_pct": 50.32,
-  "net_R": 20.75,
-  "profit_factor": 1.266,
+  "win_rate_pct": 50.63,
+  "net_R": 22.0,
+  "profit_factor": 1.2821,
   "drawdown_R": 13.75,
-  "equity": 105.79899350525997,
-  "active_positions": 1,
+  "equity": 107.12148092407573,
+  "active_positions": 0,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
@@ -34,19 +34,19 @@
     },
     "recent_20": {
       "trades": 20,
-      "wins": 6,
-      "losses": 14,
-      "win_rate_pct": 30.0,
-      "net_R": -6.5,
-      "profit_factor": 0.5357
+      "wins": 7,
+      "losses": 13,
+      "win_rate_pct": 35.0,
+      "net_R": -4.25,
+      "profit_factor": 0.6731
     },
     "all_closed": {
-      "trades": 157,
-      "wins": 79,
+      "trades": 158,
+      "wins": 80,
       "losses": 78,
-      "win_rate_pct": 50.32,
-      "net_R": 20.75,
-      "profit_factor": 1.266
+      "win_rate_pct": 50.63,
+      "net_R": 22.0,
+      "profit_factor": 1.2821
     },
     "by_side": {
       "LONG": {
@@ -58,12 +58,12 @@
         "profit_factor": 1.332
       },
       "SHORT": {
-        "trades": 31,
-        "wins": 14,
+        "trades": 32,
+        "wins": 15,
         "losses": 17,
-        "win_rate_pct": 45.16,
-        "net_R": 0.5,
-        "profit_factor": 1.0294
+        "win_rate_pct": 46.88,
+        "net_R": 1.75,
+        "profit_factor": 1.1029
       }
     },
     "by_core": {
@@ -84,12 +84,12 @@
         "profit_factor": 1.3587
       },
       "V15_PRECISION_V2_FINAL": {
-        "trades": 57,
-        "wins": 28,
+        "trades": 58,
+        "wins": 29,
         "losses": 29,
-        "win_rate_pct": 49.12,
-        "net_R": 6.0,
-        "profit_factor": 1.2069
+        "win_rate_pct": 50.0,
+        "net_R": 7.25,
+        "profit_factor": 1.25
       }
     },
     "current_loss_streak": 0,
@@ -107,19 +107,19 @@
     },
     "recent_20": {
       "trades": 20,
-      "wins": 6,
-      "losses": 14,
-      "win_rate_pct": 30.0,
-      "net_R": -6.5,
-      "profit_factor": 0.5357
+      "wins": 7,
+      "losses": 13,
+      "win_rate_pct": 35.0,
+      "net_R": -4.25,
+      "profit_factor": 0.6731
     },
     "all_closed": {
-      "trades": 57,
-      "wins": 28,
+      "trades": 58,
+      "wins": 29,
       "losses": 29,
-      "win_rate_pct": 49.12,
-      "net_R": 6.0,
-      "profit_factor": 1.2069
+      "win_rate_pct": 50.0,
+      "net_R": 7.25,
+      "profit_factor": 1.25
     },
     "by_side": {
       "LONG": {
@@ -131,29 +131,29 @@
         "profit_factor": 1.5179
       },
       "SHORT": {
-        "trades": 26,
-        "wins": 11,
+        "trades": 27,
+        "wins": 12,
         "losses": 15,
-        "win_rate_pct": 42.31,
-        "net_R": -1.25,
-        "profit_factor": 0.9167
+        "win_rate_pct": 44.44,
+        "net_R": 0.0,
+        "profit_factor": 1.0
       }
     },
     "by_core": {
       "V15_PRECISION_V2_FINAL": {
-        "trades": 57,
-        "wins": 28,
+        "trades": 58,
+        "wins": 29,
         "losses": 29,
-        "win_rate_pct": 49.12,
-        "net_R": 6.0,
-        "profit_factor": 1.2069
+        "win_rate_pct": 50.0,
+        "net_R": 7.25,
+        "profit_factor": 1.25
       }
     },
     "current_loss_streak": 0,
     "max_loss_streak": 6
   },
-  "cohort_net_R": 6.0,
-  "cohort_wins": 28,
+  "cohort_net_R": 7.25,
+  "cohort_wins": 29,
   "cohort_losses": 29,
-  "cohort_win_rate_pct": 49.12
+  "cohort_win_rate_pct": 50.0
 }
