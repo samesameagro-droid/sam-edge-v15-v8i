@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T15:37:28.050924+00:00",
+  "updated_at": "2026-11-01T15:42:13.689900+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -59,14 +59,14 @@
     "ATH/USDT:USDT",
     "APT/USDT:USDT",
     "NOT/USDT:USDT",
-    "APE/USDT:USDT",
     "FIL/USDT:USDT",
     "ENS/USDT:USDT",
     "AUCTION/USDT:USDT",
-    "OP/USDT:USDT",
     "BLUR/USDT:USDT",
-    "BCH/USDT:USDT",
+    "APE/USDT:USDT",
+    "OP/USDT:USDT",
     "TURBO/USDT:USDT",
+    "BCH/USDT:USDT",
     "DOT/USDT:USDT",
     "BOME/USDT:USDT"
   ]
