@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01T20:42:39.546953+00:00",
+  "updated_at": "2026-11-01T20:47:46.907149+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -49,9 +49,9 @@
     "OP/USDT:USDT",
     "FLOKI/USDT:USDT",
     "STX/USDT:USDT",
+    "ATOM/USDT:USDT",
     "TAO/USDT:USDT",
     "PEOPLE/USDT:USDT",
-    "ATOM/USDT:USDT",
     "NOT/USDT:USDT",
     "ETHFI/USDT:USDT",
     "AUCTION/USDT:USDT",
@@ -66,8 +66,8 @@
     "ORDI/USDT:USDT",
     "FIL/USDT:USDT",
     "IMX/USDT:USDT",
+    "BLUR/USDT:USDT",
     "1000BONK/USDT:USDT",
-    "BOME/USDT:USDT",
-    "BLUR/USDT:USDT"
+    "BOME/USDT:USDT"
   ]
 }
