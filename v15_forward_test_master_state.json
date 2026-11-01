@@ -3,17 +3,16 @@
   "next_trade_no": 159,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 156,
-  "cohort_closed_trades": 56,
-  "remaining_new_closed_trades": 44,
+  "total_closed_trades": 157,
+  "cohort_closed_trades": 57,
+  "remaining_new_closed_trades": 43,
   "status": "RUNNING",
   "active_positions": [
-    "ETHFI/USDT:USDT",
-    "INJ/USDT:USDT"
+    "ETHFI/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 157,
+      "trade_no": 158,
       "coin": "ETHFI/USDT:USDT",
       "side": "SHORT",
       "opened_at": "2026-11-01T13:30:00+00:00",
@@ -21,17 +20,6 @@
       "entry": 0.6182,
       "sl": 0.6221312615061138,
       "tp": 0.6132859231173577,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 158,
-      "coin": "INJ/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-01T15:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 7.221,
-      "sl": 7.282125704553273,
-      "tp": 7.144592869308409,
       "status": "ONGOING"
     }
   ],
