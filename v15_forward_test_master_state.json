@@ -1,14 +1,28 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 155,
+  "next_trade_no": 156,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 154,
   "cohort_closed_trades": 54,
   "remaining_new_closed_trades": 46,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "LDO/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 155,
+      "coin": "LDO/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-01T00:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.3331,
+      "sl": 0.33591989582906956,
+      "tp": 0.3295751302136631,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
