@@ -1,5 +1,5 @@
 {
-  "equity": 108.14276612908768,
+  "equity": 105.99072508311883,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -9030,10 +9030,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 108.14276612908768
-    }
-  ],
-  "positions": {
-    "TRB/USDT:USDT": {
+    },
+    {
       "coin": "TRB/USDT:USDT",
       "side": "SHORT",
       "entry": 16.417,
@@ -9164,9 +9162,14 @@
         "close": 78096.0,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-11-02T13:35:00+00:00",
+      "exit": 16.555368009984683,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 107.0613384677968
     },
-    "APE/USDT:USDT": {
+    {
       "coin": "APE/USDT:USDT",
       "side": "SHORT",
       "entry": 0.11,
@@ -9297,7 +9300,13 @@
         "close": 77678.0,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-11-02T13:35:00+00:00",
+      "exit": 0.11104457433035224,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 105.99072508311883
     }
-  }
+  ],
+  "positions": {}
 }
