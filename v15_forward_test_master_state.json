@@ -3,27 +3,15 @@
   "next_trade_no": 165,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 161,
-  "cohort_closed_trades": 61,
-  "remaining_new_closed_trades": 39,
+  "total_closed_trades": 162,
+  "cohort_closed_trades": 62,
+  "remaining_new_closed_trades": 38,
   "status": "RUNNING",
   "active_positions": [
-    "DYM/USDT:USDT",
     "ETHFI/USDT:USDT",
     "JUP/USDT:USDT"
   ],
   "ongoing_trades": [
-    {
-      "trade_no": 162,
-      "coin": "DYM/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-01T22:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.01538,
-      "sl": 0.015523480437234604,
-      "tp": 0.015200649453456744,
-      "status": "ONGOING"
-    },
     {
       "trade_no": 163,
       "coin": "ETHFI/USDT:USDT",
