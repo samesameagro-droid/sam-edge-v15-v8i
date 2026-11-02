@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 161,
+  "next_trade_no": 163,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 159,
@@ -8,7 +8,9 @@
   "remaining_new_closed_trades": 41,
   "status": "RUNNING",
   "active_positions": [
-    "DYM/USDT:USDT"
+    "DYM/USDT:USDT",
+    "ETHFI/USDT:USDT",
+    "IMX/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -20,6 +22,28 @@
       "entry": 0.01538,
       "sl": 0.015523480437234604,
       "tp": 0.015200649453456744,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 161,
+      "coin": "ETHFI/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T00:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.6125,
+      "sl": 0.6192973719534188,
+      "tp": 0.6040032850582265,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 162,
+      "coin": "IMX/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T00:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.1219,
+      "sl": 0.12340983307954961,
+      "tp": 0.12001270865056297,
       "status": "ONGOING"
     }
   ],
