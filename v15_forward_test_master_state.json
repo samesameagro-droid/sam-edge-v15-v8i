@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 175,
+  "next_trade_no": 178,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 173,
@@ -8,7 +8,10 @@
   "remaining_new_closed_trades": 27,
   "status": "RUNNING",
   "active_positions": [
-    "PENDLE/USDT:USDT"
+    "PENDLE/USDT:USDT",
+    "SUI/USDT:USDT",
+    "1000BONK/USDT:USDT",
+    "LTC/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -20,6 +23,39 @@
       "entry": 1.757,
       "sl": 1.7768235765226963,
       "tp": 1.7322205293466295,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 175,
+      "coin": "SUI/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T22:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.8717,
+      "sl": 0.8833400467389727,
+      "tp": 0.8571499415762842,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 176,
+      "coin": "1000BONK/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T22:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.002788,
+      "sl": 0.00282516550099342,
+      "tp": 0.002741543123758225,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 177,
+      "coin": "LTC/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T22:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 53.83,
+      "sl": 54.32836437804905,
+      "tp": 53.20704452743868,
       "status": "ONGOING"
     }
   ],
