@@ -3,26 +3,12 @@
   "next_trade_no": 174,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 172,
-  "cohort_closed_trades": 72,
-  "remaining_new_closed_trades": 28,
+  "total_closed_trades": 173,
+  "cohort_closed_trades": 73,
+  "remaining_new_closed_trades": 27,
   "status": "RUNNING",
-  "active_positions": [
-    "DOT/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 173,
-      "coin": "DOT/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-02T20:30:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.9343,
-      "sl": 0.9435283924124153,
-      "tp": 0.922764509484481,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
