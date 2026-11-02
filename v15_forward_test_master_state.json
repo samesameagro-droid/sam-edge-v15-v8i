@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 170,
+  "next_trade_no": 172,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 168,
@@ -8,7 +8,9 @@
   "remaining_new_closed_trades": 32,
   "status": "RUNNING",
   "active_positions": [
-    "TURBO/USDT:USDT"
+    "TURBO/USDT:USDT",
+    "ETHFI/USDT:USDT",
+    "COMP/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -20,6 +22,28 @@
       "entry": 0.000769,
       "sl": 0.0007776117278438178,
       "tp": 0.0007582353401952279,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 170,
+      "coin": "ETHFI/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T15:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.5884,
+      "sl": 0.5998552689670792,
+      "tp": 0.5740809137911511,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 171,
+      "coin": "COMP/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T15:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 20.18,
+      "sl": 20.401109920282103,
+      "tp": 19.90361259964737,
       "status": "ONGOING"
     }
   ],
