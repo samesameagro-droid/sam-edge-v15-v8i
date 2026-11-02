@@ -1,5 +1,5 @@
 {
-  "equity": 105.99072508311883,
+  "equity": 107.31560914665782,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -9306,10 +9306,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 105.99072508311883
-    }
-  ],
-  "positions": {
-    "TURBO/USDT:USDT": {
+    },
+    {
       "coin": "TURBO/USDT:USDT",
       "side": "SHORT",
       "entry": 0.000769,
@@ -9440,8 +9438,15 @@
         "close": 77862.6,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
-    },
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-11-02T17:20:00+00:00",
+      "exit": 0.0007582353401952279,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 107.31560914665782
+    }
+  ],
+  "positions": {
     "ETHFI/USDT:USDT": {
       "coin": "ETHFI/USDT:USDT",
       "side": "SHORT",
