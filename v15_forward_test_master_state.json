@@ -3,27 +3,15 @@
   "next_trade_no": 168,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 164,
-  "cohort_closed_trades": 64,
-  "remaining_new_closed_trades": 36,
+  "total_closed_trades": 165,
+  "cohort_closed_trades": 65,
+  "remaining_new_closed_trades": 35,
   "status": "RUNNING",
   "active_positions": [
-    "PENDLE/USDT:USDT",
     "TRB/USDT:USDT",
     "JTO/USDT:USDT"
   ],
   "ongoing_trades": [
-    {
-      "trade_no": 165,
-      "coin": "PENDLE/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-02T08:45:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 1.8195,
-      "sl": 1.838876236576735,
-      "tp": 1.795279704279081,
-      "status": "ONGOING"
-    },
     {
       "trade_no": 166,
       "coin": "TRB/USDT:USDT",
