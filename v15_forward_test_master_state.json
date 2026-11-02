@@ -3,26 +3,14 @@
   "next_trade_no": 174,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 171,
-  "cohort_closed_trades": 71,
-  "remaining_new_closed_trades": 29,
+  "total_closed_trades": 172,
+  "cohort_closed_trades": 72,
+  "remaining_new_closed_trades": 28,
   "status": "RUNNING",
   "active_positions": [
-    "AUCTION/USDT:USDT",
     "DOT/USDT:USDT"
   ],
   "ongoing_trades": [
-    {
-      "trade_no": 172,
-      "coin": "AUCTION/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-02T20:30:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 3.203,
-      "sl": 3.2334438851240206,
-      "tp": 3.164945143594974,
-      "status": "ONGOING"
-    },
     {
       "trade_no": 173,
       "coin": "DOT/USDT:USDT",
