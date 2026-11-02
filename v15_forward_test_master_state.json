@@ -1,14 +1,28 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 169,
+  "next_trade_no": 170,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 168,
   "cohort_closed_trades": 68,
   "remaining_new_closed_trades": 32,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "TURBO/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 169,
+      "coin": "TURBO/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T14:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.000769,
+      "sl": 0.0007776117278438178,
+      "tp": 0.0007582353401952279,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
