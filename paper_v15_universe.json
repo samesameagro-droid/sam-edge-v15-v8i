@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-02T13:48:10.026001+00:00",
+  "updated_at": "2026-11-02T13:53:06.728471+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -21,8 +21,8 @@
     "ATH/USDT:USDT",
     "APE/USDT:USDT",
     "WLD/USDT:USDT",
-    "ORDI/USDT:USDT",
     "OP/USDT:USDT",
+    "ORDI/USDT:USDT",
     "RENDER/USDT:USDT",
     "ONDO/USDT:USDT",
     "SUI/USDT:USDT",
@@ -31,9 +31,9 @@
     "DOGE/USDT:USDT",
     "BCH/USDT:USDT",
     "ADA/USDT:USDT",
-    "JUP/USDT:USDT",
     "ENS/USDT:USDT",
     "JTO/USDT:USDT",
+    "JUP/USDT:USDT",
     "RUNE/USDT:USDT",
     "STRK/USDT:USDT",
     "BLUR/USDT:USDT",
@@ -48,8 +48,8 @@
     "1INCH/USDT:USDT",
     "PENDLE/USDT:USDT",
     "LTC/USDT:USDT",
-    "ARB/USDT:USDT",
     "AUCTION/USDT:USDT",
+    "ARB/USDT:USDT",
     "ETC/USDT:USDT",
     "WIF/USDT:USDT",
     "APT/USDT:USDT",
@@ -58,8 +58,8 @@
     "ATOM/USDT:USDT",
     "FLOKI/USDT:USDT",
     "ESPORTS/USDT:USDT",
-    "LDO/USDT:USDT",
     "DOT/USDT:USDT",
+    "LDO/USDT:USDT",
     "IMX/USDT:USDT",
     "DYM/USDT:USDT",
     "10000SATS/USDT:USDT",
@@ -68,8 +68,8 @@
     "CFX/USDT:USDT",
     "ETHFI/USDT:USDT",
     "JASMY/USDT:USDT",
-    "TURBO/USDT:USDT",
     "GALA/USDT:USDT",
-    "COMP/USDT:USDT"
+    "COMP/USDT:USDT",
+    "TURBO/USDT:USDT"
   ]
 }
