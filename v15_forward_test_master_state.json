@@ -3,26 +3,12 @@
   "next_trade_no": 165,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 163,
-  "cohort_closed_trades": 63,
-  "remaining_new_closed_trades": 37,
+  "total_closed_trades": 164,
+  "cohort_closed_trades": 64,
+  "remaining_new_closed_trades": 36,
   "status": "RUNNING",
-  "active_positions": [
-    "ETHFI/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 164,
-      "coin": "ETHFI/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-02T00:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.6125,
-      "sl": 0.6192973719534188,
-      "tp": 0.6040032850582265,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
