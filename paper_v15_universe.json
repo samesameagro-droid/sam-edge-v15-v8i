@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-02T14:43:02.366259+00:00",
+  "updated_at": "2026-11-02T14:48:12.943824+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -30,8 +30,8 @@
     "TIA/USDT:USDT",
     "DOGE/USDT:USDT",
     "BCH/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "ADA/USDT:USDT",
+    "1000BONK/USDT:USDT",
     "RUNE/USDT:USDT",
     "ENS/USDT:USDT",
     "JTO/USDT:USDT",
@@ -66,9 +66,9 @@
     "FIL/USDT:USDT",
     "CFX/USDT:USDT",
     "GALA/USDT:USDT",
-    "JASMY/USDT:USDT",
     "ETHFI/USDT:USDT",
     "10000SATS/USDT:USDT",
+    "JASMY/USDT:USDT",
     "TURBO/USDT:USDT"
   ]
 }
