@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-02T10:03:14.245279+00:00",
+  "updated_at": "2026-11-02T10:07:44.805343+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -37,9 +37,9 @@
     "ZRO/USDT:USDT",
     "ENA/USDT:USDT",
     "BOME/USDT:USDT",
+    "JTO/USDT:USDT",
     "STRK/USDT:USDT",
     "DOGE/USDT:USDT",
-    "JTO/USDT:USDT",
     "WIF/USDT:USDT",
     "TAO/USDT:USDT",
     "LTC/USDT:USDT",
