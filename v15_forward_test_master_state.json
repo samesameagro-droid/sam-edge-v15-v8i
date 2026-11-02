@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 168,
+  "next_trade_no": 169,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 166,
@@ -8,7 +8,8 @@
   "remaining_new_closed_trades": 34,
   "status": "RUNNING",
   "active_positions": [
-    "TRB/USDT:USDT"
+    "TRB/USDT:USDT",
+    "APE/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -20,6 +21,17 @@
       "entry": 16.417,
       "sl": 16.555368009984683,
       "tp": 16.24403998751915,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 168,
+      "coin": "APE/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-02T13:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 0.11,
+      "sl": 0.11104457433035224,
+      "tp": 0.1086942820870597,
       "status": "ONGOING"
     }
   ],
