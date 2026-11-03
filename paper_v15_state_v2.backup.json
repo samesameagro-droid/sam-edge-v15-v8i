@@ -1,5 +1,5 @@
 {
-  "equity": 107.51008917325234,
+  "equity": 106.43498828151982,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -10962,10 +10962,8 @@
       "result": "SL",
       "R": -1.0,
       "equity_after": 107.51008917325234
-    }
-  ],
-  "positions": {
-    "SUI/USDT:USDT": {
+    },
+    {
       "coin": "SUI/USDT:USDT",
       "side": "SHORT",
       "entry": 0.8717,
@@ -11096,7 +11094,13 @@
         "close": 76858.0,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-11-03T11:15:00+00:00",
+      "exit": 0.8833400467389727,
+      "result": "SL",
+      "R": -1.0,
+      "equity_after": 106.43498828151982
     }
-  }
+  ],
+  "positions": {}
 }

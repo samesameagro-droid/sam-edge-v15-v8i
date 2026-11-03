@@ -3,26 +3,12 @@
   "next_trade_no": 182,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 180,
-  "cohort_closed_trades": 80,
-  "remaining_new_closed_trades": 20,
+  "total_closed_trades": 181,
+  "cohort_closed_trades": 81,
+  "remaining_new_closed_trades": 19,
   "status": "RUNNING",
-  "active_positions": [
-    "SUI/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 181,
-      "coin": "SUI/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-02T22:15:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.8717,
-      "sl": 0.8833400467389727,
-      "tp": 0.8571499415762842,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
