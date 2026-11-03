@@ -3,19 +3,18 @@
   "next_trade_no": 180,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 175,
-  "cohort_closed_trades": 75,
-  "remaining_new_closed_trades": 25,
+  "total_closed_trades": 176,
+  "cohort_closed_trades": 76,
+  "remaining_new_closed_trades": 24,
   "status": "RUNNING",
   "active_positions": [
     "SUI/USDT:USDT",
-    "1000BONK/USDT:USDT",
     "LTC/USDT:USDT",
     "ZEC/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 176,
+      "trade_no": 177,
       "coin": "SUI/USDT:USDT",
       "side": "SHORT",
       "opened_at": "2026-11-02T22:15:00+00:00",
@@ -23,17 +22,6 @@
       "entry": 0.8717,
       "sl": 0.8833400467389727,
       "tp": 0.8571499415762842,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 177,
-      "coin": "1000BONK/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-02T22:15:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.002788,
-      "sl": 0.00282516550099342,
-      "tp": 0.002741543123758225,
       "status": "ONGOING"
     },
     {
