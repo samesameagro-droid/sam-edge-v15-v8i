@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03T09:03:02.515492+00:00",
+  "updated_at": "2026-11-03T09:07:35.914766+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -54,8 +54,8 @@
     "BOME/USDT:USDT",
     "ENA/USDT:USDT",
     "ATOM/USDT:USDT",
-    "NOT/USDT:USDT",
     "TURBO/USDT:USDT",
+    "NOT/USDT:USDT",
     "KAS/USDT:USDT",
     "DYDX/USDT:USDT",
     "RUNE/USDT:USDT",
