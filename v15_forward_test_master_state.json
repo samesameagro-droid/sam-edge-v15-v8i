@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 181,
+  "next_trade_no": 182,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 176,
@@ -11,7 +11,8 @@
     "SUI/USDT:USDT",
     "LTC/USDT:USDT",
     "ZEC/USDT:USDT",
-    "1000BONK/USDT:USDT"
+    "1000BONK/USDT:USDT",
+    "BTC/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -56,6 +57,17 @@
       "entry": 0.002748,
       "sl": 0.002770607476256065,
       "tp": 0.002719740654679919,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 181,
+      "coin": "BTC/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-03T08:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 76630.5,
+      "sl": 77080.22020019243,
+      "tp": 76068.34974975947,
       "status": "ONGOING"
     }
   ],
