@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03T06:52:49.248208+00:00",
+  "updated_at": "2026-11-03T06:58:15.816023+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -47,17 +47,17 @@
     "FLOKI/USDT:USDT",
     "TAO/USDT:USDT",
     "ORDI/USDT:USDT",
-    "ICP/USDT:USDT",
     "LTC/USDT:USDT",
+    "ICP/USDT:USDT",
     "ATH/USDT:USDT",
     "1000BONK/USDT:USDT",
     "AUCTION/USDT:USDT",
     "DOT/USDT:USDT",
     "CRV/USDT:USDT",
+    "RUNE/USDT:USDT",
     "MEW/USDT:USDT",
     "GALA/USDT:USDT",
     "TURBO/USDT:USDT",
-    "RUNE/USDT:USDT",
     "KAS/USDT:USDT",
     "SEI/USDT:USDT",
     "ENA/USDT:USDT",
@@ -69,7 +69,6 @@
     "ATOM/USDT:USDT",
     "BANANA/USDT:USDT",
     "DYDX/USDT:USDT",
-    "LDO/USDT:USDT",
     "DYM/USDT:USDT"
   ]
 }
