@@ -1,14 +1,28 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 182,
+  "next_trade_no": 183,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 181,
   "cohort_closed_trades": 81,
   "remaining_new_closed_trades": 19,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "LINK/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 182,
+      "coin": "LINK/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-03T22:15:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 11.088,
+      "sl": 11.205874671926937,
+      "tp": 10.940656660091328,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
