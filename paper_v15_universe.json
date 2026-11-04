@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T22:52:17.545376+00:00",
+  "updated_at": "2026-11-04T22:57:29.474942+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -19,14 +19,14 @@
     "AVAX/USDT:USDT",
     "DOGE/USDT:USDT",
     "INJ/USDT:USDT",
-    "ONDO/USDT:USDT",
     "SUI/USDT:USDT",
+    "ONDO/USDT:USDT",
     "LINK/USDT:USDT",
-    "MEW/USDT:USDT",
     "WLD/USDT:USDT",
     "ORDI/USDT:USDT",
     "ADA/USDT:USDT",
     "ENA/USDT:USDT",
+    "MEW/USDT:USDT",
     "LDO/USDT:USDT",
     "GALA/USDT:USDT",
     "TIA/USDT:USDT",
@@ -40,10 +40,10 @@
     "BANANA/USDT:USDT",
     "JUP/USDT:USDT",
     "LTC/USDT:USDT",
-    "ZRO/USDT:USDT",
     "OP/USDT:USDT",
     "TURBO/USDT:USDT",
     "CLANKER/USDT:USDT",
+    "ZRO/USDT:USDT",
     "ATH/USDT:USDT",
     "DOT/USDT:USDT",
     "APT/USDT:USDT",
@@ -51,7 +51,6 @@
     "1INCH/USDT:USDT",
     "WIF/USDT:USDT",
     "PUMP/USDT:USDT",
-    "ICP/USDT:USDT",
-    "PENDLE/USDT:USDT"
+    "ICP/USDT:USDT"
   ]
 }
