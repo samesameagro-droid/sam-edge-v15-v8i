@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T20:28:04.372096+00:00",
+  "updated_at": "2026-11-04T20:32:56.454327+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -56,14 +56,14 @@
     "TRX/USDT:USDT",
     "FLOKI/USDT:USDT",
     "WIF/USDT:USDT",
-    "APE/USDT:USDT",
+    "CLANKER/USDT:USDT",
     "PUMP/USDT:USDT",
+    "APE/USDT:USDT",
     "STX/USDT:USDT",
     "ATOM/USDT:USDT",
     "CRV/USDT:USDT",
-    "CLANKER/USDT:USDT",
-    "JTO/USDT:USDT",
     "AUCTION/USDT:USDT",
-    "PENDLE/USDT:USDT"
+    "PENDLE/USDT:USDT",
+    "JTO/USDT:USDT"
   ]
 }
