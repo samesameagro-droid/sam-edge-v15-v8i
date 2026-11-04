@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T22:02:44.861346+00:00",
+  "updated_at": "2026-11-04T22:07:48.091717+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -27,8 +27,8 @@
     "ORDI/USDT:USDT",
     "ADA/USDT:USDT",
     "ENA/USDT:USDT",
-    "TRB/USDT:USDT",
     "GALA/USDT:USDT",
+    "TRB/USDT:USDT",
     "LDO/USDT:USDT",
     "DYDX/USDT:USDT",
     "TIA/USDT:USDT",
