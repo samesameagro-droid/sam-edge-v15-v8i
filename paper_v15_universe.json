@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T17:03:33.307361+00:00",
+  "updated_at": "2026-11-04T17:08:24.356093+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -39,9 +39,9 @@
     "JASMY/USDT:USDT",
     "LDO/USDT:USDT",
     "ATOM/USDT:USDT",
+    "ENA/USDT:USDT",
     "ETHFI/USDT:USDT",
     "JUP/USDT:USDT",
-    "ENA/USDT:USDT",
     "ARB/USDT:USDT",
     "BANANA/USDT:USDT",
     "TURBO/USDT:USDT",
