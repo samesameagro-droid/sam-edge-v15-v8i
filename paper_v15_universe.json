@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T22:57:29.474942+00:00",
+  "updated_at": "2026-11-04T23:02:46.390160+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -19,8 +19,8 @@
     "AVAX/USDT:USDT",
     "DOGE/USDT:USDT",
     "INJ/USDT:USDT",
-    "SUI/USDT:USDT",
     "ONDO/USDT:USDT",
+    "SUI/USDT:USDT",
     "LINK/USDT:USDT",
     "WLD/USDT:USDT",
     "ORDI/USDT:USDT",
@@ -50,7 +50,7 @@
     "TAO/USDT:USDT",
     "1INCH/USDT:USDT",
     "WIF/USDT:USDT",
-    "PUMP/USDT:USDT",
-    "ICP/USDT:USDT"
+    "ICP/USDT:USDT",
+    "PUMP/USDT:USDT"
   ]
 }
