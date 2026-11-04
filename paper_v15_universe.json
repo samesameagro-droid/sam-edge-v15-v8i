@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T03:27:31.498575+00:00",
+  "updated_at": "2026-11-04T03:33:23.966470+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -23,8 +23,8 @@
     "ADA/USDT:USDT",
     "PENDLE/USDT:USDT",
     "ZRO/USDT:USDT",
-    "LTC/USDT:USDT",
     "LINK/USDT:USDT",
+    "LTC/USDT:USDT",
     "WLD/USDT:USDT",
     "MEW/USDT:USDT",
     "JUP/USDT:USDT",
@@ -66,12 +66,12 @@
     "ENA/USDT:USDT",
     "STRK/USDT:USDT",
     "RENDER/USDT:USDT",
-    "WIF/USDT:USDT",
     "LDO/USDT:USDT",
     "ATH/USDT:USDT",
+    "WIF/USDT:USDT",
     "CRV/USDT:USDT",
-    "ENS/USDT:USDT",
     "10000SATS/USDT:USDT",
+    "ENS/USDT:USDT",
     "DOT/USDT:USDT"
   ]
 }
