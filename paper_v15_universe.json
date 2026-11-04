@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T21:02:54.152715+00:00",
+  "updated_at": "2026-11-04T21:07:53.553470+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -54,8 +54,8 @@
     "BCH/USDT:USDT",
     "TRX/USDT:USDT",
     "APE/USDT:USDT",
-    "PUMP/USDT:USDT",
     "WIF/USDT:USDT",
+    "PUMP/USDT:USDT",
     "CRV/USDT:USDT",
     "STX/USDT:USDT",
     "FLOKI/USDT:USDT",
