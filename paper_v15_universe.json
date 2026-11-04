@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T11:47:48.220972+00:00",
+  "updated_at": "2026-11-04T11:52:55.663904+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -52,9 +52,9 @@
     "TAO/USDT:USDT",
     "BCH/USDT:USDT",
     "TRX/USDT:USDT",
-    "STX/USDT:USDT",
     "ATH/USDT:USDT",
     "ENA/USDT:USDT",
+    "STX/USDT:USDT",
     "APE/USDT:USDT",
     "KAS/USDT:USDT",
     "IMX/USDT:USDT",
