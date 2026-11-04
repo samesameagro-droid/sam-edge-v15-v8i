@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T20:37:57.029808+00:00",
+  "updated_at": "2026-11-04T20:42:26.569093+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -34,10 +34,10 @@
     "LDO/USDT:USDT",
     "JUP/USDT:USDT",
     "RUNE/USDT:USDT",
-    "APT/USDT:USDT",
     "1000BONK/USDT:USDT",
     "ARB/USDT:USDT",
     "LTC/USDT:USDT",
+    "APT/USDT:USDT",
     "ETHFI/USDT:USDT",
     "JASMY/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -56,14 +56,14 @@
     "TRX/USDT:USDT",
     "CLANKER/USDT:USDT",
     "WIF/USDT:USDT",
-    "PUMP/USDT:USDT",
     "APE/USDT:USDT",
+    "PUMP/USDT:USDT",
     "STX/USDT:USDT",
-    "ATOM/USDT:USDT",
     "CRV/USDT:USDT",
     "FLOKI/USDT:USDT",
-    "AUCTION/USDT:USDT",
     "PENDLE/USDT:USDT",
-    "JTO/USDT:USDT"
+    "ATOM/USDT:USDT",
+    "JTO/USDT:USDT",
+    "AUCTION/USDT:USDT"
   ]
 }
