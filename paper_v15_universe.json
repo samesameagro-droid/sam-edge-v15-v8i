@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T10:57:46.676024+00:00",
+  "updated_at": "2026-11-04T11:03:17.230393+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -24,12 +24,12 @@
     "ONDO/USDT:USDT",
     "ORDI/USDT:USDT",
     "WLD/USDT:USDT",
-    "ZRO/USDT:USDT",
     "DYDX/USDT:USDT",
     "LINK/USDT:USDT",
     "ADA/USDT:USDT",
     "RUNE/USDT:USDT",
     "1000BONK/USDT:USDT",
+    "ZRO/USDT:USDT",
     "PENDLE/USDT:USDT",
     "TIA/USDT:USDT",
     "GALA/USDT:USDT",
@@ -55,8 +55,8 @@
     "IMX/USDT:USDT",
     "BCH/USDT:USDT",
     "TRX/USDT:USDT",
-    "KAS/USDT:USDT",
     "APE/USDT:USDT",
+    "KAS/USDT:USDT",
     "1INCH/USDT:USDT",
     "ENA/USDT:USDT",
     "FLOKI/USDT:USDT",
@@ -72,7 +72,6 @@
     "CRV/USDT:USDT",
     "FIL/USDT:USDT",
     "DYM/USDT:USDT",
-    "ENS/USDT:USDT",
-    "PUMP/USDT:USDT"
+    "ENS/USDT:USDT"
   ]
 }
