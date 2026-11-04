@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T11:18:33.582889+00:00",
+  "updated_at": "2026-11-04T11:22:53.586579+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -72,6 +72,7 @@
     "CRV/USDT:USDT",
     "FIL/USDT:USDT",
     "DYM/USDT:USDT",
-    "ENS/USDT:USDT"
+    "ENS/USDT:USDT",
+    "PUMP/USDT:USDT"
   ]
 }
