@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04T23:37:26.739433+00:00",
+  "updated_at": "2026-11-04T23:42:04.117658+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -34,9 +34,9 @@
     "1000BONK/USDT:USDT",
     "LDO/USDT:USDT",
     "RUNE/USDT:USDT",
-    "JASMY/USDT:USDT",
-    "ARB/USDT:USDT",
     "ETHFI/USDT:USDT",
+    "ARB/USDT:USDT",
+    "JASMY/USDT:USDT",
     "JUP/USDT:USDT",
     "BANANA/USDT:USDT",
     "CLANKER/USDT:USDT",
