@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T05:41:49.130482+00:00",
+  "updated_at": "2026-11-05T05:46:38.053747+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -25,15 +25,14 @@
     "ADA/USDT:USDT",
     "TRB/USDT:USDT",
     "MEW/USDT:USDT",
-    "TIA/USDT:USDT",
     "TURBO/USDT:USDT",
+    "TIA/USDT:USDT",
     "CLANKER/USDT:USDT",
     "RUNE/USDT:USDT",
     "ZRO/USDT:USDT",
-    "ORDI/USDT:USDT",
     "ETHFI/USDT:USDT",
     "ONDO/USDT:USDT",
-    "DYDX/USDT:USDT",
-    "DOGE/USDT:USDT"
+    "DOGE/USDT:USDT",
+    "DYDX/USDT:USDT"
   ]
 }
