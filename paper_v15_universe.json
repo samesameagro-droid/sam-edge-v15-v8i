@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T02:42:04.556724+00:00",
+  "updated_at": "2026-11-05T02:46:46.403972+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -35,9 +35,9 @@
     "ZRO/USDT:USDT",
     "CLANKER/USDT:USDT",
     "TURBO/USDT:USDT",
-    "ARB/USDT:USDT",
     "ETHFI/USDT:USDT",
     "LTC/USDT:USDT",
+    "ARB/USDT:USDT",
     "BANANA/USDT:USDT",
     "JUP/USDT:USDT",
     "DOT/USDT:USDT"
