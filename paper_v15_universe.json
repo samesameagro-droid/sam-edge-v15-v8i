@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T00:17:37.703899+00:00",
+  "updated_at": "2026-11-05T00:22:12.916689+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -26,7 +26,6 @@
     "ADA/USDT:USDT",
     "ORDI/USDT:USDT",
     "ONDO/USDT:USDT",
-    "GALA/USDT:USDT",
     "MEW/USDT:USDT",
     "DYDX/USDT:USDT",
     "TRB/USDT:USDT",
@@ -41,14 +40,15 @@
     "TURBO/USDT:USDT",
     "LTC/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "ATH/USDT:USDT",
     "ARB/USDT:USDT",
-    "DOT/USDT:USDT",
+    "ATH/USDT:USDT",
     "OP/USDT:USDT",
+    "DOT/USDT:USDT",
     "APT/USDT:USDT",
     "JASMY/USDT:USDT",
     "WIF/USDT:USDT",
     "1INCH/USDT:USDT",
+    "GALA/USDT:USDT",
     "PUMP/USDT:USDT",
     "TAO/USDT:USDT"
   ]
