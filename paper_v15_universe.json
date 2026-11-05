@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T04:46:53.038536+00:00",
+  "updated_at": "2026-11-05T04:51:50.427853+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -29,13 +29,12 @@
     "MEW/USDT:USDT",
     "TURBO/USDT:USDT",
     "CLANKER/USDT:USDT",
-    "RUNE/USDT:USDT",
-    "LDO/USDT:USDT",
     "ZRO/USDT:USDT",
+    "RUNE/USDT:USDT",
     "ORDI/USDT:USDT",
+    "LDO/USDT:USDT",
     "ONDO/USDT:USDT",
     "ETHFI/USDT:USDT",
-    "LTC/USDT:USDT",
-    "DOGE/USDT:USDT"
+    "LTC/USDT:USDT"
   ]
 }
