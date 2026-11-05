@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T16:36:33.216855+00:00",
+  "updated_at": "2026-11-05T16:41:28.502413+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -22,7 +22,6 @@
     "BNB/USDT:USDT",
     "LINK/USDT:USDT",
     "DOGE/USDT:USDT",
-    "JCT/USDT:USDT",
-    "CLANKER/USDT:USDT"
+    "JCT/USDT:USDT"
   ]
 }
