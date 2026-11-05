@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T06:41:39.053569+00:00",
+  "updated_at": "2026-11-05T06:46:36.722013+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -13,9 +13,9 @@
     "HYPE/USDT:USDT",
     "1000PEPE/USDT:USDT",
     "BNB/USDT:USDT",
-    "AVAX/USDT:USDT",
     "UNI/USDT:USDT",
     "AAVE/USDT:USDT",
+    "AVAX/USDT:USDT",
     "WLD/USDT:USDT",
     "ENA/USDT:USDT",
     "LINK/USDT:USDT",
@@ -24,9 +24,9 @@
     "MEW/USDT:USDT",
     "TRB/USDT:USDT",
     "TURBO/USDT:USDT",
-    "CLANKER/USDT:USDT",
     "ADA/USDT:USDT",
-    "RUNE/USDT:USDT",
-    "ZRO/USDT:USDT"
+    "CLANKER/USDT:USDT",
+    "ZRO/USDT:USDT",
+    "RUNE/USDT:USDT"
   ]
 }
