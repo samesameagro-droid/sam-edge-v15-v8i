@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T01:41:53.288104+00:00",
+  "updated_at": "2026-11-05T01:46:53.325411+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -15,8 +15,8 @@
     "UNI/USDT:USDT",
     "AVAX/USDT:USDT",
     "BNB/USDT:USDT",
-    "BOME/USDT:USDT",
     "AAVE/USDT:USDT",
+    "BOME/USDT:USDT",
     "INJ/USDT:USDT",
     "WLD/USDT:USDT",
     "LINK/USDT:USDT",
@@ -31,7 +31,6 @@
     "LDO/USDT:USDT",
     "RUNE/USDT:USDT",
     "DOGE/USDT:USDT",
-    "BANANA/USDT:USDT",
     "MEW/USDT:USDT",
     "CLANKER/USDT:USDT",
     "ZRO/USDT:USDT",
@@ -40,8 +39,9 @@
     "JUP/USDT:USDT",
     "TURBO/USDT:USDT",
     "ARB/USDT:USDT",
-    "ATH/USDT:USDT",
+    "BANANA/USDT:USDT",
     "DOT/USDT:USDT",
-    "JASMY/USDT:USDT"
+    "JASMY/USDT:USDT",
+    "ATH/USDT:USDT"
   ]
 }
