@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T06:31:37.879737+00:00",
+  "updated_at": "2026-11-05T06:36:30.675802+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -22,13 +22,12 @@
     "SUI/USDT:USDT",
     "INJ/USDT:USDT",
     "MEW/USDT:USDT",
-    "TURBO/USDT:USDT",
     "TRB/USDT:USDT",
     "TIA/USDT:USDT",
+    "TURBO/USDT:USDT",
     "CLANKER/USDT:USDT",
     "ADA/USDT:USDT",
     "RUNE/USDT:USDT",
-    "ZRO/USDT:USDT",
-    "ETHFI/USDT:USDT"
+    "ZRO/USDT:USDT"
   ]
 }
