@@ -3,17 +3,16 @@
   "next_trade_no": 187,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 184,
-  "cohort_closed_trades": 84,
-  "remaining_new_closed_trades": 16,
+  "total_closed_trades": 185,
+  "cohort_closed_trades": 85,
+  "remaining_new_closed_trades": 15,
   "status": "RUNNING",
   "active_positions": [
-    "SUI/USDT:USDT",
-    "AVAX/USDT:USDT"
+    "SUI/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 185,
+      "trade_no": 186,
       "coin": "SUI/USDT:USDT",
       "side": "SHORT",
       "opened_at": "2026-11-06T03:30:00+00:00",
@@ -21,17 +20,6 @@
       "entry": 0.8572,
       "sl": 0.8696052458189243,
       "tp": 0.8416934427263445,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 186,
-      "coin": "AVAX/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-06T05:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 8.26,
-      "sl": 8.372013386681147,
-      "tp": 8.119983266648566,
       "status": "ONGOING"
     }
   ],
