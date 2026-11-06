@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-11-06T05:11:31.138752+00:00",
+  "updated_at": "2026-11-06T05:16:46.045555+00:00",
   "baseline_trade_no": 100,
-  "next_trade_no": 185,
+  "next_trade_no": 186,
   "target_new_closed_trades": 100,
   "closed_trades": 183,
   "total_closed_trades": 183,
@@ -16,7 +16,7 @@
   "profit_factor": 1.2637,
   "drawdown_R": 13.75,
   "equity": 109.11249345547681,
-  "active_positions": 1,
+  "active_positions": 2,
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask",
