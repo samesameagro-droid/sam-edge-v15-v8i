@@ -1,6 +1,6 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 186,
+  "next_trade_no": 187,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 183,
@@ -9,7 +9,8 @@
   "status": "RUNNING",
   "active_positions": [
     "SUI/USDT:USDT",
-    "AVAX/USDT:USDT"
+    "AVAX/USDT:USDT",
+    "SOL/USDT:USDT"
   ],
   "ongoing_trades": [
     {
@@ -32,6 +33,17 @@
       "entry": 8.26,
       "sl": 8.372013386681147,
       "tp": 8.119983266648566,
+      "status": "ONGOING"
+    },
+    {
+      "trade_no": 186,
+      "coin": "SOL/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-06T07:00:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 89.353,
+      "sl": 90.27442777103104,
+      "tp": 88.20121528621118,
       "status": "ONGOING"
     }
   ],
