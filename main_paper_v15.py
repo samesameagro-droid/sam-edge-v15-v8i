@@ -15,7 +15,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from core_engine_v15 import (
-    CORE_NAME, RR, enrich, signal_mask, failure_shield_mask, failure_shield_snapshot, trade_levels,
+    CORE_NAME, RR, enrich, signal_mask, failure_shield_mask, failure_shield_snapshot, short_precision_shadow_snapshot, trade_levels,
     ADX_LONG_PCT, ADX_LONG_DELTA, ADX_SHORT_PCT, ADX_SHORT_DELTA,
     EARLY_MOVE5_MAX_ATR, EARLY_DIST_EMA_MAX_ATR, EARLY_ROOM_MIN_ATR,
     EARLY_PULLBACK_LOOKBACK, EARLY_PULLBACK_MAX_ATR, EARLY_RECLAIM_BUFFER_ATR,
@@ -668,6 +668,8 @@ class PaperEngine:
             return {'signal': None, 'timestamp': ts, 'diag': diag}
 
         shadow_e = self.shadow_e_snapshot(x, i, side)
+        # SHORT Precision Patch is deliberately shadow-only during the current cohort.
+        diag['short_patch_shadow'] = short_precision_shadow_snapshot(x, i, side, btc_ctx, shadow_e)
         diag['precision_gate'] = {
             'enabled': V15_PRECISION_MODE,
             'pass': bool(shadow_e['e_pass'] and score < V15_PRECISION_SCORE_MAX),

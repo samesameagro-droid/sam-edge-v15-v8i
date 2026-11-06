@@ -20,6 +20,7 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
 ONGOING_JOURNAL = Path("v15_forward_test_ongoing.csv")
+SHORT_AUDIT_FILE = Path("v15_short_precision_shadow.csv")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
 BASELINE_TRADE_NO = int(os.getenv('FORWARD_BASELINE_TRADE_NO', '100'))
 TARGET_TRADES = int(os.getenv('FORWARD_TARGET_NEW_TRADES', '100'))
@@ -453,6 +454,7 @@ class ForwardPaperEngine(base.PaperEngine):
             return
         score = self._score_for_position(p)
         trade_no = self._ongoing_trade_map().get(trade_key, BASELINE_TRADE_NO + len(self.master_rows[BASELINE_TRADE_NO:]) + 1)
+        shadow = (p.entry_diag or {}).get("short_patch_shadow", {}) or {}
         super().close(key, result, price, ts)
         rr = base.RR if result == 'TP' else -1.0
         row = {
@@ -492,6 +494,56 @@ class ForwardPaperEngine(base.PaperEngine):
         self.save_state()
         self._print_master_summary()
         print(f"📘 MASTER FORWARD TEST | Trade #{row['trade_no']} | {p.coin} | {p.side} | {row['result']} | SCORE={score}")
+
+        # Outcome-linked SHORT research log. Observational only: it cannot
+        # alter entry selection, levels, risk, or Telegram delivery.
+        if p.side == "SHORT" and shadow.get("applicable"):
+            existing = set()
+            if SHORT_AUDIT_FILE.exists():
+                try:
+                    with SHORT_AUDIT_FILE.open(newline="", encoding="utf-8") as f:
+                        existing = {item.get("trade_key", "") for item in csv.DictReader(f)}
+                except Exception as exc:
+                    print(f"SHORT SHADOW AUDIT READ ERROR | {type(exc).__name__}: {exc}")
+            if trade_key not in existing:
+                audit_row = {
+                    "trade_key": trade_key,
+                    "coin": p.coin,
+                    "side": p.side,
+                    "signal_time": p.opened_at,
+                    "closed_at": ts,
+                    "result": "TP" if result == "TP" else "SL",
+                    "R": rr,
+                    "entry": p.entry,
+                    "sl": p.sl,
+                    "tp": p.tp,
+                    "entry_score": getattr(p, "entry_score", ""),
+                    "variant_core_v1_pass": shadow.get("variant_core_v1_pass", False),
+                    "variant_btc_h1_v1_pass": shadow.get("variant_btc_h1_v1_pass", False),
+                    "variant_btc_h1_without_h4_v1_pass": shadow.get("variant_btc_h1_without_h4_v1_pass", False),
+                    "fresh_pullback": shadow.get("fresh_pullback", False),
+                    "bearish_rejection": shadow.get("bearish_rejection", False),
+                    "not_extended": shadow.get("not_extended", False),
+                    "volume_confirmed": shadow.get("volume_confirmed", False),
+                    "local_trend_confirmed": shadow.get("local_trend_confirmed", False),
+                    "move5_atr": shadow.get("move5_atr", ""),
+                    "dist_ema20_atr": shadow.get("dist_ema20_atr", ""),
+                    "volume_ratio": shadow.get("volume_ratio", ""),
+                    "ema20_slope": shadow.get("ema20_slope", ""),
+                    "h1_slope21": shadow.get("h1_slope21", ""),
+                    "close_pos": shadow.get("close_pos", ""),
+                    "upper_wick": shadow.get("upper_wick", ""),
+                    "btc_h1_bear": shadow.get("btc_h1_bear", ""),
+                    "btc_h4_bear": shadow.get("btc_h4_bear", ""),
+                }
+                write_header = not SHORT_AUDIT_FILE.exists()
+                with SHORT_AUDIT_FILE.open("a", newline="", encoding="utf-8") as f:
+                    writer = csv.DictWriter(f, fieldnames=list(audit_row))
+                    if write_header:
+                        writer.writeheader()
+                    writer.writerow(audit_row)
+                print(f"SHORT SHADOW AUDIT | {p.coin} | {audit_row['result']} | core_v1={audit_row['variant_core_v1_pass']} | btc_h1_v1={audit_row['variant_btc_h1_v1_pass']} | btc_h1_no_h4={audit_row['variant_btc_h1_without_h4_v1_pass']}")
+
     def _print_master_summary(self):
         rs = []
         for row in self.master_rows:

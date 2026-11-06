@@ -324,6 +324,71 @@ def failure_shield_mask(x: pd.DataFrame, long_mask, short_mask):
     return long_out.fillna(False), short_out.fillna(False)
 
 
+def short_precision_shadow_snapshot(x: pd.DataFrame, i: int, side: str, btc_ctx: dict, precision: dict) -> dict:
+    """
+    SHORT-only diagnostic candidate. Shadow only: never changes signal_mask,
+    position sizing, entry levels, or Telegram eligibility.
+    """
+    if side != 'SHORT':
+        return {'enabled': True, 'applicable': False}
+
+    row = x.iloc[i]
+    def flag(value):
+        try:
+            return bool(value) if pd.notna(value) else False
+        except (TypeError, ValueError):
+            return False
+
+    # A rejection candle should close in its lower range with a visible
+    # upper wick, rather than merely printing another extended red candle.
+    bearish_rejection = (
+        flag(row.close < row.open)
+        and flag(row.close_pos <= 0.35)
+        and flag(row.upper_wick >= 0.20)
+        and flag(row.body_atr >= 0.20)
+    )
+    not_extended = (
+        flag(row.move5_atr <= 1.50)
+        and flag(row.dist_ema20_atr <= 0.80)
+    )
+    volume_confirmed = flag(row.volr >= 1.20)
+    local_trend_confirmed = (
+        flag(row.ema20_slope < 0)
+        and flag(row.h1_slope21 < 0)
+    )
+    fresh_pullback = flag(precision.get('fresh_pullback', False))
+    btc_h1_bear = flag(btc_ctx.get('h1_bear', False))
+    btc_h4_bear = flag(btc_ctx.get('h4_bear', False))
+
+    # Two experimental variants are logged independently. Neither is an
+    # execution gate until the completed, outcome-linked audit supports it.
+    core_v1 = all((
+        bearish_rejection, not_extended, volume_confirmed,
+        local_trend_confirmed, fresh_pullback,
+    ))
+    return {
+        'enabled': True,
+        'applicable': True,
+        'variant_core_v1_pass': core_v1,
+        'variant_btc_h1_v1_pass': core_v1 and btc_h1_bear,
+        'variant_btc_h1_without_h4_v1_pass': core_v1 and btc_h1_bear and not btc_h4_bear,
+        'fresh_pullback': fresh_pullback,
+        'bearish_rejection': bearish_rejection,
+        'not_extended': not_extended,
+        'volume_confirmed': volume_confirmed,
+        'local_trend_confirmed': local_trend_confirmed,
+        'move5_atr': float(row.move5_atr) if pd.notna(row.move5_atr) else None,
+        'dist_ema20_atr': float(row.dist_ema20_atr) if pd.notna(row.dist_ema20_atr) else None,
+        'volume_ratio': float(row.volr) if pd.notna(row.volr) else None,
+        'ema20_slope': float(row.ema20_slope) if pd.notna(row.ema20_slope) else None,
+        'h1_slope21': float(row.h1_slope21) if pd.notna(row.h1_slope21) else None,
+        'close_pos': float(row.close_pos) if pd.notna(row.close_pos) else None,
+        'upper_wick': float(row.upper_wick) if pd.notna(row.upper_wick) else None,
+        'btc_h1_bear': btc_h1_bear,
+        'btc_h4_bear': btc_h4_bear,
+    }
+
+
 def signal_mask(x: pd.DataFrame, core: str = CORE_NAME):
     if core == LEGACY_CORE_NAME:
         r=x
