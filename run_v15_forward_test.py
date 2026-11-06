@@ -20,6 +20,7 @@ base.MAX_ACTIVE = int(__import__('os').getenv('FORWARD_MAX_ACTIVE', '5'))
 MASTER_JOURNAL = Path("v15_forward_test_master_journal.csv")
 MASTER_STATE = Path("v15_forward_test_master_state.json")
 ONGOING_JOURNAL = Path("v15_forward_test_ongoing.csv")
+SHORT_AUDIT_FILE = Path("v15_short_precision_shadow.csv")
 MASTER_SUMMARY = Path("v15_forward_test_summary.json")
 BASELINE_TRADE_NO = int(os.getenv('FORWARD_BASELINE_TRADE_NO', '100'))
 TARGET_TRADES = int(os.getenv('FORWARD_TARGET_NEW_TRADES', '100'))
@@ -442,6 +443,67 @@ class ForwardPaperEngine(base.PaperEngine):
         return matches[-1] if matches else ""
 
     def close(self, key, result, price, ts):
+        # Capture the position before the base engine removes it.
+        position = self.positions.get(key)
+        trade_key = ""
+        shadow = {}
+        if position is not None:
+            trade_key = f"{position.coin}|{position.side}|{position.opened_at}|{position.core}"
+            shadow = (position.entry_diag or {}).get("short_patch_shadow", {}) or {}
+
+        super().close(key, result, price, ts)
+
+        # Outcome-linked SHORT research log. This is observational only and
+        # cannot alter entry selection, trade levels, risk, or Telegram sends.
+        if position is None or position.side != "SHORT" or not shadow.get("applicable"):
+            return
+        existing = set()
+        if SHORT_AUDIT_FILE.exists():
+            try:
+                with SHORT_AUDIT_FILE.open(newline="", encoding="utf-8") as f:
+                    existing = {row.get("trade_key", "") for row in csv.DictReader(f)}
+            except Exception as exc:
+                print(f"SHORT SHADOW AUDIT READ ERROR | {type(exc).__name__}: {exc}")
+        if trade_key in existing:
+            return
+        row = {
+            "trade_key": trade_key,
+            "coin": position.coin,
+            "side": position.side,
+            "signal_time": position.opened_at,
+            "closed_at": ts,
+            "result": "TP" if result == "TP" else "SL",
+            "R": base.RR if result == "TP" else -1.0,
+            "entry": position.entry,
+            "sl": position.sl,
+            "tp": position.tp,
+            "entry_score": getattr(position, "entry_score", ""),
+            "variant_core_v1_pass": shadow.get("variant_core_v1_pass", False),
+            "variant_btc_h1_v1_pass": shadow.get("variant_btc_h1_v1_pass", False),
+            "variant_btc_h1_without_h4_v1_pass": shadow.get("variant_btc_h1_without_h4_v1_pass", False),
+            "fresh_pullback": shadow.get("fresh_pullback", False),
+            "bearish_rejection": shadow.get("bearish_rejection", False),
+            "not_extended": shadow.get("not_extended", False),
+            "volume_confirmed": shadow.get("volume_confirmed", False),
+            "local_trend_confirmed": shadow.get("local_trend_confirmed", False),
+            "move5_atr": shadow.get("move5_atr", ""),
+            "dist_ema20_atr": shadow.get("dist_ema20_atr", ""),
+            "volume_ratio": shadow.get("volume_ratio", ""),
+            "ema20_slope": shadow.get("ema20_slope", ""),
+            "h1_slope21": shadow.get("h1_slope21", ""),
+            "close_pos": shadow.get("close_pos", ""),
+            "upper_wick": shadow.get("upper_wick", ""),
+            "btc_h1_bear": shadow.get("btc_h1_bear", ""),
+            "btc_h4_bear": shadow.get("btc_h4_bear", ""),
+        }
+        write_header = not SHORT_AUDIT_FILE.exists()
+        with SHORT_AUDIT_FILE.open("a", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=list(row))
+            if write_header:
+                writer.writeheader()
+            writer.writerow(row)
+        print(f"SHORT SHADOW AUDIT | {position.coin} | {row['result']} | core_v1={row['variant_core_v1_pass']} | btc_h1_v1={row['variant_btc_h1_v1_pass']} | btc_h1_no_h4={row['variant_btc_h1_without_h4_v1_pass']}")
+
         p = self.positions[key]
         trade_key = f"{p.coin}|{p.side}|{p.opened_at}|{p.core}"
         # Idempotent recovery: if master already records this trade as closed,
