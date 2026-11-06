@@ -3,26 +3,12 @@
   "next_trade_no": 188,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 186,
-  "cohort_closed_trades": 86,
-  "remaining_new_closed_trades": 14,
+  "total_closed_trades": 187,
+  "cohort_closed_trades": 87,
+  "remaining_new_closed_trades": 13,
   "status": "RUNNING",
-  "active_positions": [
-    "XRP/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 187,
-      "coin": "XRP/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-06T12:30:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 1.1949,
-      "sl": 1.2054593700792937,
-      "tp": 1.181700787400883,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
