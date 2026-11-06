@@ -1,0 +1,77 @@
+{
+  "updated_at": "2026-11-06T15:43:01.677068+00:00",
+  "mode": "SHADOW_ONLY_NO_EXECUTION_IMPACT",
+  "source": "v15_short_precision_shadow.csv",
+  "sample_size": 0,
+  "baseline": {
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "win_rate_pct": null,
+    "net_R": 0,
+    "profit_factor": null,
+    "expectancy_R": null,
+    "max_drawdown_R": 0.0
+  },
+  "variants": {
+    "baseline_all_short": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate_pct": null,
+      "net_R": 0,
+      "profit_factor": null,
+      "expectancy_R": null,
+      "max_drawdown_R": 0.0,
+      "excluded_winners": 0,
+      "excluded_losses": 0,
+      "gate_column": null
+    },
+    "short_core_v1": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate_pct": null,
+      "net_R": 0,
+      "profit_factor": null,
+      "expectancy_R": null,
+      "max_drawdown_R": 0.0,
+      "excluded_winners": 0,
+      "excluded_losses": 0,
+      "gate_column": "variant_core_v1_pass"
+    },
+    "short_btc_h1_v1": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate_pct": null,
+      "net_R": 0,
+      "profit_factor": null,
+      "expectancy_R": null,
+      "max_drawdown_R": 0.0,
+      "excluded_winners": 0,
+      "excluded_losses": 0,
+      "gate_column": "variant_btc_h1_v1_pass"
+    },
+    "short_btc_h1_without_h4_v1": {
+      "trades": 0,
+      "wins": 0,
+      "losses": 0,
+      "win_rate_pct": null,
+      "net_R": 0,
+      "profit_factor": null,
+      "expectancy_R": null,
+      "max_drawdown_R": 0.0,
+      "excluded_winners": 0,
+      "excluded_losses": 0,
+      "gate_column": "variant_btc_h1_without_h4_v1_pass"
+    }
+  },
+  "promotion_policy": {
+    "minimum_closed_short_sample": 30,
+    "minimum_profit_factor": 1.2,
+    "minimum_expectancy_R": 0.1,
+    "require_out_of_sample_confirmation": true,
+    "note": "These are research thresholds, not a guarantee. Do not promote a variant based on a small or in-sample-only sample."
+  }
+}
