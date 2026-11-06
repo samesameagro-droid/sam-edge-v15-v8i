@@ -24,7 +24,7 @@ PRECISION_SCORE_MAX = 65.0
 FEE_RATE = 0.0005       # assumed taker fee per side; override via CLI
 SLIPPAGE_RATE = 0.0002  # assumed adverse slippage per side; override via CLI
 OUT = Path("artifacts")
-WARMUP_BARS = 1500
+WARMUP_BARS = 3600
 
 
 def utc_ms(dt):
@@ -89,7 +89,7 @@ def build_candidates(coin, x, btc):
     z = pd.merge_asof(x.sort_values("timestamp"), bx.sort_values("timestamp"),
                       on="timestamp", direction="backward", allow_exact_matches=False)
     out = {"regular": [], "shadow_core": [], "shadow_btc_h1": [], "shadow_btc_h1_no_h4": []}
-    for i in range(300, len(z)-MAX_HOLD_BARS-2):
+    for i in range(300, len(z)-1):
         if not all(np.isfinite(float(z[c].iloc[i])) for c in
                    ["atr","h4_adx_pct","h4_adx_delta","dist_sup_atr","dist_ema20_atr","volr","body_atr"]):
             continue
