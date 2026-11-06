@@ -1,0 +1,35 @@
+name: V15.2 SHORT Shadow Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'core_engine_v15.py'
+      - 'main_paper_v15.py'
+      - 'run_v15_forward_test.py'
+      - 'analyze_v15_short_shadow.py'
+      - 'test_v15_short_precision_shadow.py'
+      - '.github/workflows/v15_short_patch_tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  short-shadow-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: python -m pip install numpy pandas
+      - name: Compile changed Python modules
+        run: python -m py_compile core_engine_v15.py main_paper_v15.py run_v15_forward_test.py analyze_v15_short_shadow.py test_v15_short_precision_shadow.py
+      - name: Run SHORT shadow unit tests
+        run: python test_v15_short_precision_shadow.py
+      - name: Smoke-test audit summarizer
+        run: python analyze_v15_short_shadow.py
