@@ -60,7 +60,7 @@ jobs:
 
       - name: Validate V15 Python sources
         run: |
-          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py patch_forward_master_compat.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py sitecustomize.py
+          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py patch_forward_master_compat.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py analyze_v15_short_shadow.py test_v15_short_precision_shadow.py sitecustomize.py
           python - <<'PY'
           from run_v15_forward_test import ForwardPaperEngine
           from datetime import datetime, timezone, timedelta
