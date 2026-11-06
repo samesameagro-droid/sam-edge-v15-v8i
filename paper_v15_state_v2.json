@@ -11792,5 +11792,139 @@
       "equity_after": 105.8717432873557
     }
   ],
-  "positions": {}
+  "positions": {
+    "XRP/USDT:USDT": {
+      "coin": "XRP/USDT:USDT",
+      "side": "SHORT",
+      "entry": 1.1949,
+      "sl": 1.2054593700792937,
+      "tp": 1.181700787400883,
+      "risk_R": 1.0,
+      "risk_cash": 1.058717432873557,
+      "opened_at": "2026-11-06T12:30:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "status": "OPEN",
+      "entry_score": 54.288127670967455,
+      "entry_diag": {
+        "timestamp": "2026-11-06T12:30:00+00:00",
+        "long": {
+          "trend": false,
+          "ema": false,
+          "vwap": false,
+          "di": false,
+          "rsi": false,
+          "room": false,
+          "no_chase": false,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": false,
+          "early_reclaim": false
+        },
+        "short": {
+          "trend": true,
+          "ema": true,
+          "vwap": true,
+          "di": true,
+          "rsi": true,
+          "room": true,
+          "no_chase": true,
+          "adx_context": false,
+          "volume": true,
+          "pullback": true,
+          "reclaim": true,
+          "early_reclaim": true
+        },
+        "final_long": false,
+        "final_short": true,
+        "failure_shield": {
+          "core": "V15_PRECISION_V2_FINAL",
+          "shield": "V15_FAILURE_SHIELD_V1",
+          "side": "SHORT",
+          "pass": true,
+          "veto": false,
+          "reasons": [],
+          "dist_ema20_atr": 0.169226159000898,
+          "volume_ratio": 1.4905970301744487,
+          "h4_adx_pct": 0.5,
+          "h4_adx_delta": 2.660448854507276,
+          "enabled": false
+        },
+        "execution_parity": {
+          "base_signal_mask": true,
+          "shield_applied": false,
+          "base_long": false,
+          "base_short": true,
+          "final_long": false,
+          "final_short": true
+        },
+        "btc_filter_mode": "shadow",
+        "btc_filter_allowed": true,
+        "btc_context": {
+          "enabled": true,
+          "mode": "shadow",
+          "allowed_long": false,
+          "allowed_short": true,
+          "h1_bull": false,
+          "h4_bull": false,
+          "h1_bear": true,
+          "h4_bear": true,
+          "timestamp": "2026-11-06T12:30:00+00:00",
+          "close": 76189.7,
+          "reason": "1H+4H trend alignment"
+        },
+        "defensive_gate": {
+          "pass": true,
+          "reason": "disabled"
+        },
+        "precision_gate": {
+          "enabled": true,
+          "pass": true,
+          "fresh_pullback": true,
+          "touch_age": 1,
+          "adx_ok": true,
+          "vol_ok": true,
+          "ema_ok": true,
+          "score_ok": true,
+          "score_max": 65.0
+        }
+      },
+      "entry_metrics": {
+        "close": 1.1949,
+        "rsi": 47.54000894448395,
+        "h4_adx_pct": 0.5,
+        "h4_adx_delta": 2.660448854507276,
+        "volr": 1.4905970301744487,
+        "vol_slope": 1.2418591556517715,
+        "dist_ema20_atr": 0.169226159000898,
+        "room_atr": 3.5214935302654147,
+        "body_atr": 0.9674432775454233,
+        "close_pos": 0.1718750000000168,
+        "atr": 0.005168261660451854
+      },
+      "score_breakdown": {
+        "adx": 0.0,
+        "delta": 0.8802244272536381,
+        "room": 1.0,
+        "location": 0.28204359833482995,
+        "volume": 0.7452985150872243,
+        "trigger": 1.0
+      },
+      "signal_key": "XRP/USDT:USDT|SHORT|2026-11-06T12:30:00+00:00|V15_PRECISION_V2_FINAL",
+      "btc_context": {
+        "enabled": true,
+        "mode": "shadow",
+        "allowed_long": false,
+        "allowed_short": true,
+        "h1_bull": false,
+        "h4_bull": false,
+        "h1_bear": true,
+        "h4_bear": true,
+        "timestamp": "2026-11-06T12:30:00+00:00",
+        "close": 76189.7,
+        "reason": "1H+4H trend alignment"
+      },
+      "strategy_fingerprint": "a391f765bccd3f3d"
+    }
+  }
 }
