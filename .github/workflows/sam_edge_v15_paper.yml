@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - 'main_paper_v15.py'
+      - 'core_engine_v15.py'
+      - 'run_v15_forward_test.py'
+      - 'analyze_v15_short_shadow.py'
       - 'run_v15_forward_test.py'
       - 'run_v15_forward_test_pro.py'
       - 'patch_forward_master_compat.py'
@@ -166,6 +169,10 @@ jobs:
         run: |
           python -u reconcile_v15_results.py
 
+      - name: Summarize SHORT precision shadow outcomes
+        if: ${{ always() }}
+        run: python analyze_v15_short_shadow.py
+
       - name: Persist V15 + Master Forward Test state
         if: ${{ always() }}
         run: |
@@ -173,7 +180,7 @@ jobs:
           git config user.name "SAM EDGE V15 BOT"
           git config user.email "sam-edge-v15-bot@users.noreply.github.com"
 
-          STATE_FILES="paper_v15_state_v2.json paper_v15_state_v2.backup.json paper_v15_signal_history_v2.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trades_v2.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_ongoing.csv v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv"
+          STATE_FILES="paper_v15_state_v2.json paper_v15_state_v2.backup.json paper_v15_signal_history_v2.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trades_v2.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_ongoing.csv v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv v15_short_precision_shadow.csv v15_short_precision_shadow_summary.json"
           TMP_DIR="$(mktemp -d)"
           trap 'rm -rf "$TMP_DIR"' EXIT
           for f in $STATE_FILES; do
