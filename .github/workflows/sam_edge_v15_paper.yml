@@ -9,6 +9,7 @@ on:
       - 'core_engine_v15.py'
       - 'run_v15_forward_test.py'
       - 'analyze_v15_short_shadow.py'
+      - 'test_v15_short_precision_shadow.py'
       - 'run_v15_forward_test.py'
       - 'run_v15_forward_test_pro.py'
       - 'patch_forward_master_compat.py'
@@ -76,6 +77,7 @@ jobs:
           assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 100, 'remaining_new_closed_trades': 0, 'status': 'COMPLETE'}, p
           print('V15 FORWARD STATE PREFLIGHT OK | cohort progress regression tests passed')
           PY
+          python test_v15_short_precision_shadow.py
           echo "V15 PYTHON PREFLIGHT OK"
 
       - name: Verify Telegram bot and delivery
