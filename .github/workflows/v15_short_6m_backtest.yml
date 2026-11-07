@@ -1,0 +1,50 @@
+name: SAM EDGE V15 - SHORT 6M Historical Backtest
+
+on:
+  workflow_dispatch:
+    inputs:
+      months:
+        description: "Historical lookback in months"
+        required: true
+        default: "6"
+        type: choice
+        options: ["6"]
+  pull_request:
+    branches: [main]
+    paths:
+      - "backtest_v15_short_6m.py"
+      - ".github/workflows/v15_short_6m_backtest.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r requirements.txt
+      - run: python -m py_compile backtest_v15_short_6m.py core_engine_v15.py
+
+  historical-backtest:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: syntax
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r requirements.txt
+      - name: Run independent regular vs Shadow replay
+        run: python -u backtest_v15_short_6m.py --months "${{ inputs.months }}"
+      - name: Upload comparison and trade ledgers
+        uses: actions/upload-artifact@v4
+        with:
+          name: SAM-EDGE-V15-SHORT-6M-BACKTEST
+          path: artifacts/
+          if-no-files-found: error

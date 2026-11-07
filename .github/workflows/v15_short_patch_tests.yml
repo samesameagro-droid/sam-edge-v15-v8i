@@ -10,6 +10,7 @@ on:
       - 'run_v15_forward_test.py'
       - 'analyze_v15_short_shadow.py'
       - 'test_v15_short_precision_shadow.py'
+      - 'backtest_v15_short_6m.py'
       - '.github/workflows/v15_short_patch_tests.yml'
 
 permissions:
@@ -28,7 +29,7 @@ jobs:
       - name: Install test dependencies
         run: python -m pip install numpy pandas
       - name: Compile changed Python modules
-        run: python -m py_compile core_engine_v15.py main_paper_v15.py run_v15_forward_test.py analyze_v15_short_shadow.py test_v15_short_precision_shadow.py
+        run: python -m py_compile core_engine_v15.py main_paper_v15.py run_v15_forward_test.py analyze_v15_short_shadow.py test_v15_short_precision_shadow.py backtest_v15_short_6m.py
       - name: Run SHORT shadow unit tests
         run: python test_v15_short_precision_shadow.py
       - name: Smoke-test audit summarizer
