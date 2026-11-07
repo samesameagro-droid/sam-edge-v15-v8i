@@ -3,26 +3,12 @@
   "next_trade_no": 192,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 190,
-  "cohort_closed_trades": 90,
-  "remaining_new_closed_trades": 10,
+  "total_closed_trades": 191,
+  "cohort_closed_trades": 91,
+  "remaining_new_closed_trades": 9,
   "status": "RUNNING",
-  "active_positions": [
-    "BTC/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 191,
-      "coin": "BTC/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-07T22:15:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 75694.9,
-      "sl": 75814.90628739921,
-      "tp": 75544.89214075098,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
