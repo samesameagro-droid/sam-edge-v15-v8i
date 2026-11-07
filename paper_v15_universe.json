@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07T13:56:15.374040+00:00",
+  "updated_at": "2026-11-07T14:01:35.684091+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -16,8 +16,8 @@
     "AVAX/USDT:USDT",
     "AKE/USDT:USDT",
     "UNI/USDT:USDT",
-    "UAI/USDT:USDT",
     "INJ/USDT:USDT",
+    "UAI/USDT:USDT",
     "BNB/USDT:USDT",
     "SUI/USDT:USDT"
   ]
