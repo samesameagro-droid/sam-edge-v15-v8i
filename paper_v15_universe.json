@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07T14:41:06.264238+00:00",
+  "updated_at": "2026-11-07T14:46:16.499829+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -12,10 +12,10 @@
     "1000PEPE/USDT:USDT",
     "NEAR/USDT:USDT",
     "HYPE/USDT:USDT",
-    "AAVE/USDT:USDT",
     "AVAX/USDT:USDT",
-    "AKE/USDT:USDT",
+    "AAVE/USDT:USDT",
     "UNI/USDT:USDT",
+    "AKE/USDT:USDT",
     "INJ/USDT:USDT",
     "UAI/USDT:USDT",
     "BNB/USDT:USDT"
