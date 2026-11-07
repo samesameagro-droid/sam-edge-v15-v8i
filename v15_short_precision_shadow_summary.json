@@ -1,28 +1,28 @@
 {
-  "updated_at": "2026-11-07T02:11:21.146876+00:00",
+  "updated_at": "2026-11-07T02:16:09.090074+00:00",
   "mode": "SHADOW_ONLY_NO_EXECUTION_IMPACT",
   "source": "v15_short_precision_shadow.csv",
-  "sample_size": 0,
+  "sample_size": 1,
   "baseline": {
-    "trades": 0,
+    "trades": 1,
     "wins": 0,
-    "losses": 0,
-    "win_rate_pct": null,
-    "net_R": 0,
-    "profit_factor": null,
-    "expectancy_R": null,
-    "max_drawdown_R": 0.0
+    "losses": 1,
+    "win_rate_pct": 0.0,
+    "net_R": -1.0,
+    "profit_factor": 0.0,
+    "expectancy_R": -1.0,
+    "max_drawdown_R": 1.0
   },
   "variants": {
     "baseline_all_short": {
-      "trades": 0,
+      "trades": 1,
       "wins": 0,
-      "losses": 0,
-      "win_rate_pct": null,
-      "net_R": 0,
-      "profit_factor": null,
-      "expectancy_R": null,
-      "max_drawdown_R": 0.0,
+      "losses": 1,
+      "win_rate_pct": 0.0,
+      "net_R": -1.0,
+      "profit_factor": 0.0,
+      "expectancy_R": -1.0,
+      "max_drawdown_R": 1.0,
       "excluded_winners": 0,
       "excluded_losses": 0,
       "gate_column": null
@@ -37,7 +37,7 @@
       "expectancy_R": null,
       "max_drawdown_R": 0.0,
       "excluded_winners": 0,
-      "excluded_losses": 0,
+      "excluded_losses": 1,
       "gate_column": "variant_core_v1_pass"
     },
     "short_btc_h1_v1": {
@@ -50,7 +50,7 @@
       "expectancy_R": null,
       "max_drawdown_R": 0.0,
       "excluded_winners": 0,
-      "excluded_losses": 0,
+      "excluded_losses": 1,
       "gate_column": "variant_btc_h1_v1_pass"
     },
     "short_btc_h1_without_h4_v1": {
@@ -63,7 +63,7 @@
       "expectancy_R": null,
       "max_drawdown_R": 0.0,
       "excluded_winners": 0,
-      "excluded_losses": 0,
+      "excluded_losses": 1,
       "gate_column": "variant_btc_h1_without_h4_v1_pass"
     }
   },
