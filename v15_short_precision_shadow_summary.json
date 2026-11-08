@@ -1,27 +1,27 @@
 {
-  "updated_at": "2026-11-08T21:46:12.914339+00:00",
+  "updated_at": "2026-11-08T21:51:16.929188+00:00",
   "mode": "SHADOW_ONLY_NO_EXECUTION_IMPACT",
   "source": "v15_short_precision_shadow.csv",
-  "sample_size": 5,
+  "sample_size": 6,
   "baseline": {
-    "trades": 5,
-    "wins": 3,
+    "trades": 6,
+    "wins": 4,
     "losses": 2,
-    "win_rate_pct": 60.0,
-    "net_R": 1.75,
-    "profit_factor": 1.875,
-    "expectancy_R": 0.35,
+    "win_rate_pct": 66.67,
+    "net_R": 3.0,
+    "profit_factor": 2.5,
+    "expectancy_R": 0.5,
     "max_drawdown_R": 1.0
   },
   "variants": {
     "baseline_all_short": {
-      "trades": 5,
-      "wins": 3,
+      "trades": 6,
+      "wins": 4,
       "losses": 2,
-      "win_rate_pct": 60.0,
-      "net_R": 1.75,
-      "profit_factor": 1.875,
-      "expectancy_R": 0.35,
+      "win_rate_pct": 66.67,
+      "net_R": 3.0,
+      "profit_factor": 2.5,
+      "expectancy_R": 0.5,
       "max_drawdown_R": 1.0,
       "excluded_winners": 0,
       "excluded_losses": 0,
@@ -36,7 +36,7 @@
       "profit_factor": null,
       "expectancy_R": null,
       "max_drawdown_R": 0.0,
-      "excluded_winners": 3,
+      "excluded_winners": 4,
       "excluded_losses": 2,
       "gate_column": "variant_core_v1_pass"
     },
@@ -49,7 +49,7 @@
       "profit_factor": null,
       "expectancy_R": null,
       "max_drawdown_R": 0.0,
-      "excluded_winners": 3,
+      "excluded_winners": 4,
       "excluded_losses": 2,
       "gate_column": "variant_btc_h1_v1_pass"
     },
@@ -62,7 +62,7 @@
       "profit_factor": null,
       "expectancy_R": null,
       "max_drawdown_R": 0.0,
-      "excluded_winners": 3,
+      "excluded_winners": 4,
       "excluded_losses": 2,
       "gate_column": "variant_btc_h1_without_h4_v1_pass"
     }
