@@ -1,0 +1,13 @@
+{
+  "core": "V15_EARLY_RECLAIM_V1",
+  "score_threshold": 40.0,
+  "rr": 1.25,
+  "stop_style": "STRUCTURE",
+  "dev_start": "2026-03-19 00:00:00+00:00",
+  "dev_end": "2026-07-16 23:59:59+00:00",
+  "holdout_start": "2026-07-17 00:00:00+00:00",
+  "holdout_end": "2026-09-14 23:59:59+00:00",
+  "warmup_days": 45,
+  "holdout_rule": "chronological fixed holdout; threshold locked before evaluation",
+  "production_changed": false
+}
