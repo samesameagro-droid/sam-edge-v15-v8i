@@ -3,18 +3,17 @@
   "next_trade_no": 198,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 194,
-  "cohort_closed_trades": 94,
-  "remaining_new_closed_trades": 6,
+  "total_closed_trades": 195,
+  "cohort_closed_trades": 95,
+  "remaining_new_closed_trades": 5,
   "status": "RUNNING",
   "active_positions": [
     "DOGE/USDT:USDT",
-    "ETH/USDT:USDT",
-    "UNI/USDT:USDT"
+    "ETH/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 195,
+      "trade_no": 196,
       "coin": "DOGE/USDT:USDT",
       "side": "SHORT",
       "opened_at": "2026-11-09T03:00:00+00:00",
@@ -25,7 +24,7 @@
       "status": "ONGOING"
     },
     {
-      "trade_no": 196,
+      "trade_no": 197,
       "coin": "ETH/USDT:USDT",
       "side": "SHORT",
       "opened_at": "2026-11-09T09:15:00+00:00",
@@ -33,17 +32,6 @@
       "entry": 2109.9,
       "sl": 2135.6798344723798,
       "tp": 2077.6752069095255,
-      "status": "ONGOING"
-    },
-    {
-      "trade_no": 197,
-      "coin": "UNI/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-09T10:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 6.754,
-      "sl": 6.830691026604968,
-      "tp": 6.658136216743789,
       "status": "ONGOING"
     }
   ],
