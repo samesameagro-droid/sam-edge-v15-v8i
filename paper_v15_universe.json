@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-09T04:41:25.288113+00:00",
+  "updated_at": "2026-11-09T04:46:14.595973+00:00",
   "mode": "TOP_VOLUME",
   "limit": 100,
   "min_volume_usdt": 10000000.0,
@@ -18,7 +18,6 @@
     "AAVE/USDT:USDT",
     "BNB/USDT:USDT",
     "SUI/USDT:USDT",
-    "DOGE/USDT:USDT",
-    "UNI/USDT:USDT"
+    "DOGE/USDT:USDT"
   ]
 }
