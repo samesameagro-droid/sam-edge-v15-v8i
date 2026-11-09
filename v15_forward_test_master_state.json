@@ -3,26 +3,12 @@
   "next_trade_no": 198,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 196,
-  "cohort_closed_trades": 96,
-  "remaining_new_closed_trades": 4,
+  "total_closed_trades": 197,
+  "cohort_closed_trades": 97,
+  "remaining_new_closed_trades": 3,
   "status": "RUNNING",
-  "active_positions": [
-    "DOGE/USDT:USDT"
-  ],
-  "ongoing_trades": [
-    {
-      "trade_no": 197,
-      "coin": "DOGE/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-09T03:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 0.06937,
-      "sl": 0.07055672256563846,
-      "tp": 0.06788659679295193,
-      "status": "ONGOING"
-    }
-  ],
+  "active_positions": [],
+  "ongoing_trades": [],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
