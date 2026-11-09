@@ -3,26 +3,14 @@
   "next_trade_no": 196,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 193,
-  "cohort_closed_trades": 93,
-  "remaining_new_closed_trades": 7,
+  "total_closed_trades": 194,
+  "cohort_closed_trades": 94,
+  "remaining_new_closed_trades": 6,
   "status": "RUNNING",
   "active_positions": [
-    "AVAX/USDT:USDT",
     "DOGE/USDT:USDT"
   ],
   "ongoing_trades": [
-    {
-      "trade_no": 194,
-      "coin": "AVAX/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-09T03:00:00+00:00",
-      "core": "V15_PRECISION_V2_FINAL",
-      "entry": 7.995,
-      "sl": 8.142110103800801,
-      "tp": 7.811112370248998,
-      "status": "ONGOING"
-    },
     {
       "trade_no": 195,
       "coin": "DOGE/USDT:USDT",

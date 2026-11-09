@@ -1,5 +1,5 @@
 {
-  "equity": 110.41437357644895,
+  "equity": 111.79455324615456,
   "closed": [
     {
       "coin": "ORDI/USDT:USDT",
@@ -12882,10 +12882,8 @@
       "result": "TP",
       "R": 1.25,
       "equity_after": 110.41437357644895
-    }
-  ],
-  "positions": {
-    "AVAX/USDT:USDT": {
+    },
+    {
       "coin": "AVAX/USDT:USDT",
       "side": "SHORT",
       "entry": 7.995,
@@ -13037,8 +13035,15 @@
         "close": 74970.7,
         "reason": "1H+4H trend alignment"
       },
-      "strategy_fingerprint": "a391f765bccd3f3d"
-    },
+      "strategy_fingerprint": "a391f765bccd3f3d",
+      "closed_at": "2026-11-09T07:10:00+00:00",
+      "exit": 7.811112370248998,
+      "result": "TP",
+      "R": 1.25,
+      "equity_after": 111.79455324615456
+    }
+  ],
+  "positions": {
     "DOGE/USDT:USDT": {
       "coin": "DOGE/USDT:USDT",
       "side": "SHORT",
