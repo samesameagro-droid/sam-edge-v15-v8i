@@ -1,25 +1,25 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 199,
+  "next_trade_no": 200,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
-  "total_closed_trades": 197,
-  "cohort_closed_trades": 97,
-  "remaining_new_closed_trades": 3,
+  "total_closed_trades": 198,
+  "cohort_closed_trades": 98,
+  "remaining_new_closed_trades": 2,
   "status": "RUNNING",
   "active_positions": [
-    "SOL/USDT:USDT"
+    "INIT/USDT:USDT"
   ],
   "ongoing_trades": [
     {
-      "trade_no": 198,
-      "coin": "SOL/USDT:USDT",
-      "side": "SHORT",
-      "opened_at": "2026-11-10T08:00:00+00:00",
+      "trade_no": 199,
+      "coin": "INIT/USDT:USDT",
+      "side": "LONG",
+      "opened_at": "2026-11-10T09:00:00+00:00",
       "core": "V15_PRECISION_V2_FINAL",
-      "entry": 85.939,
-      "sl": 86.65295991108057,
-      "tp": 85.04655011114927,
+      "entry": 0.21777,
+      "sl": 0.19844537926606456,
+      "tp": 0.24192577591741926,
       "status": "ONGOING"
     }
   ],
