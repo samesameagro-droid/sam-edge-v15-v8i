@@ -1,14 +1,28 @@
 {
   "baseline_trade_no": 100,
-  "next_trade_no": 200,
+  "next_trade_no": 201,
   "target_new_closed_trades": 100,
   "baseline_closed_trades": 100,
   "total_closed_trades": 199,
   "cohort_closed_trades": 99,
   "remaining_new_closed_trades": 1,
   "status": "RUNNING",
-  "active_positions": [],
-  "ongoing_trades": [],
+  "active_positions": [
+    "SOL/USDT:USDT"
+  ],
+  "ongoing_trades": [
+    {
+      "trade_no": 200,
+      "coin": "SOL/USDT:USDT",
+      "side": "SHORT",
+      "opened_at": "2026-11-11T00:45:00+00:00",
+      "core": "V15_PRECISION_V2_FINAL",
+      "entry": 83.098,
+      "sl": 83.8182006980858,
+      "tp": 82.19774912739274,
+      "status": "ONGOING"
+    }
+  ],
   "max_active": 5,
   "score_is_execution_threshold": false,
   "validation": "9 V15 gates from signal_mask"
