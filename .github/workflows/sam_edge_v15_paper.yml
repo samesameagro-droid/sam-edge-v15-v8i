@@ -43,7 +43,8 @@ jobs:
           sys.path.insert(0, "st_adx_v31")
           from strategy_core import LONG_ALLOWLIST, SHORT_ALLOWLIST, add_indicators
           import pandas as pd
-          assert len(LONG_ALLOWLIST | SHORT_ALLOWLIST) == 12
+          assert len(LONG_ALLOWLIST | SHORT_ALLOWLIST) == 23
+          assert len(LONG_ALLOWLIST) == 11 and len(SHORT_ALLOWLIST) == 14
           rows = []
           for i in range(300):
               close = 100 + i * 0.02 + ((i % 7) - 3) * 0.1
@@ -51,7 +52,7 @@ jobs:
           df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume"])
           out = add_indicators(df)
           assert len(out) == 300 and "adx_rising" in out and "long_signal" in out
-          print("ST-ADX CORE SMOKE TEST PASS | 12 symbols | corrected consecutive ADX rising")
+          print("ST-ADX CORE SMOKE TEST PASS | 23 symbols / 25 directional models | 11 LONG + 14 SHORT | corrected consecutive ADX rising")
           PY
 
       - name: Run one BingX paper cycle

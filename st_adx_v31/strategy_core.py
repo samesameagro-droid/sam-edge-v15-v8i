@@ -17,8 +17,8 @@ RISK_ATR_LENGTH=10
 ATR_SL_MULTIPLIER=1.2
 ATR_TP_MULTIPLIER=3.5
 COOLDOWN_BARS=1
-LONG_ALLOWLIST={"ENA","XRP","ZEC"}
-SHORT_ALLOWLIST={"ARB","AVAX","BTC","ENA","ETH","LINK","NEAR","SOL","SUI","UNI","XRP"}
+LONG_ALLOWLIST={"ENA","XRP","ZEC","TIA","ORDI","AKE","WIF","APR","XLM","VIRTUAL","DYDX"}
+SHORT_ALLOWLIST={"ARB","AVAX","BTC","ENA","ETH","LINK","NEAR","SOL","SUI","UNI","XRP","DOT","LTC","ADA"}
 def wilder_rma(values: Iterable[float], length: int) -> np.ndarray:
     x=np.asarray(values,dtype=float); out=np.full(x.shape,np.nan,dtype=float)
     valid=np.flatnonzero(np.isfinite(x))
