@@ -66,12 +66,17 @@ def get_json(path, params=None, attempts=6):
 
 def get_universe():
     contracts = get_json("/openApi/swap/v2/quote/contracts") or []
-    eligible = {
-        x.get("symbol") for x in contracts
-        if str(x.get("symbol", "")).endswith("-USDT")
-        and str(x.get("status", "0")) == "1"
-        and str(x.get("apiStateOpen", "true")).lower() == "true"
-    }
+    eligible = set()
+    for contract in contracts:
+        sym = str(contract.get("symbol", ""))
+        base = sym[:-5] if sym.endswith("-USDT") else ""
+        # BingX may list TradFi index/stock/commodity contracts in the same swap ticker.
+        # Exclude the documented NCS/NCCO/NCFX synthetic families: the target is crypto coins.
+        non_crypto_family = base.startswith(("NCS", "NCCO", "NCFX"))
+        if (base and not non_crypto_family
+            and str(contract.get("status", "0")) == "1"
+            and str(contract.get("apiStateOpen", "true")).lower() == "true"):
+            eligible.add(sym)
     tickers = get_json("/openApi/swap/v2/quote/ticker") or []
     ranked = []
     for t in tickers:
@@ -99,15 +104,43 @@ def fetch_history(symbol):
         })
         if not raw:
             break
-        rows.extend(raw)
-        nxt = int(raw[-1][0]) + BAR_MS
+        # Normalize the actual public response defensively: some API deployments return
+        # positional arrays, others return named candle objects.
+        if isinstance(raw, dict):
+            raw = raw.get("klines") or raw.get("list") or raw.get("rows") or raw.get("data") or []
+        if not isinstance(raw, list):
+            raise RuntimeError(f"Unexpected kline payload type: {type(raw).__name__}")
+        if raw and isinstance(raw[0], dict):
+            def field(obj, *keys):
+                for key in keys:
+                    if key in obj and obj[key] is not None:
+                        return obj[key]
+                raise KeyError(f"Missing required candle fields {keys}; got {list(obj.keys())}")
+            normalized = []
+            for item in raw:
+                normalized.append([
+                    field(item, "time", "openTime", "timestamp", "t"),
+                    field(item, "open", "o"),
+                    field(item, "high", "h"),
+                    field(item, "low", "l"),
+                    field(item, "close", "c"),
+                    field(item, "volume", "vol", "v"),
+                ])
+            page = pd.DataFrame(normalized, columns=["timestamp","open","high","low","close","volume"])
+        else:
+            page = pd.DataFrame([x[:6] for x in raw], columns=["timestamp","open","high","low","close","volume"])
+        page["timestamp"] = pd.to_numeric(page["timestamp"], errors="coerce")
+        page = page.dropna(subset=["timestamp"])
+        if page.empty:
+            break
+        rows.extend(page.to_dict("records"))
+        nxt = int(page["timestamp"].iloc[-1]) + BAR_MS
         if nxt <= cursor or len(raw) < 1440:
             break
         cursor = nxt
     if not rows:
         return symbol, pd.DataFrame(columns=["timestamp","open","high","low","close","volume"]), "NO_HISTORY"
-    df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume","close_time","quote_volume","trades","taker_buy_base","taker_buy_quote"])
-    df = df[["timestamp","open","high","low","close","volume"]].copy()
+    df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume"])
     df["timestamp"] = pd.to_numeric(df["timestamp"], errors="coerce")
     for col in ["open","high","low","close","volume"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -224,8 +257,8 @@ def write_csv(path, rows):
         w.writeheader()
         w.writerows(rows)
 
-def exit_ms(row):
-    return int(datetime.fromisoformat(row["exit_time_utc"].replace("Z","+00:00")).timestamp()*1000)
+def entry_ms(row):
+    return int(datetime.fromisoformat(row["entry_time_utc"].replace("Z","+00:00")).timestamp()*1000)
 
 def main():
     out = Path(os.getenv("ST_ADX_100_OUT", ROOT/"research_output"))
@@ -276,8 +309,8 @@ def main():
                 "pending_flip":bo["pending_flip"]})
         for side in ("LONG","SHORT"):
             sr = [x for x in bt if x["side"]==side]
-            train = [x for x in sr if exit_ms(x)<TRAIN_END]
-            later = [x for x in sr if exit_ms(x)>=TRAIN_END]
+            train = [x for x in sr if entry_ms(x)<TRAIN_END]
+            later = [x for x in sr if entry_ms(x)>=TRAIN_END]
             coin_side_rows.append({"symbol":sym,"side":side,
                 **{f"all_{k}":v for k,v in metric(sr).items()},
                 **{f"train_{k}":v for k,v in metric(train).items()},
@@ -286,10 +319,10 @@ def main():
 
     base_trades.sort(key=lambda x:x["entry_time_utc"])
     stress_trades.sort(key=lambda x:x["entry_time_utc"])
-    train_base = [x for x in base_trades if exit_ms(x)<TRAIN_END]
-    later_base = [x for x in base_trades if exit_ms(x)>=TRAIN_END]
-    train_stress = [x for x in stress_trades if exit_ms(x)<TRAIN_END]
-    later_stress = [x for x in stress_trades if exit_ms(x)>=TRAIN_END]
+    train_base = [x for x in base_trades if entry_ms(x)<TRAIN_END]
+    later_base = [x for x in base_trades if entry_ms(x)>=TRAIN_END]
+    train_stress = [x for x in stress_trades if entry_ms(x)<TRAIN_END]
+    later_stress = [x for x in stress_trades if entry_ms(x)>=TRAIN_END]
     candidates = []
     for row in coin_side_rows:
         if row["train_trades"]>=8 and row["train_profit_factor"] is not None and row["train_profit_factor"]>1.0:
@@ -315,7 +348,7 @@ def main():
         "fee_per_side_baseline":FEE_BASE,"adverse_slippage_per_side_baseline":SLIP_BASE,
         "fee_per_side_stress":FEE_STRESS,"adverse_slippage_per_side_stress":SLIP_STRESS,
         "funding":"excluded","portfolio_limit":"independent per-symbol replay; no shared 2-position portfolio cap"},
-      "bias_warning":"Universe is selected from current top-100 volume then replayed historically. This creates survivorship/current-volume selection bias; newly listed symbols have shorter history. Research only, not live performance.",
+      "bias_warning":"Universe is selected from current top-100 volume then replayed historically. This creates survivorship/current-volume selection bias; newly listed symbols have shorter history. NCS/NCCO/NCFX TradFi synthetic families are excluded. Research only, not live performance.",
       "all_100_baseline":metric(base_trades),"train_baseline":metric(train_base),"later_baseline":metric(later_base),
       "all_100_stress":metric(stress_trades),"train_stress":metric(train_stress),"later_stress":metric(later_stress),
       "open_positions_at_end":len(open_rows)
