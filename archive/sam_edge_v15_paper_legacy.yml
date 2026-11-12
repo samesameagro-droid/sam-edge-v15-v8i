@@ -1,0 +1,273 @@
+name: SAM EDGE V15 - Paper Forward
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'main_paper_v15.py'
+      - 'core_engine_v15.py'
+      - 'run_v15_forward_test.py'
+      - 'analyze_v15_short_shadow.py'
+      - 'test_v15_short_precision_shadow.py'
+      - 'run_v15_forward_test.py'
+      - 'run_v15_forward_test_pro.py'
+      - 'patch_forward_master_compat.py'
+      - 'notifiers.py'
+      - 'reconcile_v15_results.py'
+      - 'telegram_result_guard.py'
+      - 'sitecustomize.py'
+      - '.github/workflows/sam_edge_v15_paper.yml'
+  workflow_dispatch:
+    inputs:
+      telegram_test:
+        description: 'Verify Telegram bot and send a test message before running the V15 scan'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  # One writer/runner at a time. Never cancel an active scan or state-persistence run.
+  # External cron-job.org should trigger workflow_dispatch every 5 minutes.
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Apply forward journal compatibility patch
+        run: python patch_forward_master_compat.py
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt matplotlib
+
+      - name: Validate V15 Python sources
+        run: |
+          python -m py_compile main_paper_v15.py run_v15_forward_test.py run_v15_forward_test_pro.py patch_forward_master_compat.py notifiers.py telegram_result_guard.py reconcile_v15_results.py bingx_direct_v15.py core_engine_v15.py analyze_v15_short_shadow.py test_v15_short_precision_shadow.py sitecustomize.py
+          python - <<'PY'
+          from run_v15_forward_test import ForwardPaperEngine
+          from datetime import datetime, timezone, timedelta
+          assert hasattr(ForwardPaperEngine, '_valid_closed_record'), 'ForwardPaperEngine validator missing'
+          now = datetime.now(timezone.utc)
+          assert ForwardPaperEngine._valid_closed_record({'result':'TP','signal_time':now.isoformat(),'closed_at':(now+timedelta(minutes=1)).isoformat()})
+          assert not ForwardPaperEngine._valid_closed_record({'result':'TP','signal_time':now.isoformat(),'closed_at':(now-timedelta(minutes=1)).isoformat()})
+          # Regression guard: baseline trades must not count toward the 100-trade new cohort.
+          p = ForwardPaperEngine._cohort_progress(100, 100, 100)
+          assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 0, 'remaining_new_closed_trades': 100, 'status': 'RUNNING'}, p
+          p = ForwardPaperEngine._cohort_progress(142, 100, 100)
+          assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 42, 'remaining_new_closed_trades': 58, 'status': 'RUNNING'}, p
+          p = ForwardPaperEngine._cohort_progress(200, 100, 100)
+          assert p == {'baseline_closed_trades': 100, 'cohort_closed_trades': 100, 'remaining_new_closed_trades': 0, 'status': 'COMPLETE'}, p
+          print('V15 FORWARD STATE PREFLIGHT OK | cohort progress regression tests passed')
+          PY
+          python test_v15_short_precision_shadow.py
+          echo "V15 PYTHON PREFLIGHT OK"
+
+      - name: Verify Telegram bot and delivery
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.telegram_test == true }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+          import requests
+          token = (os.getenv('TELEGRAM_BOT_TOKEN') or '').strip()
+          chat_id = (os.getenv('TELEGRAM_CHAT_ID') or '').strip()
+          if not token or not chat_id:
+              print('TELEGRAM TEST FAILED | token/chat_id not configured')
+              sys.exit(1)
+          api = f'https://api.telegram.org/bot{token}'
+          r = requests.get(f'{api}/getMe', timeout=30)
+          print(f'TELEGRAM GETME HTTP={r.status_code}')
+          if not r.ok or not r.json().get('ok'):
+              print(f'TELEGRAM AUTH TEST FAILED | {r.text}')
+              sys.exit(1)
+          r = requests.post(f'{api}/sendMessage', json={'chat_id': chat_id, 'text': '✅ SAM EDGE V15 Telegram test OK | GitHub Actions → Telegram'}, timeout=30)
+          print(f'TELEGRAM SEND HTTP={r.status_code}')
+          if not r.ok or not r.json().get('ok'):
+              print(f'TELEGRAM DELIVERY TEST FAILED | {r.text}')
+              sys.exit(1)
+          print(f'TELEGRAM TEST SENT OK | message_id={r.json().get("result", {}).get("message_id")}')
+          PY
+
+      - name: Run V15 professional one-shot forward-test scan
+        id: scan
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          START_EQUITY: "100"
+          RISK_PCT: "0.01"
+          HISTORY_15M: "3600"
+          FETCH_CHUNK: "900"
+          MIN_VOLUME_USDT: "10000000"
+          UNIVERSE_LIMIT: "100"
+          MAX_ACTIVE_POSITIONS: "5"
+          RUN_ONCE: "1"
+          TELEGRAM_CHART_CANDLES: "80"
+          BTC_FILTER_ENABLED: "1"
+          BTC_FILTER_MODE: "shadow"
+          BTC_FILTER_FAIL_CLOSED: "1"
+          FORWARD_BASELINE_TRADE_NO: "100"
+          FORWARD_TARGET_NEW_TRADES: "100"
+        run: |
+          START_TS=$(date +%s)
+          set +e
+          timeout --signal=TERM --kill-after=30s 8m python -u run_v15_forward_test_pro.py
+          RC=$?
+          END_TS=$(date +%s)
+          ELAPSED=$((END_TS-START_TS))
+          echo "rc=$RC" >> "$GITHUB_OUTPUT"
+          echo "elapsed=$ELAPSED" >> "$GITHUB_OUTPUT"
+          echo "V15 PROFESSIONAL SCAN EXIT=$RC | elapsed=${ELAPSED}s"
+          SCAN_RC="$RC" SCAN_ELAPSED="$ELAPSED" python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          payload = {
+              "updated_at": datetime.now(timezone.utc).isoformat(),
+              "workflow": "SAM EDGE V15 - Paper Forward",
+              "status": "SUCCESS" if int(os.environ["SCAN_RC"]) == 0 else "FAILED",
+              "exit_code": int(os.environ["SCAN_RC"]),
+              "elapsed_seconds": int(os.environ["SCAN_ELAPSED"]),
+          }
+          try:
+              with open("v15_forward_test_summary.json", encoding="utf-8") as f:
+                  summary = json.load(f)
+              for key in ("closed_trades","active_positions","equity","wins","losses","win_rate_pct","net_R","profit_factor","drawdown_R"):
+                  payload[key] = summary.get(key)
+          except Exception:
+              pass
+          with open("v15_scan_health.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+          PY
+          if [ "$RC" -ne 0 ]; then
+            echo "V15 PROFESSIONAL SCAN FAILED — scanner exited with code $RC"
+            exit "$RC"
+          fi
+
+      - name: Reconcile and deliver missed TP SL notifications
+        if: ${{ always() }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -u reconcile_v15_results.py
+
+      - name: Summarize SHORT precision shadow outcomes
+        if: ${{ always() }}
+        run: python analyze_v15_short_shadow.py
+
+      - name: Persist V15 + Master Forward Test state
+        if: ${{ always() }}
+        run: |
+          set -e
+          git config user.name "SAM EDGE V15 BOT"
+          git config user.email "sam-edge-v15-bot@users.noreply.github.com"
+
+          STATE_FILES="paper_v15_state_v2.json paper_v15_state_v2.backup.json paper_v15_signal_history_v2.json paper_v15_universe.json pending_telegram_signals.json telegram_delivery_history.json paper_v15_trades_v2.csv v15_forward_test_master_journal.csv v15_forward_test_master_state.json v15_forward_test_ongoing.csv v15_forward_test_summary.json v15_scan_health.json v15_1_shadow_e_signals.csv v15_short_precision_shadow.csv v15_short_precision_shadow_summary.json"
+          TMP_DIR="$(mktemp -d)"
+          trap 'rm -rf "$TMP_DIR"' EXIT
+          for f in $STATE_FILES; do
+            if [ -f "$f" ]; then
+              cp "$f" "$TMP_DIR/$(basename "$f")"
+            fi
+          done
+
+          for attempt in 1 2 3 4 5; do
+            echo "STATE PUSH ATTEMPT $attempt"
+            git fetch origin main
+            git reset --hard origin/main
+            for f in $STATE_FILES; do
+              if [ -f "$TMP_DIR/$(basename "$f")" ]; then
+                cp "$TMP_DIR/$(basename "$f")" "$f"
+              fi
+            done
+            if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
+              rm -f pending_telegram_signals.json
+              git rm --ignore-unmatch pending_telegram_signals.json >/dev/null 2>&1 || true
+            fi
+
+            STAGE_FILES=()
+            for f in $STATE_FILES; do
+              if [ -f "$f" ]; then
+                STAGE_FILES+=( "$f" )
+              elif git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+                git add -u -- "$f"
+              fi
+            done
+            if [ "${#STAGE_FILES[@]}" -gt 0 ]; then
+              git add -- "${STAGE_FILES[@]}"
+            fi
+
+            if git diff --cached --quiet; then
+              echo "NO STATE CHANGES AFTER SYNC"
+              exit 0
+            fi
+
+            git commit -m "paper: V15 professional forward state"
+            # Rebase the local state commit onto the newest main before pushing.
+            # This handles commits created by another completed run/workflow between
+            # fetch and push without discarding the scan's freshly generated state.
+            if git fetch origin main && git rebase origin/main; then
+              if git push origin HEAD:main; then
+                echo "STATE PUSH OK"
+                exit 0
+              fi
+            fi
+
+            echo "REMOTE MOVED DURING PUSH - retrying from latest main"
+            git fetch origin main
+            git reset --hard origin/main
+            for f in $STATE_FILES; do
+              if [ -f "$TMP_DIR/$(basename "$f")" ]; then
+                cp "$TMP_DIR/$(basename "$f")" "$f"
+              fi
+            done
+            if [ ! -f "$TMP_DIR/pending_telegram_signals.json" ]; then
+              rm -f pending_telegram_signals.json
+              git rm --ignore-unmatch pending_telegram_signals.json >/dev/null 2>&1 || true
+            fi
+            STAGE_FILES=()
+            for f in $STATE_FILES; do
+              if [ -f "$f" ]; then
+                STAGE_FILES+=( "$f" )
+              elif git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+                git add -u -- "$f"
+              fi
+            done
+            if [ "${#STAGE_FILES[@]}" -gt 0 ]; then
+              git add -- "${STAGE_FILES[@]}"
+            fi
+            if git diff --cached --quiet; then
+              echo "NO STATE CHANGES AFTER REMOTE SYNC"
+              exit 0
+            fi
+            git commit -m "paper: V15 professional forward state"
+            if git push origin HEAD:main; then
+              echo "STATE PUSH OK AFTER REMOTE SYNC"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "STATE PUSH FAILED AFTER 5 ATTEMPTS"
+          exit 1
+
+

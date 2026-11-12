@@ -1,0 +1,11 @@
+{
+  "from": "SAM EDGE V15",
+  "to": "ST-ADX V3.1 Selective Directional",
+  "mode": "PAPER_ONLY",
+  "old_system_preserved": true,
+  "reuse_workflow_path": true,
+  "reuse_cron_dispatch": true,
+  "reuse_existing_telegram_secrets": true,
+  "starting_paper_equity_usdt": 100000,
+  "live_orders": false
+}

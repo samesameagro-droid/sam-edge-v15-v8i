@@ -1,0 +1,12 @@
+{
+  "initialized": false,
+  "equity": 100000,
+  "open_positions": {},
+  "last_signal_ts": {},
+  "last_exit_signal_ts": {},
+  "trade_counter": 0,
+  "model": "ST-ADX V3.1 Selective Directional",
+  "timeframe": "1h",
+  "paper_only": true,
+  "funding_included": false
+}

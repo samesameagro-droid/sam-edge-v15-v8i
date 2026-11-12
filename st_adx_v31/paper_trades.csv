@@ -1,0 +1,1 @@
+trade_no,symbol,base,side,entry_time_utc,entry_price,qty,entry_notional,stop,target,exit_time_utc,exit_price,exit_reason,gross_pnl_after_slippage,entry_fee,exit_fee,net_pnl_ex_funding,equity_after,funding_included
