@@ -10,7 +10,7 @@ from strategy_core import add_indicators,LONG_ALLOWLIST,SHORT_ALLOWLIST,ATR_SL_M
 ROOT=Path(__file__).resolve().parent
 STATE=ROOT/"paper_state.json";TRADES=ROOT/"paper_trades.csv";SIGNALS=ROOT/"paper_signals.csv"
 ASSETS=sorted(LONG_ALLOWLIST|SHORT_ALLOWLIST);BAR=3600000
-FEE=.0005;SLIP=.0002;RISK=.01;CAP=.45;MAX_POS=2;GRACE=300
+FEE=.0005;SLIP=.0002;RISK=.01;CAP=.45;MAX_OPEN_RISK=.05;GRACE=300
 PRIORITY={"BTC:SHORT":5.11,"ENA:LONG":2.93,"ARB:SHORT":2.98,"AVAX:SHORT":2.94,"SOL:SHORT":2.88,"SUI:SHORT":2.60,"ETH:SHORT":2.25,"ENA:SHORT":1.82,"ZEC:LONG":1.63,"LINK:SHORT":1.64,"NEAR:SHORT":1.56,"XRP:SHORT":1.56,"UNI:SHORT":1.39,"XRP:LONG":1.17,"TIA:LONG":5.6741,"ORDI:LONG":4.7457,"AKE:LONG":2.6871,"DOT:SHORT":2.5937,"WIF:LONG":2.3025,"APR:LONG":2.2137,"LTC:SHORT":2.0849,"XLM:LONG":2.0285,"DYDX:LONG":1.9173,"VIRTUAL:LONG":1.9133,"ADA:SHORT":1.8243}
 logging.basicConfig(level=logging.INFO,format="%(asctime)s | %(levelname)s | %(message)s");log=logging.getLogger("ST_ADX_V31")
 def utc(ms):return datetime.fromtimestamp(ms/1000,timezone.utc).isoformat()
@@ -52,6 +52,18 @@ def telegram(msg):
     if not tok or not chat:log.warning("Telegram secrets missing; message skipped.");return
     r=requests.post(f"https://api.telegram.org/bot{tok}/sendMessage",json={"chat_id":chat,"text":msg,"disable_web_page_preview":True},timeout=20);r.raise_for_status()
     if not r.json().get("ok"):raise RuntimeError(r.text)
+def estimated_risk_per_unit(entry,stop,side):
+    """Estimated all-in loss per unit if the protective stop fills with adverse slippage."""
+    stop_fill=stop*(1-SLIP if side=="LONG" else 1+SLIP)
+    return abs(entry-stop)+entry*FEE+abs(stop_fill)*FEE+abs(stop_fill-stop)
+def estimated_stop_risk(p):
+    """USDT risk reserved to stop, including entry/exit fees and adverse stop slippage."""
+    entry=float(p["entry_price"]);stop=float(p["stop"]);qty=float(p["qty"]);side=p["side"]
+    stop_fill=stop*(1-SLIP if side=="LONG" else 1+SLIP)
+    entry_fee=float(p.get("entry_fee",entry*qty*FEE))
+    return abs(entry-stop)*qty+entry_fee+abs(stop_fill*qty)*FEE+abs(stop_fill-stop)*qty
+def portfolio_open_risk(s):
+    return sum(estimated_stop_risk(p) for p in s.get("open_positions",{}).values())
 def close_pos(s,base,p,c,raw,reason):
     side=p["side"];slip=0.0 if reason.startswith("TARGET") else SLIP
     px=raw*(1-slip if side=="LONG" else 1+slip);q=float(p["qty"])
@@ -113,19 +125,28 @@ def signals(s,frames,symbols,now):
         cand.append((PRIORITY.get(f"{base}:{side}",0),base,side,r,nr.iloc[0]))
     cand.sort(key=lambda x:x[0],reverse=True)
     for priority,base,side,r,nxt in cand:
-        if len(s["open_positions"])>=MAX_POS:
-            append_csv(SIGNALS,{"symbol":symbols[base],"side":side,"signal_time_utc":utc(int(r.timestamp)),"status":"SKIPPED_MAX_2_POSITIONS","priority":priority});continue
         atr=float(r.atr_risk)
         if not (atr>0 and pd.notna(atr)):continue
         raw=float(nxt.open);entry=raw*(1+SLIP if side=="LONG" else 1-SLIP)
         sd=atr*ATR_SL_MULTIPLIER;td=atr*ATR_TP_MULTIPLIER
         stop=entry-sd if side=="LONG" else entry+sd;target=entry+td if side=="LONG" else entry-td
-        eq=float(s["equity"]);qty=min(eq*RISK/sd,eq*CAP/entry)
+        eq=float(s["equity"])
+        unit_risk=estimated_risk_per_unit(entry,stop,side)
+        qty=min(eq*RISK/unit_risk,eq*CAP/entry)
         if qty<=0 or not pd.notna(qty):continue
         nt=entry*qty;fee=nt*FEE
-        s["open_positions"][base]={"symbol":symbols[base],"base":base,"side":side,"signal_time":int(r.timestamp),"entry_time":int(nxt.timestamp),"raw_entry":raw,"entry_price":entry,"signal_atr":atr,"stop":stop,"target":target,"qty":qty,"entry_notional":nt,"entry_fee":fee,"pending_flip":False,"last_processed_bar":int(nxt.timestamp)-BAR}
-        append_csv(SIGNALS,{"symbol":symbols[base],"side":side,"signal_time_utc":utc(int(r.timestamp)),"entry_time_utc":utc(int(nxt.timestamp)),"reference_entry_open":raw,"paper_entry":entry,"stop":stop,"target":target,"qty":qty,"notional":nt,"adx":float(r.adx),"rsi":float(r.rsi),"atr10":atr,"status":"PAPER_OPEN","priority":priority})
-        msg=f"🧪 ST-ADX V3.1 PAPER ONLY\n{symbols[base]} · {side} · 1H\nSignal: {utc(int(r.timestamp))}\nEntry: {entry:.8g}\nSL: {stop:.8g}\nTP: {target:.8g}\nR:R 1:{ATR_TP_MULTIPLIER/ATR_SL_MULTIPLIER:.2f}\nADX {float(r.adx):.1f} | RSI {float(r.rsi):.1f} | ATR10 {atr:.8g}\nQty {qty:.6f} | Notional {nt:.2f} USDT\nEquity {eq:.2f} USDT\nFee 0.05%/side; slippage 2bps; funding excluded. No live order sent."
+        candidate_risk=qty*unit_risk
+        current_risk=portfolio_open_risk(s)
+        risk_limit=eq*MAX_OPEN_RISK
+        if current_risk+candidate_risk>risk_limit+1e-8:
+            append_csv(SIGNALS,{"symbol":symbols[base],"side":side,"signal_time_utc":utc(int(r.timestamp)),"status":"SKIPPED_PORTFOLIO_RISK_CAP","priority":priority,"candidate_risk_usdt":candidate_risk,"portfolio_open_risk_usdt":current_risk,"portfolio_open_risk_pct":current_risk/eq*100 if eq>0 else 0,"portfolio_risk_cap_usdt":risk_limit,"portfolio_risk_cap_pct":MAX_OPEN_RISK*100})
+            log.info("RISK CAP SKIP %s %s | candidate=%.2f USDT | open=%.2f/%.2f USDT (%.2f%%/%.2f%%)",base,side,candidate_risk,current_risk,risk_limit,current_risk/eq*100 if eq>0 else 0,MAX_OPEN_RISK*100)
+            continue
+        s["open_positions"][base]={"symbol":symbols[base],"base":base,"side":side,"signal_time":int(r.timestamp),"entry_time":int(nxt.timestamp),"raw_entry":raw,"entry_price":entry,"signal_atr":atr,"stop":stop,"target":target,"qty":qty,"entry_notional":nt,"entry_fee":fee,"risk_reserved_usdt":candidate_risk,"pending_flip":False,"last_processed_bar":int(nxt.timestamp)-BAR}
+        aggregate_risk=portfolio_open_risk(s)
+        aggregate_pct=aggregate_risk/eq*100 if eq>0 else 0
+        append_csv(SIGNALS,{"symbol":symbols[base],"side":side,"signal_time_utc":utc(int(r.timestamp)),"entry_time_utc":utc(int(nxt.timestamp)),"reference_entry_open":raw,"paper_entry":entry,"stop":stop,"target":target,"qty":qty,"notional":nt,"adx":float(r.adx),"rsi":float(r.rsi),"atr10":atr,"status":"PAPER_OPEN","priority":priority,"risk_reserved_usdt":candidate_risk,"portfolio_open_risk_usdt":aggregate_risk,"portfolio_open_risk_pct":aggregate_pct,"portfolio_risk_cap_pct":MAX_OPEN_RISK*100})
+        msg=f"🧪 ST-ADX V3.1 PAPER ONLY\n{symbols[base]} · {side} · 1H\nSignal: {utc(int(r.timestamp))}\nEntry: {entry:.8g}\nSL: {stop:.8g}\nTP: {target:.8g}\nR:R 1:{ATR_TP_MULTIPLIER/ATR_SL_MULTIPLIER:.2f}\nADX {float(r.adx):.1f} | RSI {float(r.rsi):.1f} | ATR10 {atr:.8g}\nQty {qty:.6f} | Notional {nt:.2f} USDT\nRisk reserve: {candidate_risk:.2f} USDT ({candidate_risk/eq*100:.2f}%)\nPortfolio stop-risk: {aggregate_risk:.2f}/{risk_limit:.2f} USDT ({aggregate_pct:.2f}%/{MAX_OPEN_RISK*100:.2f}%)\nFee 0.05%/side; adverse stop slippage 2bps; funding excluded. No live order sent."
         log.info(msg.replace("\n"," | "))
         try:telegram(msg)
         except Exception as e:log.error("Telegram signal failed: %s",e)
@@ -147,12 +168,13 @@ def main():
         c=f[f.timestamp+BAR<=now]
         if c.empty:raise RuntimeError(f"No closed candle: {b}")
         log.info("CLOSED %s %s",b,utc(int(c.iloc[-1].timestamp)))
-    s=load_state();log.info("ST-ADX V3.1 PAPER ONLY | symbols=%d max_positions=%d equity=%.2f",len(ASSETS),MAX_POS,float(s["equity"]))
+    s=load_state();log.info("ST-ADX V3.1 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
     if not s["initialized"]:
         for b,f in frames.items():s["last_signal_ts"][b]=int(f[f.timestamp+BAR<=now].iloc[-1].timestamp)
         s["initialized"]=True;save_state(s);log.warning("PAPER ENGINE ARMED; historical candles ignored.");return 0
     manage(s,frames,now);signals(s,frames,symbols,now);save_state(s)
-    log.info("CYCLE COMPLETE | equity=%.2f | active=%d/%d | closed=%d",float(s["equity"]),len(s["open_positions"]),MAX_POS,int(s["trade_counter"]))
+    open_risk=portfolio_open_risk(s);risk_pct=open_risk/float(s["equity"])*100 if float(s["equity"])>0 else 0.0
+    log.info("CYCLE COMPLETE | equity=%.2f | active=%d | open_risk=%.2f USDT (%.2f%%/%.2f%% cap) | closed=%d",float(s["equity"]),len(s["open_positions"]),open_risk,risk_pct,MAX_OPEN_RISK*100,int(s["trade_counter"]))
     return 0
 if __name__=="__main__":
     try:raise SystemExit(main())

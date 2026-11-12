@@ -42,9 +42,16 @@ jobs:
           import sys
           sys.path.insert(0, "st_adx_v31")
           from strategy_core import LONG_ALLOWLIST, SHORT_ALLOWLIST, add_indicators
+          from paper_forward_github import estimated_risk_per_unit, estimated_stop_risk, portfolio_open_risk, MAX_OPEN_RISK, RISK
           import pandas as pd
           assert len(LONG_ALLOWLIST | SHORT_ALLOWLIST) == 23
           assert len(LONG_ALLOWLIST) == 11 and len(SHORT_ALLOWLIST) == 14
+          assert abs(MAX_OPEN_RISK - 0.05) < 1e-12 and abs(RISK - 0.01) < 1e-12
+          sample = {"side":"LONG","entry_price":100.0,"stop":98.0,"qty":10.0,"entry_fee":0.5}
+          risk = estimated_stop_risk(sample)
+          assert risk > 20.0
+          assert abs(portfolio_open_risk({"open_positions":{"A":sample}}) - risk) < 1e-9
+          assert estimated_risk_per_unit(100.0,98.0,"LONG") > 2.0
           rows = []
           for i in range(300):
               close = 100 + i * 0.02 + ((i % 7) - 3) * 0.1
@@ -52,7 +59,7 @@ jobs:
           df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume"])
           out = add_indicators(df)
           assert len(out) == 300 and "adx_rising" in out and "long_signal" in out
-          print("ST-ADX CORE SMOKE TEST PASS | 23 symbols / 25 directional models | 11 LONG + 14 SHORT | corrected consecutive ADX rising")
+          print("ST-ADX CORE + DYNAMIC RISK SMOKE TEST PASS | 23 symbols / 25 models | 1% risk target | 5% aggregate open-risk cap")
           PY
 
       - name: Run one BingX paper cycle
