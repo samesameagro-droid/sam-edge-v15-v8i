@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 from strategy_core import add_indicators, ATR_SL_MULTIPLIER, ATR_TP_MULTIPLIER, COOLDOWN_BARS
 
-BASE_URL = "https://fapi.binance.com"
+BASE_URL = "https://open-api.bingx.com"
 START = int(datetime(2026, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)
 END = int(datetime(2026, 11, 11, tzinfo=timezone.utc).timestamp() * 1000) - 1
 BAR_MS = 60 * 60 * 1000
@@ -32,7 +32,7 @@ class GlobalPacer:
         if delay:
             time.sleep(delay)
 
-PACER = GlobalPacer()
+PACER = GlobalPacer(1.05)
 _tls = threading.local()
 
 def session():
@@ -50,10 +50,13 @@ def get_json(path, params=None, attempts=6):
             r = session().get(BASE_URL + path, params=params, timeout=25)
             if r.status_code in (418, 429):
                 time.sleep(max(2.0, float(r.headers.get("Retry-After", min(60, 2 ** (n + 1))))))
-                last = RuntimeError(f"Binance rate limited ({r.status_code})")
+                last = RuntimeError(f"BingX rate limited ({r.status_code})")
                 continue
             r.raise_for_status()
-            return r.json()
+            payload = r.json()
+            if not isinstance(payload, dict) or int(payload.get("code", -1)) != 0:
+                raise RuntimeError(f"BingX API business error: {str(payload)[:250]}")
+            return payload.get("data")
         except Exception as e:
             last = e
             if n == attempts - 1:
@@ -62,15 +65,14 @@ def get_json(path, params=None, attempts=6):
     raise RuntimeError(f"GET {path} failed after {attempts} attempts: {last}")
 
 def get_universe():
-    info = get_json("/fapi/v1/exchangeInfo")
+    contracts = get_json("/openApi/swap/v2/quote/contracts") or []
     eligible = {
-        x["symbol"] for x in info.get("symbols", [])
-        if x.get("status") == "TRADING"
-        and x.get("contractType") == "PERPETUAL"
-        and x.get("quoteAsset") == "USDT"
-        and x.get("marginAsset") == "USDT"
+        x.get("symbol") for x in contracts
+        if str(x.get("symbol", "")).endswith("-USDT")
+        and str(x.get("status", "0")) == "1"
+        and str(x.get("apiStateOpen", "true")).lower() == "true"
     }
-    tickers = get_json("/fapi/v1/ticker/24hr")
+    tickers = get_json("/openApi/swap/v2/quote/ticker") or []
     ranked = []
     for t in tickers:
         sym = t.get("symbol")
@@ -85,30 +87,30 @@ def get_universe():
     ranked.sort(key=lambda x: x["quote_volume_24h_usdt"], reverse=True)
     ranked = ranked[:MAX_SYMBOLS]
     if len(ranked) < MAX_SYMBOLS:
-        raise RuntimeError(f"Only {len(ranked)} eligible USDT perpetuals found; need {MAX_SYMBOLS}.")
+        raise RuntimeError(f"Only {len(ranked)} eligible BingX USDT perpetuals found; need {MAX_SYMBOLS}.")
     return [x["symbol"] for x in ranked], ranked
 
 def fetch_history(symbol):
     rows, cursor = [], START
     while cursor <= END:
-        raw = get_json("/fapi/v1/klines", {
+        raw = get_json("/openApi/swap/v3/quote/klines", {
             "symbol": symbol, "interval": "1h", "startTime": cursor,
-            "endTime": END, "limit": 1000
+            "endTime": END, "limit": 1440
         })
         if not raw:
             break
         rows.extend(raw)
         nxt = int(raw[-1][0]) + BAR_MS
-        if nxt <= cursor or len(raw) < 1000:
+        if nxt <= cursor or len(raw) < 1440:
             break
         cursor = nxt
     if not rows:
         return symbol, pd.DataFrame(columns=["timestamp","open","high","low","close","volume"]), "NO_HISTORY"
-    df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume","close_time","quote_volume","trades","taker_buy_base","taker_buy_quote","ignore"])
+    df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume","close_time","quote_volume","trades","taker_buy_base","taker_buy_quote"])
     df = df[["timestamp","open","high","low","close","volume"]].copy()
     df["timestamp"] = pd.to_numeric(df["timestamp"], errors="coerce")
-    for c in ["open","high","low","close","volume"]:
-        df[c] = pd.to_numeric(df[c], errors="coerce")
+    for col in ["open","high","low","close","volume"]:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
     df = df.dropna().drop_duplicates("timestamp").sort_values("timestamp").reset_index(drop=True)
     df = df[(df.timestamp >= START) & (df.timestamp <= END)].reset_index(drop=True)
     if len(df) < 120:
@@ -299,8 +301,8 @@ def main():
 
     summary = {
       "model":"ST-ADX V3.1 sequential ADX Rising 2 | unrestricted LONG+SHORT | 1H",
-      "run_utc":snapshot,"data_source":"Binance USD-M Futures public REST API",
-      "universe_rule":"Snapshot top 100 active USDT-margined perpetual contracts by current 24h quote volume",
+      "run_utc":snapshot,"data_source":"BingX USDT Perpetual public REST API",
+      "universe_rule":"Snapshot top 100 active BingX USDT perpetual contracts by current 24h quote volume",
       "period_utc":{"start":"2026-01-01T00:00:00+00:00","end":"2026-11-10T23:00:00+00:00"},
       "train_period":"2026-01-01 through 2026-05-31 UTC",
       "later_period":"2026-06-01 through 2026-11-10 UTC",
