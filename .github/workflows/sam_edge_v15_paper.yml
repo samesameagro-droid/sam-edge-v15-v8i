@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${ github.workflow }
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 permissions:
@@ -55,8 +55,8 @@ jobs:
 
       - name: Run one BingX paper cycle
         env:
-          TELEGRAM_BOT_TOKEN: ${ secrets.TELEGRAM_BOT_TOKEN }
-          TELEGRAM_CHAT_ID: ${ secrets.TELEGRAM_CHAT_ID }
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PAPER_INITIAL_EQUITY: "100000"
         run: |
           set +e
