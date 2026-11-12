@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'st_adx_v31/**'
+      - 'st_adx_v31/strategy_core.py'
+      - 'st_adx_v31/paper_forward_github.py'
       - '.github/workflows/sam_edge_v15_paper.yml'
   workflow_dispatch:
 
