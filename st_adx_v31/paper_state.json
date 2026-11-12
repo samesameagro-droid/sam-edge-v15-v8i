@@ -1,8 +1,21 @@
 {
-  "initialized": false,
+  "initialized": true,
   "equity": 100000,
   "open_positions": {},
-  "last_signal_ts": {},
+  "last_signal_ts": {
+    "ARB": 1794445200000,
+    "AVAX": 1794445200000,
+    "BTC": 1794445200000,
+    "ENA": 1794445200000,
+    "ETH": 1794445200000,
+    "LINK": 1794445200000,
+    "NEAR": 1794445200000,
+    "SOL": 1794445200000,
+    "SUI": 1794445200000,
+    "UNI": 1794445200000,
+    "XRP": 1794445200000,
+    "ZEC": 1794445200000
+  },
   "last_exit_signal_ts": {},
   "trade_counter": 0,
   "model": "ST-ADX V3.1 Selective Directional",
