@@ -65,57 +65,75 @@ float longTP = longEntry + atr10[1] * tpAtr
 float shortSL = shortEntry + atr10[1] * slAtr
 float shortTP = shortEntry - atr10[1] * tpAtr
 
+// DISPLAY ONLY: TP1 and TP2 are visual milestones.
+// The GitHub paper engine does NOT take partial profits at TP1/TP2.
+// TP3 equals the configured final TP; the paper position closes only at SL or final TP.
 var line entryLine = na
 var line stopLine = na
-var line targetLine = na
+var line tp1Line = na
+var line tp2Line = na
+var line tp3Line = na
 var label entryLabel = na
+var label stopLabel = na
+var label tp1Label = na
+var label tp2Label = na
+var label tp3Label = na
+
+f_price(_v) => str.tostring(_v, format.mintick)
+f_pct(_entry, _level, _isLong) =>
+    float p = _isLong ? (_level - _entry) / _entry * 100.0 : (_entry - _level) / _entry * 100.0
+    str.tostring(p, "#.##") + "%"
 
 if longEntryBar or shortEntryBar
     if not na(entryLine)
         line.delete(entryLine)
     if not na(stopLine)
         line.delete(stopLine)
-    if not na(targetLine)
-        line.delete(targetLine)
+    if not na(tp1Line)
+        line.delete(tp1Line)
+    if not na(tp2Line)
+        line.delete(tp2Line)
+    if not na(tp3Line)
+        line.delete(tp3Line)
     if not na(entryLabel)
         label.delete(entryLabel)
-    float e = longEntryBar ? longEntry : shortEntry
-    float s = longEntryBar ? longSL : shortSL
-    float t = longEntryBar ? longTP : shortTP
-    string side = longEntryBar ? "LONG" : "SHORT"
-    color sideColor = longEntryBar ? color.lime : color.red
-    entryLine := line.new(bar_index, e, bar_index + 20, e, color=color.yellow, width=2)
-    stopLine := line.new(bar_index, s, bar_index + 20, s, color=color.red, width=2)
-    targetLine := line.new(bar_index, t, bar_index + 20, t, color=color.aqua, width=2)
-    entryLabel := label.new(bar_index, e, "CHART MIRROR " + side + "\nEntry " + str.tostring(e, format.mintick) + "\nSL " + str.tostring(s, format.mintick) + "\nTP " + str.tostring(t, format.mintick), style=label.style_label_left, color=sideColor, textcolor=color.black)
+    if not na(stopLabel)
+        label.delete(stopLabel)
+    if not na(tp1Label)
+        label.delete(tp1Label)
+    if not na(tp2Label)
+        label.delete(tp2Label)
+    if not na(tp3Label)
+        label.delete(tp3Label)
+
+    bool isLong = longEntryBar
+    float e = isLong ? longEntry : shortEntry
+    float s = isLong ? longSL : shortSL
+    float finalTP = isLong ? longTP : shortTP
+    float totalMove = math.abs(finalTP - e)
+    float t1 = isLong ? e + totalMove / 3.0 : e - totalMove / 3.0
+    float t2 = isLong ? e + totalMove * 2.0 / 3.0 : e - totalMove * 2.0 / 3.0
+    int labelX = bar_index + 12
+    int lineX = bar_index + 10
+
+    entryLine := line.new(bar_index, e, lineX, e, xloc=xloc.bar_index, color=color.rgb(145,155,165), width=1, style=line.style_dashed)
+    stopLine := line.new(bar_index, s, lineX, s, xloc=xloc.bar_index, color=color.rgb(235,75,85), width=1)
+    tp1Line := line.new(bar_index, t1, lineX, t1, xloc=xloc.bar_index, color=color.rgb(35,170,80), width=1, style=line.style_dotted)
+    tp2Line := line.new(bar_index, t2, lineX, t2, xloc=xloc.bar_index, color=color.rgb(35,170,80), width=1, style=line.style_dotted)
+    tp3Line := line.new(bar_index, finalTP, lineX, finalTP, xloc=xloc.bar_index, color=color.rgb(35,170,80), width=2)
+
+    entryLabel := label.new(labelX, e, "ENTRY  " + f_price(e), xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(125,130,138), textcolor=color.white, size=size.small)
+    stopLabel := label.new(labelX, s, "SL  " + f_price(s), xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(225,65,75), textcolor=color.white, size=size.small)
+    tp1Label := label.new(labelX, t1, "TP1  " + f_price(t1) + " (+" + f_pct(e,t1,isLong) + ")", xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(35,155,75), textcolor=color.white, size=size.small)
+    tp2Label := label.new(labelX, t2, "TP2  " + f_price(t2) + " (+" + f_pct(e,t2,isLong) + ")", xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(35,155,75), textcolor=color.white, size=size.small)
+    tp3Label := label.new(labelX, finalTP, "TP3  " + f_price(finalTP) + " (+" + f_pct(e,finalTP,isLong) + ") • FINAL", xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(25,135,65), textcolor=color.white, size=size.small)
 
 plot(stLine, "SuperTrend 12 / 2.8", color=stDirection < 0 ? color.lime : color.red, linewidth=2)
 plot(ema53, "EMA 53", color=color.orange)
 plotshape(longTrigger, title="ST-ADX LONG setup", text="ADX L", style=shape.triangleup, location=location.belowbar, color=color.lime, textcolor=color.black, size=size.small)
 plotshape(shortTrigger, title="ST-ADX SHORT setup", text="ADX S", style=shape.triangledown, location=location.abovebar, color=color.red, textcolor=color.white, size=size.small)
 
-var table dash = table.new(position.top_right, 2, 10, border_width=1)
-if barstate.islast
-    table.cell(dash, 0, 0, "ST-ADX V3.1", bgcolor=color.rgb(25,32,43), text_color=color.white)
-    table.cell(dash, 1, 0, "CHART MIRROR", bgcolor=color.rgb(25,32,43), text_color=color.yellow)
-    table.cell(dash, 0, 1, "SYMBOL / TF")
-    table.cell(dash, 1, 1, base + " / " + timeframe.period)
-    table.cell(dash, 0, 2, "ALLOWLIST")
-    table.cell(dash, 1, 2, allowLong ? "LONG" : allowShort ? "SHORT" : "NOT ENABLED", text_color=(allowLong or allowShort) ? color.lime : color.gray)
-    table.cell(dash, 0, 3, "SUPERTREND")
-    table.cell(dash, 1, 3, bull ? "BULL" : "BEAR", text_color=bull ? color.lime : color.red)
-    table.cell(dash, 0, 4, "ADX / RISING")
-    table.cell(dash, 1, 4, str.tostring(adx, "#.00") + (adxRising ? " / YES" : " / NO"))
-    table.cell(dash, 0, 5, "RSI 12")
-    table.cell(dash, 1, 5, str.tostring(rsi, "#.00"))
-    table.cell(dash, 0, 6, "EMA 53")
-    table.cell(dash, 1, 6, close > ema53 ? "PRICE ABOVE" : "PRICE BELOW")
-    table.cell(dash, 0, 7, "SIGNAL")
-    table.cell(dash, 1, 7, longSetup ? "LONG SETUP" : shortSetup ? "SHORT SETUP" : "WAIT", text_color=longSetup ? color.lime : shortSetup ? color.red : color.gray)
-    table.cell(dash, 0, 8, "ATR10")
-    table.cell(dash, 1, 8, str.tostring(atr10, format.mintick))
-    table.cell(dash, 0, 9, "POSITION STATE")
-    table.cell(dash, 1, 9, "CHECK GITHUB PAPER STATE", text_color=color.yellow)
+// Compact chart layout: price-level labels replace the large dashboard table.
 
 alertcondition(longTrigger, "ST-ADX V3.1 LONG setup", "ST-ADX V3.1 LONG setup | {{ticker}} | TF={{interval}} | close={{close}}")
 alertcondition(shortTrigger, "ST-ADX V3.1 SHORT setup", "ST-ADX V3.1 SHORT setup | {{ticker}} | TF={{interval}} | close={{close}}")
