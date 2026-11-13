@@ -50,10 +50,14 @@ bool shortSetup = allowShort and bear and strong and rsi < 50 and bearCandle and
 bool longClosed = barstate.isconfirmed and longSetup
 bool shortClosed = barstate.isconfirmed and shortSetup
 
+// One event per transition into a valid setup; prevents a label on every qualifying candle.
+bool longTrigger = longClosed and not longClosed[1]
+bool shortTrigger = shortClosed and not shortClosed[1]
+
 // GitHub runner enters at the NEXT 1H candle open, with 2 bps adverse entry slippage.
-// Therefore levels are calculated on the first update of the candle after a confirmed setup.
-bool longEntryBar = longClosed[1] and barstate.isnew
-bool shortEntryBar = shortClosed[1] and barstate.isnew
+// The next candle is the only bar on which the mirror draws the indicative entry levels.
+bool longEntryBar = longTrigger[1]
+bool shortEntryBar = shortTrigger[1]
 float longEntry = open * (1 + entrySlip)
 float shortEntry = open * (1 - entrySlip)
 float longSL = longEntry - atr10[1] * slAtr
@@ -87,8 +91,8 @@ if longEntryBar or shortEntryBar
 
 plot(stLine, "SuperTrend 12 / 2.8", color=stDirection < 0 ? color.lime : color.red, linewidth=2)
 plot(ema53, "EMA 53", color=color.orange)
-plotshape(longClosed, title="ST-ADX LONG setup", text="ST-ADX\nLONG", style=shape.labelup, location=location.belowbar, color=color.lime, textcolor=color.black, size=size.tiny)
-plotshape(shortClosed, title="ST-ADX SHORT setup", text="ST-ADX\nSHORT", style=shape.labeldown, location=location.abovebar, color=color.red, textcolor=color.white, size=size.tiny)
+plotshape(longTrigger, title="ST-ADX LONG setup", text="ADX L", style=shape.triangleup, location=location.belowbar, color=color.lime, textcolor=color.black, size=size.small)
+plotshape(shortTrigger, title="ST-ADX SHORT setup", text="ADX S", style=shape.triangledown, location=location.abovebar, color=color.red, textcolor=color.white, size=size.small)
 
 var table dash = table.new(position.top_right, 2, 10, border_width=1)
 if barstate.islast
@@ -113,5 +117,5 @@ if barstate.islast
     table.cell(dash, 0, 9, "POSITION STATE")
     table.cell(dash, 1, 9, "CHECK GITHUB PAPER STATE", text_color=color.yellow)
 
-alertcondition(longClosed, "ST-ADX V3.1 LONG setup", "ST-ADX V3.1 LONG setup | {{ticker}} | TF={{interval}} | close={{close}}")
-alertcondition(shortClosed, "ST-ADX V3.1 SHORT setup", "ST-ADX V3.1 SHORT setup | {{ticker}} | TF={{interval}} | close={{close}}")
+alertcondition(longTrigger, "ST-ADX V3.1 LONG setup", "ST-ADX V3.1 LONG setup | {{ticker}} | TF={{interval}} | close={{close}}")
+alertcondition(shortTrigger, "ST-ADX V3.1 SHORT setup", "ST-ADX V3.1 SHORT setup | {{ticker}} | TF={{interval}} | close={{close}}")
