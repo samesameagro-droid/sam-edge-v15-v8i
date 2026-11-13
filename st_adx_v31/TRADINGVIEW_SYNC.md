@@ -29,3 +29,8 @@ When there is a discrepancy:
 
 ## Historical archive
 SAM EDGE V15 scripts, logs and journals remain historical reference material. They are not the active strategy and must not be used as the ST-ADX TradingView script.
+
+## Chart level presentation
+The TradingView mirror draws five horizontal levels with compact price labels: SL, ENTRY, TP1, TP2 and TP3. TP1 and TP2 are visual milestones only, calculated at one-third and two-thirds of the distance from entry to the final TP. TP3 is the full configured ST-ADX target (ATR10 × 3.5).
+
+**No partial take-profit is executed at TP1 or TP2.** The GitHub paper position remains open until the existing paper engine closes it at SL or the final TP (subject to the engine's existing exit rules). The chart labels are a visual aid, not a second execution engine.
