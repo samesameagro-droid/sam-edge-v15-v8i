@@ -1,4 +1,4 @@
-"""ST-ADX V3.1 BingX one-shot PAPER runner. Public OHLCV only; never sends exchange orders."""
+"""ST-ADX V3.2 BingX one-shot PAPER runner. Public OHLCV only; never sends exchange orders."""
 from __future__ import annotations
 import csv,json,logging,os,time
 from datetime import datetime,timezone
@@ -146,7 +146,7 @@ def signals(s,frames,symbols,now):
         aggregate_risk=portfolio_open_risk(s)
         aggregate_pct=aggregate_risk/eq*100 if eq>0 else 0
         append_csv(SIGNALS,{"symbol":symbols[base],"side":side,"signal_time_utc":utc(int(r.timestamp)),"entry_time_utc":utc(int(nxt.timestamp)),"reference_entry_open":raw,"paper_entry":entry,"stop":stop,"target":target,"qty":qty,"notional":nt,"adx":float(r.adx),"rsi":float(r.rsi),"atr10":atr,"status":"PAPER_OPEN","priority":priority,"risk_reserved_usdt":candidate_risk,"portfolio_open_risk_usdt":aggregate_risk,"portfolio_open_risk_pct":aggregate_pct,"portfolio_risk_cap_pct":MAX_OPEN_RISK*100})
-        msg=f"🧪 ST-ADX V3.1 PAPER ONLY\n{symbols[base]} · {side} · 1H\nSignal: {utc(int(r.timestamp))}\nEntry: {entry:.8g}\nSL: {stop:.8g}\nTP: {target:.8g}\nR:R 1:{ATR_TP_MULTIPLIER/ATR_SL_MULTIPLIER:.2f}\nADX {float(r.adx):.1f} | RSI {float(r.rsi):.1f} | ATR10 {atr:.8g}\nQty {qty:.6f} | Notional {nt:.2f} USDT\nRisk reserve: {candidate_risk:.2f} USDT ({candidate_risk/eq*100:.2f}%)\nPortfolio stop-risk: {aggregate_risk:.2f}/{risk_limit:.2f} USDT ({aggregate_pct:.2f}%/{MAX_OPEN_RISK*100:.2f}%)\nFee 0.05%/side; adverse stop slippage 2bps; funding excluded. No live order sent."
+        msg=f"🧪 ST-ADX V3.2 PAPER ONLY\n{symbols[base]} · {side} · 1H\nSignal: {utc(int(r.timestamp))}\nEntry: {entry:.8g}\nSL: {stop:.8g}\nTP: {target:.8g}\nR:R 1:{ATR_TP_MULTIPLIER/ATR_SL_MULTIPLIER:.2f}\nADX {float(r.adx):.1f} | RSI {float(r.rsi):.1f} | ATR10 {atr:.8g}\nQty {qty:.6f} | Notional {nt:.2f} USDT\nRisk reserve: {candidate_risk:.2f} USDT ({candidate_risk/eq*100:.2f}%)\nPortfolio stop-risk: {aggregate_risk:.2f}/{risk_limit:.2f} USDT ({aggregate_pct:.2f}%/{MAX_OPEN_RISK*100:.2f}%)\nFee 0.05%/side; adverse stop slippage 2bps; funding excluded. No live order sent."
         log.info(msg.replace("\n"," | "))
         try:telegram(msg)
         except Exception as e:log.error("Telegram signal failed: %s",e)
@@ -168,7 +168,7 @@ def main():
         c=f[f.timestamp+BAR<=now]
         if c.empty:raise RuntimeError(f"No closed candle: {b}")
         log.info("CLOSED %s %s",b,utc(int(c.iloc[-1].timestamp)))
-    s=load_state();log.info("ST-ADX V3.1 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
+    s=load_state();log.info("ST-ADX V3.2 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
     if not s["initialized"]:
         for b,f in frames.items():s["last_signal_ts"][b]=int(f[f.timestamp+BAR<=now].iloc[-1].timestamp)
         s["initialized"]=True;save_state(s);log.warning("PAPER ENGINE ARMED; historical candles ignored.");return 0
