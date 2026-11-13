@@ -1,8 +1,8 @@
 //@version=6
-indicator("ST-ADX V3.1 | TradingView Signal Mirror", overlay=true, max_labels_count=300, max_lines_count=30)
+indicator("ST-ADX V3.1 | Dashboard", overlay=true, max_labels_count=300, max_lines_count=30)
 
 // IMPORTANT:
-// This script mirrors ST-ADX V3.1 signal calculations on the selected TradingView feed.
+// This dashboard displays ST-ADX V3.1 signal calculations on the selected TradingView feed.
 // GitHub paper_state.json remains the authority for actual paper positions, fills, equity and exits.
 // Pine Script cannot fetch GitHub JSON or Telegram state directly. Use a BingX USDT perpetual chart on 1H.
 
@@ -146,32 +146,32 @@ string sideName = biasLong ? "LONG" : "SHORT"
 
 f_check(_ok) => _ok ? "✓ LULUS" : "✕ BELUM"
 f_check_color(_ok) => _ok ? color.lime : color.rgb(255,105,105)
-var table checklist = table.new(position.top_right, 2, 10, frame_color=color.new(color.gray, 55), frame_width=1, border_color=color.new(color.gray, 75), border_width=1)
+var table checklist = table.new(position.top_right, 2, 10, bgcolor=color.rgb(20,27,38), frame_color=color.rgb(90,105,125), frame_width=1, border_color=color.rgb(65,78,96), border_width=1)
 
 if barstate.islast
     color head = color.rgb(25,32,43)
-    table.cell(checklist, 0, 0, "ST-ADX V3.1", bgcolor=head, text_color=color.white, text_size=size.small)
-    table.cell(checklist, 1, 0, sideName + " CHECK", bgcolor=head, text_color=biasLong ? color.lime : color.red, text_size=size.small)
+    table.cell(checklist, 0, 0, "ST-ADX V3.1", bgcolor=head, text_color=color.white, text_size=size.small, width=28)
+    table.cell(checklist, 1, 0, sideName + " CHECK", bgcolor=head, text_color=biasLong ? color.lime : color.red, text_size=size.small, width=20)
 
-    table.cell(checklist, 0, 1, "1. Koin di allowlist", text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 1, f_check(sideAllowed), text_color=f_check_color(sideAllowed), text_size=size.tiny)
-    table.cell(checklist, 0, 2, "2. SuperTrend searah", text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 2, f_check(biasLong ? bull : bear), text_color=f_check_color(biasLong ? bull : bear), text_size=size.tiny)
-    table.cell(checklist, 0, 3, "3. ADX > 30", text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 3, f_check(sideAdx), text_color=f_check_color(sideAdx), text_size=size.tiny)
-    table.cell(checklist, 0, 4, "4. ADX naik 2 candle", text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 4, f_check(adxRising), text_color=f_check_color(adxRising), text_size=size.tiny)
-    table.cell(checklist, 0, 5, "5. RSI " + (biasLong ? "> 50" : "< 50"), text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 5, f_check(sideRsi), text_color=f_check_color(sideRsi), text_size=size.tiny)
-    table.cell(checklist, 0, 6, "6. Candle searah", text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 6, f_check(sideCandle), text_color=f_check_color(sideCandle), text_size=size.tiny)
-    table.cell(checklist, 0, 7, "7. Posisi vs EMA 53", text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 7, f_check(sideEma), text_color=f_check_color(sideEma), text_size=size.tiny)
+    table.cell(checklist, 0, 1, "1. Koin di allowlist", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 1, f_check(sideAllowed), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideAllowed), text_size=size.small, width=20)
+    table.cell(checklist, 0, 2, "2. SuperTrend searah", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 2, f_check(biasLong ? bull : bear), bgcolor=color.rgb(31,41,56), text_color=f_check_color(biasLong ? bull : bear), text_size=size.small, width=20)
+    table.cell(checklist, 0, 3, "3. ADX > 30", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 3, f_check(sideAdx), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideAdx), text_size=size.small, width=20)
+    table.cell(checklist, 0, 4, "4. ADX naik 2 candle", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 4, f_check(adxRising), bgcolor=color.rgb(31,41,56), text_color=f_check_color(adxRising), text_size=size.small, width=20)
+    table.cell(checklist, 0, 5, "5. RSI " + (biasLong ? "> 50" : "< 50"), bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 5, f_check(sideRsi), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideRsi), text_size=size.small, width=20)
+    table.cell(checklist, 0, 6, "6. Candle searah", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 6, f_check(sideCandle), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideCandle), text_size=size.small, width=20)
+    table.cell(checklist, 0, 7, "7. Posisi vs EMA 53", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.small, text_halign=text.align_left, width=28)
+    table.cell(checklist, 1, 7, f_check(sideEma), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideEma), text_size=size.small, width=20)
 
-    table.cell(checklist, 0, 8, "HASIL FILTER", bgcolor=head, text_color=color.white, text_size=size.tiny)
-    table.cell(checklist, 1, 8, sideReady ? sideName + " READY" : "WAIT", bgcolor=head, text_color=sideReady ? color.lime : color.orange, text_size=size.tiny)
-    table.cell(checklist, 0, 9, "✓ = terpenuhi • ✕ = belum", text_color=color.silver, text_size=size.tiny)
-    table.cell(checklist, 1, 9, "Tunggu candle 1H tutup", text_color=color.silver, text_size=size.tiny)
+    table.cell(checklist, 0, 8, "HASIL FILTER", bgcolor=head, text_color=color.white, text_size=size.small, width=28)
+    table.cell(checklist, 1, 8, sideReady ? sideName + " READY" : "WAIT", bgcolor=head, text_color=sideReady ? color.lime : color.orange, text_size=size.small, width=20)
+    table.cell(checklist, 0, 9, "✓ = LULUS  |  ✕ = BELUM", bgcolor=color.rgb(20,27,38), text_color=color.silver, text_size=size.tiny, width=28)
+    table.cell(checklist, 1, 9, "Tunggu candle 1H tutup", bgcolor=color.rgb(20,27,38), text_color=color.silver, text_size=size.tiny, width=20)
 
 
 alertcondition(longTrigger, "ST-ADX V3.1 LONG setup", "ST-ADX V3.1 LONG setup | {{ticker}} | TF={{interval}} | close={{close}}")
