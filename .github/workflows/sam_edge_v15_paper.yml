@@ -1,4 +1,4 @@
-name: ST-ADX V3.1 - BingX Paper Forward
+name: ST-ADX V3.2 - BingX Paper Forward
 
 on:
   push:
@@ -35,34 +35,41 @@ jobs:
       - name: Install existing dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Validate ST-ADX V3.1 sources
+      - name: Validate ST-ADX V3.2 sources and risk controls
         run: |
           python -m py_compile st_adx_v31/strategy_core.py st_adx_v31/paper_forward_github.py
           python - <<'PY'
           import sys
           sys.path.insert(0, "st_adx_v31")
-          from strategy_core import LONG_ALLOWLIST, SHORT_ALLOWLIST, add_indicators
-          from paper_forward_github import estimated_risk_per_unit, estimated_stop_risk, portfolio_open_risk, MAX_OPEN_RISK, RISK
+          import strategy_core as core
+          import paper_forward_github as runner
           import pandas as pd
-          assert len(LONG_ALLOWLIST | SHORT_ALLOWLIST) == 23
-          assert len(LONG_ALLOWLIST) == 11 and len(SHORT_ALLOWLIST) == 14
-          assert abs(MAX_OPEN_RISK - 0.05) < 1e-12 and abs(RISK - 0.01) < 1e-12
+          assert len(core.LONG_ALLOWLIST | core.SHORT_ALLOWLIST) == 23
+          assert len(core.LONG_ALLOWLIST) == 11 and len(core.SHORT_ALLOWLIST) == 14
+          assert core.RSI_LONG_MIN == 60.0 and core.RSI_LONG_MAX == 70.0
+          assert core.RSI_SHORT_MIN == 35.0 and core.RSI_SHORT_MAX == 40.0
+          assert core.SHORT_MAX_EMA_EXT_ATR == 2.5
+          assert abs(runner.MAX_OPEN_RISK - 0.05) < 1e-12
+          assert abs(runner.RISK - 0.01) < 1e-12
+          assert abs(runner.CAP - 0.45) < 1e-12
+          assert not hasattr(runner, "MAX_POSITIONS")
           sample = {"side":"LONG","entry_price":100.0,"stop":98.0,"qty":10.0,"entry_fee":0.5}
-          risk = estimated_stop_risk(sample)
+          risk = runner.estimated_stop_risk(sample)
           assert risk > 20.0
-          assert abs(portfolio_open_risk({"open_positions":{"A":sample}}) - risk) < 1e-9
-          assert estimated_risk_per_unit(100.0,98.0,"LONG") > 2.0
+          assert abs(runner.portfolio_open_risk({"open_positions":{"A":sample}}) - risk) < 1e-9
+          assert runner.estimated_risk_per_unit(100.0,98.0,"LONG") > 2.0
           rows = []
           for i in range(300):
               close = 100 + i * 0.02 + ((i % 7) - 3) * 0.1
               rows.append([i * 3600000, close - 0.02, close + 0.2, close - 0.2, close, 1000])
           df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume"])
-          out = add_indicators(df)
-          assert len(out) == 300 and "adx_rising" in out and "long_signal" in out
-          print("ST-ADX CORE + DYNAMIC RISK SMOKE TEST PASS | 23 symbols / 25 models | 1% risk target | 5% aggregate open-risk cap")
+          out = core.add_indicators(df)
+          assert len(out) == 300 and "adx_rising" in out and "long_signal" in out and "short_signal" in out
+          assert "short_extension_atr" in out
+          print("ST-ADX V3.2 VALIDATION PASS | RSI LONG 60-70 | RSI SHORT 35-40 | SHORT extension <=2.5 ATR10 | 23 coins / 25 models | 1% per-position risk | 5% aggregate cap | no position-count cap")
           PY
 
-      - name: Run one BingX paper cycle
+      - name: Run one BingX V3.2 paper cycle
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -71,16 +78,16 @@ jobs:
           set +e
           timeout --signal=TERM --kill-after=20s 300s python -u st_adx_v31/paper_forward_github.py
           RC=$?
-          echo "ST-ADX paper cycle exit=$RC"
+          echo "ST-ADX V3.2 paper cycle exit=$RC"
           exit "$RC"
 
-      - name: Persist ST-ADX paper state and journal
+      - name: Persist V3.2 paper state and journal
         if: always()
         shell: bash
         run: |
           set -e
-          git config user.name "ST-ADX V3.1 PAPER BOT"
-          git config user.email "st-adx-v31-paper-bot@users.noreply.github.com"
+          git config user.name "ST-ADX V3.2 PAPER BOT"
+          git config user.email "st-adx-v32-paper-bot@users.noreply.github.com"
           FILES=(st_adx_v31/paper_state.json st_adx_v31/paper_signals.csv st_adx_v31/paper_trades.csv)
           TMP="$(mktemp -d)"
           trap 'rm -rf "$TMP"' EXIT
@@ -95,15 +102,15 @@ jobs:
             done
             git add -- "${FILES[@]}"
             if git diff --cached --quiet; then
-              echo "No ST-ADX state changes to persist"
+              echo "No ST-ADX V3.2 state changes to persist"
               exit 0
             fi
-            git commit -m "paper: ST-ADX V3.1 forward state"
+            git commit -m "paper: ST-ADX V3.2 forward state"
             if git push origin HEAD:main; then
-              echo "ST-ADX PAPER STATE PUSH OK"
+              echo "ST-ADX V3.2 PAPER STATE PUSH OK"
               exit 0
             fi
             sleep 2
           done
-          echo "ST-ADX state push failed after 5 attempts"
+          echo "ST-ADX V3.2 state push failed after 5 attempts"
           exit 1
