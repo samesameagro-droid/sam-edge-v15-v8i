@@ -69,7 +69,7 @@ jobs:
           print("ST-ADX V3.3 VALIDATION PASS | RSI LONG 60-70 | RSI SHORT 35-40 | SHORT extension <=2.5 ATR10 | 23 coins / 25 models | 1% per-position risk | 5% aggregate cap | no position-count cap")
           PY
 
-      - name: Run one BingX V3.2 paper cycle
+      - name: Run one BingX V3.3 paper cycle
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -81,7 +81,7 @@ jobs:
           echo "ST-ADX V3.3 paper cycle exit=$RC"
           exit "$RC"
 
-      - name: Persist V3.2 paper state and journal
+      - name: Persist V3.3 paper state and journal
         if: always()
         shell: bash
         run: |
