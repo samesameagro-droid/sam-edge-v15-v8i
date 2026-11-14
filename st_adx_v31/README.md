@@ -1,24 +1,15 @@
-# ST-ADX V3.2 — GitHub BingX Paper Forward
+# ST-ADX V3.3 — GitHub BingX Paper Forward
 
-- Reuses the existing repository, workflow file path, cron-job.org workflow_dispatch trigger, and Telegram Secrets.
+- Active paper strategy: **ST-ADX V3.3**. Workflow path remains `.github/workflows/sam_edge_v15_paper.yml` so the existing cron-job.org `workflow_dispatch` endpoint remains compatible.
 - Public BingX USDT-linear perpetual OHLCV only; no exchange API key, private endpoint, or order endpoint.
-- Strategy: 1H; SuperTrend 12/2.8; DMI/ADX 40/40; ADX > 30 and rising on both consecutive changes; RSI 12; EMA 53; ATR10 SL 1.2x / TP 3.5x.
-- V3.2 anti-chasing signal filters: LONG RSI 60–70 inclusive; SHORT RSI 35–40 inclusive; reject SHORT when (EMA53 - close) / ATR10 > 2.5. No additional LONG EMA-extension cap.
+- Timeframe: 1H; SuperTrend 12/2.8; DMI/ADX 40/40; ADX > 30 and rising on both consecutive changes; RSI 12; EMA53; ATR10 SL 1.2x / TP 3.5x.
+- Signal filters: LONG RSI 60–70 inclusive; SHORT RSI 35–40 inclusive; reject SHORT when (EMA53 - close) / ATR10 > **3.25**. No additional LONG EMA-extension cap.
 - Universe: 23 unique coins / 25 directional models. LONG: ENA, XRP, ZEC, TIA, ORDI, AKE, WIF, APR, XLM, VIRTUAL, DYDX. SHORT: ARB, AVAX, BTC, ENA, ETH, LINK, NEAR, SOL, SUI, UNI, XRP, DOT, LTC, ADA.
-- The 11 new directional models are individual research candidates selected at PF >= 1.8 in both baseline and stress tests; this is a paper-forward validation expansion, not live-trading approval.
-- Dynamic portfolio risk: target 1% estimated all-in stop risk per position, with a hard aggregate open-risk ceiling of 5% of current equity. No fixed position-count cap and no two-signal/two-position limit; the number of simultaneous positions depends on each position's estimated stop risk and the remaining portfolio risk budget. Risk reserve includes price loss to stop, entry/exit fees (0.05% per side), and adverse stop-exit slippage (2 bps). Funding remains excluded.
-- Notional cap 45% of current equity per position. If a new signal would push aggregate reserved risk above 5%, it is logged as SKIPPED_PORTFOLIO_RISK_CAP; the runner does not silently exceed the risk ceiling.
-- Each GitHub Actions invocation runs one cycle and exits; cron-job.org may keep dispatching this workflow every 5 minutes. Persistent state makes repeated invocations idempotent.
-- New paper equity: 100,000 USDT. First cycle arms the system and ignores historical candles.
-- State/journal: paper_state.json, paper_signals.csv, paper_trades.csv.
-- SAM EDGE V15 source, its completed forward-test journal and summary, and its old workflow are preserved in this repository for rollback.
+- Dynamic portfolio risk: target 1% estimated all-in stop risk per position; hard aggregate open-risk ceiling 5% of current equity. Notional cap 45% of current equity per position. No fixed position-count cap. Risk reserve includes stop loss, 0.05% entry/exit fees and 2 bps adverse stop slippage. Funding excluded.
+- Initial paper capital: **100 USDT**. State was migrated from 100,000 to 100 USDT while preserving signal timestamps; at migration there were no open positions and no closed trades in the paper journal.
+- Each GitHub Actions invocation runs one cycle and exits. Existing cron-job.org scheduler may continue dispatching this same workflow every 5 minutes; workflow filename and `workflow_dispatch` trigger are intentionally unchanged.
+- State/journal: `paper_state.json`, `paper_signals.csv`, `paper_trades.csv`.
+- TradingView mirror: `ST_ADX_V3_3_TradingView_Mirror.pine`. Pine is a visual signal mirror only; GitHub paper runner remains authoritative for portfolio risk, positions, fills, equity and Telegram.
+- SAM EDGE V15 and V3.2 historical files are retained as archive/reference. They are not the active strategy.
 
-PAPER ONLY. Not a live-trading approval. Paper fills use OHLC assumptions and exclude funding.
-
-
-## V3.2 rollout note
-
-- V3.2 is the new primary PAPER strategy reference. The RSI/extension thresholds are adopted as the next forward-paper configuration, not as proof of live profitability.
-- Historical optimization results previously discussed contained inconsistent trade-count summaries; therefore, treat the reported metrics as provisional until a reproducible parity replay is archived. Do not use them as a live-trading performance claim.
-- Keep the aggregate open stop-risk ceiling at 5% of current equity. Each position targets 1% estimated all-in stop risk; notional remains capped at 45% per position. There is no fixed cap on the number of simultaneous positions.
-- PAPER ONLY. Validate rolling-300-candle indicator parity and forward behavior before any live deployment.
+**PAPER ONLY.** No live exchange orders are sent. Backtest performance is not a guarantee of future results.
