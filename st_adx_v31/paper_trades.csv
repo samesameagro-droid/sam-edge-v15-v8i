@@ -1,1 +1,2 @@
 trade_no,symbol,base,side,entry_time_utc,entry_price,qty,entry_notional,stop,target,exit_time_utc,exit_price,exit_reason,gross_pnl_after_slippage,entry_fee,exit_fee,net_pnl_ex_funding,equity_after,funding_included
+1,ETH/USDT:USDT,ETH,SHORT,2026-11-14T07:00:00+00:00,1904.129098,0.023632851389785336,45.0,1929.2970713217924,1830.7225091447726,2026-11-14T15:00:00+00:00,1830.7225091447726,TARGET,1.7348070054466636,0.0225,0.021632596497276668,1.6906744089493868,101.69067440894939,False
