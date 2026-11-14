@@ -1,4 +1,4 @@
-"""ST-ADX V3.2 BingX one-shot PAPER runner. Public OHLCV only; never sends exchange orders."""
+"""ST-ADX V3.3 BingX one-shot PAPER runner. Public OHLCV only; never sends exchange orders."""
 from __future__ import annotations
 import csv,json,logging,os,time
 from datetime import datetime,timezone
@@ -10,6 +10,7 @@ from strategy_core import add_indicators,LONG_ALLOWLIST,SHORT_ALLOWLIST,ATR_SL_M
 ROOT=Path(__file__).resolve().parent
 STATE=ROOT/"paper_state.json";TRADES=ROOT/"paper_trades.csv";SIGNALS=ROOT/"paper_signals.csv"
 ASSETS=sorted(LONG_ALLOWLIST|SHORT_ALLOWLIST);BAR=3600000
+DEFAULT_EQUITY=float(os.getenv("PAPER_INITIAL_EQUITY","100.0"))
 FEE=.0005;SLIP=.0002;RISK=.01;CAP=.45;MAX_OPEN_RISK=.05;GRACE=300
 PRIORITY={"BTC:SHORT":5.11,"ENA:LONG":2.93,"ARB:SHORT":2.98,"AVAX:SHORT":2.94,"SOL:SHORT":2.88,"SUI:SHORT":2.60,"ETH:SHORT":2.25,"ENA:SHORT":1.82,"ZEC:LONG":1.63,"LINK:SHORT":1.64,"NEAR:SHORT":1.56,"XRP:SHORT":1.56,"UNI:SHORT":1.39,"XRP:LONG":1.17,"TIA:LONG":5.6741,"ORDI:LONG":4.7457,"AKE:LONG":2.6871,"DOT:SHORT":2.5937,"WIF:LONG":2.3025,"APR:LONG":2.2137,"LTC:SHORT":2.0849,"XLM:LONG":2.0285,"DYDX:LONG":1.9173,"VIRTUAL:LONG":1.9133,"ADA:SHORT":1.8243}
 logging.basicConfig(level=logging.INFO,format="%(asctime)s | %(levelname)s | %(message)s");log=logging.getLogger("ST_ADX_V31")
@@ -26,8 +27,8 @@ def append_csv(path,row):
         tmp.replace(path)
     with path.open("a",newline="",encoding="utf-8-sig") as f:csv.DictWriter(f,fieldnames=nf).writerow({k:row.get(k,"") for k in nf})
 def load_state():
-    s=json.loads(STATE.read_text()) if STATE.exists() else {"initialized":False,"equity":100000.0,"open_positions":{},"last_signal_ts":{},"last_exit_signal_ts":{},"trade_counter":0}
-    for k,v in {"initialized":False,"equity":100000.0,"open_positions":{},"last_signal_ts":{},"last_exit_signal_ts":{},"trade_counter":0}.items():s.setdefault(k,v)
+    s=json.loads(STATE.read_text()) if STATE.exists() else {"initialized":False,"equity":DEFAULT_EQUITY,"open_positions":{},"last_signal_ts":{},"last_exit_signal_ts":{},"trade_counter":0}
+    for k,v in {"initialized":False,"equity":DEFAULT_EQUITY,"open_positions":{},"last_signal_ts":{},"last_exit_signal_ts":{},"trade_counter":0}.items():s.setdefault(k,v)
     return s
 def save_state(s):
     t=STATE.with_suffix(".tmp");t.write_text(json.dumps(s,indent=2));t.replace(STATE)
@@ -72,7 +73,7 @@ def close_pos(s,base,p,c,raw,reason):
     s["equity"]=float(s["equity"])+net;s["trade_counter"]=int(s["trade_counter"])+1;n=s["trade_counter"]
     append_csv(TRADES,{"trade_no":n,"symbol":p["symbol"],"base":base,"side":side,"entry_time_utc":utc(int(p["entry_time"])),"entry_price":p["entry_price"],"qty":q,"entry_notional":p["entry_notional"],"stop":p["stop"],"target":p["target"],"exit_time_utc":utc(int(c.timestamp)),"exit_price":px,"exit_reason":reason,"gross_pnl_after_slippage":gross,"entry_fee":p["entry_fee"],"exit_fee":ef,"net_pnl_ex_funding":net,"equity_after":s["equity"],"funding_included":False})
     s["last_exit_signal_ts"][base]=int(c.timestamp);s["open_positions"].pop(base,None)
-    msg=f"📘 ST-ADX PAPER CLOSE #{n}\n{p['symbol']} {side}\nExit {px:.8g} ({reason})\nNet PnL ex-funding {net:+.2f} USDT\nEquity {s['equity']:.2f} USDT\nPaper only; funding excluded."
+    msg=f"📘 ST-ADX V3.3 PAPER CLOSE #{n}\n{p['symbol']} {side}\nExit {px:.8g} ({reason})\nNet PnL ex-funding {net:+.2f} USDT\nEquity {s['equity']:.2f} USDT\nPaper only; funding excluded."
     log.info(msg.replace("\n"," | "))
     try:telegram(msg)
     except Exception as e:log.error("Telegram close failed: %s",e)
@@ -146,7 +147,7 @@ def signals(s,frames,symbols,now):
         aggregate_risk=portfolio_open_risk(s)
         aggregate_pct=aggregate_risk/eq*100 if eq>0 else 0
         append_csv(SIGNALS,{"symbol":symbols[base],"side":side,"signal_time_utc":utc(int(r.timestamp)),"entry_time_utc":utc(int(nxt.timestamp)),"reference_entry_open":raw,"paper_entry":entry,"stop":stop,"target":target,"qty":qty,"notional":nt,"adx":float(r.adx),"rsi":float(r.rsi),"atr10":atr,"status":"PAPER_OPEN","priority":priority,"risk_reserved_usdt":candidate_risk,"portfolio_open_risk_usdt":aggregate_risk,"portfolio_open_risk_pct":aggregate_pct,"portfolio_risk_cap_pct":MAX_OPEN_RISK*100})
-        msg=f"🧪 ST-ADX V3.2 PAPER ONLY\n{symbols[base]} · {side} · 1H\nSignal: {utc(int(r.timestamp))}\nEntry: {entry:.8g}\nSL: {stop:.8g}\nTP: {target:.8g}\nR:R 1:{ATR_TP_MULTIPLIER/ATR_SL_MULTIPLIER:.2f}\nADX {float(r.adx):.1f} | RSI {float(r.rsi):.1f} | ATR10 {atr:.8g}\nQty {qty:.6f} | Notional {nt:.2f} USDT\nRisk reserve: {candidate_risk:.2f} USDT ({candidate_risk/eq*100:.2f}%)\nPortfolio stop-risk: {aggregate_risk:.2f}/{risk_limit:.2f} USDT ({aggregate_pct:.2f}%/{MAX_OPEN_RISK*100:.2f}%)\nFee 0.05%/side; adverse stop slippage 2bps; funding excluded. No live order sent."
+        msg=f"🧪 ST-ADX V3.3 PAPER ONLY\n{symbols[base]} · {side} · 1H\nSignal: {utc(int(r.timestamp))}\nEntry: {entry:.8g}\nSL: {stop:.8g}\nTP: {target:.8g}\nR:R 1:{ATR_TP_MULTIPLIER/ATR_SL_MULTIPLIER:.2f}\nADX {float(r.adx):.1f} | RSI {float(r.rsi):.1f} | ATR10 {atr:.8g}\nQty {qty:.6f} | Notional {nt:.2f} USDT\nRisk reserve: {candidate_risk:.2f} USDT ({candidate_risk/eq*100:.2f}%)\nPortfolio stop-risk: {aggregate_risk:.2f}/{risk_limit:.2f} USDT ({aggregate_pct:.2f}%/{MAX_OPEN_RISK*100:.2f}%)\nFee 0.05%/side; adverse stop slippage 2bps; funding excluded. No live order sent."
         log.info(msg.replace("\n"," | "))
         try:telegram(msg)
         except Exception as e:log.error("Telegram signal failed: %s",e)
@@ -168,7 +169,7 @@ def main():
         c=f[f.timestamp+BAR<=now]
         if c.empty:raise RuntimeError(f"No closed candle: {b}")
         log.info("CLOSED %s %s",b,utc(int(c.iloc[-1].timestamp)))
-    s=load_state();log.info("ST-ADX V3.2 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
+    s=load_state();log.info("ST-ADX V3.3 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
     if not s["initialized"]:
         for b,f in frames.items():s["last_signal_ts"][b]=int(f[f.timestamp+BAR<=now].iloc[-1].timestamp)
         s["initialized"]=True;save_state(s);log.warning("PAPER ENGINE ARMED; historical candles ignored.");return 0
