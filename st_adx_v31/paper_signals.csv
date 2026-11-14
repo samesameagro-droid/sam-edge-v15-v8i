@@ -1,1 +1,2 @@
 symbol,side,signal_time_utc,entry_time_utc,reference_entry_open,paper_entry,stop,target,qty,notional,adx,rsi,atr10,status,priority,risk_reserved_usdt,portfolio_open_risk_usdt,portfolio_open_risk_pct,portfolio_risk_cap_pct
+ETH/USDT:USDT,SHORT,2026-11-14T06:00:00+00:00,2026-11-14T07:00:00+00:00,1904.51,1904.129098,1929.2970713217924,1830.7225091447726,0.023632851389785336,45.0,33.69735489588931,37.41392254707956,20.97331110149356,PAPER_OPEN,2.25,0.649211886456403,0.649211886456403,0.649211886456403,5.0
