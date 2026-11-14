@@ -1,0 +1,190 @@
+//@version=6
+indicator("ST-ADX V3.3 | Dashboard", overlay=true, max_labels_count=300, max_lines_count=30)
+
+// IMPORTANT:
+// This dashboard displays ST-ADX V3.3 signal calculations on the selected TradingView feed.
+// GitHub paper_state.json remains the authority for actual paper positions, fills, equity and exits.
+// Pine Script cannot fetch GitHub JSON or Telegram state directly. Use a BingX USDT perpetual chart on 1H.
+
+if barstate.isfirst and timeframe.period != "60"
+    runtime.error("ST-ADX V3.3 must run on a 1H chart.")
+
+string base = syminfo.basecurrency
+var string[] longAllow = array.from("ENA","XRP","ZEC","TIA","ORDI","AKE","WIF","APR","XLM","VIRTUAL","DYDX")
+var string[] shortAllow = array.from("ARB","AVAX","BTC","ENA","ETH","LINK","NEAR","SOL","SUI","UNI","XRP","DOT","LTC","ADA")
+bool allowLong = array.includes(longAllow, base)
+bool allowShort = array.includes(shortAllow, base)
+
+// ST-ADX V3.3 parameters — kept equal to st_adx_v31/strategy_core.py
+int stLength = 12
+float stFactor = 2.8
+int dmiLength = 40
+int adxSmoothing = 40
+float adxMin = 30.0
+int rsiLength = 12
+int emaLength = 53
+int atrRiskLength = 10
+float slAtr = 1.2
+float tpAtr = 3.5
+float entrySlip = 0.0002
+float initialCapital = 100.0
+float riskPct = 0.01
+float notionalCapPct = 0.45
+float feeRate = 0.0005
+float shortMaxExtensionATR = 3.25
+float rsiLongMin = 60.0
+float rsiLongMax = 70.0
+float rsiShortMin = 35.0
+float rsiShortMax = 40.0
+
+[stLine, stDirection] = ta.supertrend(stFactor, stLength)
+[diPlus, diMinus, adx] = ta.dmi(dmiLength, adxSmoothing)
+float rsi = ta.rsi(close, rsiLength)
+float ema53 = ta.ema(close, emaLength)
+float atr10 = ta.atr(atrRiskLength)
+
+bool bull = stDirection < 0
+bool bear = stDirection > 0
+bool flipBull = bull and stDirection[1] > 0
+bool flipBear = bear and stDirection[1] < 0
+bool adxRising = adx > adx[1] and adx[1] > adx[2]
+bool strong = adx > adxMin and adxRising
+bool bullCandle = close > open or flipBull
+bool bearCandle = close < open or flipBear
+bool aboveEma = close > ema53
+bool belowEma = close < ema53
+
+float shortExtensionATR = (ema53 - close) / math.max(atr10, syminfo.mintick)
+bool longRsiOK = rsi >= rsiLongMin and rsi <= rsiLongMax
+bool shortRsiOK = rsi >= rsiShortMin and rsi <= rsiShortMax
+bool shortExtensionOK = shortExtensionATR <= shortMaxExtensionATR
+bool longSetup = allowLong and bull and strong and longRsiOK and bullCandle and (aboveEma or flipBull)
+bool shortSetup = allowShort and bear and strong and shortRsiOK and shortExtensionOK and bearCandle and (belowEma or flipBear)
+bool longClosed = barstate.isconfirmed and longSetup
+bool shortClosed = barstate.isconfirmed and shortSetup
+
+// One event per transition into a valid setup; prevents a label on every qualifying candle.
+bool longTrigger = longClosed and not longClosed[1]
+bool shortTrigger = shortClosed and not shortClosed[1]
+
+// GitHub runner enters at the NEXT 1H candle open, with 2 bps adverse entry slippage.
+// The next candle is the only bar on which the mirror draws the indicative entry levels.
+bool longEntryBar = longTrigger[1]
+bool shortEntryBar = shortTrigger[1]
+float longEntry = open * (1 + entrySlip)
+float shortEntry = open * (1 - entrySlip)
+float longSL = longEntry - atr10[1] * slAtr
+float longTP = longEntry + atr10[1] * tpAtr
+float shortSL = shortEntry + atr10[1] * slAtr
+float shortTP = shortEntry - atr10[1] * tpAtr
+
+// DISPLAY ONLY: TP1 and TP2 are visual milestones.
+// The GitHub paper engine does NOT take partial profits at TP1/TP2.
+// TP3 equals the configured final TP; the paper position closes only at SL or final TP.
+var line entryLine = na
+var line stopLine = na
+var line tp1Line = na
+var line tp2Line = na
+var line tp3Line = na
+var label entryLabel = na
+var label stopLabel = na
+var label tp1Label = na
+var label tp2Label = na
+var label tp3Label = na
+
+f_price(_v) => str.tostring(_v, format.mintick)
+f_pct(_entry, _level, _isLong) =>
+    float p = _isLong ? (_level - _entry) / _entry * 100.0 : (_entry - _level) / _entry * 100.0
+    str.tostring(p, "#.##") + "%"
+
+if longEntryBar or shortEntryBar
+    if not na(entryLine)
+        line.delete(entryLine)
+    if not na(stopLine)
+        line.delete(stopLine)
+    if not na(tp1Line)
+        line.delete(tp1Line)
+    if not na(tp2Line)
+        line.delete(tp2Line)
+    if not na(tp3Line)
+        line.delete(tp3Line)
+    if not na(entryLabel)
+        label.delete(entryLabel)
+    if not na(stopLabel)
+        label.delete(stopLabel)
+    if not na(tp1Label)
+        label.delete(tp1Label)
+    if not na(tp2Label)
+        label.delete(tp2Label)
+    if not na(tp3Label)
+        label.delete(tp3Label)
+
+    bool isLong = longEntryBar
+    float e = isLong ? longEntry : shortEntry
+    float s = isLong ? longSL : shortSL
+    float finalTP = isLong ? longTP : shortTP
+    float totalMove = math.abs(finalTP - e)
+    float t1 = isLong ? e + totalMove / 3.0 : e - totalMove / 3.0
+    float t2 = isLong ? e + totalMove * 2.0 / 3.0 : e - totalMove * 2.0 / 3.0
+    int labelX = bar_index + 12
+    int lineX = bar_index + 10
+
+    entryLine := line.new(bar_index, e, lineX, e, xloc=xloc.bar_index, color=color.rgb(145,155,165), width=1, style=line.style_dashed)
+    stopLine := line.new(bar_index, s, lineX, s, xloc=xloc.bar_index, color=color.rgb(235,75,85), width=1)
+    tp1Line := line.new(bar_index, t1, lineX, t1, xloc=xloc.bar_index, color=color.rgb(35,170,80), width=1, style=line.style_dotted)
+    tp2Line := line.new(bar_index, t2, lineX, t2, xloc=xloc.bar_index, color=color.rgb(35,170,80), width=1, style=line.style_dotted)
+    tp3Line := line.new(bar_index, finalTP, lineX, finalTP, xloc=xloc.bar_index, color=color.rgb(35,170,80), width=2)
+
+    entryLabel := label.new(labelX, e, "ENTRY  " + f_price(e), xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(125,130,138), textcolor=color.white, size=size.small)
+    stopLabel := label.new(labelX, s, "SL  " + f_price(s), xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(225,65,75), textcolor=color.white, size=size.small)
+    tp1Label := label.new(labelX, t1, "TP1  " + f_price(t1) + " (+" + f_pct(e,t1,isLong) + ")", xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(35,155,75), textcolor=color.white, size=size.small)
+    tp2Label := label.new(labelX, t2, "TP2  " + f_price(t2) + " (+" + f_pct(e,t2,isLong) + ")", xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(35,155,75), textcolor=color.white, size=size.small)
+    tp3Label := label.new(labelX, finalTP, "TP3  " + f_price(finalTP) + " (+" + f_pct(e,finalTP,isLong) + ") • FINAL", xloc=xloc.bar_index, style=label.style_label_left, color=color.rgb(25,135,65), textcolor=color.white, size=size.small)
+
+plot(stLine, "SuperTrend 12 / 2.8", color=stDirection < 0 ? color.lime : color.red, linewidth=2)
+plot(ema53, "EMA 53", color=color.orange)
+plotshape(longTrigger, title="ST-ADX LONG setup", text="ADX L", style=shape.triangleup, location=location.belowbar, color=color.lime, textcolor=color.black, size=size.small)
+plotshape(shortTrigger, title="ST-ADX SHORT setup", text="ADX S", style=shape.triangledown, location=location.abovebar, color=color.red, textcolor=color.white, size=size.small)
+
+// Mobile-friendly V3.3 checklist.
+bool biasLong = bull
+bool biasShort = bear
+bool sideAllowed = biasLong ? allowLong : allowShort
+bool sideAdx = adx > adxMin
+bool sideAdxRising = adxRising
+bool sideRsi = biasLong ? longRsiOK : shortRsiOK
+bool sideCandle = biasLong ? bullCandle : bearCandle
+bool sideEma = biasLong ? (aboveEma or flipBull) : (belowEma or flipBear)
+bool sideExtension = biasLong ? true : shortExtensionOK
+bool sideReady = biasLong ? longSetup : shortSetup
+string sideName = biasLong ? "LONG" : "SHORT"
+f_check(_ok) => _ok ? "✓ PASS" : "✕ WAIT"
+f_check_color(_ok) => _ok ? color.lime : color.rgb(255,105,105)
+var table checklist = table.new(position.top_right, 2, 11, bgcolor=color.rgb(20,27,38), frame_color=color.rgb(90,105,125), frame_width=1, border_color=color.rgb(65,78,96), border_width=1)
+if barstate.islast
+    color head = color.rgb(25,32,43)
+    table.cell(checklist, 0, 0, "ST-ADX V3.3", bgcolor=head, text_color=color.white, text_size=size.small)
+    table.cell(checklist, 1, 0, sideName, bgcolor=head, text_color=biasLong ? color.lime : color.red, text_size=size.small)
+    table.cell(checklist, 0, 1, "Allowlist", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 1, f_check(sideAllowed), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideAllowed), text_size=size.tiny)
+    table.cell(checklist, 0, 2, "SuperTrend 12/2.8", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 2, f_check(biasLong ? bull : bear), bgcolor=color.rgb(31,41,56), text_color=f_check_color(biasLong ? bull : bear), text_size=size.tiny)
+    table.cell(checklist, 0, 3, "ADX > 30", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 3, f_check(sideAdx), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideAdx), text_size=size.tiny)
+    table.cell(checklist, 0, 4, "ADX naik 2x", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 4, f_check(sideAdxRising), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideAdxRising), text_size=size.tiny)
+    table.cell(checklist, 0, 5, biasLong ? "RSI 60-70" : "RSI 35-40", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 5, f_check(sideRsi), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideRsi), text_size=size.tiny)
+    table.cell(checklist, 0, 6, "Candle searah", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 6, f_check(sideCandle), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideCandle), text_size=size.tiny)
+    table.cell(checklist, 0, 7, "EMA 53", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 7, f_check(sideEma), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideEma), text_size=size.tiny)
+    table.cell(checklist, 0, 8, "SHORT ext <= 3.25 ATR", bgcolor=color.rgb(31,41,56), text_color=color.white, text_size=size.tiny)
+    table.cell(checklist, 1, 8, f_check(sideExtension), bgcolor=color.rgb(31,41,56), text_color=f_check_color(sideExtension), text_size=size.tiny)
+    table.cell(checklist, 0, 9, "FINAL", bgcolor=head, text_color=color.white, text_size=size.small)
+    table.cell(checklist, 1, 9, sideReady ? sideName + " READY" : "WAIT", bgcolor=head, text_color=sideReady ? color.lime : color.orange, text_size=size.small)
+    table.cell(checklist, 0, 10, "Capital / risk", bgcolor=color.rgb(20,27,38), text_color=color.silver, text_size=size.tiny)
+    table.cell(checklist, 1, 10, "100 USDT / 1%", bgcolor=color.rgb(20,27,38), text_color=color.silver, text_size=size.tiny)
+
+alertcondition(longTrigger, "ST-ADX V3.3 LONG setup", "ST-ADX V3.3 LONG setup | {{ticker}} | TF={{interval}} | close={{close}}")
+alertcondition(shortTrigger, "ST-ADX V3.3 SHORT setup", "ST-ADX V3.3 SHORT setup | {{ticker}} | TF={{interval}} | close={{close}}")
