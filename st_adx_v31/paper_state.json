@@ -1,6 +1,6 @@
 {
   "initialized": true,
-  "equity": 100000,
+  "equity": 100,
   "open_positions": {},
   "last_signal_ts": {
     "ADA": 1794628800000,
@@ -29,8 +29,11 @@
   },
   "last_exit_signal_ts": {},
   "trade_counter": 0,
-  "model": "ST-ADX V3.2",
+  "model": "ST-ADX V3.3",
   "timeframe": "1h",
   "paper_only": true,
-  "funding_included": false
+  "funding_included": false,
+  "starting_equity_usdt": 100,
+  "strategy_version": "V3.3",
+  "updated_at_utc": "2026-11-14T00:00:00Z"
 }
