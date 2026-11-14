@@ -1,0 +1,45 @@
+name: ST-ADX V3.3 - Top 150 Universe Research
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Validate isolated research source
+        run: |
+          python -m py_compile st_adx_v31/strategy_core.py st_adx_v31/research_150_universe_v33.py
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "st_adx_v31")
+          import research_150_universe_v33 as r
+          assert r.TOP_N == 150
+          assert r.FEE == 0.0005 and r.SLIP == 0.0002
+          assert r.RISK == 0.01 and r.NOTIONAL_CAP == 0.45
+          assert r.MIN_TRADES == 12 and r.MIN_OOS_TRADES == 4
+          print("ISOLATED V3.3 RESEARCH VALIDATION PASS")
+          PY
+      - name: Run top-150 BingX historical research
+        run: python -u st_adx_v31/research_150_universe_v33.py
+      - name: Upload research results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: st-adx-v33-top150-research
+          path: st_adx_v31/research_150_v33/
+          if-no-files-found: warn
+          retention-days: 30
