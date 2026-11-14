@@ -13,3 +13,5 @@
 - SAM EDGE V15 and V3.2 historical files are retained as archive/reference. They are not the active strategy.
 
 **PAPER ONLY.** No live exchange orders are sent. Backtest performance is not a guarantee of future results.
+
+- Cumulative V3.3 forward journal: `ST_ADX_V3_3_TRADING_JOURNAL.md` (human-readable) and `st_adx_v3_3_trading_journal.csv` (structured ledger). These are separate from the historical V3.1 journal.
