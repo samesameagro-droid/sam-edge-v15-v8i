@@ -24,10 +24,10 @@ Realized net PnL: **+1.69067441 USDT** (fees and simulated slippage included; fu
 
 ## Signal and trade ledger
 
-| No. | Coin | Side | Signal time (WIB) | Entry time (WIB) | Entry price | Stop loss | TP final | Qty | Notional (USDT) | ADX | RSI | ATR10 | Priority | Risk reserved (USDT) | Status/result | Exit time (WIB) | Exit price | Net PnL (USDT) | R |
+| No. | Coin | Side | Signal time (WIB) | Entry time (WIB) | Entry price | Stop loss | TP final | Qty | Notional (USDT) | ADX | RSI | ATR10 | Score | Priority | Risk reserved (USDT) | Status/result | Exit time (WIB) | Exit price | Net PnL (USDT) | R |
 |---:|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|---:|---:|---:|
-| 1 | ETH | SHORT | 2026-11-14 13:00 | 2026-11-14 14:00 | 1904.129098 | 1929.297071 | 1830.722509 | 0.0236328514 | 45.00 | 33.6974 | 37.4139 | 20.9733 | 2.2500 | CLOSED — TP final | 2026-11-14 22:00 | 1830.722509 | +1.69067441 | +2.6042R |
-| 2 | AKE | LONG | 2026-11-14 22:00 | 2026-11-14 23:00 | 0.013272654 | 0.010820462 | 0.020424880 | 412.303832878 | 5.47237 | 38.2746 | 63.9384 | 0.002043493 | 2.6871 | OPEN — ongoing | — | — | — | — |
+| 1 | ETH | SHORT | 2026-11-14 13:00 | 2026-11-14 14:00 | 1904.129098 | 1929.297071 | 1830.722509 | 0.0236328514 | 45.00 | 33.6974 | 37.4139 | 20.9733 | Not recorded | 2.2500 | CLOSED — TP final | 2026-11-14 22:00 | 1830.722509 | +1.69067441 | +2.6042R |
+| 2 | AKE | LONG | 2026-11-14 22:00 | 2026-11-14 23:00 | 0.013272654 | 0.010820462 | 0.020424880 | 412.303832878 | 5.47237 | 38.2746 | 63.9384 | 0.002043493 | Not recorded | 2.6871 | OPEN — ongoing | — | — | — | — |
 
 ## Closed-trade performance
 
