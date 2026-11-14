@@ -1,4 +1,4 @@
-"""Pine-aligned indicator and signal core for ST-ADX V3.2 RSI/extension-filtered paper strategy."""
+"""Pine-aligned indicator and signal core for ST-ADX V3.3 RSI/extension-filtered paper strategy."""
 from __future__ import annotations
 from typing import Iterable
 import numpy as np
@@ -15,7 +15,7 @@ RSI_LONG_MIN=60.0
 RSI_LONG_MAX=70.0
 RSI_SHORT_MIN=35.0
 RSI_SHORT_MAX=40.0
-SHORT_MAX_EMA_EXT_ATR=2.5
+SHORT_MAX_EMA_EXT_ATR=3.25
 RISK_ATR_LENGTH=10
 ATR_SL_MULTIPLIER=1.2
 ATR_TP_MULTIPLIER=3.5
@@ -99,7 +99,7 @@ def add_indicators(ohlcv: pd.DataFrame) -> pd.DataFrame:
     df["tr"]=tr;df["atr_st"]=atr_st;df["atr_risk"]=atr_risk;df["di_plus"]=pdi;df["di_minus"]=mdi
     df["adx"]=adx;df["adx_rising"]=rising;df["rsi"]=rsi;df["ema53"]=ema;df["supertrend"]=st;df["st_direction"]=st_dir
     df["st_bull"]=bull;df["st_bear"]=bear;df["st_flip_bull"]=flip_bull;df["st_flip_bear"]=flip_bear
-    # V3.2 anti-chasing filters: bounded RSI windows and a short-side EMA53 extension cap.
+    # V3.3 anti-chasing filters: bounded RSI windows and a short-side EMA53 extension cap.
     long_rsi_ok=(rsi>=RSI_LONG_MIN)&(rsi<=RSI_LONG_MAX)
     short_rsi_ok=(rsi>=RSI_SHORT_MIN)&(rsi<=RSI_SHORT_MAX)
     short_extension_atr=np.divide(ema-close,atr_risk,out=np.full(len(df),np.inf),where=atr_risk>0)
