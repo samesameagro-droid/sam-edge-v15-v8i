@@ -41,7 +41,7 @@ jobs:
           python parity_check.py
           python - <<'PY'
           import sys
-          sys.path.insert(0, "st_adx_v34_paper")
+          sys.path.insert(0, ".")
           import strategy_core as core
           import paper_forward_github as runner
           assert core.VERSION == "3.4"
