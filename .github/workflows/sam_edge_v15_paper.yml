@@ -1,49 +1,48 @@
-name: ST-ADX V3.3 - BingX Paper Forward
+name: ST-ADX V3.4 - BingX PAPER Forward (50 closed trades)
 
 on:
+  schedule:
+    - cron: "5 * * * *"
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - 'st_adx_v31/strategy_core.py'
-      - 'st_adx_v31/paper_forward_github.py'
+      - 'st_adx_v34_paper/strategy_core.py'
+      - 'st_adx_v34_paper/paper_forward_github.py'
       - '.github/workflows/sam_edge_v15_paper.yml'
-  workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: st-adx-v34-paper-forward
   cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  paper:
+  parity:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 5
     steps:
-      - name: Checkout repository
+      - name: Checkout V3.4 mainline
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
       - name: Setup Python 3.11
         uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
-
-      - name: Install existing dependencies
+      - name: Install dependencies
         run: python -m pip install -r requirements.txt
-
-      - name: Validate ST-ADX V3.3 sources and risk controls
+      - name: Validate V3.4 and risk controls before every PAPER cycle
         run: |
-          python -m py_compile st_adx_v31/strategy_core.py st_adx_v31/paper_forward_github.py
+          python -m py_compile st_adx_v34_paper/strategy_core.py st_adx_v34_paper/paper_forward_github.py st_adx_v34_paper/parity_check.py
+          cd st_adx_v34_paper
+          python parity_check.py
           python - <<'PY'
-          import sys
-          sys.path.insert(0, "st_adx_v31")
           import strategy_core as core
           import paper_forward_github as runner
-          import pandas as pd
+          assert core.VERSION == "3.4"
           assert len(core.LONG_ALLOWLIST | core.SHORT_ALLOWLIST) == 23
           assert len(core.LONG_ALLOWLIST) == 11 and len(core.SHORT_ALLOWLIST) == 14
           assert core.RSI_LONG_MIN == 60.0 and core.RSI_LONG_MAX == 70.0
@@ -52,43 +51,46 @@ jobs:
           assert abs(runner.MAX_OPEN_RISK - 0.05) < 1e-12
           assert abs(runner.RISK - 0.01) < 1e-12
           assert abs(runner.CAP - 0.45) < 1e-12
-          assert not hasattr(runner, "MAX_POSITIONS")
-          sample = {"side":"LONG","entry_price":100.0,"stop":98.0,"qty":10.0,"entry_fee":0.5}
-          risk = runner.estimated_stop_risk(sample)
-          assert risk > 20.0
-          assert abs(runner.portfolio_open_risk({"open_positions":{"A":sample}}) - risk) < 1e-9
-          assert runner.estimated_risk_per_unit(100.0,98.0,"LONG") > 2.0
-          rows = []
-          for i in range(300):
-              close = 100 + i * 0.02 + ((i % 7) - 3) * 0.1
-              rows.append([i * 3600000, close - 0.02, close + 0.2, close - 0.2, close, 1000])
-          df = pd.DataFrame(rows, columns=["timestamp","open","high","low","close","volume"])
-          out = core.add_indicators(df)
-          assert len(out) == 300 and "adx_rising" in out and "long_signal" in out and "short_signal" in out
-          assert "short_extension_atr" in out
-          print("ST-ADX V3.3 VALIDATION PASS | RSI LONG 60-70 | RSI SHORT 35-40 | SHORT extension <=2.5 ATR10 | 23 coins / 25 models | 1% per-position risk | 5% aggregate cap | no position-count cap")
+          assert runner.DEFAULT_EQUITY == 100.0
+          print("V3.4 CONFIG VALIDATION PASS")
           PY
 
-      - name: Run one BingX V3.3 paper cycle
+  paper:
+    needs: parity
+    if: needs.parity.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout V3.4 mainline
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run one V3.4 PAPER cycle (public market data only)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PAPER_INITIAL_EQUITY: "100"
         run: |
           set +e
-          timeout --signal=TERM --kill-after=20s 300s python -u st_adx_v31/paper_forward_github.py
+          timeout --signal=TERM --kill-after=20s 300s python -u st_adx_v34_paper/paper_forward_github.py
           RC=$?
-          echo "ST-ADX V3.3 paper cycle exit=$RC"
+          echo "ST-ADX V3.4 PAPER cycle exit=$RC"
           exit "$RC"
-
-      - name: Persist V3.3 paper state and journal
+      - name: Persist only isolated V3.4 state and journal
         if: always()
         shell: bash
         run: |
           set -e
-          git config user.name "ST-ADX V3.3 PAPER BOT"
-          git config user.email "st-adx-v32-paper-bot@users.noreply.github.com"
-          FILES=(st_adx_v31/paper_state.json st_adx_v31/paper_signals.csv st_adx_v31/paper_trades.csv)
+          git config user.name "ST-ADX V3.4 PAPER BOT"
+          git config user.email "st-adx-v34-paper-bot@users.noreply.github.com"
+          FILES=(st_adx_v34_paper/paper_state.json st_adx_v34_paper/paper_signals.csv st_adx_v34_paper/paper_trades.csv)
           TMP="$(mktemp -d)"
           trap 'rm -rf "$TMP"' EXIT
           for f in "${FILES[@]}"; do
@@ -97,20 +99,25 @@ jobs:
           for attempt in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
+            EXISTING=()
             for f in "${FILES[@]}"; do
-              if [ -f "$TMP/$f" ]; then mkdir -p "$(dirname "$f")"; cp "$TMP/$f" "$f"; fi
+              if [ -f "$TMP/$f" ]; then mkdir -p "$(dirname "$f")"; cp "$TMP/$f" "$f"; EXISTING+=("$f"); fi
             done
-            git add -- "${FILES[@]}"
-            if git diff --cached --quiet; then
-              echo "No ST-ADX V3.3 state changes to persist"
+            if [ ${#EXISTING[@]} -eq 0 ]; then
+              echo "No V3.4 PAPER state files to persist"
               exit 0
             fi
-            git commit -m "paper: ST-ADX V3.3 forward state"
+            git add -- "${EXISTING[@]}"
+            if git diff --cached --quiet; then
+              echo "No V3.4 PAPER state changes to persist"
+              exit 0
+            fi
+            git commit -m "paper: ST-ADX V3.4 forward state"
             if git push origin HEAD:main; then
-              echo "ST-ADX V3.3 PAPER STATE PUSH OK"
+              echo "ST-ADX V3.4 PAPER STATE PUSH OK"
               exit 0
             fi
             sleep 2
           done
-          echo "ST-ADX V3.3 state push failed after 5 attempts"
+          echo "ST-ADX V3.4 PAPER state push failed after 5 attempts"
           exit 1
