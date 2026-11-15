@@ -1,26 +1,7 @@
 {
   "initialized": true,
-  "equity": 100.6737676648599,
-  "open_positions": {
-    "LTC": {
-      "symbol": "LTC/USDT:USDT",
-      "base": "LTC",
-      "side": "SHORT",
-      "signal_time": 1794718800000,
-      "entry_time": 1794722400000,
-      "raw_entry": 44.55,
-      "entry_price": 44.54109,
-      "signal_atr": 0.8247737121263391,
-      "stop": 45.53081845455161,
-      "target": 41.65438200755781,
-      "qty": 0.9644234755728891,
-      "entry_notional": 42.956472823604855,
-      "entry_fee": 0.021478236411802427,
-      "risk_reserved_usdt": 1.006737676648599,
-      "pending_flip": false,
-      "last_processed_bar": 1794729600000
-    }
-  },
+  "equity": 99.6670299882113,
+  "open_positions": {},
   "last_signal_ts": {
     "ADA": 1794729600000,
     "AKE": 1794729600000,
@@ -48,9 +29,10 @@
   },
   "last_exit_signal_ts": {
     "ETH": 1794668400000,
-    "AKE": 1794711600000
+    "AKE": 1794711600000,
+    "LTC": 1794736528167
   },
-  "trade_counter": 2,
+  "trade_counter": 3,
   "model": "ST-ADX V3.3",
   "timeframe": "1h",
   "paper_only": true,
