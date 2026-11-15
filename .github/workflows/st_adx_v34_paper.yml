@@ -103,10 +103,15 @@ jobs:
           for attempt in 1 2 3 4 5; do
             git fetch origin st-adx-v34-paper-parity
             git reset --hard origin/st-adx-v34-paper-parity
+            EXISTING=()
             for f in "${FILES[@]}"; do
-              if [ -f "$TMP/$f" ]; then mkdir -p "$(dirname "$f")"; cp "$TMP/$f" "$f"; fi
+              if [ -f "$TMP/$f" ]; then mkdir -p "$(dirname "$f")"; cp "$TMP/$f" "$f"; EXISTING+=("$f"); fi
             done
-            git add -- "${FILES[@]}"
+            if [ ${#EXISTING[@]} -eq 0 ]; then
+              echo "No V3.4 PAPER state files to persist"
+              exit 0
+            fi
+            git add -- "${EXISTING[@]}"
             if git diff --cached --quiet; then
               echo "No V3.4 PAPER state changes to persist"
               exit 0
