@@ -1,4 +1,5 @@
 """V3.4 pre-forward smoke/parity checks."""
+# Keep the branch CI run in sync with the corrected state-persistence workflow.
 import numpy as np, pandas as pd
 from strategy_core import add_indicators, btc_long_regime_ok, VERSION, LONG_ALLOWLIST, SHORT_ALLOWLIST
 assert VERSION == "3.4"
