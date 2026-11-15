@@ -1,0 +1,122 @@
+name: ST-ADX V3.4 - BingX PAPER Forward (50 closed trades)
+
+on:
+  push:
+    branches: [st-adx-v34-paper-parity]
+    paths:
+      - 'st_adx_v34_paper/strategy_core.py'
+      - 'st_adx_v34_paper/paper_forward_github.py'
+      - 'st_adx_v34_paper/parity_check.py'
+      - '.github/workflows/st_adx_v34_paper.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: st-adx-v34-paper-forward
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout isolated V3.4 branch
+        uses: actions/checkout@v5
+        with:
+          ref: st-adx-v34-paper-parity
+          fetch-depth: 0
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile and run V3.4 preflight parity checks
+        run: |
+          python -m py_compile st_adx_v34_paper/strategy_core.py st_adx_v34_paper/paper_forward_github.py st_adx_v34_paper/parity_check.py
+          cd st_adx_v34_paper
+          python parity_check.py
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, "st_adx_v34_paper")
+          import strategy_core as core
+          import paper_forward_github as runner
+          assert core.VERSION == "3.4"
+          assert len(core.LONG_ALLOWLIST | core.SHORT_ALLOWLIST) == 23
+          assert len(core.LONG_ALLOWLIST) == 11 and len(core.SHORT_ALLOWLIST) == 14
+          assert core.RSI_LONG_MIN == 60.0 and core.RSI_LONG_MAX == 70.0
+          assert core.RSI_SHORT_MIN == 35.0 and core.RSI_SHORT_MAX == 40.0
+          assert core.SHORT_MAX_EMA_EXT_ATR == 3.25
+          assert abs(runner.MAX_OPEN_RISK - 0.05) < 1e-12
+          assert abs(runner.RISK - 0.01) < 1e-12
+          assert abs(runner.CAP - 0.45) < 1e-12
+          assert runner.DEFAULT_EQUITY == 100.0
+          assert not hasattr(runner, "MAX_POSITIONS")
+          print("V3.4 CONFIG PARITY PASS | 1H | LONG BTC ST gate | SHORT unchanged | risk 1% | aggregate cap 5% | equity 100")
+          PY
+
+  paper:
+    needs: parity
+    if: needs.parity.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout isolated V3.4 branch
+        uses: actions/checkout@v5
+        with:
+          ref: st-adx-v34-paper-parity
+          fetch-depth: 0
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run one V3.4 PAPER cycle (public market data only)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PAPER_INITIAL_EQUITY: "100"
+        run: |
+          set +e
+          timeout --signal=TERM --kill-after=20s 300s python -u st_adx_v34_paper/paper_forward_github.py
+          RC=$?
+          echo "ST-ADX V3.4 PAPER cycle exit=$RC"
+          exit "$RC"
+      - name: Persist only isolated V3.4 state and journal
+        if: always()
+        shell: bash
+        run: |
+          set -e
+          git config user.name "ST-ADX V3.4 PAPER BOT"
+          git config user.email "st-adx-v34-paper-bot@users.noreply.github.com"
+          FILES=(st_adx_v34_paper/paper_state.json st_adx_v34_paper/paper_signals.csv st_adx_v34_paper/paper_trades.csv)
+          TMP="$(mktemp -d)"
+          trap 'rm -rf "$TMP"' EXIT
+          for f in "${FILES[@]}"; do
+            if [ -f "$f" ]; then mkdir -p "$TMP/$(dirname "$f")"; cp "$f" "$TMP/$f"; fi
+          done
+          for attempt in 1 2 3 4 5; do
+            git fetch origin st-adx-v34-paper-parity
+            git reset --hard origin/st-adx-v34-paper-parity
+            for f in "${FILES[@]}"; do
+              if [ -f "$TMP/$f" ]; then mkdir -p "$(dirname "$f")"; cp "$TMP/$f" "$f"; fi
+            done
+            git add -- "${FILES[@]}"
+            if git diff --cached --quiet; then
+              echo "No V3.4 PAPER state changes to persist"
+              exit 0
+            fi
+            git commit -m "paper: ST-ADX V3.4 forward state"
+            if git push origin HEAD:st-adx-v34-paper-parity; then
+              echo "ST-ADX V3.4 PAPER STATE PUSH OK"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "ST-ADX V3.4 PAPER state push failed after 5 attempts"
+          exit 1
