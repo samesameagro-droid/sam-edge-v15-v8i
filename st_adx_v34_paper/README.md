@@ -17,4 +17,6 @@
 3. BTC gate truth table: direction -1 passes; +1, 0, and missing data fail closed.
 4. The branch workflow runs preflight checks before the PAPER runner job. PAPER job is gated on preflight success.
 
-This is an isolated deployment candidate. It does not change the `main` branch until parity has passed and the branch has been reviewed.
+## Mainline PAPER status
+
+V3.4 has been promoted to the primary PAPER workflow on `main` after the parity checks and successful bootstrap cycle. The primary workflow is the existing `.github/workflows/sam_edge_v15_paper.yml` path (preserving existing workflow-dispatch integrations), scheduled at minute 2 of every hour and also manually dispatchable. V3.3 source code, paper state, and historical journals remain preserved, but the primary PAPER workflow now runs V3.4. The V3.4 state/journals remain isolated in this folder. The system remains PAPER only and does not send exchange orders.
