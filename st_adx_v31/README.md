@@ -17,3 +17,4 @@
 **PAPER ONLY.** No live exchange orders are sent. Backtest performance is not a guarantee of future results.
 
 - Cumulative V3.3 forward journal: `ST_ADX_V3_3_TRADING_JOURNAL.md` (human-readable) and `st_adx_v3_3_trading_journal.csv` (structured ledger). These are separate from the historical V3.1 journal.
+- Exploratory V3.4 backtest (research only; V3.3 remains active): `ST_ADX_V3_4_EXPLORATORY_BACKTEST.md`.
