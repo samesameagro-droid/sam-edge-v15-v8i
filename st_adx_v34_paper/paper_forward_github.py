@@ -212,6 +212,10 @@ def signals(s,frames,symbols,now):
         try:telegram(msg)
         except Exception as e:log.error("Telegram signal failed: %s",e)
 def main():
+    s=load_state()
+    if s.get("evaluation_complete") and not s.get("open_positions"):
+        log.info("V3.4 PAPER EVALUATION COMPLETE | 50 closed trades reached; no further entries or scans.")
+        return 0
     ex=ccxt.bingx({"enableRateLimit":True,"timeout":20000,"options":{"defaultType":"swap","defaultSubType":"linear"}});ex.load_markets()
     try:start=ex.fetch_time() or ex.milliseconds()
     except Exception:start=ex.milliseconds()
@@ -229,7 +233,7 @@ def main():
         c=f[f.timestamp+BAR<=now]
         if c.empty:raise RuntimeError(f"No closed candle: {b}")
         log.info("CLOSED %s %s",b,utc(int(c.iloc[-1].timestamp)))
-    s=load_state();log.info("ST-ADX V3.4 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
+    log.info("ST-ADX V3.4 PAPER ONLY | symbols=%d | max_open_risk=%.1f%% | per_trade_target=%.1f%% | active=%d | open_risk=%.2f USDT | equity=%.2f",len(ASSETS),MAX_OPEN_RISK*100,RISK*100,len(s["open_positions"]),portfolio_open_risk(s),float(s["equity"]))
     if not s["initialized"]:
         for b,f in frames.items():s["last_signal_ts"][b]=int(f[f.timestamp+BAR<=now].iloc[-1].timestamp)
         s["initialized"]=True;save_state(s);log.warning("PAPER ENGINE ARMED; historical candles ignored.");return 0
