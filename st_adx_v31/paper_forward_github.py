@@ -2,6 +2,7 @@
 from __future__ import annotations
 import csv,json,logging,os,time
 from datetime import datetime,timezone
+from types import SimpleNamespace
 from pathlib import Path
 import ccxt
 import pandas as pd
@@ -10,6 +11,9 @@ from strategy_core import add_indicators,LONG_ALLOWLIST,SHORT_ALLOWLIST,ATR_SL_M
 ROOT=Path(__file__).resolve().parent
 STATE=ROOT/"paper_state.json";TRADES=ROOT/"paper_trades.csv";SIGNALS=ROOT/"paper_signals.csv"
 ASSETS=sorted(LONG_ALLOWLIST|SHORT_ALLOWLIST);BAR=3600000
+# Keep the 1H strategy for entries; monitor open paper brackets using live ticker snapshots.
+EXIT_POLL_SECONDS=3
+EXIT_MONITOR_SECONDS=210
 DEFAULT_EQUITY=float(os.getenv("PAPER_INITIAL_EQUITY","100.0"))
 FEE=.0005;SLIP=.0002;RISK=.01;CAP=.45;MAX_OPEN_RISK=.05;GRACE=300
 PRIORITY={"BTC:SHORT":5.11,"ENA:LONG":2.93,"ARB:SHORT":2.98,"AVAX:SHORT":2.94,"SOL:SHORT":2.88,"SUI:SHORT":2.60,"ETH:SHORT":2.25,"ENA:SHORT":1.82,"ZEC:LONG":1.63,"LINK:SHORT":1.64,"NEAR:SHORT":1.56,"XRP:SHORT":1.56,"UNI:SHORT":1.39,"XRP:LONG":1.17,"TIA:LONG":5.6741,"ORDI:LONG":4.7457,"AKE:LONG":2.6871,"DOT:SHORT":2.5937,"WIF:LONG":2.3025,"APR:LONG":2.2137,"LTC:SHORT":2.0849,"XLM:LONG":2.0285,"DYDX:LONG":1.9173,"VIRTUAL:LONG":1.9133,"ADA:SHORT":1.8243}
@@ -50,9 +54,18 @@ def resolve(ex,base):
     raise ValueError(f"Linear USDT perpetual not found: {base}")
 def telegram(msg):
     tok=os.getenv("TELEGRAM_BOT_TOKEN","").strip();chat=os.getenv("TELEGRAM_CHAT_ID","").strip()
-    if not tok or not chat:log.warning("Telegram secrets missing; message skipped.");return
-    r=requests.post(f"https://api.telegram.org/bot{tok}/sendMessage",json={"chat_id":chat,"text":msg,"disable_web_page_preview":True},timeout=20);r.raise_for_status()
-    if not r.json().get("ok"):raise RuntimeError(r.text)
+    if not tok or not chat:raise RuntimeError("Telegram secrets missing; cannot confirm message delivery")
+    last=None
+    for attempt,delay in enumerate((0,2,4),1):
+        if delay:time.sleep(delay)
+        try:
+            r=requests.post(f"https://api.telegram.org/bot{tok}/sendMessage",json={"chat_id":chat,"text":msg,"disable_web_page_preview":True},timeout=15)
+            r.raise_for_status()
+            if not r.json().get("ok"):raise RuntimeError(r.text)
+            return
+        except Exception as e:
+            last=e;log.error("Telegram send attempt %d/3 failed: %s",attempt,e)
+    raise RuntimeError(f"Telegram delivery failed after 3 attempts: {last}")
 def estimated_risk_per_unit(entry,stop,side):
     """Estimated all-in loss per unit if the protective stop fills with adverse slippage."""
     stop_fill=stop*(1-SLIP if side=="LONG" else 1+SLIP)
@@ -77,6 +90,35 @@ def close_pos(s,base,p,c,raw,reason):
     log.info(msg.replace("\n"," | "))
     try:telegram(msg)
     except Exception as e:log.error("Telegram close failed: %s",e)
+def monitor_open_positions(ex,s,symbols):
+    """Poll BingX last-traded prices while this workflow run is alive; PAPER exits only."""
+    if not s.get("open_positions"):return
+    deadline=time.monotonic()+EXIT_MONITOR_SECONDS
+    log.info("LIVE TICKER EXIT MONITOR START | poll=%ss | duration=%ss | positions=%d",EXIT_POLL_SECONDS,EXIT_MONITOR_SECONDS,len(s["open_positions"]))
+    while time.monotonic()<deadline and s.get("open_positions"):
+        for base,p in list(s["open_positions"].items()):
+            try:
+                ticker=ex.fetch_ticker(p["symbol"])
+                last=ticker.get("last")
+                if last is None or not pd.notna(float(last)):
+                    log.warning("EXIT MONITOR %s ticker has no valid last price",base);continue
+                last=float(last);side=p["side"];stop=float(p["stop"]);target=float(p["target"])
+                hit_reason=None;trigger=None
+                if side=="LONG":
+                    if last<=stop:hit_reason="STOP_TICKER";trigger=stop
+                    elif last>=target:hit_reason="TARGET_TICKER";trigger=target
+                else:
+                    if last>=stop:hit_reason="STOP_TICKER";trigger=stop
+                    elif last<=target:hit_reason="TARGET_TICKER";trigger=target
+                if hit_reason:
+                    log.warning("TICKER EXIT HIT %s %s | last=%.10g | trigger=%.10g | %s",base,side,last,trigger,hit_reason)
+                    close_pos(s,base,p,SimpleNamespace(timestamp=ex.milliseconds()),trigger,hit_reason)
+                    save_state(s)
+            except Exception as e:
+                log.error("EXIT MONITOR %s ticker check failed: %s",base,e)
+        if s.get("open_positions"):
+            time.sleep(EXIT_POLL_SECONDS)
+
 def bracket(p,c):
     o,h,l=float(c.open),float(c.high),float(c.low);st,tp=float(p["stop"]),float(p["target"]);side=p["side"]
     if side=="LONG":
@@ -173,7 +215,10 @@ def main():
     if not s["initialized"]:
         for b,f in frames.items():s["last_signal_ts"][b]=int(f[f.timestamp+BAR<=now].iloc[-1].timestamp)
         s["initialized"]=True;save_state(s);log.warning("PAPER ENGINE ARMED; historical candles ignored.");return 0
-    manage(s,frames,now);signals(s,frames,symbols,now);save_state(s)
+    manage(s,frames,now);signals(s,frames,symbols,now)
+    # Exit checks use ticker snapshots every few seconds; 1H remains the entry timeframe.
+    monitor_open_positions(ex,s,symbols)
+    save_state(s)
     open_risk=portfolio_open_risk(s);risk_pct=open_risk/float(s["equity"])*100 if float(s["equity"])>0 else 0.0
     log.info("CYCLE COMPLETE | equity=%.2f | active=%d | open_risk=%.2f USDT (%.2f%%/%.2f%% cap) | closed=%d",float(s["equity"]),len(s["open_positions"]),open_risk,risk_pct,MAX_OPEN_RISK*100,int(s["trade_counter"]))
     return 0
