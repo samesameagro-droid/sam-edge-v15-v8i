@@ -15,10 +15,10 @@ Source files checked in GitHub:
 - `paper_state.json`
 
 Latest recorded signal rows: **3** (ETH SHORT, AKE LONG, LTC SHORT).  
-Closed trades: **2** (ETH TP final; AKE SL).  
-Open positions: **1** (LTC SHORT).  
-Persisted paper equity: **100.67376766 USDT**.  
-Realized net PnL: **+0.67376766 USDT** (fees and simulated slippage included; funding excluded).
+Closed trades: **3** (ETH TP final; AKE SL; LTC SL detected by ticker monitor).  
+Open positions: **0**.  
+Persisted paper equity: **99.66702999 USDT**.  
+Realized net PnL: **-0.33297001 USDT** (fees and simulated slippage included; funding excluded).
 
 > Timestamp note: source timestamps are UTC. Displayed journal times are WIB (UTC+7). Completed rows in `paper_trades.csv` take precedence over stale `PAPER_OPEN` labels in the signal file.
 
@@ -28,23 +28,23 @@ Realized net PnL: **+0.67376766 USDT** (fees and simulated slippage included; fu
 |---:|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|---:|---:|---:|
 | 1 | ETH | SHORT | 2026-11-14 13:00 | 2026-11-14 14:00 | 1904.129098 | 1929.297071 | 1830.722509 | 0.0236328514 | 45.00 | 33.6974 | 37.4139 | 20.9733 | Not recorded | 2.2500 | 0.64921189 | CLOSED — TP final | 2026-11-14 22:00 | 1830.722509 | +1.69067441 | +2.6042R |
 | 2 | AKE | LONG | 2026-11-14 22:00 | 2026-11-14 23:00 | 0.013272654 | 0.010820462 | 0.020424880 | 412.303832878 | 5.47237 | 38.2746 | 63.9384 | 0.002043493 | Not recorded | 2.6871 | 1.01690674 | CLOSED — SL | 2026-11-15 10:00 | 0.010818298 | -1.01690674 | -1.0000R |
-| 3 | LTC | SHORT | 2026-11-15 12:00 | 2026-11-15 13:00 | 44.541090 | 45.530818 | 41.654382 | 0.9644234756 | 42.95647 | 30.8843 | 39.4999 | 0.824773712 | Not recorded | 2.0849 | 1.00673768 | OPEN — ongoing | — | — | — | — |
+| 3 | LTC | SHORT | 2026-11-15 12:00 | 2026-11-15 13:00 | 44.541090 | 45.530818 | 41.654382 | 0.9644234756 | 42.95647 | 30.8843 | 39.4999 | 0.824773712 | Not recorded | 2.0849 | 1.00673768 | CLOSED — SL (ticker) | 2026-11-15 16:55:28 | 45.539924618 | -1.00673768 | -1.0000R |
 
 ## Closed-trade performance
 
 | Metric | Value |
 |---|---:|
-| Closed trades | 2 |
+| Closed trades | 3 |
 | TP wins | 1 |
-| SL losses | 1 |
-| Win rate | 50.00% |
-| Realized net PnL | +0.67376766 USDT |
-| Realized R (sum) | +1.6042R |
+| SL losses | 2 |
+| Win rate | 33.33% |
+| Realized net PnL | -0.33297001 USDT |
+| Realized R (sum) | +0.6042R |
 | Starting equity | 100.00000000 USDT |
-| Persisted paper equity | 100.67376766 USDT |
-| Open positions | 1 (LTC SHORT) |
+| Persisted paper equity | 99.66702999 USDT |
+| Open positions | 0 |
 
-**Interpretation:** The current forward sample contains only two closed trades. The 50% win rate and positive cumulative R are descriptive of this small sample, not evidence of stable profitability. LTC remains open and is excluded from closed-trade statistics and realized PnL.
+**Interpretation:** The current forward sample contains only three closed trades. The 33.33% win rate and +0.6042R cumulative result are descriptive of this very small sample, not evidence of stable profitability. No positions remain open.
 
 ## Signal details and integrity
 
@@ -76,7 +76,7 @@ Realized net PnL: **+0.67376766 USDT** (fees and simulated slippage included; fu
 - Reserved stop risk: 1.0169067440894939 USDT.
 - R: -1.0000R.
 
-### Trade #3 — LTC SHORT — OPEN
+### Trade #3 — LTC SHORT — CLOSED SL (ticker monitor)
 - Signal timestamp: `2026-11-15T05:00:00Z` (12:00 WIB).
 - Entry timestamp: `2026-11-15T06:00:00Z` (13:00 WIB).
 - Reference next-candle open: 44.55.
@@ -88,8 +88,13 @@ Realized net PnL: **+0.67376766 USDT** (fees and simulated slippage included; fu
 - ADX: 30.884323721415903; RSI: 39.49987719371729; ATR10: 0.8247737121263391.
 - Priority: 2.0849.
 - Reserved stop risk: 1.006737676648599 USDT.
-- Status in persisted state: open position.
-- No exit price, close time, realized PnL, or R is recorded yet. These fields must remain blank until the position closes.
+- Exit timestamp: `2026-11-15T09:55:28.167000+00:00` (2026-11-15 16:55:28 WIB).
+- Exit reason: `STOP_TICKER` (ticker monitor).
+- Exit price: 45.539924618242516.
+- Net PnL after recorded fees and simulated slippage: -1.006737676648599 USDT.
+- Reserved stop risk: 1.006737676648599 USDT.
+- R: net PnL divided by reserved stop risk = -1.0000R.
+- Persisted state now has no open positions; paper equity is 99.6670299882113 USDT.
 
 ## Rules for future journal updates
 
