@@ -80,8 +80,9 @@ def portfolio_replay(selected_trades, label):
             closed.append({**p,"pnl_usdt":pnl,"equity_after":equity})
             open_pos.remove(p)
         risk_open=sum(p["risk_cash"] for p in open_pos)
+        same_coin_open=any(p["coin"]==tr.coin for p in open_pos)
         risk_cash=max(0.0,equity*RISK_PER_TRADE)
-        if risk_cash<=0 or risk_open+risk_cash>equity*MAX_AGG_RISK+1e-9:
+        if same_coin_open or risk_cash<=0 or risk_open+risk_cash>equity*MAX_AGG_RISK+1e-9:
             rejected+=1
             continue
         open_pos.append({"coin":tr.coin,"side":tr.side,"entry_dt":tr.entry_dt,
@@ -196,13 +197,15 @@ def main():
                    "uses_oos_for_selection":False},
       "portfolio":{"initial_equity":INITIAL_EQUITY,"risk_per_trade":RISK_PER_TRADE,
                    "max_aggregate_open_risk":MAX_AGG_RISK},
-      "baseline_23coin":base_result,"selected_directional":cand_result,
-      "selected_oos":holdout_result,
+      "baseline_23coin_full":base_result,"baseline_23coin_oos":base_oos_result,
+      "selected_directional_full":cand_result,"selected_directional_oos":holdout_result,
       "walk_forward_months":wf.to_dict(orient="records"),
       "data_gaps":gap_total,"data_failures":len(failures),
       "limitations":[
         "Universe is selected from a current Top-150 volume snapshot, not point-in-time historical constituents; survivorship/selection bias remains.",
-        "Portfolio replay uses standalone trade R normalized by modeled risk; confirm candle-by-candle parity against live runner before deployment.",
+        "Universe is selected from a current Top-150 volume snapshot, not point-in-time historical constituents; survivorship/selection bias remains.",
+        "Portfolio replay uses standalone trade R normalized by modeled risk; one open position per coin and 5% aggregate initial stop-risk cap are enforced.",
+        "Drawdown is measured on realized closed-trade equity, not intrabar mark-to-market equity; confirm candle-by-candle parity against live runner before deployment.",
         "Funding is excluded; fee/slippage assumptions inherited from V3.3 research simulator.",
         "Open positions at data end are not forced closed by source simulator; inspect open_at_data_end flags."
       ]
