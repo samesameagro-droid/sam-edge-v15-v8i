@@ -170,10 +170,12 @@ def main():
     selected_keys=set((r.coin,r.side) for r in selection[selection.selected_from_is].itertuples())
     selected=all_t[[ (r.coin,r.side) in selected_keys for r in all_t.itertuples() ]]
     selected.to_csv(OUT/"selected_trades_for_replay.csv",index=False)
-    baseline=all_t[all_t.coin.isin({
-        "ENA","XRP","ZEC","TIA","ORDI","AKE","WIF","APR","XLM","VIRTUAL","DYDX",
-        "ARB","AVAX","BTC","ETH","LINK","NEAR","SOL","SUI","UNI","DOT","LTC","ADA"
-    })]
+    long_allow={"ENA","XRP","ZEC","TIA","ORDI","AKE","WIF","APR","XLM","VIRTUAL","DYDX"}
+    short_allow={"ARB","AVAX","BTC","ENA","ETH","LINK","NEAR","SOL","SUI","UNI","XRP","DOT","LTC","ADA"}
+    baseline=all_t[
+        ((all_t.side=="LONG") & all_t.coin.isin(long_allow)) |
+        ((all_t.side=="SHORT") & all_t.coin.isin(short_allow))
+    ]
     base_result,base_closed=portfolio_replay(baseline,"V3_3_BASELINE_23COIN")
     cand_result,cand_closed=portfolio_replay(selected,"IS_SELECTED_DIRECTIONAL_UNIVERSE")
     base_closed.to_csv(OUT/"baseline_portfolio_closed.csv",index=False)
