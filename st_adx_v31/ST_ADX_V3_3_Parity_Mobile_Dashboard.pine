@@ -1,5 +1,5 @@
 //@version=6
-strategy("ST-ADX V3.3 | Strategy + Mobile Dashboard", overlay=true, initial_capital=100, currency=currency.USDT, pyramiding=0, commission_type=strategy.commission.percent, commission_value=0.05, process_orders_on_close=false, calc_on_order_fills=true)
+strategy("ST-ADX V3.3 | Strategy + Mobile Dashboard", overlay=true, initial_capital=100, currency=currency.USDT, pyramiding=0, commission_type=strategy.commission.percent, commission_value=0.05, process_orders_on_close=false, calc_on_order_fills=false)
 
 // ST-ADX V3.3 Python parity mirror.
 // Scope: one symbol + one directional model per chart. This does NOT reproduce
