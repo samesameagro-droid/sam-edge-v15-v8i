@@ -6,8 +6,7 @@ This script reports that limitation explicitly; it does not claim point-in-time
 historical universe validity.
 """
 from __future__ import annotations
-import json, sys, time, re
-from datetime import datetime, timezone
+import json, time
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -262,7 +261,7 @@ def walk_forward(all_trades):
     else:
         for row in monthly:
             row.update({"closed_trades":0,"win_rate_pct":0.0,"pf":0.0,
-                        "net_usdt":0.0,"ending_equity_after_month":None})
+                        "net_usdt":0.0,"equity_after_last_exit_for_entry_month_cohort":None})
     return pd.DataFrame(monthly),wf_result,wf_closed
 
 def main():
