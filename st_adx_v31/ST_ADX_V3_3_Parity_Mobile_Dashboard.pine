@@ -234,7 +234,8 @@ if barstate.isconfirmed and bar_index >= 250
 // ─────────────────────────────────────────────────────────────────────────────
 plot(stLine, "Supertrend 12/2.8", color=bull ? color.lime : color.red, linewidth=2)
 plot(ema53, "EMA 53", color=color.orange, linewidth=1)
-plotshape(signal, title="Confirmed V3.3 signal", style=selectedSide == "LONG" ? shape.triangleup : shape.triangledown, location=selectedSide == "LONG" ? location.belowbar : location.abovebar, color=selectedSide == "LONG" ? color.lime : color.red, text=selectedSide, textcolor=color.white, size=size.tiny)
+plotshape(signal and selectedSide == "LONG", title="Confirmed V3.3 LONG", style=shape.triangleup, location=location.belowbar, color=color.lime, text="LONG", textcolor=color.white, size=size.tiny)
+plotshape(signal and selectedSide == "SHORT", title="Confirmed V3.3 SHORT", style=shape.triangledown, location=location.abovebar, color=color.red, text="SHORT", textcolor=color.white, size=size.tiny)
 plot(inPosition ? stopPrice : na, "Active SL", color=color.red, style=plot.style_linebr, linewidth=2)
 plot(inPosition ? targetPrice : na, "Active TP", color=color.lime, style=plot.style_linebr, linewidth=2)
 
