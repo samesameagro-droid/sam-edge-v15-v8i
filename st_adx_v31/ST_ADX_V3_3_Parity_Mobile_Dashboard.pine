@@ -1,0 +1,286 @@
+//@version=6
+indicator("ST-ADX V3.3 | Parity + Mobile Dashboard", overlay=true, max_labels_count=100)
+
+// ST-ADX V3.3 Python parity mirror.
+// Scope: one symbol + one directional model per chart. This does NOT reproduce
+// the 23-coin portfolio's aggregate risk cap or portfolio-level equity curve.
+// Use BingX USDT perpetual, 1H. GitHub/Python remains portfolio source of truth.
+
+if barstate.isfirst and timeframe.period != "60"
+    runtime.error("Gunakan timeframe 1H (60 menit).")
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Inputs (defaults equal strategy_core.py + research_150_universe_v33.py)
+// ─────────────────────────────────────────────────────────────────────────────
+string sideMode = input.string("AUTO", "Model arah", options=["AUTO", "LONG", "SHORT"])
+bool useAllowlist = input.bool(true, "Batasi ke allowlist V3.3")
+float initialEquity = input.float(100.0, "Modal awal (USDT)", minval=1)
+float riskPct = input.float(1.0, "Risiko per trade (%)", minval=0.1, maxval=5, step=0.1) / 100
+float notionalCapPct = input.float(45.0, "Batas notional (% equity)", minval=1, maxval=100) / 100
+float feeRate = input.float(0.05, "Fee per sisi (%)", minval=0, step=0.01) / 100
+float slipRate = input.float(0.02, "Slippage adverse (bps)", minval=0, step=0.01) / 10000
+
+int stLength = input.int(12, "Supertrend length")
+float stFactor = input.float(2.8, "Supertrend multiplier")
+int dmiLength = input.int(40, "DMI length")
+int adxSmoothing = input.int(40, "ADX smoothing")
+float adxMin = input.float(30, "ADX minimum")
+int rsiLength = input.int(12, "RSI length")
+int emaLength = input.int(53, "EMA length")
+float rsiLongMin = input.float(60, "LONG RSI min")
+float rsiLongMax = input.float(70, "LONG RSI max")
+float rsiShortMin = input.float(35, "SHORT RSI min")
+float rsiShortMax = input.float(40, "SHORT RSI max")
+float shortMaxExtension = input.float(3.25, "SHORT max EMA extension (ATR)")
+int atrLength = input.int(10, "ATR risk length")
+float slATR = input.float(1.2, "SL ATR")
+float tpATR = input.float(3.5, "TP ATR")
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Allowlist
+// ─────────────────────────────────────────────────────────────────────────────
+var string[] longCoins = array.from("ENA","XRP","ZEC","TIA","ORDI","AKE","WIF","APR","XLM","VIRTUAL","DYDX")
+var string[] shortCoins = array.from("ARB","AVAX","BTC","ENA","ETH","LINK","NEAR","SOL","SUI","UNI","XRP","DOT","LTC","ADA")
+string base = str.upper(syminfo.basecurrency)
+bool longAllowed = array.includes(longCoins, base)
+bool shortAllowed = array.includes(shortCoins, base)
+string selectedSide = sideMode == "AUTO" ? (longAllowed ? "LONG" : "SHORT") : sideMode
+bool sideAllowed = selectedSide == "LONG" ? longAllowed : shortAllowed
+bool modelEnabled = not useAllowlist or sideAllowed
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Indicators — mirror Python strategy_core.add_indicators
+// ─────────────────────────────────────────────────────────────────────────────
+[stLine, stDirection] = ta.supertrend(stFactor, stLength)
+[diPlus, diMinus, adx] = ta.dmi(dmiLength, adxSmoothing)
+float rsi = ta.rsi(close, rsiLength)
+float ema53 = ta.ema(close, emaLength)
+float atrRisk = ta.atr(atrLength)
+
+bool bull = stDirection < 0
+bool bear = stDirection > 0
+bool flipBull = bull and stDirection[1] > 0
+bool flipBear = bear and stDirection[1] < 0
+bool adxRising = adx > adx[1] and adx[1] > adx[2]
+bool strong = adx > adxMin and adxRising
+bool bullCandle = close > open or flipBull
+bool bearCandle = close < open or flipBear
+bool aboveEMA = close > ema53
+bool belowEMA = close < ema53
+float shortExtensionATR = atrRisk > 0 ? (ema53 - close) / atrRisk : na
+
+bool longSignal = modelEnabled and selectedSide == "LONG" and bull and strong and rsi >= rsiLongMin and rsi <= rsiLongMax and bullCandle and (aboveEMA or flipBull)
+bool shortSignal = modelEnabled and selectedSide == "SHORT" and bear and strong and rsi >= rsiShortMin and rsi <= rsiShortMax and shortExtensionATR <= shortMaxExtension and bearCandle and (belowEMA or flipBear)
+bool signal = barstate.isconfirmed and (longSignal or shortSignal)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Python research simulator replica, one symbol + one side.
+// Entry next bar open; SL/TP evaluated from OHLC; stop/flip slippage; fees;
+// gap handling; both-touched rule; one-bar cooldown; no forced final close.
+// ─────────────────────────────────────────────────────────────────────────────
+var float equity = na
+var float peakEquity = na
+var float maxDrawdownPct = 0.0
+var float grossProfit = 0.0
+var float grossLoss = 0.0
+var float netProfit = 0.0
+var int closedTrades = 0
+var int wins = 0
+var int losses = 0
+var int cooldownUntil = -1
+
+var bool inPosition = false
+var bool pendingEntry = false
+var bool pendingFlip = false
+var float entryPrice = na
+var float stopPrice = na
+var float targetPrice = na
+var float quantity = na
+var float entryFee = na
+var float riskCash = na
+var int entryBar = na
+
+var int lastExitBar = na
+var string lastExitReason = "—"
+var float lastTradeNet = na
+
+if barstate.isfirst
+    equity := initialEquity
+    peakEquity := initialEquity
+
+if barstate.isconfirmed and bar_index >= 250
+    // Fill pending entry at this candle's OPEN (next candle after signal).
+    if pendingEntry and not inPosition
+        float rawEntry = open
+        entryPrice := rawEntry * (selectedSide == "LONG" ? 1 + slipRate : 1 - slipRate)
+        float stopDistance = atrRisk[1] * slATR
+        stopPrice := selectedSide == "LONG" ? entryPrice - stopDistance : entryPrice + stopDistance
+        targetPrice := selectedSide == "LONG" ? entryPrice + atrRisk[1] * tpATR : entryPrice - atrRisk[1] * tpATR
+        float adverseStopFill = stopPrice * (selectedSide == "LONG" ? 1 - slipRate : 1 + slipRate)
+        float unitRisk = math.abs(entryPrice - stopPrice) + entryPrice * feeRate + math.abs(adverseStopFill) * feeRate + math.abs(adverseStopFill - stopPrice)
+        float riskBudget = equity * riskPct
+        float notionalBudget = equity * notionalCapPct
+        quantity := math.min(riskBudget / unitRisk, notionalBudget / entryPrice)
+        if quantity > 0 and not na(quantity)
+            entryFee := entryPrice * quantity * feeRate
+            riskCash := quantity * unitRisk
+            inPosition := true
+            pendingFlip := false
+            entryBar := bar_index
+        pendingEntry := false
+
+    // Manage an open position on this candle.
+    if inPosition
+        float rawExit = na
+        string exitReason = ""
+        bool doExit = false
+        if pendingFlip
+            rawExit := open
+            exitReason := "ST_FLIP"
+            doExit := true
+        else if selectedSide == "LONG"
+            if open <= stopPrice
+                rawExit := open
+                exitReason := "STOP_GAP"
+                doExit := true
+            else if open >= targetPrice
+                rawExit := open
+                exitReason := "TARGET_GAP"
+                doExit := true
+            else
+                bool stopHit = low <= stopPrice
+                bool targetHit = high >= targetPrice
+                if stopHit and targetHit
+                    bool highFirst = math.abs(open - high) < math.abs(open - low)
+                    rawExit := highFirst ? targetPrice : stopPrice
+                    exitReason := highFirst ? "TARGET_BOTH_TOUCHED" : "STOP_BOTH_TOUCHED"
+                    doExit := true
+                else if stopHit
+                    rawExit := stopPrice
+                    exitReason := "STOP"
+                    doExit := true
+                else if targetHit
+                    rawExit := targetPrice
+                    exitReason := "TARGET"
+                    doExit := true
+                else if stDirection > 0
+                    pendingFlip := true
+        else
+            if open >= stopPrice
+                rawExit := open
+                exitReason := "STOP_GAP"
+                doExit := true
+            else if open <= targetPrice
+                rawExit := open
+                exitReason := "TARGET_GAP"
+                doExit := true
+            else
+                bool stopHit = high >= stopPrice
+                bool targetHit = low <= targetPrice
+                if stopHit and targetHit
+                    bool highFirst = math.abs(open - high) < math.abs(open - low)
+                    rawExit := highFirst ? stopPrice : targetPrice
+                    exitReason := highFirst ? "STOP_BOTH_TOUCHED" : "TARGET_BOTH_TOUCHED"
+                    doExit := true
+                else if stopHit
+                    rawExit := stopPrice
+                    exitReason := "STOP"
+                    doExit := true
+                else if targetHit
+                    rawExit := targetPrice
+                    exitReason := "TARGET"
+                    doExit := true
+                else if stDirection < 0
+                    pendingFlip := true
+
+        if doExit
+            bool targetExit = str.startswith(exitReason, "TARGET")
+            float exitPrice = rawExit * (targetExit ? 1.0 : (selectedSide == "LONG" ? 1 - slipRate : 1 + slipRate))
+            float gross = selectedSide == "LONG" ? (exitPrice - entryPrice) * quantity : (entryPrice - exitPrice) * quantity
+            float exitFee = math.abs(exitPrice * quantity) * feeRate
+            float tradeNet = gross - entryFee - exitFee
+            equity += tradeNet
+            netProfit += tradeNet
+            if tradeNet > 0
+                wins += 1
+                grossProfit += tradeNet
+            else if tradeNet < 0
+                losses += 1
+                grossLoss += math.abs(tradeNet)
+            closedTrades += 1
+            peakEquity := math.max(peakEquity, equity)
+            float ddNow = peakEquity > 0 ? (peakEquity - equity) / peakEquity * 100 : 0
+            maxDrawdownPct := math.max(maxDrawdownPct, ddNow)
+            lastExitBar := bar_index
+            lastExitReason := exitReason
+            lastTradeNet := tradeNet
+            cooldownUntil := bar_index + 1
+            inPosition := false
+            pendingFlip := false
+            entryPrice := na
+            stopPrice := na
+            targetPrice := na
+            quantity := na
+            entryFee := na
+            riskCash := na
+            entryBar := na
+
+    // Signal on this closed bar; fill at next bar open.
+    if not inPosition and not pendingEntry and bar_index >= cooldownUntil and signal
+        pendingEntry := true
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Chart visuals
+// ─────────────────────────────────────────────────────────────────────────────
+plot(stLine, "Supertrend 12/2.8", color=bull ? color.lime : color.red, linewidth=2)
+plot(ema53, "EMA 53", color=color.orange, linewidth=1)
+plotshape(signal, title="Confirmed V3.3 signal", style=selectedSide == "LONG" ? shape.triangleup : shape.triangledown, location=selectedSide == "LONG" ? location.belowbar : location.abovebar, color=selectedSide == "LONG" ? color.lime : color.red, text=selectedSide, textcolor=color.white, size=size.tiny)
+plot(inPosition ? stopPrice : na, "Active SL", color=color.red, style=plot.style_linebr, linewidth=2)
+plot(inPosition ? targetPrice : na, "Active TP", color=color.lime, style=plot.style_linebr, linewidth=2)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Compact mobile dashboard (top-right; 2 columns, short labels)
+// ─────────────────────────────────────────────────────────────────────────────
+f_fmt(float v) => na(v) ? "—" : str.tostring(v, "#.##")
+f_status(bool ok) => ok ? "PASS" : "WAIT"
+f_status_color(bool ok) => ok ? color.lime : color.orange
+float winRate = closedTrades > 0 ? wins * 100.0 / closedTrades : 0.0
+float profitFactor = grossLoss > 0 ? grossProfit / grossLoss : (grossProfit > 0 ? 999.0 : 0.0)
+float totalReturnPct = initialEquity > 0 ? netProfit / initialEquity * 100 : 0.0
+string trendText = bull ? "BULL" : "BEAR"
+bool directionTrend = selectedSide == "LONG" ? bull : bear
+bool directionRsi = selectedSide == "LONG" ? (rsi >= rsiLongMin and rsi <= rsiLongMax) : (rsi >= rsiShortMin and rsi <= rsiShortMax)
+bool directionCandle = selectedSide == "LONG" ? bullCandle : bearCandle
+bool directionEMA = selectedSide == "LONG" ? (aboveEMA or flipBull) : (belowEMA or flipBear)
+bool directionExtension = selectedSide == "LONG" or shortExtensionATR <= shortMaxExtension
+bool ready = modelEnabled and directionTrend and strong and directionRsi and directionCandle and directionEMA and directionExtension
+
+var table dash = table.new(position.top_right, 2, 12, bgcolor=color.rgb(17,24,39), frame_color=color.rgb(71,85,105), frame_width=1, border_color=color.rgb(51,65,85), border_width=1)
+if barstate.islast
+    color head = color.rgb(30,41,59)
+    table.cell(dash, 0, 0, "ST-ADX V3.3", text_color=color.white, bgcolor=head, text_size=size.small)
+    table.cell(dash, 1, 0, base + " / " + selectedSide, text_color=selectedSide == "LONG" ? color.lime : color.red, bgcolor=head, text_size=size.small)
+    table.cell(dash, 0, 1, "Status", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 1, ready ? "SETUP READY" : (inPosition ? "IN POSITION" : "WAIT"), text_color=ready ? color.lime : color.orange, text_size=size.tiny)
+    table.cell(dash, 0, 2, "Allowlist", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 2, f_status(modelEnabled), text_color=f_status_color(modelEnabled), text_size=size.tiny)
+    table.cell(dash, 0, 3, "Trend / ADX", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 3, trendText + " / " + f_fmt(adx), text_color=directionTrend and adx > adxMin ? color.lime : color.orange, text_size=size.tiny)
+    table.cell(dash, 0, 4, "ADX naik 2x", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 4, f_status(adxRising), text_color=f_status_color(adxRising), text_size=size.tiny)
+    table.cell(dash, 0, 5, "RSI", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 5, f_fmt(rsi) + " / " + f_status(directionRsi), text_color=f_status_color(directionRsi), text_size=size.tiny)
+    table.cell(dash, 0, 6, "EMA 53", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 6, f_status(directionEMA), text_color=f_status_color(directionEMA), text_size=size.tiny)
+    table.cell(dash, 0, 7, "SHORT ext", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 7, selectedSide == "LONG" ? "N/A" : f_fmt(shortExtensionATR) + " ATR", text_color=f_status_color(directionExtension), text_size=size.tiny)
+    table.cell(dash, 0, 8, "Trade / Win%", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 8, str.tostring(closedTrades) + " / " + f_fmt(winRate) + "%", text_color=color.white, text_size=size.tiny)
+    table.cell(dash, 0, 9, "PF / Max DD", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 9, f_fmt(profitFactor) + " / " + f_fmt(maxDrawdownPct) + "%", text_color=color.white, text_size=size.tiny)
+    table.cell(dash, 0, 10, "Net / Equity", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 10, f_fmt(netProfit) + " / " + f_fmt(equity), text_color=netProfit >= 0 ? color.lime : color.red, text_size=size.tiny)
+    table.cell(dash, 0, 11, "Posisi / Exit", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 11, (inPosition ? selectedSide : "FLAT") + " / " + lastExitReason, text_color=inPosition ? color.aqua : color.silver, text_size=size.tiny)
+
+alertcondition(signal, "ST-ADX V3.3 confirmed", "ST-ADX V3.3 | {{ticker}} | {{interval}} | close={{close}}")
