@@ -1,6 +1,6 @@
 """ST-ADX V3.3 signal-only scanner. Public BingX OHLCV; no orders or paper positions."""
 from __future__ import annotations
-import json, logging, os, time
+import json, logging, os, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 import ccxt
@@ -12,6 +12,7 @@ from strategy_core import (
 )
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT.parent / "st_adx_v31"))
 STATE = ROOT / "signal_state.json"
 BAR_MS = 3_600_000
 GRACE_MS = 20 * 60_000
