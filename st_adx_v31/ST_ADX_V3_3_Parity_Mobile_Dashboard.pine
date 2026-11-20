@@ -153,52 +153,38 @@ plot(ema53, "EMA 53", color=color.orange, linewidth=1)
 plotshape(signal and selectedSide == "LONG", title="Confirmed V3.3 LONG", style=shape.triangleup, location=location.belowbar, color=color.lime, text="LONG", textcolor=color.white, size=size.tiny)
 plotshape(signal and selectedSide == "SHORT", title="Confirmed V3.3 SHORT", style=shape.triangledown, location=location.abovebar, color=color.red, text="SHORT", textcolor=color.white, size=size.tiny)
 
-// Clean trade-plan overlay: horizontal price levels with compact labels.
-// Lines/labels are only shown while a position is open.
+// Clean trade-plan overlay: exactly one SL, Entry and one final TP.
+// TP is the V3.3 final target (3.5 ATR); no partial TP levels.
 var line slLine = na
 var line entryLine = na
-var line tp1Line = na
-var line tp2Line = na
-var line tp3Line = na
-var line finalTpLine = na
+var line tpLine = na
 var label slLabel = na
 var label entryLabel = na
-var label tp1Label = na
-var label tp2Label = na
-var label tp3Label = na
+var label tpLabel = na
 
-f_pct(float level, float entry) =>
+f_trade_pct(float level, float entry) =>
     na(level) or na(entry) or entry == 0 ? "—" : str.tostring(math.abs(level - entry) / entry * 100.0, "#.##") + "%"
 
 if barstate.islast
     line.delete(slLine)
     line.delete(entryLine)
-    line.delete(tp1Line)
-    line.delete(tp2Line)
-    line.delete(tp3Line)
-    line.delete(finalTpLine)
+    line.delete(tpLine)
     label.delete(slLabel)
     label.delete(entryLabel)
-    label.delete(tp1Label)
-    label.delete(tp2Label)
-    label.delete(tp3Label)
-    if strategy.position_size != 0 and not na(activeSL) and not na(activeTP1)
+    label.delete(tpLabel)
+    if strategy.position_size != 0 and not na(activeSL) and not na(activeTP)
         int x1 = math.max(0, bar_index - 12)
         int x2 = bar_index + 5
         float e = strategy.position_avg_price
         bool isLong = strategy.position_size > 0
-        string sideTxt = isLong ? "LONG" : "SHORT"
+        string slMove = "-" + f_trade_pct(activeSL, e)
+        string tpMove = "+" + f_trade_pct(activeTP, e)
         slLine := line.new(x1, activeSL, x2, activeSL, color=color.red, width=2)
         entryLine := line.new(x1, e, x2, e, color=color.gray, width=2)
-        tp1Line := line.new(x1, activeTP1, x2, activeTP1, color=color.new(color.lime, 25), width=2)
-        tp2Line := line.new(x1, activeTP2, x2, activeTP2, color=color.new(color.lime, 15), width=2)
-        tp3Line := line.new(x1, activeTP3, x2, activeTP3, color=color.lime, width=2)
-        finalTpLine := line.new(x1, activeTP, x2, activeTP, color=color.green, width=2, style=line.style_dashed)
-        slLabel := label.new(x2, activeSL, "SL  " + str.tostring(activeSL, format.mintick) + "  (-" + f_pct(activeSL, e) + ")", style=label.style_label_left, color=color.red, textcolor=color.white, size=size.small)
+        tpLine := line.new(x1, activeTP, x2, activeTP, color=color.lime, width=2)
+        slLabel := label.new(x2, activeSL, "SL  " + str.tostring(activeSL, format.mintick) + " (" + slMove + ")", style=label.style_label_left, color=color.red, textcolor=color.white, size=size.small)
         entryLabel := label.new(x2, e, "ENTRY  " + str.tostring(e, format.mintick), style=label.style_label_left, color=color.gray, textcolor=color.white, size=size.small)
-        tp1Label := label.new(x2, activeTP1, "TP1  " + str.tostring(activeTP1, format.mintick) + "  (+" + f_pct(activeTP1, e) + ")", style=label.style_label_left, color=color.new(color.green, 25), textcolor=color.white, size=size.small)
-        tp2Label := label.new(x2, activeTP2, "TP2  " + str.tostring(activeTP2, format.mintick) + "  (+" + f_pct(activeTP2, e) + ")", style=label.style_label_left, color=color.new(color.green, 15), textcolor=color.white, size=size.small)
-        tp3Label := label.new(x2, activeTP3, "TP3  " + str.tostring(activeTP3, format.mintick) + "  (+" + f_pct(activeTP3, e) + ")", style=label.style_label_left, color=color.green, textcolor=color.white, size=size.small)
+        tpLabel := label.new(x2, activeTP, "TP  " + str.tostring(activeTP, format.mintick) + " (+" + f_trade_pct(activeTP, e) + ")", style=label.style_label_left, color=color.green, textcolor=color.white, size=size.small)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Compact mobile dashboard (top-right; 2 columns, short labels)
