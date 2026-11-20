@@ -9,6 +9,10 @@ on:
     paths:
       - "st_adx_v33_signal/**"
       - ".github/workflows/st_adx_v33_signal.yml"
+  pull_request:
+    paths:
+      - "st_adx_v33_signal/**"
+      - ".github/workflows/st_adx_v33_signal.yml"
 
 concurrency:
   group: st-adx-v33-signal-only
@@ -48,6 +52,7 @@ jobs:
           PY
 
   signal:
+    if: github.event_name != 'pull_request'
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 8
