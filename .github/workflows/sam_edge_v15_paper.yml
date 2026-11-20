@@ -1,15 +1,7 @@
-name: ST-ADX V3.4 - BingX PAPER Forward (50 closed trades)
+name: ST-ADX V3.4 — Research Only (Production Paused)
 
 on:
-  schedule:
-    - cron: "2 * * * *"
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'st_adx_v34_paper/strategy_core.py'
-      - 'st_adx_v34_paper/paper_forward_github.py'
-      - '.github/workflows/sam_edge_v15_paper.yml'
 
 concurrency:
   group: st-adx-v34-paper-forward
@@ -57,7 +49,7 @@ jobs:
 
   paper:
     needs: parity
-    if: needs.parity.result == 'success'
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
