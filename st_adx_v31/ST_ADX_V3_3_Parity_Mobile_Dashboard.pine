@@ -152,31 +152,53 @@ plot(stLine, "Supertrend 12/2.8", color=bull ? color.lime : color.red, linewidth
 plot(ema53, "EMA 53", color=color.orange, linewidth=1)
 plotshape(signal and selectedSide == "LONG", title="Confirmed V3.3 LONG", style=shape.triangleup, location=location.belowbar, color=color.lime, text="LONG", textcolor=color.white, size=size.tiny)
 plotshape(signal and selectedSide == "SHORT", title="Confirmed V3.3 SHORT", style=shape.triangledown, location=location.abovebar, color=color.red, text="SHORT", textcolor=color.white, size=size.tiny)
-plot(strategy.position_size != 0 ? activeSL : na, "Active SL", color=color.red, style=plot.style_linebr, linewidth=2)
-plot(strategy.position_size != 0 ? strategy.position_avg_price : na, "Entry", color=color.gray, style=plot.style_linebr, linewidth=1)
-plot(strategy.position_size != 0 ? activeTP1 : na, "TP1 (1R)", color=color.new(color.lime, 35), style=plot.style_linebr)
-plot(strategy.position_size != 0 ? activeTP2 : na, "TP2 (2R)", color=color.new(color.lime, 20), style=plot.style_linebr)
-plot(strategy.position_size != 0 ? activeTP3 : na, "TP3 (3R)", color=color.lime, style=plot.style_linebr, linewidth=2)
-plot(strategy.position_size != 0 ? activeTP : na, "Final TP (3.5 ATR)", color=color.new(color.green, 0), style=plot.style_linebr, linewidth=2)
 
-// Price tags on the right side of the active trade.
+// Clean trade-plan overlay: horizontal price levels with compact labels.
+// Lines/labels are only shown while a position is open.
+var line slLine = na
+var line entryLine = na
+var line tp1Line = na
+var line tp2Line = na
+var line tp3Line = na
+var line finalTpLine = na
+var label slLabel = na
+var label entryLabel = na
+var label tp1Label = na
+var label tp2Label = na
+var label tp3Label = na
+
+f_pct(float level, float entry) =>
+    na(level) or na(entry) or entry == 0 ? "—" : str.tostring(math.abs(level - entry) / entry * 100.0, "#.##") + "%"
+
 if barstate.islast
-    if not na(slTag)
-        label.delete(slTag)
-    if not na(entryTag)
-        label.delete(entryTag)
-    if not na(tp1Tag)
-        label.delete(tp1Tag)
-    if not na(tp2Tag)
-        label.delete(tp2Tag)
-    if not na(tp3Tag)
-        label.delete(tp3Tag)
-    if strategy.position_size != 0
-        slTag := label.new(bar_index + 1, activeSL, "SL  " + str.tostring(activeSL, format.mintick), style=label.style_label_left, color=color.red, textcolor=color.white)
-        entryTag := label.new(bar_index + 1, strategy.position_avg_price, "Entry  " + str.tostring(strategy.position_avg_price, format.mintick), style=label.style_label_left, color=color.gray, textcolor=color.white)
-        tp1Tag := label.new(bar_index + 1, activeTP1, "TP1  " + str.tostring(activeTP1, format.mintick), style=label.style_label_left, color=color.new(color.green, 35), textcolor=color.white)
-        tp2Tag := label.new(bar_index + 1, activeTP2, "TP2  " + str.tostring(activeTP2, format.mintick), style=label.style_label_left, color=color.new(color.green, 20), textcolor=color.white)
-        tp3Tag := label.new(bar_index + 1, activeTP3, "TP3  " + str.tostring(activeTP3, format.mintick), style=label.style_label_left, color=color.green, textcolor=color.white)
+    line.delete(slLine)
+    line.delete(entryLine)
+    line.delete(tp1Line)
+    line.delete(tp2Line)
+    line.delete(tp3Line)
+    line.delete(finalTpLine)
+    label.delete(slLabel)
+    label.delete(entryLabel)
+    label.delete(tp1Label)
+    label.delete(tp2Label)
+    label.delete(tp3Label)
+    if strategy.position_size != 0 and not na(activeSL) and not na(activeTP1)
+        int x1 = math.max(0, bar_index - 12)
+        int x2 = bar_index + 5
+        float e = strategy.position_avg_price
+        bool isLong = strategy.position_size > 0
+        string sideTxt = isLong ? "LONG" : "SHORT"
+        slLine := line.new(x1, activeSL, x2, activeSL, color=color.red, width=2)
+        entryLine := line.new(x1, e, x2, e, color=color.gray, width=2)
+        tp1Line := line.new(x1, activeTP1, x2, activeTP1, color=color.new(color.lime, 25), width=2)
+        tp2Line := line.new(x1, activeTP2, x2, activeTP2, color=color.new(color.lime, 15), width=2)
+        tp3Line := line.new(x1, activeTP3, x2, activeTP3, color=color.lime, width=2)
+        finalTpLine := line.new(x1, activeTP, x2, activeTP, color=color.green, width=2, style=line.style_dashed)
+        slLabel := label.new(x2, activeSL, "SL  " + str.tostring(activeSL, format.mintick) + "  (-" + f_pct(activeSL, e) + ")", style=label.style_label_left, color=color.red, textcolor=color.white, size=size.small)
+        entryLabel := label.new(x2, e, "ENTRY  " + str.tostring(e, format.mintick), style=label.style_label_left, color=color.gray, textcolor=color.white, size=size.small)
+        tp1Label := label.new(x2, activeTP1, "TP1  " + str.tostring(activeTP1, format.mintick) + "  (+" + f_pct(activeTP1, e) + ")", style=label.style_label_left, color=color.new(color.green, 25), textcolor=color.white, size=size.small)
+        tp2Label := label.new(x2, activeTP2, "TP2  " + str.tostring(activeTP2, format.mintick) + "  (+" + f_pct(activeTP2, e) + ")", style=label.style_label_left, color=color.new(color.green, 15), textcolor=color.white, size=size.small)
+        tp3Label := label.new(x2, activeTP3, "TP3  " + str.tostring(activeTP3, format.mintick) + "  (+" + f_pct(activeTP3, e) + ")", style=label.style_label_left, color=color.green, textcolor=color.white, size=size.small)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Compact mobile dashboard (top-right; 2 columns, short labels)
