@@ -76,6 +76,8 @@ jobs:
             echo "No signal state to persist"
             exit 0
           fi
+          TMP_STATE="$(mktemp)"
+          cp "$FILE" "$TMP_STATE"
           git config user.name "ST-ADX V3.3 Signal Bot"
           git config user.email "st-adx-v33-signal-bot@users.noreply.github.com"
           for attempt in 1 2 3 4 5; do
@@ -83,15 +85,7 @@ jobs:
             git reset --hard origin/main
             git checkout -B main origin/main
             mkdir -p st_adx_v33_signal
-            # Preserve the state produced by this scan across the reset.
-            # The runner writes this file before this persistence step.
-            if [ -f "$RUNNER_TEMP/st_adx_v33_signal_state.json" ]; then
-              cp "$RUNNER_TEMP/st_adx_v33_signal_state.json" "$FILE"
-            fi
-            if [ ! -f "$FILE" ]; then
-              echo "State file unavailable after checkout"
-              exit 1
-            fi
+            cp "$TMP_STATE" "$FILE"
             git add "$FILE"
             if git diff --cached --quiet; then
               echo "Signal state unchanged"
