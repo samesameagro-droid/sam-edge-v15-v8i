@@ -145,7 +145,7 @@ def select_from_is(all_trades):
                      "selected_from_is":bool(passed)})
     return pd.DataFrame(rows)
 
-def portfolio_replay(selected_trades, label):
+def portfolio_replay(selected_trades, label, initial_equity=INITIAL_EQUITY):
     """Chronological portfolio replay; overlapping open stop-risk capped at 5%.
 
     Each trade's R is normalized by its own modeled risk cash in the isolated
@@ -155,12 +155,13 @@ def portfolio_replay(selected_trades, label):
     if selected_trades.empty:
         return {"label":label,"trades":0,"wins":0,"win_rate_pct":0.0,
                 "pf":0.0,"net_usdt":0.0,"max_dd_pct":0.0,
-                "ending_equity":INITIAL_EQUITY,"risk_rejections":0}, pd.DataFrame()
+                "ending_equity":initial_equity,"risk_rejections":0,"max_stop_risk_stress_dd_pct":0.0}, pd.DataFrame()
     x=selected_trades.sort_values(["entry_dt","coin","side"]).reset_index(drop=True)
     open_pos=[]
-    equity=INITIAL_EQUITY
+    equity=float(initial_equity)
     peak=equity
     maxdd=0.0
+    max_stress_dd=0.0
     closed=[]
     rejected=0
     for _,tr in x.iterrows():
@@ -180,8 +181,11 @@ def portfolio_replay(selected_trades, label):
             rejected+=1
             continue
         open_pos.append({"coin":tr.coin,"side":tr.side,"entry_dt":tr.entry_dt,
+                         "entry_month":tr.entry_dt.strftime("%Y-%m"),
                          "exit_dt":tr.exit_dt,"R":float(tr.R),
                          "risk_cash":risk_cash,"reason":tr.reason})
+        stress_equity=equity-sum(p["risk_cash"] for p in open_pos)
+        max_stress_dd=max(max_stress_dd,(peak-stress_equity)/peak*100 if peak>0 else 0.0)
     for p in sorted(open_pos,key=lambda z:z["exit_dt"]):
         pnl=p["R"]*p["risk_cash"]
         equity+=pnl
@@ -192,45 +196,74 @@ def portfolio_replay(selected_trades, label):
     if c.empty:
         return {"label":label,"trades":0,"wins":0,"win_rate_pct":0.0,
                 "pf":0.0,"net_usdt":0.0,"max_dd_pct":0.0,
-                "ending_equity":INITIAL_EQUITY,"risk_rejections":rejected},c
+                "ending_equity":initial_equity,"risk_rejections":rejected,
+                "max_stop_risk_stress_dd_pct":round(max_stress_dd,3)},c
     wins=c[c.pnl_usdt>0]
     losses=c[c.pnl_usdt<0]
     gp=float(wins.pnl_usdt.sum()); gl=abs(float(losses.pnl_usdt.sum()))
-    eq=INITIAL_EQUITY+c.pnl_usdt.cumsum()
+    eq=initial_equity+c.pnl_usdt.cumsum()
     dd=((eq.cummax()-eq)/eq.cummax().replace(0,np.nan)).max()
     result={"label":label,"trades":int(len(c)),"wins":int(len(wins)),
             "win_rate_pct":round(len(wins)/len(c)*100,2),
             "pf":round(gp/gl,4) if gl else (999.0 if gp else 0.0),
             "net_usdt":round(float(c.pnl_usdt.sum()),4),
             "max_dd_pct":round(float(dd)*100,3) if pd.notna(dd) else 0.0,
-            "ending_equity":round(float(INITIAL_EQUITY+c.pnl_usdt.sum()),4),
-            "risk_rejections":int(rejected)}
+            "ending_equity":round(float(initial_equity+c.pnl_usdt.sum()),4),
+            "risk_rejections":int(rejected),
+            "max_stop_risk_stress_dd_pct":round(float(max_stress_dd),3)}
     return result,c
 
 def walk_forward(all_trades):
-    """Expanding monthly OOS: select using only prior 6 calendar months."""
-    rows=[]
+    """Walk-forward selection by prior 6 months, then one continuous OOS portfolio.
+
+    Monthly selections are made without using that month's test data. All
+    selected monthly test trades are combined and replayed once, so equity
+    compounds continuously and positions can cross month boundaries.
+    """
+    monthly=[]; selected_test_frames=[]
     month_starts=pd.date_range("2026-07-01","2026-11-01",freq="MS",tz="UTC")
     for month in month_starts:
         train_start=month-pd.DateOffset(months=6)
         train=all_trades[(all_trades.entry_dt>=train_start)&(all_trades.entry_dt<month)]
-        selected=[]
+        selected=set()
         for (coin,side),g in train.groupby(["coin","side"]):
             m=metrics(g)
             if m["trades"]>=MIN_WF_TRADES and m["pf"]>=MIN_WF_PF and m["net_R"]>0:
-                selected.append((coin,side))
+                selected.add((coin,side))
         test_end=month+pd.DateOffset(months=1)
         test=all_trades[(all_trades.entry_dt>=month)&(all_trades.entry_dt<test_end)]
         if selected and not test.empty:
-            mask=[(r.coin,r.side) in set(selected) for r in test.itertuples()]
-            test=test.loc[mask]
+            test=test[[(r.coin,r.side) in selected for r in test.itertuples()]].copy()
         else:
-            test=test.iloc[0:0]
-        res,_=portfolio_replay(test,f"WF_{month.strftime('%Y-%m')}")
-        rows.append({"train_start":train_start.isoformat(),"train_end_exclusive":month.isoformat(),
-                     "test_start":month.isoformat(),"test_end_exclusive":test_end.isoformat(),
-                     "selected_coin_sides":len(selected),**res})
-    return pd.DataFrame(rows)
+            test=test.iloc[0:0].copy()
+        if not test.empty:
+            selected_test_frames.append(test)
+        monthly.append({"month":month.strftime("%Y-%m"),
+                        "train_start":train_start.isoformat(),
+                        "train_end_exclusive":month.isoformat(),
+                        "test_start":month.isoformat(),
+                        "test_end_exclusive":test_end.isoformat(),
+                        "selected_coin_sides":len(selected),
+                        "selected_test_entries":int(len(test)),
+                        "test_window_complete":bool(test_end<=END_DT)})
+    combined=pd.concat(selected_test_frames,ignore_index=True) if selected_test_frames else all_trades.iloc[0:0].copy()
+    wf_result,wf_closed=portfolio_replay(combined,"WALK_FORWARD_CONTINUOUS")
+    if not wf_closed.empty:
+        grouped=wf_closed.groupby("entry_month")
+        for row in monthly:
+            g=grouped.get_group(row["month"]) if row["month"] in grouped.groups else wf_closed.iloc[0:0]
+            wins=g[g.pnl_usdt>0]; losses=g[g.pnl_usdt<0]
+            gp=float(wins.pnl_usdt.sum()); gl=abs(float(losses.pnl_usdt.sum()))
+            row.update({"closed_trades":int(len(g)),
+                        "win_rate_pct":round(len(wins)/len(g)*100,2) if len(g) else 0.0,
+                        "pf":round(gp/gl,4) if gl else (999.0 if gp else 0.0),
+                        "net_usdt":round(float(g.pnl_usdt.sum()),4),
+                        "ending_equity_after_month":round(float(g.sort_values("exit_dt").equity_after.iloc[-1]),4) if len(g) else None})
+    else:
+        for row in monthly:
+            row.update({"closed_trades":0,"win_rate_pct":0.0,"pf":0.0,
+                        "net_usdt":0.0,"ending_equity_after_month":None})
+    return pd.DataFrame(monthly),wf_result,wf_closed
 
 def main():
     ex=ccxt.bingx({"enableRateLimit":True,"timeout":30000,
@@ -283,8 +316,9 @@ def main():
     holdout=selected[selected.entry_dt>=IS_END]
     holdout_result,holdout_closed=portfolio_replay(holdout,"SELECTED_OOS_FROM_2026_09_01")
     holdout_closed.to_csv(OUT/"selected_oos_closed.csv",index=False)
-    wf=walk_forward(all_t)
+    wf,wf_result,wf_closed=walk_forward(all_t)
     wf.to_csv(OUT/"walk_forward_monthly.csv",index=False)
+    wf_closed.to_csv(OUT/"walk_forward_continuous_closed.csv",index=False)
     pd.DataFrame(failures).to_csv(OUT/"data_failures.csv",index=False)
     summary={
       "strategy_core":"unchanged ST-ADX V3.3",
@@ -297,6 +331,7 @@ def main():
                    "max_aggregate_open_risk":MAX_AGG_RISK},
       "baseline_23coin_full":base_result,"baseline_23coin_oos":base_oos_result,
       "selected_directional_full":cand_result,"selected_directional_oos":holdout_result,
+      "walk_forward_continuous":wf_result,
       "walk_forward_months":wf.to_dict(orient="records"),
       "universe_filter":"USDT linear perpetuals; excluded NCCO/NCS/NCFX synthetic non-crypto families",
       "excluded_non_crypto_markets":int(len(excluded_markets)),
@@ -305,7 +340,7 @@ def main():
         "Universe is selected from a current Top-150 volume snapshot, not point-in-time historical constituents; survivorship/selection bias remains.",
         "Crypto-only screening excludes known BingX synthetic non-crypto prefixes NCCO, NCS and NCFX; this is an explicit heuristic and must be reviewed against exchange metadata.",
         "Portfolio replay uses standalone trade R normalized by modeled risk; one open position per coin and 5% aggregate initial stop-risk cap are enforced.",
-        "Drawdown is measured on realized closed-trade equity, not intrabar mark-to-market equity; confirm candle-by-candle parity against live runner before deployment.",
+        "Drawdown is measured on realized closed-trade equity. max_stop_risk_stress_dd_pct is a simultaneous open-stop-risk stress estimate, not intrabar mark-to-market equity; candle-by-candle parity remains unverified.",
         "Funding is excluded; fee/slippage assumptions inherited from V3.3 research simulator.",
         "Open positions at data end are not forced closed by source simulator; inspect open_at_data_end flags."
       ]
