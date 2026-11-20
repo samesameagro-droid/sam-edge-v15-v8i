@@ -178,8 +178,11 @@ def main():
         ((all_t.side=="SHORT") & all_t.coin.isin(short_allow))
     ]
     base_result,base_closed=portfolio_replay(baseline,"V3_3_BASELINE_23COIN")
+    baseline_oos=baseline[baseline.entry_dt>=IS_END]
+    base_oos_result,base_oos_closed=portfolio_replay(baseline_oos,"V3_3_BASELINE_23COIN_OOS_FROM_2026_09_01")
     cand_result,cand_closed=portfolio_replay(selected,"IS_SELECTED_DIRECTIONAL_UNIVERSE")
     base_closed.to_csv(OUT/"baseline_portfolio_closed.csv",index=False)
+    base_oos_closed.to_csv(OUT/"baseline_portfolio_oos_closed.csv",index=False)
     cand_closed.to_csv(OUT/"selected_portfolio_closed.csv",index=False)
     # Later holdout metrics for selected set, strictly reported after IS selection.
     holdout=selected[selected.entry_dt>=IS_END]
