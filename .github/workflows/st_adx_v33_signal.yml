@@ -4,11 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "7 * * * *"
-  push:
-    branches: [main]
-    paths:
-      - "st_adx_v33_signal/**"
-      - ".github/workflows/st_adx_v33_signal.yml"
   pull_request:
     paths:
       - "st_adx_v33_signal/**"
