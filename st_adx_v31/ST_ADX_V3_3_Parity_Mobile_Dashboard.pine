@@ -165,6 +165,8 @@ var label tpLabel = na
 f_trade_pct(float level, float entry) =>
     na(level) or na(entry) or entry == 0 ? "—" : str.tostring(math.abs(level - entry) / entry * 100.0, "#.##") + "%"
 
+// Draw trade levels only while a position is open. Once SL/TP closes,
+ // all three lines and labels are deleted; the next position gets fresh levels.
 if barstate.islast
     line.delete(slLine)
     line.delete(entryLine)
@@ -172,6 +174,12 @@ if barstate.islast
     label.delete(slLabel)
     label.delete(entryLabel)
     label.delete(tpLabel)
+    slLine := na
+    entryLine := na
+    tpLine := na
+    slLabel := na
+    entryLabel := na
+    tpLabel := na
     if strategy.position_size != 0 and not na(activeSL) and not na(activeTP)
         int x1 = math.max(0, bar_index - 12)
         int x2 = bar_index + 5
