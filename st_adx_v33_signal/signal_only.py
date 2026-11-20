@@ -6,13 +6,14 @@ from pathlib import Path
 import ccxt
 import pandas as pd
 import requests
+
+# Resolve the shared V3.3 strategy core before importing it.
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT.parent / "st_adx_v31"))
 from strategy_core import (
     add_indicators, LONG_ALLOWLIST, SHORT_ALLOWLIST,
     ATR_SL_MULTIPLIER, ATR_TP_MULTIPLIER,
 )
-
-ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT.parent / "st_adx_v31"))
 STATE = ROOT / "signal_state.json"
 BAR_MS = 3_600_000
 GRACE_MS = 20 * 60_000
