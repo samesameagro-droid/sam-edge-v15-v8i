@@ -1,0 +1,50 @@
+name: Telegram Connection Test — SAM EDGE
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  telegram-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Validate Telegram secrets
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          test -n "$TELEGRAM_BOT_TOKEN" || { echo "TELEGRAM_BOT_TOKEN is missing"; exit 1; }
+          test -n "$TELEGRAM_CHAT_ID" || { echo "TELEGRAM_CHAT_ID is missing"; exit 1; }
+      - name: Send TEST message to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.error
+          token = os.environ["TELEGRAM_BOT_TOKEN"]
+          chat_id = os.environ["TELEGRAM_CHAT_ID"]
+          payload = {
+              "chat_id": chat_id,
+              "text": "TEST — Koneksi Telegram SAM EDGE berhasil.\n\nIni hanya pesan uji, bukan sinyal trading. Tidak ada order yang dikirim."
+          }
+          req = urllib.request.Request(
+              f"https://api.telegram.org/bot{token}/sendMessage",
+              data=json.dumps(payload).encode(),
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=20) as response:
+                  result = json.loads(response.read().decode())
+              if not result.get("ok"):
+                  raise SystemExit(f"Telegram API returned ok=false: {result}")
+              print("TELEGRAM TEST SENT")
+              print("message_id:", result["result"]["message_id"])
+          except urllib.error.HTTPError as exc:
+              print(exc.read().decode())
+              raise
+          PY
