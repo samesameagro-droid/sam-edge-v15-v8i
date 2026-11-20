@@ -258,7 +258,7 @@ def walk_forward(all_trades):
                         "win_rate_pct":round(len(wins)/len(g)*100,2) if len(g) else 0.0,
                         "pf":round(gp/gl,4) if gl else (999.0 if gp else 0.0),
                         "net_usdt":round(float(g.pnl_usdt.sum()),4),
-                        "ending_equity_after_month":round(float(g.sort_values("exit_dt").equity_after.iloc[-1]),4) if len(g) else None})
+                        "equity_after_last_exit_for_entry_month_cohort":round(float(g.sort_values("exit_dt").equity_after.iloc[-1]),4) if len(g) else None})
     else:
         for row in monthly:
             row.update({"closed_trades":0,"win_rate_pct":0.0,"pf":0.0,
