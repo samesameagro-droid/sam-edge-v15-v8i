@@ -81,6 +81,14 @@ bool signal = barstate.isconfirmed and (longSignal or shortSignal)
 var float tradeATR = na
 var float activeSL = na
 var float activeTP = na
+var float activeTP1 = na
+var float activeTP2 = na
+var float activeTP3 = na
+var label slTag = na
+var label entryTag = na
+var label tp1Tag = na
+var label tp2Tag = na
+var label tp3Tag = na
 var string lastExitReason = "—"
 var int lastClosedCount = 0
 
@@ -103,6 +111,9 @@ if canEnter
 if strategy.position_size > 0 and not na(tradeATR)
     activeSL := strategy.position_avg_price - tradeATR * slATR
     activeTP := strategy.position_avg_price + tradeATR * tpATR
+    activeTP1 := strategy.position_avg_price + tradeATR * slATR
+    activeTP2 := strategy.position_avg_price + tradeATR * slATR * 2.0
+    activeTP3 := strategy.position_avg_price + tradeATR * slATR * 3.0
     strategy.exit("LONG SL/TP", from_entry="LONG", stop=activeSL, limit=activeTP)
     if stDirection > 0 and barstate.isconfirmed
         lastExitReason := "ST FLIP"
@@ -111,6 +122,9 @@ if strategy.position_size > 0 and not na(tradeATR)
 if strategy.position_size < 0 and not na(tradeATR)
     activeSL := strategy.position_avg_price + tradeATR * slATR
     activeTP := strategy.position_avg_price - tradeATR * tpATR
+    activeTP1 := strategy.position_avg_price - tradeATR * slATR
+    activeTP2 := strategy.position_avg_price - tradeATR * slATR * 2.0
+    activeTP3 := strategy.position_avg_price - tradeATR * slATR * 3.0
     strategy.exit("SHORT SL/TP", from_entry="SHORT", stop=activeSL, limit=activeTP)
     if stDirection < 0 and barstate.isconfirmed
         lastExitReason := "ST FLIP"
@@ -124,6 +138,9 @@ if strategy.closedtrades > lastClosedCount
     tradeATR := na
     activeSL := na
     activeTP := na
+    activeTP1 := na
+    activeTP2 := na
+    activeTP3 := na
 
 float winRate = strategy.closedtrades > 0 ? strategy.wintrades * 100.0 / strategy.closedtrades : 0.0
 float profitFactor = strategy.grossloss != 0 ? strategy.grossprofit / math.abs(strategy.grossloss) : (strategy.grossprofit > 0 ? 999.0 : 0.0)
@@ -136,7 +153,30 @@ plot(ema53, "EMA 53", color=color.orange, linewidth=1)
 plotshape(signal and selectedSide == "LONG", title="Confirmed V3.3 LONG", style=shape.triangleup, location=location.belowbar, color=color.lime, text="LONG", textcolor=color.white, size=size.tiny)
 plotshape(signal and selectedSide == "SHORT", title="Confirmed V3.3 SHORT", style=shape.triangledown, location=location.abovebar, color=color.red, text="SHORT", textcolor=color.white, size=size.tiny)
 plot(strategy.position_size != 0 ? activeSL : na, "Active SL", color=color.red, style=plot.style_linebr, linewidth=2)
-plot(strategy.position_size != 0 ? activeTP : na, "Active TP", color=color.lime, style=plot.style_linebr, linewidth=2)
+plot(strategy.position_size != 0 ? strategy.position_avg_price : na, "Entry", color=color.gray, style=plot.style_linebr, linewidth=1)
+plot(strategy.position_size != 0 ? activeTP1 : na, "TP1 (1R)", color=color.new(color.lime, 35), style=plot.style_linebr)
+plot(strategy.position_size != 0 ? activeTP2 : na, "TP2 (2R)", color=color.new(color.lime, 20), style=plot.style_linebr)
+plot(strategy.position_size != 0 ? activeTP3 : na, "TP3 (3R)", color=color.lime, style=plot.style_linebr, linewidth=2)
+plot(strategy.position_size != 0 ? activeTP : na, "Final TP (3.5 ATR)", color=color.new(color.green, 0), style=plot.style_linebr, linewidth=2)
+
+// Price tags on the right side of the active trade.
+if barstate.islast
+    if not na(slTag)
+        label.delete(slTag)
+    if not na(entryTag)
+        label.delete(entryTag)
+    if not na(tp1Tag)
+        label.delete(tp1Tag)
+    if not na(tp2Tag)
+        label.delete(tp2Tag)
+    if not na(tp3Tag)
+        label.delete(tp3Tag)
+    if strategy.position_size != 0
+        slTag := label.new(bar_index + 1, activeSL, "SL  " + str.tostring(activeSL, format.mintick), style=label.style_label_left, color=color.red, textcolor=color.white)
+        entryTag := label.new(bar_index + 1, strategy.position_avg_price, "Entry  " + str.tostring(strategy.position_avg_price, format.mintick), style=label.style_label_left, color=color.gray, textcolor=color.white)
+        tp1Tag := label.new(bar_index + 1, activeTP1, "TP1  " + str.tostring(activeTP1, format.mintick), style=label.style_label_left, color=color.new(color.green, 35), textcolor=color.white)
+        tp2Tag := label.new(bar_index + 1, activeTP2, "TP2  " + str.tostring(activeTP2, format.mintick), style=label.style_label_left, color=color.new(color.green, 20), textcolor=color.white)
+        tp3Tag := label.new(bar_index + 1, activeTP3, "TP3  " + str.tostring(activeTP3, format.mintick), style=label.style_label_left, color=color.green, textcolor=color.white)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Compact mobile dashboard (top-right; 2 columns, short labels)
@@ -155,32 +195,40 @@ bool directionEMA = selectedSide == "LONG" ? (aboveEMA or flipBull) : (belowEMA 
 bool directionExtension = selectedSide == "LONG" or shortExtensionATR <= shortMaxExtension
 bool ready = modelEnabled and directionTrend and strong and directionRsi and directionCandle and directionEMA and directionExtension
 
-var table dash = table.new(position.top_right, 2, 12, bgcolor=color.rgb(17,24,39), frame_color=color.rgb(71,85,105), frame_width=1, border_color=color.rgb(51,65,85), border_width=1)
+var table dash = table.new(position.top_right, 2, 15, bgcolor=color.rgb(17,24,39), frame_color=color.rgb(71,85,105), frame_width=1, border_color=color.rgb(51,65,85), border_width=1)
+f_check(bool ok) => ok ? "✓ OK" : "✕ NO"
+f_check_color(bool ok) => ok ? color.lime : color.red
 if barstate.islast
     color head = color.rgb(30,41,59)
     table.cell(dash, 0, 0, "ST-ADX V3.3", text_color=color.white, bgcolor=head, text_size=size.small)
     table.cell(dash, 1, 0, base + " / " + selectedSide, text_color=selectedSide == "LONG" ? color.lime : color.red, bgcolor=head, text_size=size.small)
-    table.cell(dash, 0, 1, "Status", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 1, ready ? "SETUP READY" : (strategy.position_size != 0 ? "IN POSITION" : "WAIT"), text_color=ready ? color.lime : color.orange, text_size=size.tiny)
+    table.cell(dash, 0, 1, "SIGNAL CHECKLIST", text_color=color.white, bgcolor=head, text_size=size.tiny)
+    table.cell(dash, 1, 1, ready ? "✓ ALL PASS" : "WAIT", text_color=ready ? color.lime : color.orange, bgcolor=head, text_size=size.tiny)
     table.cell(dash, 0, 2, "Allowlist", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 2, f_status(modelEnabled), text_color=f_status_color(modelEnabled), text_size=size.tiny)
-    table.cell(dash, 0, 3, "Trend / ADX", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 3, trendText + " / " + f_fmt(adx), text_color=directionTrend and adx > adxMin ? color.lime : color.orange, text_size=size.tiny)
-    table.cell(dash, 0, 4, "ADX naik 2x", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 4, f_status(adxRising), text_color=f_status_color(adxRising), text_size=size.tiny)
-    table.cell(dash, 0, 5, "RSI", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 5, f_fmt(rsi) + " / " + f_status(directionRsi), text_color=f_status_color(directionRsi), text_size=size.tiny)
-    table.cell(dash, 0, 6, "EMA 53", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 6, f_status(directionEMA), text_color=f_status_color(directionEMA), text_size=size.tiny)
-    table.cell(dash, 0, 7, "SHORT ext", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 7, selectedSide == "LONG" ? "N/A" : f_fmt(shortExtensionATR) + " ATR", text_color=f_status_color(directionExtension), text_size=size.tiny)
-    table.cell(dash, 0, 8, "Trade / Win%", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 8, str.tostring(strategy.closedtrades) + " / " + f_fmt(winRate) + "%", text_color=color.white, text_size=size.tiny)
-    table.cell(dash, 0, 9, "PF / Max DD", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 9, f_fmt(profitFactor) + " / " + f_fmt(maxDrawdownPct) + "%", text_color=color.white, text_size=size.tiny)
-    table.cell(dash, 0, 10, "Net / Equity", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 10, f_fmt(strategy.netprofit) + " / " + f_fmt(strategy.equity), text_color=strategy.netprofit >= 0 ? color.lime : color.red, text_size=size.tiny)
-    table.cell(dash, 0, 11, "Posisi / Exit", text_color=color.silver, text_size=size.tiny)
-    table.cell(dash, 1, 11, (strategy.position_size != 0 ? selectedSide : "FLAT") + " / " + lastExitReason, text_color=strategy.position_size != 0 ? color.aqua : color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 2, f_check(modelEnabled), text_color=f_check_color(modelEnabled), text_size=size.tiny)
+    table.cell(dash, 0, 3, "Supertrend " + trendText, text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 3, f_check(directionTrend), text_color=f_check_color(directionTrend), text_size=size.tiny)
+    table.cell(dash, 0, 4, "ADX > " + str.tostring(adxMin), text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 4, f_fmt(adx) + " / " + f_check(adx > adxMin), text_color=f_check_color(adx > adxMin), text_size=size.tiny)
+    table.cell(dash, 0, 5, "ADX naik 2 bar", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 5, f_check(adxRising), text_color=f_check_color(adxRising), text_size=size.tiny)
+    table.cell(dash, 0, 6, "RSI range", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 6, f_fmt(rsi) + " / " + f_check(directionRsi), text_color=f_check_color(directionRsi), text_size=size.tiny)
+    table.cell(dash, 0, 7, "Candle confirm", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 7, f_check(directionCandle), text_color=f_check_color(directionCandle), text_size=size.tiny)
+    table.cell(dash, 0, 8, "EMA 53", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 8, f_check(directionEMA), text_color=f_check_color(directionEMA), text_size=size.tiny)
+    table.cell(dash, 0, 9, "SHORT ext <= 3.25 ATR", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 9, selectedSide == "LONG" ? "N/A" : f_fmt(shortExtensionATR) + " / " + f_check(directionExtension), text_color=f_check_color(directionExtension), text_size=size.tiny)
+    table.cell(dash, 0, 10, "SETUP", text_color=color.white, bgcolor=head, text_size=size.tiny)
+    table.cell(dash, 1, 10, ready ? "✓ VALID" : "NOT READY", text_color=ready ? color.lime : color.orange, bgcolor=head, text_size=size.tiny)
+    table.cell(dash, 0, 11, "Trade / Win%", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 11, str.tostring(strategy.closedtrades) + " / " + f_fmt(winRate) + "%", text_color=color.white, text_size=size.tiny)
+    table.cell(dash, 0, 12, "PF / Max DD", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 12, f_fmt(profitFactor) + " / " + f_fmt(maxDrawdownPct) + "%", text_color=color.white, text_size=size.tiny)
+    table.cell(dash, 0, 13, "Net / Equity", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 13, f_fmt(strategy.netprofit) + " / " + f_fmt(strategy.equity), text_color=strategy.netprofit >= 0 ? color.lime : color.red, text_size=size.tiny)
+    table.cell(dash, 0, 14, "Position", text_color=color.silver, text_size=size.tiny)
+    table.cell(dash, 1, 14, strategy.position_size > 0 ? "LONG" : strategy.position_size < 0 ? "SHORT" : "FLAT", text_color=strategy.position_size > 0 ? color.lime : strategy.position_size < 0 ? color.red : color.silver, text_size=size.tiny)
 
 alertcondition(signal, "ST-ADX V3.3 confirmed", "ST-ADX V3.3 | {{ticker}} | {{interval}} | close={{close}}")
