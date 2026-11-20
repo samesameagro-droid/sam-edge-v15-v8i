@@ -1,0 +1,108 @@
+name: ST-ADX V3.3 — Manual Signal Only
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "st_adx_v33_signal/**"
+      - ".github/workflows/st_adx_v33_signal.yml"
+
+concurrency:
+  group: st-adx-v33-signal-only
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Validate V3.3 signal engine
+        run: |
+          python -m py_compile st_adx_v31/strategy_core.py st_adx_v33_signal/signal_only.py
+          cd st_adx_v31
+          python - <<'PY'
+          import strategy_core as core
+          assert core.ST_LENGTH == 12 and core.ST_MULTIPLIER == 2.8
+          assert core.DMI_LENGTH == 40 and core.ADX_SMOOTHING == 40
+          assert core.ADX_MIN == 30.0 and core.ADX_RISING_BARS == 2
+          assert core.RSI_LONG_MIN == 60.0 and core.RSI_LONG_MAX == 70.0
+          assert core.RSI_SHORT_MIN == 35.0 and core.RSI_SHORT_MAX == 40.0
+          assert core.SHORT_MAX_EMA_EXT_ATR == 3.25
+          assert core.ATR_SL_MULTIPLIER == 1.2 and core.ATR_TP_MULTIPLIER == 3.5
+          assert len(core.LONG_ALLOWLIST) == 11 and len(core.SHORT_ALLOWLIST) == 14
+          assert len(core.LONG_ALLOWLIST | core.SHORT_ALLOWLIST) == 23
+          print("V3.3 BASELINE CONFIG PASS")
+          PY
+
+  signal:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Scan V3.3 and send manual Telegram alerts only
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -u st_adx_v33_signal/signal_only.py
+      - name: Persist signal deduplication state
+        if: always()
+        shell: bash
+        run: |
+          set -e
+          FILE="st_adx_v33_signal/signal_state.json"
+          if [ ! -f "$FILE" ]; then
+            echo "No signal state to persist"
+            exit 0
+          fi
+          git config user.name "ST-ADX V3.3 Signal Bot"
+          git config user.email "st-adx-v33-signal-bot@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            git checkout -B main origin/main
+            mkdir -p st_adx_v33_signal
+            # Preserve the state produced by this scan across the reset.
+            # The runner writes this file before this persistence step.
+            if [ -f "$RUNNER_TEMP/st_adx_v33_signal_state.json" ]; then
+              cp "$RUNNER_TEMP/st_adx_v33_signal_state.json" "$FILE"
+            fi
+            if [ ! -f "$FILE" ]; then
+              echo "State file unavailable after checkout"
+              exit 1
+            fi
+            git add "$FILE"
+            if git diff --cached --quiet; then
+              echo "Signal state unchanged"
+              exit 0
+            fi
+            git commit -m "signal: persist ST-ADX V3.3 dedupe state"
+            if git push origin HEAD:main; then
+              echo "V3.3 signal state persisted"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Failed to persist V3.3 signal state"
+          exit 1
