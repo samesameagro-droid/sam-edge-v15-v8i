@@ -1,0 +1,86 @@
+//@version=6
+indicator("ST-ADX V3.3 | Continuation Research (NOT ACTIVE)", overlay=true, max_labels_count=300)
+
+// RESEARCH ONLY. This standalone overlay does not replace the active V3.3 mirror
+// or change GitHub paper positions. Use BingX USDT perpetual, 1H.
+if barstate.isfirst and timeframe.period != "60"
+    runtime.error("Use timeframe 1H.")
+
+int stLength = 12
+float stFactor = 2.8
+int dmiLength = 40
+int adxSmooth = 40
+int emaLength = 53
+int atrLength = 10
+int pullbackLookback = 8
+int breakoutLookback = 20
+float adxFloor = 25.0
+float maxExtensionATR = 2.5
+float breakoutBufferATR = 0.10
+float volumeMultiplier = 1.20
+int cooldownBars = 8
+
+[stLine, stDir] = ta.supertrend(stFactor, stLength)
+[diPlus, diMinus, adx] = ta.dmi(dmiLength, adxSmooth)
+float ema53 = ta.ema(close, emaLength)
+float atr = ta.atr(atrLength)
+float extension = math.abs(close - ema53) / math.max(atr, syminfo.mintick)
+bool strength = adx > adxFloor and adx >= adx[1]
+bool bullRegime = stDir < 0 and close > ema53
+bool bearRegime = stDir > 0 and close < ema53
+
+// Retest of EMA53 tolerance band in the preceding 8 completed candles.
+bool longTouch = low <= ema53 + 0.50 * atr and low >= ema53 - 0.75 * atr
+bool shortTouch = high >= ema53 - 0.50 * atr and high <= ema53 + 0.75 * atr
+bool longRetest = ta.highest(longTouch[1] ? 1.0 : 0.0, pullbackLookback) > 0
+bool shortRetest = ta.highest(shortTouch[1] ? 1.0 : 0.0, pullbackLookback) > 0
+bool longPullback = bullRegime and strength and longRetest and close > open and extension <= maxExtensionATR
+bool shortPullback = bearRegime and strength and shortRetest and close < open and extension <= maxExtensionATR
+
+// Breakout range uses prior bars only. Volume confirmation reduces false breaks.
+float priorHigh = ta.highest(high[1], breakoutLookback)
+float priorLow = ta.lowest(low[1], breakoutLookback)
+float volumeAvg = ta.sma(volume, 20)
+bool volumeOK = volume >= volumeAvg * volumeMultiplier
+bool longBreakout = bullRegime and strength and close > priorHigh + 0.10 * atr and volumeOK and extension <= maxExtensionATR
+bool shortBreakdown = bearRegime and strength and close < priorLow - 0.10 * atr and volumeOK and extension <= maxExtensionATR
+
+bool longCandidate = longPullback or longBreakout
+bool shortCandidate = shortPullback or shortBreakdown
+bool longStart = longCandidate and not longCandidate[1]
+bool shortStart = shortCandidate and not shortCandidate[1]
+var int lastLongBar = na
+var int lastShortBar = na
+bool longTrigger = barstate.isconfirmed and longStart and (na(lastLongBar) or bar_index - lastLongBar > cooldownBars)
+bool shortTrigger = barstate.isconfirmed and shortStart and (na(lastShortBar) or bar_index - lastShortBar > cooldownBars)
+if longTrigger
+    lastLongBar := bar_index
+if shortTrigger
+    lastShortBar := bar_index
+
+plot(stLine, "SuperTrend 12/2.8", color=stDir < 0 ? color.lime : color.red, linewidth=2)
+plot(ema53, "EMA 53", color=color.orange)
+plotshape(longTrigger and longPullback, title="LONG pullback continuation", text="L CONT", style=shape.triangleup, location=location.belowbar, color=color.lime, textcolor=color.black, size=size.small)
+plotshape(longTrigger and longBreakout, title="LONG breakout", text="L BO", style=shape.triangleup, location=location.belowbar, color=color.aqua, textcolor=color.black, size=size.small)
+plotshape(shortTrigger and shortPullback, title="SHORT pullback continuation", text="S CONT", style=shape.triangledown, location=location.abovebar, color=color.red, textcolor=color.white, size=size.small)
+plotshape(shortTrigger and shortBreakdown, title="SHORT breakdown", text="S BD", style=shape.triangledown, location=location.abovebar, color=color.fuchsia, textcolor=color.white, size=size.small)
+
+var table dash = table.new(position.top_right, 2, 7, bgcolor=color.rgb(20,27,38))
+if barstate.islast
+    table.cell(dash, 0, 0, "V3.3 CONT RESEARCH", text_color=color.white, bgcolor=color.rgb(35,45,60))
+    table.cell(dash, 1, 0, "NOT ACTIVE", text_color=color.orange, bgcolor=color.rgb(35,45,60))
+    table.cell(dash, 0, 1, "Trend", text_color=color.silver)
+    table.cell(dash, 1, 1, bullRegime ? "BULL" : bearRegime ? "BEAR" : "MIXED", text_color=bullRegime ? color.lime : bearRegime ? color.red : color.orange)
+    table.cell(dash, 0, 2, "ADX", text_color=color.silver)
+    table.cell(dash, 1, 2, str.tostring(adx, "#.0") + (strength ? " PASS" : " WAIT"), text_color=strength ? color.lime : color.orange)
+    table.cell(dash, 0, 3, "Extension ATR", text_color=color.silver)
+    table.cell(dash, 1, 3, str.tostring(extension, "#.00"), text_color=extension <= maxExtensionATR ? color.lime : color.red)
+    table.cell(dash, 0, 4, "Pullback", text_color=color.silver)
+    table.cell(dash, 1, 4, longPullback ? "LONG" : shortPullback ? "SHORT" : "—", text_color=color.white)
+    table.cell(dash, 0, 5, "Breakout", text_color=color.silver)
+    table.cell(dash, 1, 5, longBreakout ? "LONG" : shortBreakdown ? "SHORT" : "—", text_color=color.white)
+    table.cell(dash, 0, 6, "Signal", text_color=color.silver)
+    table.cell(dash, 1, 6, longTrigger ? "LONG CONT" : shortTrigger ? "SHORT CONT" : "WAIT", text_color=longTrigger ? color.lime : shortTrigger ? color.red : color.orange)
+
+alertcondition(longTrigger, "V3.3 LONG continuation research", "V3.3 LONG CONTINUATION RESEARCH | {{ticker}} | {{interval}} | {{close}}")
+alertcondition(shortTrigger, "V3.3 SHORT continuation research", "V3.3 SHORT CONTINUATION RESEARCH | {{ticker}} | {{interval}} | {{close}}")
