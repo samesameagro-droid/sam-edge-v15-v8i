@@ -30,3 +30,7 @@ Test whether mature trends produce additional valid continuation opportunities t
 3. Apply the same fee/slippage/funding assumptions as the paper runner.
 4. Inspect missed and rejected candidates, including extended trend examples.
 5. Require out-of-sample improvement and candle-by-candle Python/Pine parity before integration into the paper runner.
+
+
+## Automated backtest execution
+A dedicated GitHub Actions workflow (`.github/workflows/research_v33_continuation.yml`) runs this isolated comparison on research-branch updates and uploads CSV/JSON outputs as a 30-day artifact. It does not invoke or modify the active paper runner.
