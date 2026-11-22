@@ -1,0 +1,45 @@
+name: SAM EDGE AI V1 Research Backtest
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/sam-edge-ai-v1
+    paths:
+      - 'st_adx_v31/sam_edge_ai_v1_research.py'
+      - 'requirements-ai-research.txt'
+      - '.github/workflows/sam_edge_ai_v1_research.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-ai-research.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-ai-research.txt
+      - name: Compile research engine
+        run: python -m py_compile st_adx_v31/sam_edge_ai_v1_research.py
+      - name: Run historical ML research
+        working-directory: st_adx_v31
+        run: python sam_edge_ai_v1_research.py
+      - name: Upload AI research results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-edge-ai-v1-results
+          path: st_adx_v31/sam_edge_ai_v1_results/
+          if-no-files-found: warn
+          retention-days: 30
