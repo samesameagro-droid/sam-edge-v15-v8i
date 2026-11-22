@@ -121,10 +121,11 @@ def build_dataset(ex,markets):
             for side in ("LONG","SHORT"):
                 if (side=="LONG" and base not in LONG_ALLOWLIST) or (side=="SHORT" and base not in SHORT_ALLOWLIST): continue
                 for i,kind in candidate_events(feat,side):
-                    vals=feat.iloc[i][FEATURES].to_numpy(dtype=float)
+                    vals=feat.iloc[i][[k for k in FEATURES if k!="candidate_type"]].to_numpy(dtype=float)
                     if not np.isfinite(vals).all(): continue
                     outcome=label_event(feat,i,side)
-                    row={k:float(feat.iloc[i][k]) for k in FEATURES}
+                    row={k:float(feat.iloc[i][k]) for k in FEATURES if k!="candidate_type"}
+                    row["candidate_type"]=float(kind)
                     row.update({"coin":base,"symbol":symbol,"side":side,"candidate_type_name":("V3.3","PULLBACK","BREAKOUT")[kind],**outcome})
                     samples.append(row)
             print(f"[{n}/{len(markets)}] {symbol} candles={len(raw)} total_samples={len(samples)}",flush=True)
@@ -153,9 +154,9 @@ def main():
     data.to_csv(OUT/"candidate_dataset.csv",index=False); failures.to_csv(OUT/"data_failures.csv",index=False)
     if data.empty: raise RuntimeError("No candidate samples; inspect data_failures.csv")
     data["signal_dt"]=pd.to_datetime(data.signal_time,unit="ms",utc=True)
-    train=data[data.signal_dt<"2026-01-01"]
-    val=data[(data.signal_dt>="2026-01-01")&(data.signal_dt<"2026-07-01")]
-    test=data[(data.signal_dt>="2026-07-01")&(data.signal_dt<"2026-11-12")]
+    train=data[data.signal_dt<"2025-12-30"]
+    val=data[(data.signal_dt>="2026-01-02")&(data.signal_dt<"2026-06-29")]
+    test=data[(data.signal_dt>="2026-07-02")&(data.signal_dt<"2026-11-12")]
     if len(train)<MIN_TRAIN or train.label.nunique()<2: raise RuntimeError(f"Insufficient training set n={len(train)} classes={train.label.nunique()}")
     model=Pipeline([("imputer",SimpleImputer(strategy="median")),("rf",RandomForestClassifier(n_estimators=400,max_depth=8,min_samples_leaf=15,class_weight="balanced_subsample",random_state=33,n_jobs=-1))])
     model.fit(train[FEATURES],train.label)
