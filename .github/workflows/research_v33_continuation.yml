@@ -1,0 +1,43 @@
+name: ST-ADX V3.3 Continuation Research Backtest
+
+on:
+  push:
+    branches:
+      - research/v33-trend-continuation
+    paths:
+      - '.github/workflows/research_v33_continuation.yml'
+      - 'st_adx_v31/**'
+      - 'requirements.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run isolated historical comparison
+        working-directory: st_adx_v31
+        run: python research_v33_continuation_backtest.py
+      - name: Upload research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v33-continuation-backtest
+          path: |
+            st_adx_v31/research_v33_continuation/
+          if-no-files-found: warn
+          retention-days: 30
